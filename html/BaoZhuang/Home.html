@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>报装系统</title>
+    <link rel="stylesheet" type="text/css" href="../public/css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../public/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../public/css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../public/css/vant.css" />
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: #F3F3F3;
+        }
+
+        .aui-bar-nav {
+            top: 0;
+            z-index: 1;
+            background: linear-gradient(90deg, rgba(46, 142, 250, 1), rgba(49, 89, 235, 1));
+            color: #FFF;
+            font-size: 0.95rem;
+            font-weight: normal;
+            font-stretch: normal;
+            letter-spacing: 0rem;
+        }
+
+        .aui-bar-nav .aui-btn .aui-iconfont {
+            color: #FFF;
+            font-weight: 900;
+        }
+
+        .aui-bar-nav .aui-pull-right {
+            font-size: 0.95rem;
+        }
+
+        .flex-con {
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .item {
+            width: 90%;
+            height: 5rem;
+            background-color: #FFF;
+            border-radius: 0.5rem;
+            margin: 1rem auto;
+            box-sizing: border-box;
+            padding: 0.5rem;
+            display: flex;
+        }
+
+        .item img {
+            height: 3rem;
+            margin: 0.5rem;
+            display: inline-block;
+        }
+
+        .item div {
+            width: calc(100% - 4rem);
+            height: 100%;
+            display: inline-block;
+            box-sizing: border-box;
+            padding: 0.5rem;
+            position: relative;
+        }
+
+        .item-title {
+            font-size: 0.9rem;
+            color: #000;
+        }
+
+        .item-number {
+            height: 1.5rem;
+            font-size: 1.2rem;
+            color: #000;
+            font-weight: 400;
+            position: absolute;
+            bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header class="aui-bar aui-bar-nav" id="header">
+            <div class="aui-pull-left aui-btn" tapmode @click='onBack'>
+                <span class="aui-iconfont aui-icon-left"></span>
+            </div>
+            <div class="aui-title">报装系统</div>
+        </header>
+
+        <div class="flex-con">
+            <div class="item" @click='onOpenTaskList("need")'>
+                <img src="./image/myApprove.png" alt="">
+                <div>
+                    <p class="item-title">待办事项</p>
+                    <p class="item-number">{{needDealt}}</p>
+                </div>
+            </div>
+            <div class="item" @click='onOpenTaskList("complete")'>
+                <img src="./image/myInitiate.png" alt="">
+                <div>
+                    <p class="item-title">已办事项</p>
+                    <p class="item-number">{{completeDealt}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../public/script/api.js"></script>
+<script type="text/javascript" src="../public/script/common.js"></script>
+<script type="text/javascript" src="../public/script/remote.js"></script>
+<script type="text/javascript" src="../public/script/vue/fastclick.min.js"></script>
+<script type="text/javascript" src="../public/script/vue/vue.min.js"></script>
+<script type="text/javascript" src="../public/script/vue/vant.min.js"></script>
+<script type="text/javascript" src="../public/script/vue/vueTouch.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+
+        fnIntVue();
+        Origami.fastclick(document.body) //消除vue的ios端点击延迟
+    };
+
+    function fnIntVue() {
+        window.MainVue = new Vue({
+            el: '#wrap',
+            data: {
+                needDealt: '9527',
+                completeDealt: '857'
+            },
+            methods: {
+                onBack() {
+                    api.closeWin({});
+                },
+                onOpenTaskList(type) {
+                  if (type == 'need') {
+                    api.openWin({
+                        name: 'TaskList',
+                        url: './Task/TaskList.html',
+                        pageParam: {
+                            type: 'handle'
+                        }
+                    });
+                  } else if (type == 'complete') {
+                    api.openWin({
+                        name: 'TaskList',
+                        url: './Task/TaskList.html',
+                        pageParam: {
+                            type: 'detail'
+                        }
+                    });
+                  }
+                }
+            },
+            mounted: function() {
+
+            }
+        })
+    }
+</script>
+
+</html>

@@ -1,0 +1,11 @@
+
+.method-item {
+  height: 4rem;
+  box-sizing: content-box;
+}
+
+.method-item-img {
+  width: 3rem;
+  height: 3rem;
+  margin: 0.5rem 0.8rem 0.5rem 0rem;
+}

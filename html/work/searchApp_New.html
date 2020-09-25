@@ -1,0 +1,372 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>搜索应用页面</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/vant.css" />
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+        }
+
+        .aui-bar-nav {
+            top: 0;
+            z-index: 1;
+            background-color: #fff;
+            color: #333333;
+            font-size: 0.9rem;
+            font-weight: normal;
+            font-stretch: normal;
+            letter-spacing: 0rem;
+        }
+
+        .aui-bar-nav .aui-btn .aui-iconfont {
+            color: #333333;
+            font-weight: 900;
+        }
+
+        .aui-list-item-title {
+            font-size: 0.8rem !important;
+            color: #999 !important;
+        }
+
+        .history .aui-list .aui-list-item:after {
+            border: none !important;
+        }
+
+        .aui-list-item-right img {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        .historyLabel {
+            padding: 0 0.75rem;
+        }
+
+        .aui-label {
+            font-size: 0.7rem !important;
+            border-radius: 0 !important;
+            padding: 0.5em 1em!important;
+            margin: 0.5rem 1.25rem 0 0 !important;
+            background-color: #f0f0f0 !important;
+            color: #333 !important;
+            min-width: 5vw;
+        }
+
+        .aui-list:after {
+            display: none;
+        }
+
+        .aui-list {
+            background-image: none !important;
+        }
+
+        .aui-list-item-arrow:before {
+            border-color: #A2A2A2;
+        }
+
+        .aui-list .aui-list-item-media {
+            padding: 0;
+            margin-right: 0.5rem;
+        }
+
+        .mine_List .aui-list .aui-list-item-media {
+            width: 1.5rem;
+        }
+
+        .mine_List .aui-list .aui-list-item {
+            min-height: 3.5rem !important;
+            font-size: 0.75rem;
+        }
+
+        .history .aui-list .aui-list-item {
+            background-image: none;
+        }
+
+        .historyText {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 0 0.8rem;
+        }
+
+        .van-search {
+            width: 85vw;
+            position: absolute;
+            top: 1rem;
+            right: 0.5rem;
+            z-index: 11;
+            padding: 0;
+            top: 1.7rem;
+        }
+
+        .van-cell {
+            line-height: 1.8rem;
+            height: 1.8rem;
+        }
+
+        input[type="search"] {
+            height: 1.7rem;
+            font-size: 0.7rem;
+        }
+
+        .van-search .van-cell {
+            padding: 1px 8px 5px 0;
+        }
+        .van-search__content{
+          border-radius: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="searchAppVue">
+        <header class="aui-bar aui-bar-nav" id="header">
+            <div class="aui-pull-left aui-btn" @click='api.closeWin();'>
+                <span class="aui-iconfont aui-icon-left"></span>
+            </div>
+        </header>
+        <van-search v-model="searchInputValue" placeholder="请输入应用名称" @input='onSearchValueChange' @blur='onSearchInputBlur' @clear='onClearSearchValue'></van-search>
+        <div class="aui-content history" v-show='isShowhistoryLabel'>
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-text historyText">
+                    <div class="aui-list-item-title">历史记录</div>
+                    <div class="aui-list-item-right" @click='DeletelAll'><img src="../../image/main_frame/lijitong.png" alt=""></div>
+                </div>
+            </div>
+        </div>
+        <div v-show='isShowhistoryLabel' class="flex-con historyLabel">
+            <div class="aui-label" v-for='(item,index) in historyDatas' :key='index' @click='openHistoryApp(item)'>{{item.productName}}
+            </div>
+        </div>
+        <div class="flex-con" v-show='isShowSearchResult'>
+            <div class="aui-content mine_List">
+                <ul class="aui-list">
+                    <li class="aui-list-item aui-marigin-l-15" v-for='(item,index) in searchResultData' :key='index' @click='openSearchedApp(item)'>
+                        <div class="aui-list-item-inner">
+                            <div class="aui-list-item-media"><img :src="apiUrl+item.productIcon" class="aui-list-img-sm"></div>
+                            <div class="aui-list-item-inner">{{item.productName}}</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/diy/public.js"></script>
+<script type="text/javascript" src="../../script/remote.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/vue/fastclick.min.js"></script>
+<script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+<script type="text/javascript" src="../../script/vue/vant.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        api.addEventListener({
+            name: 'changedFontSize'
+        }, function(ret, err) {
+            if (ret) {
+                changeFontSize();
+            }
+        });
+        api.parseTapmode();
+        var header = $api.byId('header');
+        // 实现沉浸式状态栏效果
+        $api.fixStatusBar(header);
+        headerH = $api.offset(header).h;
+
+    };
+    initVue();
+
+    function initVue() {
+        window.searchAppVue = new Vue({
+            el: '#searchAppVue',
+            data: {
+                isShowSearchResult: false, //是否显示搜索结果
+                isShowhistoryLabel: true, //是否显示历史搜索记录
+                historyDatas: [], //历史搜索结果
+                isShowclearSearchBtn: false, //是否显示搜索清除按钮
+                searchInputValue: '', //搜索框输入值
+                searchResultData: [], //搜索值
+                apiUrl: apiUrl
+            },
+            methods: {
+                InitPages() { //查询是否有历史搜索记录
+                    var historyDatas = $api.getStorage('historyDatas');
+                    if (historyDatas != undefined) {
+                        this.historyDatas = historyDatas;
+                    }
+                },
+                openHistoryApp(item) { //历史搜索记录打开app
+                    // 需要判断 isValid
+                    if (!item.isValid) {
+                        return
+                    }
+                    var url = 'services/app/Home/GetMyApplications?KeyStr=' + item.productName;
+                    fnGet(url, {}, false, function(ret, err) {
+                        api.hideProgress();
+                        if (ret) {
+                            if (ret.success && ret.result.applications.length != 0) {
+                                fnOpenApp(item);
+                            } else {
+                                api.toast({
+                                    msg: '您没有该权限',
+                                    duration: 2000,
+                                    location: 'bottom'
+                                });
+
+                            }
+                        }
+                    });
+                },
+                onClearSearchValue() { //清除搜索内容
+                    this.searchInputValue = '';
+                    this.onSearchInputBlur();
+                    this.searchResultData = [];
+                },
+                onSearchValueChange() { //输入值发生变化
+                    var _this = this;
+                    if (this.searchInputValue != '') {
+                        this.isShowclearSearchBtn = true;
+                        this.isShowSearchResult = true;
+                        this.isShowhistoryLabel = false;
+                        var url = 'services/app/Home/GetMyApplications?KeyStr=' + this.searchInputValue;
+                        fnGet(url, {}, false, function(ret, err) {
+                            api.hideProgress();
+                            if (ret) {
+                                if (ret.success && ret.result != null) {
+                                    _this.searchResultData = ret.result.applications;
+                                } else {
+                                    vant.Toast('该应用不存在!');
+                                }
+                            }
+                        });
+                    }
+                },
+                onSearchInputBlur() { //失去焦点
+                    if (this.searchInputValue == '') {
+                        this.isShowclearSearchBtn = false;
+                        this.isShowSearchResult = false;
+                        this.isShowhistoryLabel = true;
+                    }
+                },
+                openSearchedApp(item) {
+                    this.isShowSearchResult = false;
+                    this.isShowhistoryLabel = true;
+                    var applications = $api.getStorage('historyDatas');
+                    if (applications == undefined || applications == null) {
+                        applications = [];
+                        applications.push(item);
+                    } else {
+                        var num = 0;
+                        for (var i = 0; i < applications.length; i++) {
+                            if (item.productId != applications[i].productId) {
+                                num++;
+                            }
+                        }
+                        // 与数组长度相等，说明没有相同的才加入到数组中
+                        if (num == applications.length) {
+                            applications.push(item);
+                        }
+                    }
+                    // 保存到缓存中
+                    $api.setStorage('historyDatas', applications);
+                    this.historyDatas = applications;
+                    fnOpenApp(item);
+                },
+                DeletelAll() { //清除历史数据
+                    vant.Dialog.confirm({
+                        title: '提示',
+                        message: '确定清空历史记录吗?'
+                    }).then(() => {
+                        this.historyDatas = [];
+                        $api.rmStorage('historyDatas');
+                    }).catch(() => {
+                        // on cancel
+                    });
+                },
+
+            },
+            mounted: function() {
+                this.InitPages();
+            }
+        });
+    }
+
+    function fnOpenApp(data) {
+        if (data.openMobile) {
+            if ((data.iosPackage != "" && data.iosPackage != null) || (data.androidPackage != "" && data.androidPackage != null)) {
+
+                if (data.iosPackage != "" && data.iosPackage != null) {
+
+                    if (api.systemType == 'ios') {
+                        api.openApp({
+                            iosUrl: data.iosPackage,
+                            appParam: {},
+                        }, function(ret, err) {
+
+                        });
+                    }
+                } else if (data.androidPackage != "" && data.androidPackage != null) {
+                    //异步返回结果：
+                    api.appInstalled({
+                        appBundle: data.androidPackage
+                    }, function(ret, err) {
+                        api.hideProgress();
+                        if (ret.installed) {
+                            api.openApp({
+                                androidPkg: data.androidPackage,
+                                appParam: {},
+                            }, function(ret, err) {
+
+                            });
+
+                        } else {
+                            //应用未安装
+                            api.toast({
+                                msg: '应用未安装',
+                                duration: 2000,
+                                location: 'top'
+                            });
+                        }
+                    });
+                }
+            } else if (data.mobileWebUrl != "" && data.mobileWebUrl != null) {
+                if (data.mobileWebUrl.indexOf('http') != -1) {
+                    api.openWin({
+                        name: 'OA',
+                        url: './OA.html',
+                        pageParam: {
+                            url: data.mobileWebUrl
+                        }
+                    });
+                } else {
+                    var winName = data.mobileWebUrl;
+                    var index = winName.lastIndexOf('/');
+                    var index2 = winName.indexOf('.html');
+                    if (index != -1 && index2 != -1) {
+                        winName = winName.substring(index + 1, index2);
+                    }
+                    api.openWin({
+                        name: winName,
+                        url: data.mobileWebUrl,
+                        pageParam: {
+                            productId: data.productId
+                        }
+                    });
+                }
+            }
+        }
+    }
+</script>
+
+</html>

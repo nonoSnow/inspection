@@ -1,0 +1,224 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>更新消息frame页面</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui1.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/dialogAlert.css">
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+        }
+        .dilogMarkAlert {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            background: rgba(0, 0, 0, 0.12);
+            width: 100%;
+            height: 100%;
+            z-Index: 9999;
+            /*display: none;*/
+        }
+
+        .dilogMarkAlertBox {
+            width: 15rem;
+            min-height: 7.5rem;
+            max-height: 20rem;
+            overflow: hidden;
+            background: #fff;
+            border-radius: 0.4rem;
+            z-index: 1000;
+            position: absolute;
+            top: 40%;
+            left: 1.5rem;
+            /*margin: 0 auto;*/
+        }
+
+        .dilogMarkAlertBox div {
+            width: 100%;
+        }
+
+        .dilogMarkAlertBox .dialog_title {
+            height: 1.5rem;
+            line-break: 1.5rem;
+            padding-top: 0.3rem;
+            text-align: left;
+        }
+
+      .dilogMarkAlertBox .dialog_title span {
+            height: 1rem;
+            font-size: 0.8rem;
+        }
+
+      .dilogMarkAlertBox .dialog_body {
+            min-height: 4rem;
+            max-height: 15rem;
+            font-size: 0.8rem;
+            padding: 0.5rem;
+            text-align: left;
+            padding-left: 1rem;
+            overflow: hidden;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling:touch;
+        }
+
+      .dilogMarkAlertBox .dialog_footer {
+            height: 2.5rem;
+            line-height: 2.5rem;
+            border-top: 1px solid #eee;
+            display: flex;
+            flex-direction: row;
+            text-align: center;
+            color: #2D63FF;
+        }
+
+      .dilogMarkAlertBox .dialog_footer .dialogBtn {
+            border-right: 1px solid #eee;
+        }
+
+      .dilogMarkAlertBox .dialog_footer .dialogBtn.active {
+            background: #eee !important;
+            color: #2D63FF;
+            opacity: 0.8;
+        }
+
+      .dilogMarkAlertBox .dialog_footer .noneBorder {
+            border-right: none;
+        }
+    </style>
+</head>
+
+<body id='body'>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/template.js"></script>
+<script type="text/template" id='remarkDemo'>
+  <div class="dilogMarkAlert">
+             <div class="dilogMarkAlertBox">
+                 <div class="dialog_title aui-padded-l-10"><span>本次更新内容如下：</span></div>
+                 <div class="dialog_body">
+                   {{each list value i}}
+                    {{if value.remark!=""}}
+                   <span>{{value.moduleName}}：</span>
+                    <p class='aui-padded-l-10 aui-margin-b-10'>{{value.remark}}</p>
+                    {{/if}}
+                   {{/each}}
+                 </div>
+                 <div class="dialog_footer">
+                   <div class="dialogBtn" onclick='btnSure()'>确定</div>
+                 </div>
+             </div>
+    </div>
+</script>
+<script>
+    apiready = function() {
+        api.addEventListener({
+            name: 'changedFontSize'
+        }, function(ret, err) {
+            if (ret) {
+                changeFontSize();
+            }
+        });
+       dialogFun();
+    };
+    function dialogFun(){
+      if(api.pageParam.type == 'update'){
+        dialogAlert({
+            title: '提示',
+            content: '发现新版本，是否立即更新',
+            buttons: ['确定', '取消'],
+        }, function(ret) {
+            if (ret.buttonIndex == 1) {
+                // 更新有更新的模块
+                api.sendEvent({
+                    name: 'updateVersion',
+                });
+                  api.closeFrame();
+            } else {
+                dialogAlert({
+                    title: '提示',
+                    content: '若需更新版本，请到我的-设置-关于版本中更新版本',
+                    buttons: ['确定'],
+                }, function(ret) {
+                    if (ret.buttonIndex == 1) {
+                      var gpsmodel = api.require('gpsState');
+                      gpsmodel.gpsstate(function(ret) {
+                         if(ret){
+                           if(ret.gps){
+                             api.closeFrame();
+                           } else{
+                             checkPhoneGPS(false);
+                           }
+                         }
+                      });
+
+                    }
+                });
+            }
+        });
+      } else {
+        if(api.pageParam.number == 'all'){
+          var userLoginInformation = $api.getStorage('userLoginInformation');
+          var Remarks = userLoginInformation.newVersionRemark;
+          var newVersionRemark = [];
+          for(let i=0;i<Remarks.length;i++){
+            (function(i){
+              if(newVersionRemark.length > 0){
+                var number =0;
+                   for(let n =0;n<newVersionRemark.length;n++){
+                      if(newVersionRemark[n].moduleCode!=Remarks[i].moduleCode){
+                        number++;
+                        if(number == newVersionRemark.length){
+                          newVersionRemark.push(Remarks[i]);
+                        }
+                      }
+                   }
+              } else {
+                newVersionRemark.push(Remarks[i]);
+              }
+            })(i);
+          }
+
+        } else {
+          var newVersionRemark = [api.pageParam.data];
+        }
+        if(newVersionRemark.length >0){
+          var datas = {
+            list:newVersionRemark
+          }
+          var str = template('remarkDemo',datas);
+          $('body').append(str);
+        }
+      }
+
+    }
+    function btnSure(){
+      var userLoginInformation = $api.getStorage('userLoginInformation');
+      userLoginInformation.newVersionRemark=[];
+      userLoginInformation.newVersionNumber=0;
+      $api.setStorage('userLoginInformation',userLoginInformation);
+      $('body').html("");
+      var gpsmodel = api.require('gpsState');
+      gpsmodel.gpsstate(function(ret) {
+         if(ret){
+           if(ret.gps){
+             api.closeFrame();
+           } else{
+               checkPhoneGPS(false);
+           }
+         }
+      });
+    }
+</script>
+
+</html>

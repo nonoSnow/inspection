@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>抄表质量复核任务处理</title>
+    <link rel="stylesheet" type="text/css" href="../public/css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../public/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../public/css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../public/css/vant.css" />
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: #F3F3F3;
+        }
+
+        .aui-bar-nav {
+            top: 0;
+            z-index: 1;
+            background: linear-gradient(90deg, rgba(46, 142, 250, 1), rgba(49, 89, 235, 1));
+            color: #FFF;
+            font-size: 0.95rem;
+            font-weight: normal;
+            font-stretch: normal;
+            letter-spacing: 0rem;
+        }
+
+        .aui-bar-nav .aui-btn .aui-iconfont {
+            color: #FFF;
+            font-weight: 900;
+        }
+
+        .aui-bar-nav .aui-pull-right {
+            font-size: 0.95rem;
+        }
+
+        .flex-con {
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+        #footer {
+            width: 100%;
+            height: 2.5rem;
+            text-align: center;
+            position: fixed;
+            background-color: #FFF;
+            bottom: 0;
+            border-top: 1px solid #eee;
+        }
+
+        #footer .assign_btn {
+            margin: 0.3rem auto;
+            padding: 3px 0rem;
+            border-radius: 10px;
+            background-color: #2970FF !important;
+            height: 1.75rem;
+            width: 5rem;
+            display: block;
+        }
+
+        .aui-content {
+            height: 100%;
+            margin-bottom: 2.5rem;
+        }
+
+        .content {
+            margin: .5rem 1rem;
+            background-color: #fff;
+            border-radius: 0.8rem;
+            padding-top: .5rem;
+            padding-bottom: .9rem;
+        }
+
+        .row {
+            margin: 0rem 25px 0rem 25px;
+            line-height: 2rem;
+            border-bottom: 1px solid #F2F2F2;
+        }
+
+        .text-left {
+            width: 38%;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        .text-left-title {
+            display: inline-block;
+            text-align: justify;
+            text-align-last: justify;
+            width: 88%;
+        }
+
+        .text-right {
+            margin-left: 0px;
+            font-size: 0.9rem;
+            color: #656265;
+            display: inline-block;
+            width: calc(60% - 0px);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            vertical-align: top;
+            padding-left: 0.2rem;
+        }
+
+        .bg-red {
+            background-color: red !important;
+        }
+
+        .textarea {
+            border: 1px solid #D8D8D8;
+            border-radius: 0.13rem;
+            padding: 0.25rem 0.5rem;
+            color: #626262;
+        }
+
+        .textarea textarea {
+            font-size: 14px;
+            line-height: 1.5;
+            border-radius: 3px;
+        }
+
+        .images {
+            vertical-align: text-top;
+        }
+
+        .images>img {
+            width: 1.05rem;
+            height: 0.85rem;
+            float: right;
+        }
+
+        .addressIcon {
+            background: url(./image/dingwei.png) no-repeat 0 0;
+            background-size: 100% 100%;
+            width: .6rem;
+            height: .7rem;
+            display: inline-block;
+        }
+
+        .textColor {
+            color: #2045FF;
+        }
+
+        .photoList {
+            margin-top: 8px;
+            /*margin-bottom: 14px;*/
+        }
+
+        .phont {
+            width: 3.6rem;
+            height: 2.8rem;
+            position: relative;
+            display: inline-block;
+            margin-right: .7rem;
+        }
+
+        .phont img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .delectImg {
+            background: url(./image/shanchu.png) no-repeat 0 0;
+            background-size: 100% 100%;
+            width: .8rem;
+            height: .8rem;
+            display: inline-block;
+            position: absolute;
+            right: -7px;
+            top: -7px;
+        }
+
+        .fj-item {
+            display: inline-block;
+            width: 30%;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #707070;
+            position: relative;
+        }
+
+        .video-div {
+            margin-right: 5%;
+        }
+
+        .img-delete {
+            position: absolute;
+            right: -8px;
+            top: -8px;
+        }
+
+        .textRight {
+            text-align: right;
+        }
+
+        .bg-red {
+            background-color: red !important;
+        }
+
+        .audio-popup {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            position: fixed;
+            z-index: 999;
+        }
+
+        .audio-img {
+            width: 25%;
+            position: absolute;
+            left: 37.5%;
+            bottom: 20%;
+        }
+
+        .audio-popup p {
+            width: 100%;
+            text-align: center;
+            margin-top: 50%;
+            font-size: 36px;
+            color: #CCC;
+        }
+
+        .audio-time-div {
+            width: 100%;
+            height: 1.5rem;
+            text-align: center;
+            line-height: 1.5rem;
+            font-size: 18px;
+            color: #CCC;
+            margin-top: 0.5rem;
+        }
+
+        .audio-time-div span {
+            margin-right: 8px;
+            font-size: 36px;
+            color: rgba(0, 210, 123, 1);
+        }
+
+        .input-select {
+            background: url("./image/xiala.png") no-repeat scroll right center transparent;
+            background-size: 14px 9px;
+        }
+
+        .popup {
+            min-height: 26vh;
+            max-height: 37vh;
+            overflow: scroll!important;
+        }
+
+        .pickerMain {
+            height: 100%;
+            background-color: #fff;
+            padding: 0;
+        }
+
+        .picker {
+            width: 100vw;
+            height: 2.13rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #5A5A5A;
+            background-color: #fff;
+            border-bottom: 0.03rem solid #EDEDED;
+        }
+
+        .picker:last-child {
+            border-bottom: none;
+        }
+
+        .picker.active {
+            background-color: #F4F4F4;
+            color: #2F81F6;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical" v-cloak v-swipeleft="onOpenUserDetails">
+        <header class="aui-bar aui-bar-nav" id="header">
+            <div class="aui-pull-left aui-btn" tapmode @click='onBack'>
+                <span class="aui-iconfont aui-icon-left"></span>
+            </div>
+            <div class="aui-title">任务处理</div>
+        </header>
+
+        <van-action-sheet class='popup' v-model="showAuditType" cancel-text="取消" :round='false'>
+          <div class="pickerMain">
+              <div class="picker" v-for="(item,index) in AuditTypeArr" :key="index" :class="{active:AuditTypeId == item.id}" @click="AuditType=item.name;AuditTypeId=item.id;showAuditType=false">
+                  {{item.name}}
+              </div>
+          </div>
+        </van-action-sheet>
+
+        <van-action-sheet class='popup' v-model="showReviewStatus" cancel-text="取消" :round='false'>
+          <div class="pickerMain">
+              <div class="picker" v-for="(item,index) in ReviewStatusArr" :key="index" :class="{active:ReviewStatusId == item.id}" @click="onReviewStatus(item)">
+                  {{item.name}}
+              </div>
+          </div>
+        </van-action-sheet>
+
+        <div class="flex-con aui-content">
+            <div class="audio-popup" v-if='showAudio' @click='onCloseAudio'>
+                <p>长按录音<br>松开保存</p>
+                <div class="audio-time-div"><span>{{AudioTime}}</span>秒</div>
+                <img @touchstart='onStartAudioFnc' @touchend='onStopAudioFnc' class='audio-img' src="./image/audio.png" alt="">
+            </div>
+            <div class="content">
+                <div class="row">
+                    <div class="text-left">
+                        <span class="text-left-title">任务类型</span>:
+                    </div>
+                    <div class="text-right">
+                        <span>{{projectName}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="text-left">
+                        <span class="text-left-title">户名</span>:
+                    </div>
+                    <div class="text-right">
+                        <span>{{CustomerName}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="text-left">
+                        <span class="text-left-title">户号</span>:
+                    </div>
+                    <div class="text-right">
+                        <span>{{CustomerCode}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="text-left">
+                        <span class="text-left-title">地址</span>:
+                    </div>
+                    <div class="text-right">
+                        <span>{{Address}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="text-left">
+                        <span class="text-left-title">表位</span>:
+                    </div>
+                    <div class="text-right">
+                        <span>{{tableLocation}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="text-left">
+                        <span class="text-left-title">表号</span>:
+                    </div>
+                    <div class="text-right">
+                        <span>{{tableCode}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="text-left">
+                        <span class="text-left-title">口径</span>:
+                    </div>
+                    <div class="text-right">
+                        <span>{{Caliber}}</span>
+                    </div>
+                </div>
+                <div class="row" v-if='isExamine'>
+                    <div class="text-left">
+                        <span class="text-left-title">审核备注</span>:
+                    </div>
+                    <div class="text-right">
+                        <span>{{ExamineResult}}</span>
+                    </div>
+                </div>
+                <div v-if='taskType == "45"'>
+                  <div class="row">
+                      <div class="text-left" style="width: 48%;">
+                          <span class="text-left-title">最后抄表止度</span>:
+                      </div>
+                      <div class="text-right" style="width: 50%;">
+                          <span>{{LastReadScale}}</span>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="text-left">
+                          <span class="text-left-title">用水量</span>:
+                      </div>
+                      <div class="text-right">
+                          <span>{{Amount}}</span>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="text-left">
+                          <span class="text-left-title">联系电话</span>:
+                      </div>
+                      <div class="text-right" @click='onCallAndSms'>
+                          <span>{{TelephoneNumber}}</span>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="text-left">
+                          <span class="text-left-title">稽核时间</span>:
+                      </div>
+                      <div class="text-right">
+                          <span>{{AuditTime}}</span>
+                      </div>
+                  </div>
+
+                  <div class="row">
+                      <div class="text-left">
+                          <span class="text-left-title">稽核止度</span>:
+                      </div>
+                      <div class="text-right">
+                          <input type="number" name="" placeholder="请输入" v-model='AuditScale'>
+                      </div>
+                  </div>
+
+                  <div class="row">
+                      <div class="text-left">
+                          <span class="text-left-title">稽核类型</span>:
+                      </div>
+                      <div class="text-right">
+                          <input type="text" class='input-select' @click='showAuditType = true' readonly name="" placeholder="请选择" v-model="AuditType">
+                      </div>
+                  </div>
+
+                  <div class="row">
+                      <div class="text-left">
+                          <span class="text-left-title">稽核状态</span>:
+                      </div>
+                      <div class="text-right">
+                          <input type="text" class='input-select' readonly name="" @click='onAuditStatus' placeholder="请选择" v-model="AuditStatus">
+                      </div>
+                  </div>
+                </div>
+                <div v-if='taskType == "43"'>
+                  <div class="row">
+                      <div class="text-left">
+                          <span class="text-left-title">起度</span>:
+                      </div>
+                      <div class="text-right">
+                          <span>{{RecordBeginScale}}</span>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="text-left">
+                          <span class="text-left-title">水量</span>:
+                      </div>
+                      <div class="text-right">
+                          <span>{{Amount}}</span>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="text-left">
+                          <span class="text-left-title">联系电话</span>:
+                      </div>
+                      <div class="text-right" @click='onCallAndSms'>
+                          <span>{{TelephoneNumber}}</span>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="text-left">
+                          <span class="text-left-title">复核时间</span>:
+                      </div>
+                      <div class="text-right">
+                          <span>{{ReviewTime}}</span>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="text-left" style="width: 48%;">
+                          <span class="text-left-title">复核水表状态</span>:
+                      </div>
+                      <div class="text-right" style="width: 50%;">
+                          <input type="text" class='input-select' @click='showReviewStatus = true' readonly name="" placeholder="请选择" v-model="ReviewStatus">
+                      </div>
+                  </div>
+
+                  <div class="row">
+                      <div class="text-left">
+                          <span class="text-left-title">复核止度</span>:
+                      </div>
+                      <div class="text-right">
+                          <input type="number" name="" placeholder="请输入" v-model='ReviewScale'>
+                      </div>
+                  </div>
+
+                  <div class="row" v-show='isConcrete'>
+                      <div class="text-left">
+                          <span class="text-left-title">实际表码</span>:
+                      </div>
+                      <div class="text-right">
+                          <input type="number" name="" placeholder="请输入" v-model='ConcreteScale'>
+                      </div>
+                  </div>
+
+                  <div class="row">
+                      <div class="text-left">
+                          <span class="text-left-title">复核水量</span>:
+                      </div>
+                      <div class="text-right">
+                          <input type="text" name="" placeholder="请输入" v-model="ReviewAmount">
+                      </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                    <div class="text-left">
+                        <span class="text-left-title">备注</span>:
+                    </div>
+                    <div class="textarea" style="margin-bottom: 8px;">
+                        <textarea name="name" rows="16" cols="80" v-model="RemarkText"></textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="text-left">
+                        <span class="text-left-title">照片</span>
+                    </div>
+                    <div class="text-right images">
+                        <img @click="onOpenCamera" src="./image/paizhao.png" alt="">
+                    </div>
+                    <div class="photoList">
+                        <div class="phont" v-for="(item,index) in phoneList" :key="index">
+                            <i class="delectImg" @click="onDelectPic(index)"></i>
+                            <img :src="item" alt="" @click="pBrowserPicture(index, phoneList)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="text-left">
+                        <span class="text-left-title">附件</span>
+                    </div>
+                    <div class="text-right images">
+                        <img @click="onOpenFile" src="./image/fujian.png" alt="">
+                    </div>
+                    <div class="photoList">
+                        <div class="fj-item video-div" @click='onPlayVideo' v-if='showVideoDiv'>
+                            <div class="" style="width: 100%; height: 2.9rem; position: relative;">
+                                <img src='./image/shanchu.png' class='img-delete' style='width: 16px; height: 16px;' @click.stop='onDeleteVideo' />
+                                <img src="./image/video.png" style="width: 50%;position: absolute; top: 50%; left: 50%;margin-top: -15%;margin-left:-25%;" alt="" />
+                            </div>
+                            视频文件
+                        </div>
+                        <div class="fj-item audio-div" @click='onPlayAudio' v-if='showAudioDiv'>
+                            <div class="" style="width: 100%; height: 2.9rem; position: relative;">
+                                <img src='./image/shanchu.png' class='img-delete' style='width: 16px; height: 16px;' @click.stop='onDeleteAudio' />
+                                <img src="./image/audio.png" style="width: 25%;position: absolute; top: 50%; left: 50%;margin-top: -15%;margin-left:-12.5%;" alt="" />
+                            </div>
+                            音频文件
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="border-bottom: none;">
+                    <p @click='onGetLocation'>
+                        <i class="addressIcon"></i>
+                        <span class="textColor">{{Location}}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer">
+            <div v-show='isClaim' class="aui-btn aui-btn-info assign_btn bg-red" @click='onClaim'>认领</div>
+            <div v-show='!isClaim' class="aui-btn aui-btn-info assign_btn" @click='onSubmit'>提交</div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../public/script/api.js"></script>
+<script type="text/javascript" src="../public/script/common.js"></script>
+<script type="text/javascript" src="../public/script/remote.js"></script>
+<script type="text/javascript" src="../public/script/publicMethod.js"></script>
+<script type="text/javascript" src="../public/script/vue/fastclick.min.js"></script>
+<script type="text/javascript" src="../public/script/vue/vue.min.js"></script>
+<script type="text/javascript" src="../public/script/vue/vant.min.js"></script>
+<script type="text/javascript" src="../public/script/vue/vueTouch.js"></script>
+<script type="text/javascript" src="../public/script/moment.js"></script>
+<script type="text/javascript" src="./js/meterManageLocalData.js"></script>
+<script type="text/javascript" src="./js/remote.js"></script>
+<script type="text/javascript" src="../public/script/diy/public.js"></script>
+<script type="text/javascript">
+    var db,bMap;
+    apiready = function() {
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+
+        db = api.require("db");
+        bMap = api.require("bMap");
+
+        fnIntVue();
+        Origami.fastclick(document.body) //消除vue的ios端点击延迟
+    };
+
+    function fnIntVue() {
+        window.ApplyTaskVue = new Vue({
+            el: '#wrap',
+            data: {
+                AudioTime: '', //录音时间
+                projectName: '', //任务类型
+                CustomerName: '', //户名
+                CustomerCode: '', //户号
+                Address: '', //地址
+                tableLocation: '', //表位
+                tableCode: '', //表号
+                Caliber: '', //口径
+                LastReadScale: '', //最后抄表止度
+                Amount: '', //用水量
+                TelephoneNumber: '', //联系电话
+                AuditTime: '', //稽核时间
+                RemarkText: '', //备注
+                phoneList: [], //照片
+                audioPath: '',
+                videoPath: '',
+                showVideoDiv: false, //是否显示视频
+                showAudioDiv: '', //是否显示音频
+                Location: '', //手机定位地址
+                Longitude: 0, //经度
+                Latitude: 0, //纬度
+                isClaim: false, //是否认领
+                showAudio: false,//是否显示录音界面
+
+                AuditScale: '',  //稽核止度
+                AuditType: '', //稽核类型
+                AuditTypeId: '',
+                AuditStatus: '',  //稽核状态
+                AuditTypeArr: [],  //稽核类型数组
+                showAuditType: false,  //是否显示稽核类型弹窗
+
+                RecordBeginScale: '',  //复核起度
+                ReviewTime: '',  //复核时间
+                showReviewStatus: false,  //是否显示复核状态弹窗
+                ReviewStatusArr: [],  //复核状态数组
+                ReviewStatus: '',  //复核状态
+                ReviewStatusId: '',
+                ReviewScale: '',  //复核止度
+                ReviewAmount: '',  //复核水量
+
+                taskType: '45',
+
+                TaskData: api.pageParam.data,  //云平台传的任务信息
+                getTaskType: api.pageParam.type,  //云平台传的类型
+
+                FileUrl: "",  //上传文件路径
+                FileType: "",  //上传文件类型
+                FilesUrlArr: [],  //上传文件数组
+                FileTypeNum: "",  //
+                FileLocaion: '',  //文件经纬度
+
+                imgLocation: [],  //图片经纬度
+                audioLocation: '',  //音频经纬度
+                videoLocation: '',  //视频经纬度
+
+                ConcreteScale: '',  //实际表码
+                isConcrete: false,  //是否显示实际表码
+                ExamineResult: '',  //审核不通过原因
+                isExamine: false,   //是否显示审核不通过原因
+            },
+            methods: {
+                onBack() {
+                  api.closeWin({});
+                },
+                onCloseAudio(){
+                  setTimeout(function() {
+                      this.showAudio = false;
+                  }, 100);
+                },
+                onStartAudioFnc(){
+                  var _that = this;
+                  var e = e || window.event;
+                  e.stopPropagation();
+
+                  api.startRecord({});
+                  _that.timeId = setInterval(function() {
+                      _that.AudioTime += 1;
+                      if (_that.AudioTime == 60) {
+                          clearInterval(_that.timeId);
+                          _that.stopAudioFnc();
+                      }
+                  }, 1000)
+                },
+                onStopAudioFnc(){
+                  var _that = this;
+                  api.stopRecord(function(ret, err) {
+                      if (ret) {
+                          if (ret.path != '') {
+                              var checkAudio = ret.path;
+                              bMap.getLocation({
+                                  accuracy: '10m',
+                                  autoStop: true,
+                              }, function(ret, err) {
+                                  if (ret.status) {
+                                      _that.audioLocation = ret.lon + "," + ret.lat;
+                                      _that.audioPath = checkAudio;
+                                      _that.showAudioDiv = true;
+                                  }
+                              });
+                          }
+                          _that.showAudio = false;
+                          _that.AudioTime = 0;
+                          clearInterval(_that.timeId);
+                      }
+                  });
+                },
+                onDelectPic(index){
+                  if (this.isClaim) {
+                      return;
+                  }
+                  var _that = this;
+                  vant.Dialog.confirm({
+                          title: '提示',
+                          message: '是否确定删除照片?',
+                      })
+                      .then(function() {
+                        var fs = api.require("fs");
+                        fs.remove({
+                            path: _that.phoneList[index]
+                        });
+                        _that.phoneList.splice(index, 1);
+                        _that.imgLocation.splice(index, 1);
+                      })
+                      .catch(function() {
+                          return;
+                      });
+                },
+                onPlayVideo(){
+                  var _that = this;
+                  api.openVideo({
+                      url: _that.videoPath
+                  });
+                },
+                onDeleteVideo(){
+                  var _that = this;
+                  vant.Dialog.confirm({
+                          title: '提示',
+                          message: '是否确定删除视频?',
+                      })
+                      .then(function() {
+                        var fs = api.require('fs');
+                        fs.remove({
+                            path: _that.audioPath
+                        }, function(ret, err) {
+                          var fs = api.require('fs');
+                          fs.remove({
+                              path: _that.videoPath
+                          }, function(ret, err) {
+                              if (ret.status) {
+                                  _that.videoPath = "";
+                                  _that.videoLocation = "";
+                                  _that.showVideoDiv = false;
+                              } else {
+                                  console.log(JSON.stringify(err));
+                              }
+                          });
+                        });
+                      })
+                      .catch(function() {
+                          return;
+                      });
+                },
+                onPlayAudio(){
+                  var _that = this;
+                  var audioStreamer = api.require('audioStreamer');
+                  audioStreamer.openPlayer({
+                      path: _that.audioPath,
+                  }, function(ret) {
+                      if (ret.status) {
+                          console.log(JSON.stringify(ret));
+                      }
+                  });
+                },
+                onDeleteAudio(){
+                  var _that = this;
+                  vant.Dialog.confirm({
+                          title: '提示',
+                          message: '是否确定删除音频?',
+                      })
+                      .then(function() {
+                        var fs = api.require('fs');
+                        fs.remove({
+                            path: _that.audioPath
+                        }, function(ret, err) {
+                            if (ret.status) {
+                                _that.audioPath = "";
+                                _that.audioLocation = "";
+                                _that.showAudioDiv = false;
+                            } else {
+                                console.log(JSON.stringify(err));
+                            }
+                        });
+                      })
+                      .catch(function() {
+                          return;
+                      });
+                },
+                onGetLocation(){
+                  this.Location = "正在定位中...";
+                  this.Longitude = 0;
+                  this.Latitude = 0;
+
+                  pGetNameFromCoords(function(ret, err) {
+                      if (ret.status) {
+                          ApplyTaskVue.Longitude = ret.lon;
+                          ApplyTaskVue.Latitude = ret.lat;
+                          ApplyTaskVue.Location = ret.address;
+                      } else {
+                          ApplyTaskVue.Location = "定位失败";
+                      }
+                  });
+                },
+                onOpenCamera() {
+                  if(this.isClaim) {
+                    return;
+                  }
+                  var _that = this;
+                  api.actionSheet({
+                    cancelTitle: '取消',
+                    buttons: ['拍照', '相册']
+                  }, function(ret, err){
+                      var options = {
+                          type: 'camera',
+                          waterMark: true,
+                          waterMarkData: {
+                              code: _that.CustomerCode,
+                          }
+                      };
+                      if (ret.buttonIndex == 1) { //打开相机
+                          options.type = 'camera';
+                      }
+                      if (ret.buttonIndex == 2) {
+                          options.type = 'pic';
+                      }
+                      if (ret.buttonIndex > 0 && ret.buttonIndex < 3) {
+                          pGetPicture(options, function(ret, err) {
+                              var location = ',';
+                              var imgArr = ret.imgList;
+                              if (ret.status) {
+                                  bMap.getLocation({
+                                    accuracy: '10m',
+                                    autoStop: true
+                                  }, function(ret, err){
+                                    if (ret.status) {
+                                      location = ret.lon + "," + ret.lat;
+                                    }
+                                    imgArr.forEach(function(item, index) {
+                                        if (_that.phoneList.length < 5) {
+                                            _that.phoneList.push(item);
+                                            _that.imgLocation.push(location);
+                                        } else {
+                                            vant.Toast('最多只能上传5张图片');
+                                        }
+                                    });
+                                  });
+                              }
+                          });
+                      }
+                  });
+                },
+                onOpenFile() {
+                  if (this.isClaim) {
+                      return
+                  }
+                  var _that = this;
+                  api.actionSheet({
+                    title: '',
+                    cancelTitle: '取消',
+                    buttons: ['音频', '视频']
+                  }, function(ret, err){
+                      if (ret.buttonIndex == '1') {
+                        _that.showAudio = true;
+                      } else if (ret.buttonIndex == '2') {
+                        api.getPicture({
+                            sourceType: 'camera', //从相册中选择
+                            mediaValue: 'video',
+                            allowEdit: false,
+                            destinationType: 'url',
+                            videoQuality: 'high',
+                            quality: 90,
+                            saveToPhotoAlbum: false
+                        }, function(ret, err) {
+                            if (ret) {
+                                if (ret.duration > 25) {
+                                    api.toast({
+                                        msg: "视频时长最大为25秒",
+                                        duration: 2000,
+                                        location: 'top'
+                                    });
+                                } else {
+                                    if (ret.data != '') {
+                                        var checkVideo = ret.data;
+                                        bMap.getLocation({
+                                            accuracy: '10m',
+                                            autoStop: true,
+                                        }, function(ret, err) {
+                                            if (ret.status) {
+                                                _that.videoLocation = ret.lon + "," + ret.lat;
+                                                _that.videoPath = checkVideo;
+                                                _that.showVideoDiv = true;
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                      }
+                  });
+                },
+                onAuditStatus() {
+                  if (this.isClaim) {
+                    return;
+                  }
+                  var _that = this;
+                  api.actionSheet({
+                    cancelTitle: '取消',
+                    buttons: ['正常', '异常']
+                  }, function(ret, err){
+                      if (ret.buttonIndex == 1) {
+                        _that.AuditStatus = '正常';
+                      } else if (ret.buttonIndex == 2) {
+                        _that.AuditStatus = '异常';
+                      }
+                  });
+                },
+                onGetDataInit() {
+                  if (api.connectionType != 'none') {
+                    this.onGetData();
+                  } else {
+                    this.onGetLocalData();
+                  }
+                },
+                onGetLocalData() {
+                  var _that = this;
+                  db.selectSql({
+                      name: 'Wsdatabase',
+                      sql: "SELECT * FROM AUDIT_TASK_LIST WHERE Id = '"+ _that.TaskData.thirdTaskId +"' AND userName = '"+ $api.getStorage('loginData').userName +"' AND isUploadAndSave != '1'"
+                  }, function(ret, err){
+                      if( ret.status ){
+                          console.log( JSON.stringify( ret ) );
+                          if (ret.data.length > 0) {
+                            _that.onShowHtml(ret.data[0]);
+                          } else {
+                            vant.Toast("未查询到本地数据");
+                          }
+                      }else{
+                          vant.Toast("未查询到本地数据");
+                          console.log( JSON.stringify( err ) );
+                      }
+                  });
+                },
+                onGetData() {
+                    var _that = this;
+                    var body = {
+                        'Id': this.TaskData.thirdTaskId
+                    };
+                    fnPost('MMS002', body, 'application/json', false, false, function(ret, err){
+                      api.hideProgress();
+                      if (ret) {
+                        if (ret.Status == '0') {
+                          var allList = JSON.parse(ret.Data);
+                          db.selectSql({
+                              name: 'Wsdatabase',
+                              sql: "SELECT * FROM AUDIT_TASK_LIST WHERE Id = '"+ _that.TaskData.thirdTaskId +"' AND userName = '"+ $api.getStorage('loginData').userName +"'"
+                          }, function(ret, err){
+                              if( ret.status ){
+                                  if (ret.data.length > 0) {
+                                    _that.onUpdateData(allList[0], ret.data[0]);
+                                  } else {
+                                    _that.onInsertData(allList[0]);
+                                  }
+                              }else{
+                                  console.log(JSON.stringify(err));
+                              }
+                          });
+                        }
+                      } else {
+                        _that.onGetLocalData();
+                      }
+                      console.log(JSON.stringify(ret));
+                      console.log(JSON.stringify(err));
+                    });
+                },
+                onInsertData(taskItem) {
+                  var _that = this;
+                  var insertSql = "INSERT INTO AUDIT_TASK_LIST VALUES ("+
+                                  "'"+ taskItem.Id +"',"+
+                                  "'"+ taskItem.Source +"',"+
+                                  "'"+ taskItem.Code +"',"+
+                                  "'"+ taskItem.Name +"',"+
+                                  "'"+ taskItem.Status +"',"+
+                                  "'"+ taskItem.StatusName +"',"+
+                                  "'"+ taskItem.CustomerCode +"',"+
+                                  "'"+ taskItem.CustomerName +"',"+
+                                  "'"+ taskItem.Mobile +"',"+
+                                  "'"+ taskItem.Telphone +"',"+
+                                  "'"+ taskItem.Address +"',"+
+                                  "'"+ taskItem.Location +"',"+
+                                  "'"+ taskItem.Nature +"',"+
+                                  "'"+ taskItem.SubNature +"',"+
+                                  "'"+ taskItem.Caliber +"',"+
+                                  "'"+ taskItem.Nameplate +"',"+
+                                  "'"+ taskItem.MeterType +"',"+
+                                  "'"+ taskItem.StampNo +"',"+
+                                  "'"+ taskItem.LastScale +"',"+
+                                  "'"+ taskItem.BeginScale +"',"+
+                                  "'"+ taskItem.EndScale +"',"+
+                                  "'"+ taskItem.Amount +"',"+
+                                  "'"+ taskItem.ArrearMoney +"',"+
+                                  "'"+ taskItem.Description +"',"+
+                                  "'"+ taskItem.Remark +"',"+
+                                  "'"+ taskItem.OperatorId +"',"+
+                                  "'"+ taskItem.OperatedTime +"',"+
+                                  "'"+ taskItem.TaskNo +"',"+
+                                  "'"+ taskItem.RecordBeginScale +"',"+
+                                  "'"+ taskItem.RecordEndScale +"',"+
+                                  "'"+ taskItem.RecordAmount +"',"+
+                                  "'"+ taskItem.RecordTypdId +"',"+
+                                  "'"+ taskItem.RecordTypdName +"',"+
+                                  "'"+ taskItem.LastReadScale +"',"+
+                                  "'"+ taskItem.AuditReadScale +"',"+
+                                  "'"+ taskItem.DispatchTime +"',"+
+                                  "'"+ taskItem.UseTime +"',"+
+                                  "'"+ taskItem.HandleTime +"',"+
+                                  "'"+ taskItem.AuditTime +"',"+
+                                  "'"+ taskItem.AuditTimes +"',"+
+                                  "'"+ JSON.stringify(taskItem.Files) +"',"+
+                                  "'"+ JSON.stringify(taskItem.Handles) +"',"+
+                                  "'"+ JSON.stringify(taskItem.Coordinates) +"',"+
+                                  "'','','','','','','','','','','','','','','','','0','','"+ $api.getStorage('loginData').userName +"','','0','','','','','','')";
+                  db.executeSql({
+                      name: 'Wsdatabase',
+                      sql: insertSql
+                  }, function(ret, err){
+                      if( ret.status ){
+                          var updateSql = '';
+                          if (taskItem.Code == 43) {
+                            updateSql = "UPDATE AUDIT_TASK_LIST SET SelectData = '"+ reviewStatusData +"', ImgStatus = '"+ imgStatusData +"' WHERE Id = '"+ taskItem.Id +"'";
+                          } else if (taskItem.Code == 45) {
+                            updateSql = "UPDATE AUDIT_TASK_LIST SET SelectData = '"+ auditStatusData +"' WHERE Id = '"+ taskItem.Id +"'";
+                          }
+
+                          db.executeSql({
+                              name: 'Wsdatabase',
+                              sql: updateSql
+                          }, function(ret, err){
+                              if( ret.status ){
+                                  console.log( JSON.stringify( ret ) );
+                                  _that.onGetLocalData()
+                              }else{
+                                  console.log( JSON.stringify( err ) );
+                              }
+                          });
+                      }else{
+                          console.log( JSON.stringify( err ) );
+                      }
+                  });
+                },
+                onUpdateData(taskItem, localData) {
+                  var updateSql = "UPDATE AUDIT_TASK_LIST SET "+
+                                  "Source = '"+ taskItem.Source +"',"+
+                                  "Code = '"+ taskItem.Code +"',"+
+                                  "Name = '"+ taskItem.Name +"',"+
+                                  "Status = '"+ taskItem.Status +"',"+
+                                  "StatusName = '"+ taskItem.StatusName +"',"+
+                                  "CustomerCode = '"+ taskItem.CustomerCode +"',"+
+                                  "CustomerName = '"+ taskItem.CustomerName +"',"+
+                                  "Mobile = '"+ taskItem.Mobile +"',"+
+                                  "Telphone = '"+ taskItem.Telphone +"',"+
+                                  "Address = '"+ taskItem.Address +"',"+
+                                  "Location = '"+ taskItem.Location +"',"+
+                                  "Nature = '"+ taskItem.Nature +"',"+
+                                  "SubNature = '"+ taskItem.SubNature +"',"+
+                                  "Caliber = '"+ taskItem.Caliber +"',"+
+                                  "Nameplate = '"+ taskItem.Nameplate +"',"+
+                                  "MeterType = '"+ taskItem.MeterType +"',"+
+                                  "StampNo = '"+ taskItem.StampNo +"',"+
+                                  "LastScale = '"+ taskItem.LastScale +"',"+
+                                  "BeginScale = '"+ taskItem.BeginScale +"',"+
+                                  "EndScale = '"+ taskItem.EndScale +"',"+
+                                  "Amount = '"+ taskItem.Amount +"',"+
+                                  "ArrearMoney = '"+ taskItem.ArrearMoney +"',"+
+                                  "Description = '"+ taskItem.Description +"',"+
+                                  "Remark = '"+ taskItem.Remark +"',"+
+                                  "OperatorId = '"+ taskItem.OperatorId +"',"+
+                                  "OperatedTime = '"+ taskItem.OperatedTime +"',"+
+                                  "RecordBeginScale = '"+ taskItem.RecordBeginScale +"',"+
+                                  "RecordEndScale = '"+ taskItem.RecordEndScale +"',"+
+                                  "RecordAmount = '"+ taskItem.RecordAmount +"',"+
+                                  "RecordTypdId = '"+ taskItem.RecordTypdId +"',"+
+                                  "RecordTypdName = '"+ taskItem.RecordTypdName +"',"+
+                                  "LastReadScale = '"+ taskItem.LastReadScale +"',"+
+                                  "AuditReadScale = '"+ taskItem.AuditReadScale +"',"+
+                                  "DispatchTime = '"+ taskItem.DispatchTime +"',"+
+                                  "UseTime = '"+ taskItem.UseTime +"',"+
+                                  "HandleTime = '"+ taskItem.HandleTime +"',"+
+                                  "AuditTime = '"+ taskItem.AuditTime +"',"+
+                                  "AuditTimes = '"+ taskItem.AuditTimes +"',"+
+                                  "Handles = '"+ JSON.stringify(taskItem.Handles) +"'";
+                  if (taskItem.Status == '7' && localData.isUploadAndSave == '1') {
+                    updateSql += ", isUploadAndSave = '2'";
+                  }
+                  updateSql += "WHERE Id = '"+ taskItem.Id +"' AND userName = '"+ $api.getStorage('loginData').userName +"'";
+                  db.executeSql({
+                      name: 'Wsdatabase',
+                      sql: updateSql
+                  }, function(ret, err){
+                      if( ret.status ){
+                          _that.onGetLocalData();
+                      }else{
+                          console.log( JSON.stringify( err ) );
+                      }
+                  });
+                },
+                onGetSelect() {
+                  //获取照片状态数据
+                  fnPost('MMS103', {'TypeId': 'RWWJLX'}, 'application/json', false, false, function(ret, err){
+                    console.log(JSON.stringify(ret));
+                    console.log(JSON.stringify(err));
+                  });
+
+                  //获取稽核状态数据
+                  fnPost('MMS103', {'TypeId': 'JHZT'}, 'application/json', false, false, function(ret, err){
+                    console.log(JSON.stringify(ret));
+                    console.log(JSON.stringify(err));
+                  });
+                },
+                onShowHtml(taskInfo) {
+                  var _that = this;
+                  this.taskType = taskInfo.Code;
+
+                  this.projectName = taskInfo.projectName;
+                  this.CustomerName = taskInfo.CustomerName;
+                  this.CustomerCode = taskInfo.CustomerCode;
+                  this.Address = taskInfo.Address;
+                  this.tableLocation = taskInfo.tableLocation;
+                  this.tableCode = taskInfo.tableCode;
+                  this.Caliber = taskInfo.Caliber;
+
+                  if(this.taskType == "45") {
+                    this.LastReadScale = taskInfo.LastReadScale;
+                    this.Amount = taskInfo.Amount;
+                    this.TelephoneNumber = taskInfo.TelephoneNumber;
+                    this.AuditTime = taskInfo.AuditTime;
+                  } else if (this.taskType == "43") {
+                    this.RecordBeginScale = taskInfo.RecordBeginScale;
+                    this.Amount = taskInfo.RecordAmount;
+                    this.TelephoneNumber = taskInfo.TelephoneNumber;
+                    this.ReviewTime = taskInfo.ReviewTime;
+                  }
+
+                  if (taskInfo.LocationAddress != '') {
+                    var locationArr = taskInfo.LocationAddress.split(",");
+                    Longitude = locationArr[0];
+                    Latitude = locationArr[1];
+
+                    if (api.connectionType == 'none') {
+                      this.Location = Longitude +','+ Latitude;
+                    } else {
+                      bMap.getNameFromCoords({
+                          lon: Longitude,
+                          lat: Latitude
+                      }, (ret, err) => {
+                          if (ret.status) {
+                            _that.Location = ret.address;
+                          } else {
+                            _that.Location = "定位失败";
+                          }
+                      });
+                    }
+                  }
+
+                  //StatusId - '2'，上一条处理详情为待审核
+                  if (JSON.parse(taskInfo.Handles)[1].StatusId == '2') {
+                    _that.ExamineResult = JSON.parse(taskInfo.Handles)[0].Remark;
+                    _that.isExamine = true;
+                  } else {
+                    _that.ExamineResult = '';
+                    _that.isExamine = false;
+                  }
+                },
+                onClaim() {
+                  var _that = this;
+                  // 单个任务认领
+                  var body = {
+                      body: JSON.stringify({
+                          taskCode: _that.TaskData.taskCode,
+                          lng: _that.Longitude,
+                          lat: _that.Latitude,
+                          account: $api.getStorage("jhUserName"),
+                          passWord: $api.getStorage("jhPassWord")
+                      })
+                  };
+                  claimFnPost("services/app/WorkFlow/ConfirmTaskById", body, 'application/json', true, false, function(ret, err){
+                    api.hideProgress();
+                    if (ret) {
+                      if (ret.success) {
+                        var result = ret.result;
+
+                        //认领成功，修改本地数据状态
+                        db.executeSql({
+                          name: 'Wsdatabase',
+                          sql: "UPDATE AUDIT_TASK_LIST SET Status = '7' WHERE Id ='" + _that.TaskData.thirdTaskId + "'"
+                        }, function(ret, err){
+                            if( ret.status ){
+                                //添加数据到云平台我的任务本地数据
+                                updateMyTaskSheets(result);
+
+                                _that.isClaim = false;
+
+                            }else{
+                                vant.Toast('修改本地数据状态失败');
+                            }
+                        });
+                      }
+                    }
+                  });
+                },
+                onSubmit() {
+                  var _that = this;
+                  _that.FileUrl = "";
+                  _that.FileType = "";
+                  _that.FilesUrlArr = [];
+                  _that.FileTypeNum = "";
+                  _that.FileLocaion = '';
+
+                  if (_that.taskType == '43') {
+
+                    if(_that.ReviewStatus == "") {
+                      vant.Toast('请选择复核水表状态');
+                      return;
+                    }
+
+                    if (_that.ReviewScale == "") {
+                      vant.Toast('请填写复核止度');
+                      return;
+                    }
+
+                    if (_that.ReviewAmount == "") {
+                      vant.Toast('请填写复核水量');
+                      return;
+                    }
+
+                    if (parseFloat(_that.ReviewScale) < 0) {
+                      vant.Toast('复核止度不能小于0');
+                      return;
+                    }
+
+                    if (parseFloat(_that.ReviewAmount) < 0) {
+                      vant.Toast('复核水量不能小于0');
+                      return;
+                    }
+
+                  } else if (_that.taskType == '45') {
+
+                    if (_that.AuditScale == "") {
+                      vant.Toast('请填写稽核止度');
+                      return;
+                    }
+
+                    if (parseFloat(_that.AuditScale) < 0) {
+                      vant.Toast('稽核止度不能小于0');
+                      return;
+                    }
+
+                  }
+
+                  for (var i = 0; i < _that.photoList.length; i++) {
+                    _that.FileUrl += _that.photoList[i] + '|';
+                    _that.FileType += _that.photoList[i].substring(_that.photoList[i].lastIndexOf(".") + 1) + "|";
+                    _that.FilesUrlArr.push(_that.photoList[i]);
+
+                    _that.FileLocaion += _that.imgLocation[i] + "|";
+                  }
+
+                  if (_that.videoPath != '') {
+                    _that.FileLocaion += _that.videoLocation + "|";
+
+                    _that.FilesUrlArr.push(_that.videoPath);
+                    _that.FileUrl += _that.videoPath + "|";
+                    _that.FileType += _that.videoPath.substring(_that.videoPath.lastIndexOf(".")+1) + "|";
+                  }
+
+                  if (_that.audioPath != '') {
+                    _that.FileLocaion += _that.audioLocation + "|";
+
+                    _that.FilesUrlArr.push(_that.audioPath);
+                    _that.FileUrl += _that.audioPath + "|";
+                    _that.FileType += _that.audioPath.substring(_that.audioPath.lastIndexOf(".")+1) + "|";
+                  }
+
+                  if (_that.FileUrl != "") {
+                    _that.FileUrl = _that.FileUrl.substring(0, _that.FileUrl.length - 1);
+                  }
+
+                  if (_that.FileType != "") {
+                    _that.FileType = _that.FileType.substring(0, _that.FileType.length - 1);
+                  }
+
+                  if (_that.FileLocaion != "") {
+                    _that.FileLocaion = _that.FileLocaion.substring(0, _that.FileLocaion.length - 1);
+                  }
+
+                  if (($api.getStorage('auditImgsUpload') == 1) || (api.connectionType == 'none')) {
+                    //稽核数据及照片单独上传  或  无网络情况下  数据保存至本地
+                    var msg = '';
+                    if ($api.getStorage('auditImgsUpload') == 1) {
+                      msg = '当前设置为数据及图片单独上传，是否确定保存？';
+                    } else {
+                      msg = '当前无网络，数据将保存至本地，是否保存？';
+                    }
+
+                    vant.Dialog.confirm({
+                            title: '提示',
+                            message: msg
+                        })
+                        .then(function() {
+                          _that.onSaveLocal();
+                        })
+                        .catch(function() {
+                            return;
+                        });
+                    return;
+                  }
+
+                  var body = {};
+
+                  if (_that.taskType == '43') {
+                      body = {
+                        Id: _that.TaskData.thirdTaskId,
+                        Status: 1,
+                        OperatedTime: _that.onGetNowTime(),
+                        Remark: _that.RemarkText,
+                        BeginScale: _that.RecordBeginScale,
+                        EndScale: _that.ReviewScale,
+                        Amount: _that.Amount,
+                        UsedTypeId: _that.ReviewStatusId,
+                        ReadTime: _that.onGetNowTime(),
+                        IsModifiedWater: 1,
+                        AuditStatus: '',
+                        FileUrl: _that.FileUrl,
+                        FileLocation: _that.FileLocation,
+                        FileType: _that.FileType,
+                        Type: '',
+                        ConcreteScale: _that.ConcreteScale
+                      }
+                  } else if (_that.taskType == '45') {
+                      body = {
+                        Id: _that.TaskData.thirdTaskId,
+                        Status: 1,
+                        OperatedTime: _that.onGetNowTime(),
+                        Remark: _that.RemarkText,
+                        BeginScale: '',
+                        EndScale: _that.AuditScale,
+                        Amount: '',
+                        UsedTypeId: '',
+                        ReadTime: _that.onGetNowTime(),
+                        IsModifiedWater: 1,
+                        AuditStatus: _that.AuditTypeId,
+                        FileUrl: _that.FileUrl,
+                        FileLocation: _that.FileLocation,
+                        FileType: _that.FileType,
+                        Type: ''
+                      }
+                  }
+
+                  fnPost("MMS006", body, 'application/json', false, false, function(ret, err){
+                    console.log(JSON.stringify(ret));
+                    console.log(JSON.stringify(err));
+                  }, _that.FilesUrlArr);
+                },
+                onGetNowTime() {
+                  var myDate = new Date();
+                  var nowTime = myDate.getFullYear() + "-" +
+                                ((myDate.getMonth() + 1) < 10 ? "0" + (myDate.getMonth() + 1) : (myDate.getMonth() + 1)) + "-" +
+                                (myDate.getDate() < 10 ? "0" + (myDate.getDate()) : (myDate.getDate()));
+                  return nowTime;
+                },
+                onReviewStatus(item) {
+                  if (_that.ReviewStatusId == '3') {
+                    //多录多抄
+                    //止度不填写（自动录入上月起度数值），手动录入实际表码，并根据止度计算水量，实际表码只需要查看
+                    _that.isConcrete = true;
+                  } else {
+                    _that.isConcrete = false;
+                  }
+                  _that.ReviewStatus = item.name;
+                  _that.ReviewStatusId = item.id;
+                  _that.showReviewStatus = false;
+                },
+                onSaveLocal() {
+                  var _that = this;
+                  var saveSql = '';
+                  if (_that.taskType == '43') {
+                    saveSql = "UPDATE AUDIT_TASK_LIST SET "+
+                              "UsedTypeId = '"+ _that.ReviewStatusId +"',"+
+                              "UserScale = '"+ _that.ReviewScale +"',"+
+                              "UserAmount = '"+ _that.Amount +"',"+
+                              "ActualMeter = '"+ _that.ConcreteScale +"',"+
+                              "UserRemark = '"+ _that.RemarkText +"',"+
+                              "FileUrl = '"+ _that.FileUrl +"',"+
+                              "FileType = '"+ _that.FileType +"',"+
+                              "Type = '',"+
+                              "ReadTime = '"+ _that.onGetNowTime() +"',"+
+                              "ReviewStateText = '"+ _that.ReviewStatus +"',"+
+                              "VideoPath = '"+ _that.videoPath +"',"+
+                              "AudioPath = '"+ _that.audioPath +"',"+
+                              "FileLocation = '"+ _that.FileLocation +"',"+
+                              "LocationAddress = '"+ _that.Longitude +","+ _that.Latitude +"',"+
+                              "isUploadAndSave = '2',"+
+                              "SaveTime = '"+ _that.onGetNowTime() +"' WHERE Id = '"+ taskInfoData.Id +"'";
+                  } else if (_that.taskType == '45') {
+                    saveSql = "UPDATE AUDIT_TASK_LIST SET "+
+                              "UsedTypeId = '"+ _that.AuditTypeId +"',"+
+                              "UserScale = '"+ _that.AuditScale +"',"+
+                              "UserRemark = '"+ _that.RemarkText +"',"+
+                              "FileUrl = '"+ _that.FileUrl +"',"+
+                              "FileType = '"+ _that.FileType +"',"+
+                              "Type = '"+ _that.AuditStatus +"',"+
+                              "FileLocation = '"+ _that.FileLocation +"',"+
+                              "ReadTime = '"+ _that.onGetNowTime() +"',"+
+                              "ReviewStateText = '"+ _that.AuditType +"',"+
+                              "VideoPath = '"+ _that.videoPath +"',"+
+                              "AudioPath = '"+ _that.audioPath +"',"+
+                              "LocationAddress = '"+ _that.Longitude +","+ _that.Latitude +"',"+
+                              "isUploadAndSave = '2',"+
+                              "SaveTime = '"+ _that.onGetNowTime() +"' WHERE Id = '"+ taskInfoData.Id +"'";
+                  }
+                  db.executeSql({
+                      name: 'Wsdatabase',
+                      sql: saveSql
+                  }, function(ret, err){
+                      if( ret.status ){
+                          // alert( JSON.stringify( ret ) );
+                          vant.Toast('数据保存至本地成功');
+                      }else{
+                          // alert( JSON.stringify( err ) );
+                          vant.Toast('数据保存至本地失败');
+                      }
+                  });
+
+
+                },
+                onCallAndSms() {
+                  var _that = this;
+                  api.actionSheet({
+                      cancelTitle: '取消',
+                      buttons: ['电话', '短信']
+                  }, function(ret, err){
+                      if (ret.buttonIndex == 1) {
+                        api.call({
+                            type: 'tel_prompt',
+                            number: _that.TelephoneNumber
+                        });
+                      } else if (ret.buttonIndex == 2) {
+                        api.sms({
+                            numbers: [_that.TelephoneNumber],
+                            text: '测试短信'
+                        }, function(ret, err) {
+                            if (ret && ret.status) {
+                                //已发送
+                            } else {
+                                //发送失败
+                            }
+                        });
+                      }
+                  });
+                },
+                onOpenUserDetails() {
+                  var body = {
+                      BookId: '',
+                      ReaderId: '',
+                      Code: this.CustomerCode,
+                      BeginTime: '',
+                      EndTime: '',
+                      Obscure: '',
+                      isWater: '',
+                  };
+                  fnPost('OSM002', body, 'application/json', false, false, function(ret, err) {
+                    api.hideProgress();
+                    if (ret && ret.Status == 0) {
+                      var data = JSON.parse(ret.Data);
+                      if (data.length > 0 && data.length == 1) {
+                          var result = JSON.parse(JSON.stringify(data[0]));
+                          api.openWin({
+                              name: 'CustomerDetails',
+                              url: '../CustomerSearch/CustomerDetails.html',
+                              pageParam: result,
+                              allowEdit: true
+                          });
+                      } else {
+                          vant.Toast("用户查询失败");
+                      }
+                    } else {
+                      vant.Toast("用户查询失败");
+                    }
+                  });
+                }
+            },
+            mounted: function() {
+                this.AuditTypeArr = [
+                  {id: '1', name: '正常用水'},
+                  {id: '2', name: '漏水'},
+                  {id: '3', name: '水表故障'},
+                  {id: '4', name: '抄表错误'},
+                ];
+
+                this.ReviewStatusArr = [
+                  {id: '1', name: '正常'},
+                  {id: '2', name: '估抄（故障）'},
+                  {id: '3', name: '多录多抄'},
+                  {id: '4', name: '倒装'},
+                  {id: '5', name: '无表'},
+                ];
+
+                this.CustomerCode = '01010008';
+
+                if (this.getTaskType == "claimTask") {
+                  this.isClaim = true;
+
+                } else if (this.getTaskType == "handle") {
+                  this.isClaim = false;
+
+                }
+
+                this.onGetLocation();
+            }
+        })
+    }
+</script>
+
+</html>

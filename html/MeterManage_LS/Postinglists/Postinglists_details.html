@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>停水通知详情</title>
+    <link rel="stylesheet" type="text/css" href="../../public/css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/vant.css" />
+    <style>
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        background-color: #F3F3F3;
+    }
+
+    .aui-bar-nav {
+        top: 0;
+        z-index: 1;
+        background: linear-gradient(90deg, rgba(46, 142, 250, 1), rgba(49, 89, 235, 1));
+        color: #FFF;
+        font-size: 0.95rem;
+        font-weight: normal;
+        font-stretch: normal;
+        letter-spacing: 0rem;
+    }
+
+    .aui-bar-nav .aui-btn .aui-iconfont {
+        color: #FFF;
+        font-weight: 900;
+    }
+
+    .aui-bar-nav .aui-pull-right {
+        font-size: 0.95rem;
+    }
+
+    .flex-con {
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    [v-cloak] {
+        display: none;
+    }
+
+    .aui-info {
+        background: #fff;
+        height: 3rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .posting-title {
+        font-size: 1rem;
+        font-family: Source Han Sans SC;
+        font-weight: 400;
+        color: #000;
+    }
+
+    .posting-time {
+        font-size: 0.8rem;
+    }
+
+    .aui-content {
+        height: 100%;
+        overflow: hidden;
+        background-color: #F3F3F3;
+        width: 92%;
+        margin: 0 auto;
+        border-radius: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .content {
+        border-radius: 0.8rem;
+        height: 100%;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 0.8rem 1.25rem;
+        background: white;
+        padding-bottom: 0.3rem;
+    }
+
+    .row {
+        line-height: 2rem;
+        border-bottom: 1px solid #F2F2F2;
+    }
+
+    .text-left {
+        width: 38%;
+        font-size: 0.9rem;
+        display: inline-block;
+    }
+
+    .text-left-title {
+        display: inline-block;
+        text-align: justify;
+        text-align-last: justify;
+        width: 90%;
+    }
+
+    .text-right {
+        margin-left: 0px;
+        font-size: 0.9rem;
+        color: #656265;
+        display: inline-block;
+        width: calc(60% - 0px);
+        overflow: auto;
+        ;
+        vertical-align: top;
+        padding-left: 0.2rem;
+    }
+
+    .textarea {
+        border: 1px solid #D8D8D8;
+        border-radius: 0.13rem;
+        padding: 0.25rem 0.5rem;
+        color: #626262;
+        height: 4rem;
+        position: relative;
+    }
+
+    .textarea textarea {
+        line-height: 1.5;
+        border-radius: 3px;
+        width: 100%;
+        height: 100%;
+        var(--fontsize8);
+    }
+
+    .in {
+        position: absolute;
+        bottom: 0.2rem;
+        right: 1rem;
+        color: #CCC;
+        font-size: 0.7rem;
+    }
+
+    .images {
+        vertical-align: text-top;
+    }
+
+    .images>img {
+        width: 1.05rem;
+        height: 0.85rem;
+        float: right;
+    }
+
+    .addressIcon {
+        background: url(../image/MeterManage/dingwei.png) no-repeat 0 0;
+        background-size: 100% 100%;
+        width: .6rem;
+        height: .7rem;
+        display: inline-block;
+    }
+
+    .textColor {
+        color: #2045FF;
+    }
+
+    .phont {
+        width: 3.6rem;
+        height: 2.8rem;
+        position: relative;
+        display: inline-block;
+        margin-right: .7rem;
+    }
+
+    .phont img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .van-dialog .van-button {
+        font-size: 0.95rem;
+        height: 2.75rem;
+        line-height: 2.75rem;
+    }
+
+    .van-dialog__confirm,
+    .van-dialog__confirm:active {
+        color: #2F7DF5;
+    }
+
+    .van-dialog__cancel,
+    .van-dialog__cancel:active {
+        color: #000;
+    }
+
+    .footer {
+        width: 100vw;
+        height: auto;
+        background: #fff;
+        /*justify-content: center;*/
+    }
+
+    .footer .footer-title {
+        width: 94%;
+        margin: 0 auto;
+        color: #000;
+        padding: 0.5rem 0;
+        font-size: 1rem;
+        font-family: Source Han Sans SC;
+        font-weight: 400;
+    }
+
+    .footer .string {
+        width: 94%;
+        height: auto;
+        margin: 0 auto;
+    }
+
+    .footer .string .aui-progress {
+        border-radius: 0.8rem;
+    }
+
+    .footer .string .aui-progress .aui-progress-bar {
+        background: linear-gradient(90deg, rgba(109, 229, 165, 1), rgba(0, 214, 101, 1));
+    }
+
+    .footer ul {
+        display: flex;
+        flex-flow: row;
+        width: 94%;
+        margin: 0 auto;
+        padding-top: 0.3rem;
+        padding-bottom: 1rem;
+    }
+
+    .footer ul li {
+        flex: 1;
+        text-align: center;
+    }
+
+    .footer ul li div {
+        width: 100%;
+        text-align: center;
+        color: rgba(172, 172, 172, 1);
+    }
+    </style>
+  </head>
+  <body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+      <header class="aui-bar aui-bar-nav" id="header">
+          <div class="aui-pull-left aui-btn" tapmode @click='onBack'>
+              <span class="aui-iconfont aui-icon-left"></span>
+          </div>
+          <div class="aui-title">任务详情</div>
+      </header>
+      <div class="aui-info">
+          <div class="aui-info-item">
+              <span class="aui-margin-l-5 posting-title">张贴停水通知单</span>
+          </div>
+          <div class="aui-info-item posting-time">{{UserDetails.OperatedTime}}</div>
+      </div>
+      <div class="flex-con aui-content">
+        <div class="content">
+          <div class="row">
+              <div class="text-left">
+                  <span class="text-left-title">户名</span>:
+              </div>
+              <div class="text-right">
+                  <span>{{UserDetails.CustomerName}}</span>
+              </div>
+          </div>
+          <div class="row">
+              <div class="text-left">
+                  <span class="text-left-title">户号</span>:
+              </div>
+              <div class="text-right">
+                  <span>{{UserDetails.CustomerCode}}</span>
+              </div>
+          </div>
+          <div class="row">
+              <div class="text-left">
+                  <span class="text-left-title">地址</span>:
+              </div>
+              <div class="text-right">
+                  <span>{{UserDetails.Address}}</span>
+              </div>
+          </div>
+          <div class="row">
+              <div class="text-left">
+                  <span class="text-left-title">用水性质</span>:
+              </div>
+              <div class="text-right">
+                  <span>{{UserDetails.Nature}}</span>
+              </div>
+          </div>
+          <div class="row">
+              <div class="text-left">
+                  <span class="text-left-title">用量</span>:
+              </div>
+              <div class="text-right">
+                  <span>{{UserDetails.Amount}}</span>
+              </div>
+          </div>
+          <div class="row">
+              <div class="text-left">
+                  <span class="text-left-title">起度</span>:
+              </div>
+              <div class="text-right">
+                  <span>{{UserDetails.BeginScale}}</span>
+              </div>
+          </div>
+          <div class="row">
+              <div class="text-left">
+                  <span class="text-left-title">止度</span>:
+              </div>
+              <div class="text-right">
+                  <span>{{UserDetails.EndScale}}</span>
+              </div>
+          </div>
+          <div class="row">
+              <div class="text-left">
+                  <span class="text-left-title">抄表类型</span>:
+              </div>
+              <div class="text-right">
+                  <span>{{UserDetails.Nature}}</span>
+              </div>
+          </div>
+          <div class="row">
+              <div class="text-left">
+                  <span class="text-left-title">欠费金额</span>:
+              </div>
+              <div class="text-right">
+                  <span>{{UserDetails.ArrearMoney}}</span>
+              </div>
+          </div>
+          <div class="row">
+              <div class="text-left">
+                  <span class="text-left-title">欠费次数</span>:
+              </div>
+              <div class="text-right">
+                  <span>{{UserDetails.ArrearMoneyNum}}</span>
+              </div>
+          </div>
+          <div class="row">
+            <div class="text-left">
+              <span class="text-left-title">备注</span>:
+            </div>
+            <div class="text-right">
+                <span>{{UserDetails.Remark}}</span>
+            </div>
+          </div>
+          <div class="row">
+              <div class="text-left">
+                  <span class="text-left-title">照片</span>
+              </div>
+              <div class="text-right images">
+                  <img @click="onOpenCamera" src="../image/MeterManage/paizhao.png" alt="">
+              </div>
+              <div class="photoList">
+                  <div class="phont" v-for="(item,index) in phoneList" :key="index">
+                      <img :src="item" alt="" @click="pBrowserPicture(index, phoneList)">
+                  </div>
+              </div>
+          </div>
+          <div class="row" style="border-bottom: none;">
+            <p @click='onGetLocation'>
+                <i class="addressIcon"></i>
+                <span class="textColor">{{Location}}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="footer" id="footer">
+          <div class="footer-title">任务进度 <span>处理中</span></div>
+          <div class="string">
+            <div class="aui-progress aui-progress-sm">
+              <div class="aui-progress-bar" style="width: 100%;"></div>
+            </div>
+          </div>
+          <ul>
+            <li>发起<div>2019-11-14</div></li>
+            <li>处理中<div>2019-11-14</div></li>
+            <li>审核中<div>2019-11-14</div></li>
+            <li>已完成<div>2019-11-14</div></li>
+          </ul>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../public/script/api.js"></script>
+  <script type="text/javascript" src="../../public/script/common.js"></script>
+  <script type="text/javascript" src="../../public/script/remote.js"></script>
+  <script type="text/javascript" src="../../public/script/publicMethod.js"></script>
+  <script type="text/javascript" src="../../public/script/vue/fastclick.min.js"></script>
+  <script type="text/javascript" src="../../public/script/vue/vue.min.js"></script>
+  <script type="text/javascript" src="../../public/script/vue/vant.min.js"></script>
+  <script type="text/javascript" src="../../public/script/vue/vueTouch.js"></script>
+  <script type="text/javascript" src="../../public/script/moment.js"></script>
+  <script type="text/javascript" src="../script/remote.js"></script>
+  <script type="text/javascript" src="../script/meterManageLocalData.js"></script>
+  <script type="text/javascript" src="../../public/script/diy/public.js"></script>
+  <script type="text/javascript">
+  apiready = function () {
+    var header = $api.byId('header');
+    $api.fixStatusBar(header);
+
+    fnIntVue();
+    Origami.fastclick(document.body) //消除vue的ios端点击延迟
+  }
+
+  function fnIntVue(){
+    window.ApplyTaskVue = new Vue({
+      el: '#wrap',
+      data: {
+
+      },
+      methods: {
+
+      },
+      mounted: function() {
+
+      }
+    })
+  }
+  </script>
+</html>

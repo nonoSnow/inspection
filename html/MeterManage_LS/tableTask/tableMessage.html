@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>换表信息界面</title>
+    <link rel="stylesheet" type="text/css" href="../../public/css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/vant.css" />
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: #F3F3F3;
+        }
+
+        .aui-bar-nav {
+            top: 0;
+            z-index: 1;
+            background: linear-gradient(90deg, rgba(46, 142, 250, 1), rgba(49, 89, 235, 1));
+            color: #FFF;
+            font-size: 0.95rem;
+            font-weight: normal;
+            font-stretch: normal;
+            letter-spacing: 0rem;
+        }
+
+        .aui-bar-nav .aui-btn .aui-iconfont {
+            color: #FFF;
+            font-weight: 900;
+        }
+
+        .aui-bar-nav .aui-pull-right {
+            font-size: 0.95rem;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+        .flex-con {
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            background-color: #F3F3F3;
+        }
+
+        .footer {
+            width: 100vw;
+            height: 2.5rem;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1.35rem;
+        }
+
+        .van-button {
+            width: 5.5rem;
+            height: 1.86rem;
+            line-height: normal;
+            font-size: 0.95rem;
+            color: #fff;
+        }
+
+        .aui-content {
+            height: 100%;
+        }
+
+        .content {
+            margin: .5rem 1rem;
+            background-color: #fff;
+            border-radius: 0.8rem;
+            padding-top: .5rem;
+            padding-bottom: .9rem;
+        }
+
+        .row {
+            margin: 0rem 25px 0rem 25px;
+            line-height: 2.2rem;
+            border-bottom: 1px solid #F2F2F2;
+            display: flex;
+        }
+
+        .text-left {
+            width: 40%;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        .text-left-title {
+            display: inline-block;
+            text-align: justify;
+            text-align-last: justify;
+            width: 80%;
+        }
+
+        .text-right {
+            margin-left: 0px;
+            font-size: 0.9rem;
+            color: #656265;
+            display: inline-block;
+            width: calc(60% - 0.2rem);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            vertical-align: top;
+            padding-left: 0.2rem;
+        }
+
+        .input-select {
+            background: url("../image/MeterManage/xiala.png") no-repeat scroll right center transparent;
+            background-size: 14px 9px;
+        }
+
+        .saoma {
+            width: 20px;
+            height: 20px;
+            background: url("../image/MeterManage/saoma.png") no-repeat center;
+            background-size: 100% 100%;
+            margin-left: 0.5rem;
+        }
+
+        .user-autograph {
+            width: 100%;
+            height: 5rem;
+            border: 1px solid #CCC;
+            border-radius: 3px;
+            margin-top: 0.5rem;
+        }
+
+        .autograph-div {
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0,0,0,0.3);
+        }
+
+        .autograph-popup {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            position: fixed;
+            z-index: 999;
+        }
+
+        .img-delete {
+            position: absolute;
+            right: -6px;
+            top: -6px;
+        }
+
+        .van-dialog .van-button {
+            font-size: 0.95rem;
+            height: 2.75rem;
+            line-height: 2.75rem;
+        }
+
+        .van-dialog__confirm,
+        .van-dialog__confirm:active {
+            color: #2F7DF5;
+        }
+
+        .van-dialog__cancel,
+        .van-dialog__cancel:active {
+            color: #000;
+        }
+
+        .popup {
+            min-height: 26vh;
+            max-height: 37vh;
+            overflow: scroll!important;
+        }
+
+        .pickerMain {
+            height: 100%;
+            background-color: #fff;
+            padding: 0;
+        }
+
+        .picker {
+            width: 100vw;
+            height: 2.13rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #5A5A5A;
+            background-color: #fff;
+            border-bottom: 0.03rem solid #EDEDED;
+        }
+
+        .picker:last-child {
+            border-bottom: none;
+        }
+
+        .picker.active {
+            background-color: #F4F4F4;
+            color: #2F81F6;
+        }
+
+        .popupFooter {
+            width: 100vw;
+            height: 2.46rem;
+            border-top: 0.25rem solid #ECECEC;
+            /*display: flex;*/
+            justify-content: center;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #5A5A5A;
+            background-color: #fff;
+            position: fixed;
+            bottom: 0;
+            text-align: center;
+            line-height: 2.3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header class="aui-bar aui-bar-nav" id="header">
+            <div class="aui-pull-left aui-btn" tapmode @click='onBack'>
+                <span class="aui-iconfont aui-icon-left"></span>
+            </div>
+            <div class="aui-title">换表信息</div>
+        </header>
+
+        <van-action-sheet class='popup' v-model="showAreaSelect" cancel-text="取消" :round='false'>
+          <div class="pickerMain">
+              <div class="picker" v-for="(item,index) in AreaData" :key="index" :class="{active:billingTimeId == item.id}" @click="billingTime=item.name;billingTimeId=item.id;showAreaSelect=false">
+                  {{item.name}}
+              </div>
+          </div>
+        </van-action-sheet>
+
+        <van-action-sheet class='popup' v-model="showSourceSelect" cancel-text="取消" :round='false' >
+          <div class="pickerMain">
+            <div class="picker" v-for="(item,index) in SourceData" :key="index" :class="{active:newTableCaliberId == item.id}" @click="newTableCaliber=item.name;newTableCaliberId=item.id;showSourceSelect=false">
+                {{item.name}}
+            </div>
+          </div>
+        </van-action-sheet>
+
+        <van-action-sheet class='popup' v-model="showEmergencySelect" cancel-text="取消" :round='false'>
+          <div class="pickerMain">
+            <div class="picker" v-for="(item,index) in EmergencyData" :key="index" :class="{active:newTableTypeId == item.id}" @click="newTableType=item.name;newTableTypeId=item.id;showEmergencySelect=false">
+                {{item.name}}
+            </div>
+          </div>
+        </van-action-sheet>
+
+        <div class="flex-con aui-content">
+            <div class="autograph-popup" v-show='isAutograph'>
+              <div class='' style='width: 100%; height: 2rem; line-height: 2rem; text-align: center; font-size: 0.9rem; color: #FFF; position: relative;'>
+                手写签名
+                <span @click='onCloseAutograph' style='right: 1rem; line-height: 2.15rem; font-size: 0.75rem; position: absolute; color: #CCC;'>
+                  关闭
+                </span>
+              </div>
+              <div class="" style="width: 100%; height: 2.5rem; position: fixed; bottom: 0rem; display: flex;">
+                <van-button round block type="danger" @click="onReset" style="width: 30%; margin-left: 2.5%;">
+                    重置
+                </van-button>
+                <van-button round block color="#FFA836" @click="onRevoke" style="width: 30%; margin-left: 2.5%;">
+                    撤销
+                </van-button>
+                <van-button round block type="info" @click="onSaveAutograph" style="width: 30%; margin-left: 2.5%;">
+                    保存
+                </van-button>
+              </div>
+            </div>
+            <div class="content">
+                <div class="row">
+                    <div class="text-left">
+                        <span style="color: red;">*</span>
+                        <span class="text-left-title">旧表底数</span>:
+                    </div>
+                    <div class="text-right">
+                        <input type="number" name="" placeholder="请输入" v-model='oldTableEndVal'>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="text-left">
+                        <span style="color: red;">*</span>
+                        <span class="text-left-title">新表底数</span>:
+                    </div>
+                    <div class="text-right">
+                        <input type="number" name="" placeholder="请输入" v-model='newTableEndVal'>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="text-left">
+                        <span style="color: red;">*</span>
+                        <span class="text-left-title">原表表号</span>:
+                    </div>
+                    <div class="text-right">
+                        <input type="number" name="" placeholder="请输入" v-model='oldTableNo'>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="text-left">
+                        <span style="color: red;">*</span>
+                        <span class="text-left-title">新表表号</span>:
+                    </div>
+                    <div class="text-right" style="position: relative; overflow: visible;">
+                        <input type="number" name="" placeholder="请输入" v-model='newTableNo'>
+                        <span class="saoma" @click='onSaoma' style="position: absolute; right: -25px; top: 10px;"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="text-left">
+                        <span style="color: red;">*</span>
+                        <span class="text-left-title">计费时间</span>:
+                    </div>
+                    <div class="text-right">
+                        <input type="text" class='input-select' @click='showAreaSelect=true' readonly name="" placeholder="请选择" v-model="billingTime">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="text-left">
+                        <span style="color: red;">*</span>
+                        <span class="text-left-title">新表口径</span>:
+                    </div>
+                    <div class="text-right">
+                        <input type="text" class='input-select' @click='showSourceSelect=true'  readonly name="" placeholder="请选择" v-model='newTableCaliber'>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="text-left">
+                        <span style="color: red;">*</span>
+                        <span class="text-left-title">新表类型</span>:
+                    </div>
+                    <div class="text-right">
+                        <input type="text" class='input-select' @click='showEmergencySelect=true' readonly name="" placeholder="请选择" v-model='newTableType'>
+                    </div>
+                </div>
+
+                <div class="row" style="border-bottom: none;">
+                    <div class="text-left">
+                        <span style="color: red;">*</span>
+                        <span class="text-left-title">用户签字</span>:
+                    </div>
+                    <div class="text-right" style="overflow: visible;">
+                        <div v-if='userAutograph == ""' @click='onAutograph' class='user-autograph'>
+
+                        </div>
+                        <div v-if='userAutograph != ""' class='user-autograph' style="position: relative;">
+                            <img src='../image/MeterManage/shanchu.png' class='img-delete' style='width: 16px; height: 16px;' @click='onDeleteAutograph' />
+                            <img :src="userAutograph" style='width: 100%; height: 100%;' @click='pBrowserPicture(0, userAutographArr)' alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <van-button round block type="info" @click="onBack">
+                返回
+            </van-button>
+            <van-button round block type="danger" @click="onSave">
+                保存
+            </van-button>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../public/script/api.js"></script>
+<script type="text/javascript" src="../../public/script/common.js"></script>
+<script type="text/javascript" src="../../public/script/remote.js"></script>
+<script type="text/javascript" src="../../public/script/vue/fastclick.min.js"></script>
+<script type="text/javascript" src="../../public/script/vue/vue.min.js"></script>
+<script type="text/javascript" src="../../public/script/vue/vant.min.js"></script>
+<script type="text/javascript" src="../../public/script/vue/vueTouch.js"></script>
+<script type="text/javascript" src="../script/remote.js"></script>
+<script type="text/javascript" src="../../public/script/publicMethod.js"></script>
+<script type="text/javascript">
+    var headerH;
+    var autographH;
+    var drawingBoard;
+    apiready = function() {
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        headerH = document.getElementById("header").offsetHeight + 40;
+        autographH = document.body.clientHeight - headerH - 50;
+
+        drawingBoard = api.require('drawingBoard');
+
+        fnIntVue();
+        Origami.fastclick(document.body) //消除vue的ios端点击延迟
+    };
+
+    function fnIntVue() {
+        window.ApplyTaskVue = new Vue({
+            el: '#wrap',
+            data: {
+                oldTableEndVal: '',       //旧表底数
+                newTableEndVal: '',       //新表底数
+                oldTableNo: '',           //旧表表号
+                newTableNo: '',           //新表表号
+                billingTime: '',          //计费时间
+                billingTimeId: '',
+                newTableCaliber: '',      //新表口径
+                newTableCaliberId: '',
+                newTableType: '',         //新表类型
+                newTableTypeId: '',
+
+                CustomerCode: api.pageParam.CustomerCode, //用户编号
+
+                userAutograph: '',             //用户签名
+                userAutographArr: [],          //用户签名数组，用于图片预览
+                isAutograph: false,            //显示签名界面
+
+                showAreaSelect: false,         //计费时间弹窗是否显示
+                showSourceSelect: false,       //新表口径弹窗是否显示
+                showEmergencySelect: false,    //新表类型弹窗是否显示
+
+
+                AreaData: [],           //计费时间
+                SourceData: [],         //新表口径
+                EmergencyData: [],      //新表类型
+
+            },
+            methods: {
+                onBack() {
+                    api.closeWin({});
+                },
+                onSaoma() {
+                  var _that = this;
+                  var FNScanner = api.require("FNScanner");
+                  FNScanner.open({
+                      rect: {
+                          x: 0,
+                          y: 0,
+                          w: api.winWidth,
+                          h: api.winHeight,
+                      },
+                      autorotation: true,
+                      hintText: "扫码获取水表表号",
+                      font: {
+                          lightText: {
+                              size: 13,
+                          }
+                      }
+                  }, (ret, err) => {
+                      if (ret.eventType == 'success') {
+                          var content = ret.content;
+                          _that.newTableNo = ret.content;
+                      }
+                  });
+                },
+                onSave() {
+                  if (this.oldTableEndVal == '') {
+                    vant.Toast('请填写旧表底数');
+                    return;
+                  }
+
+                  if (this.newTableEndVal == '') {
+                    vant.Toast('请填写新表底数');
+                    return;
+                  }
+
+                  if (this.oldTableNo == '') {
+                    vant.Toast('请填写原表表号');
+                    return;
+                  }
+
+                  if (this.newTableNo == '') {
+                    vant.Toast('请填写新表表号');
+                    return;
+                  }
+
+                  if (this.billingTime == '') {
+                    vant.Toast('请选择计费时间');
+                    return;
+                  }
+
+                  if (this.newTableCaliber == '') {
+                    vant.Toast('请选择新表口径');
+                    return;
+                  }
+
+                  if (this.newTableType == '') {
+                    vant.Toast('请选择新表类型');
+                    return;
+                  }
+
+                  if (this.userAutograph == '') {
+                    vant.Toast('请填写用户签字');
+                    return;
+                  }
+                  api.sendEvent({
+                      name: 'saveTableMessage',
+                      extra: {
+                          messageObj: {
+                            oldTableEndVal: this.oldTableEndVal,
+                            newTableEndVal: this.newTableEndVal,
+                            oldTableNo: this.oldTableNo,
+                            newTableNo: this.newTableNo,
+                            billingTime: this.billingTime,
+                            billingTimeId: this.billingTimeId,
+                            newTableCaliber: this.newTableCaliber,
+                            newTableCaliberId: this.newTableCaliberId,
+                            newTableType: this.newTableType,
+                            newTableTypeId: this.newTableTypeId,
+                            userAutograph: this.userAutograph,
+                          }
+                      }
+                  });
+                },
+                onAutograph() {
+                    this.isAutograph = true;
+                    drawingBoard.open({
+                        rect: {
+                            x: 0,
+                            y: headerH,
+                            h: autographH
+                        },
+                        styles: {
+                            brush: {
+                                color: '#FFA836',
+                                width: 6
+                            },
+                            bgColor: "#FFFFFF00",
+                        },
+                    });
+                },
+                onCloseAutograph() {
+                  _that.isAutograph = false;
+                  drawingBoard.close();
+                },
+                onReset() {
+                    drawingBoard.clear();
+                },
+                onRevoke() {
+                  drawingBoard.revoke();
+                },
+                onSaveAutograph() {
+                  var _that = this;
+                  drawingBoard.save({
+                      savePath: api.fsDir + '/AutographPicture/' + _that.CustomerCode + '.jpg',
+                      copyToAlbum: true
+                  }, function(ret) {
+                      _that.userAutograph = ret.absolutePath;
+                      _that.userAutographArr.push(ret.absolutePath);
+                  });
+                  _that.isAutograph = false;
+                  drawingBoard.close();
+                },
+                onDeleteAutograph() {
+                  var _that = this;
+                  vant.Dialog.confirm({
+                          title: '提示',
+                          message: '是否确定删除签名?',
+                          confirmButtonText: "确定", //改变确认按钮上显示的文字
+                          cancelButtonText: "取消" //改变取消按钮上显示的文字
+                      })
+                      .then(function() {
+                        var fs = api.require("fs");
+                        fs.remove({
+                            path: _that.userAutograph
+                        });
+                        _that.userAutograph = "";
+                      })
+                      .catch(function() {
+                          return;
+                      });
+                }
+            },
+            mounted: function() {
+              for (var i = 0; i < 10; i++) {
+                this.AreaData.push(
+                  {id: i + 1, name: '下次' + i}
+                );
+                this.EmergencyData.push(
+                  {id: i + 1, name: '类型' + i}
+                );
+                this.SourceData.push(
+                  {id: i + 1, name: '口径' + i}
+                );
+              };
+            }
+        })
+    }
+</script>
+
+</html>

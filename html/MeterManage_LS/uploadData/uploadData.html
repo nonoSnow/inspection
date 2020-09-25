@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>表务数据上传</title>
+    <link rel="stylesheet" type="text/css" href="../../public/css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/vant.css" />
+    <style>
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        background-color: #F3F3F3;
+    }
+
+    .aui-bar-nav {
+        top: 0;
+        z-index: 1;
+        background: linear-gradient(90deg, rgba(46, 142, 250, 1), rgba(49, 89, 235, 1));
+        color: #FFF;
+        font-size: 0.95rem;
+        font-weight: normal;
+        font-stretch: normal;
+        letter-spacing: 0rem;
+    }
+
+    .aui-bar-nav .aui-btn .aui-iconfont {
+        color: #FFF;
+        font-weight: 900;
+    }
+
+    .aui-bar-nav .aui-pull-right {
+        font-size: 0.95rem;
+    }
+
+    .flex-con {
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+
+        margin-bottom: 2.5rem;
+    }
+
+    [v-cloak] {
+        display: none;
+    }
+
+    #footer {
+        width: 100%;
+        height: 2.5rem;
+        text-align: center;
+        position: fixed;
+        background-color: #FFF;
+        bottom: 0;
+        border-top: 1px solid #eee;
+    }
+
+    #footer .assign_btn {
+      width: 30%;
+      height: 2rem;
+      margin: 0.25rem auto;
+      border-radius: 20px;
+      background-color: #377EFF;
+      color: #fff;
+      text-align: center;
+      line-height: 2rem;
+      font-size: 18px;
+    }
+
+    .aui-content {
+        height: 100%;
+    }
+
+    .updata-item {
+      margin: 1rem;
+      border-radius: 0.8rem;
+      background-color: #ffffff;
+      padding: 0.5rem;
+    }
+
+    .Line {
+      width: 100%;
+      height: 0.1rem;
+      background-color: #DEDEDE;
+      margin: 10px auto;
+    }
+
+    .aui-checkbox {
+      float: right;
+    }
+
+    .item-cont-title {
+      width: 100%;
+      display: flex;
+    }
+
+    .item-cont-left {
+      flex: 1;
+      color: #000000;
+      overflow: scroll;
+      font-size: 18px;
+      flex-direction: row;
+      white-space: nowrap;
+    }
+
+    .item-cont-cont {
+        margin-top: 10px;
+        display: flex;
+    }
+
+    .item-cont-text {
+      flex: 1;
+      text-align: left;
+      flex-direction: row;
+      white-space: nowrap;
+      overflow: scroll;
+      color: #6D6D6D;
+    }
+
+    .item-title {
+      width: 100%;
+      height: 1.5rem;
+      line-height: 1.5rem;
+    }
+
+    .item-cont {
+      background-color: #F4F4F4;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .upload-title {
+      color: #2F7CF5;
+      font-size: 18px;
+    }
+
+    .item-checkall {
+      margin-right: 10px;
+      margin-top: 0.15rem;
+    }
+
+    .no-upload-data {
+      width:100%;
+      height:100px;
+      text-align:center;
+      line-height: 100px;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+      <header class="aui-bar aui-bar-nav" id="header">
+          <div class="aui-pull-left aui-btn" tapmode @click='onBack'>
+              <span class="aui-iconfont aui-icon-left"></span>
+          </div>
+          <div class="aui-title">数据上传</div>
+      </header>
+
+      <div class="flex-con">
+        <div class="aui-content">
+          <div class="updata-item">
+            <div class="item-title">
+              <span class='upload-title'>预停水数据及照片上传</span>
+              <input type="checkbox" class="aui-checkbox item-checkall" @click='onCheckAll'/>
+            </div>
+            <div class="Line"></div>
+            <div class="item-cont" v-for='(item, index) in postingList' v-if='postingList.length > 0'>
+              <div class="item-cont-title">
+                <div class="item-cont-left">
+                  {{item.SaveTime}}
+                </div>
+                <div class="item-cont-right">
+                    <input name="Fruit" type="checkbox" class="aui-checkbox" @click='onCheckItem'/>
+                </div>
+              </div>
+              <div class="item-cont-cont">
+                <div class="item-cont-text">已张贴：{{item.notUploadedNum}}</div>
+                <div class="item-cont-text">已上传：{{item.uploadedNum}}</div>
+              </div>
+            </div>
+            <div class='no-upload-data' v-if='postingList.length == 0'>暂无可上传数据</div>
+          </div>
+
+          <div class="updata-item">
+            <div class="item-title">
+              <span class='upload-title'>表号维护数据及照片上传</span>
+              <input type="checkbox" class="aui-checkbox item-checkall"/>
+            </div>
+            <div class="Line"></div>
+            <div class="item-cont" v-for='(item, index) in maintainList' v-if='maintainList.length > 0'>
+              <div class="item-cont-title">
+                <div class="item-cont-left">
+                  {{item.cloudTaskCode}}
+                </div>
+                <div class="item-cont-right">
+                    <input name="Fruit" type="checkbox" class="aui-checkbox"/>
+                </div>
+              </div>
+              <div class="item-cont-cont">
+                <div class="item-cont-text">已扫码：{{item.YSM}}</div>
+                <div class="item-cont-text">已上传：{{item.YSC}}</div>
+              </div>
+            </div>
+            <div class='no-upload-data' v-if='maintainList.length == 0'>暂无可上传数据</div>
+          </div>
+
+          <div class="updata-item">
+            <div class="item-title">
+              <span class='upload-title'>表务办理数据及照片上传</span>
+              <input type="checkbox" class="aui-checkbox item-checkall"/>
+            </div>
+            <div class="Line"></div>
+            <div class="item-cont" v-for='(item, index) in meterList' v-if='meterList.length > 0'>
+              <div class="item-cont-title">
+                <div class="item-cont-left">
+                  {{item.SaveTime}}
+                </div>
+                <div class="item-cont-right">
+                    <input name="Fruit" type="checkbox" class="aui-checkbox"/>
+                </div>
+              </div>
+            </div>
+            <div class='no-upload-data' v-if='meterList.length == 0'>暂无可上传数据</div>
+          </div>
+
+          <div class="updata-item">
+            <div class="item-title">
+              <span class='upload-title'>停复水办理数据及照片上传</span>
+              <input type="checkbox" class="aui-checkbox item-checkall"/>
+            </div>
+            <div class="Line"></div>
+            <div class="item-cont" v-for='(item, index) in stopOpenList' v-if='stopOpenList.length > 0'>
+              <div class="item-cont-title">
+                <div class="item-cont-left">
+                  {{item.SaveTime}}
+                </div>
+                <div class="item-cont-right">
+                    <input name="Fruit" type="checkbox" class="aui-checkbox"/>
+                </div>
+              </div>
+            </div>
+            <div class='no-upload-data' v-if='stopOpenList.length == 0'>暂无可上传数据</div>
+          </div>
+        </div>
+      </div>
+
+      <footer id="footer">
+          <div class="aui-btn aui-btn-info assign_btn">上传</div>
+      </footer>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../public/script/api.js"></script>
+  <script type="text/javascript" src="../../public/script/common.js"></script>
+  <script type="text/javascript" src="../../public/script/vue/fastclick.min.js"></script>
+  <script type="text/javascript" src="../../public/script/vue/vue.min.js"></script>
+  <script type="text/javascript" src="../../public/script/vue/vant.min.js"></script>
+  <script type="text/javascript" src="../../public/script/vue/vueTouch.js"></script>
+  <script type="text/javascript">
+    var db;
+    apiready = function() {
+      var header = $api.byId('header');
+      $api.fixStatusBar(header);
+
+      db = api.require("db");
+
+      fnIntVue();
+      Origami.fastclick(document.body) //消除vue的ios端点击延迟
+    }
+
+    function fnIntVue() {
+      window.ApplyTaskVue = new Vue({
+        el: '#wrap',
+        data: {
+            userName: $api.getStorage('loginData').userName,  // 当前登录用户名
+            postingList: [],  // 本地存储的停水通知单数据
+            maintainList: [],  // 本地存储的表号维护数据
+            meterList: [],  // 本地存储的表务办理数据
+            stopOpenList: [],  // 停复水数据
+        },
+        methods: {
+          onBack() {
+            api.closeWin({});
+          },
+          onGetDataList() {
+            var _that = this;
+
+            // 停水通知单数据获取
+            var postingRet = db.executeSqlSync({
+                name: 'Wsdatabase',
+                sql: "SELECT * FROM POSTING_LIST WHERE isSave = '1' AND isUpload = '0' AND userName = '"+ _that.userName +"' GROUP BY SaveTime"
+            });
+
+            if (postingRet.status) {
+              if (postingRet.data.length > 0) {
+                var postingArr = postingRet.data;
+                var uploadedNum = 0;
+                var notUploadedNum = 0;
+                for (var i = 0; i < postingArr.length; i++) {
+                  uploadedNum = db.executeSqlSync({
+                      name: 'Wsdatabase',
+                      sql: "SELECT COUNT(*) AS YSC FROM POSTING_LIST WHERE isUpload = '1' AND userName = '"+ _that.userName +"' AND SaveTime = '"+ postingArr[i].SaveTime +"'"
+                  });
+
+                  notUploadedNum = db.executeSqlSync({
+                      name: 'Wsdatabase',
+                      sql: "SELECT COUNT(*) AS WSC FROM POSTING_LIST WHERE isSave = '1' AND isUpload = '0' AND userName = '"+ _that.userName +"' AND SaveTime = '"+ postingArr[i].SaveTime +"'"
+                  });
+
+                  _that.postingList.push({
+                      uploadedNum: uploadedNum,
+                      notUploadedNum: notUploadedNum,
+                      SaveTime: postingArr[i].SaveTime
+                  });
+
+                }
+                console.log(JSON.stringify(_that.postingList));
+
+              }
+
+            }
+
+
+            // 表号维护数据获取
+            var maintainRet = db.selectSqlSync({
+                name: 'Wsdatabase',
+                sql: "SELECT cloudTaskCode FROM meterNoSheets WHERE userName = '"+ _that.userName +"' GROUP BY cloudTaskCode"
+            });
+
+            if (maintainRet.status) {
+              if (maintainRet.data.length > 0) {
+                var maintainArr = maintainRet.data;
+                var uploadedNum = 0;
+                var notUploadedNum = 0;
+                for (var i = 0; i < maintainArr.length; i++) {
+                  uploaded = db.selectSqlSync({
+                      name: 'Wsdatabase',
+                      sql: "SELECT * FROM meterNoSheets WHERE StampNo != '' AND isSaveLocal = 1 AND isUpload = 0 AND UploadErrMsg = '' AND userName = '"+ _that.userName +"' AND cloudTaskCode = "+ maintainArr[i].cloudTaskCode
+                  });
+
+                  notUploaded = db.selectSqlSync({
+                      name: 'Wsdatabase',
+                      sql: 'SELECT * FROM meterNoSheets WHERE StampNo != "" AND UploadErrMsg = "" AND userName = "' + _that.userName + '" AND isSaveLocal = 1 AND isUpload = 0 and cloudTaskCode = ' + maintainArr[i].cloudTaskCode + ''
+                  });
+
+                  _that.maintainList.push({
+                    cloudTaskCode: maintainArr[i].cloudTaskCode,
+                    YSM: uploaded.length,
+                    YSC: notUploaded.length
+                  });
+
+                }
+              }
+
+            }
+
+
+            // 表务办理数据及照片
+            var meterRet = db.selectSqlSync({
+                name: 'Wsdatabase',
+                sql: "SELECT * FROM Review_TASK_BASIC_LIST WHERE isUploadAndSave = '2' AND userName = '"+ _that.userName +"' GROUP BY SaveTime"
+            });
+
+            if (meterRet.status) {
+              if (meterRet.data.length > 0) {
+                for (var i = 0; i < meterRet.data.length; i++) {
+                  _that.meterList.push(meterRet.data[i]);
+                }
+              }
+            }
+
+            // 停复水数据及照片
+            var stopOpenRet = db.selectSqlSync({
+                name: 'Wsdatabase',
+                sql: "SELECT * FROM AUDIT_TASK_LIST WHERE userName = '"+ _that.userName +"' AND isUploadAndSave = '2' AND Status = '7' GROUP BY SaveTime"
+            });
+
+            if (stopOpenRet.status) {
+              if (stopOpenRet.data.length > 0) {
+                for (var i = 0; i < stopOpenRet.data.length; i++) {
+                  _that.stopOpenList.push(stopOpenRet.data[i]);
+                }
+              }
+            }
+
+          },
+        },
+        moutend: function() {
+
+        }
+      });
+    }
+
+  </script>
+</html>

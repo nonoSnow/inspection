@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>张贴列表</title>
+    <link rel="stylesheet" type="text/css" href="../../public/css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/vant.css" />
+
+    <style>
+      html,
+      body {
+          width: 100%;
+          height: 100%;
+          background-color: #F3F3F3;
+      }
+
+      .aui-bar-nav {
+          top: 0;
+          z-index: 1;
+          background: linear-gradient(90deg, rgba(46, 142, 250, 1), rgba(49, 89, 235, 1));
+          color: #FFF;
+          font-size: 0.95rem;
+          font-weight: normal;
+          font-stretch: normal;
+          letter-spacing: 0rem;
+      }
+
+      .aui-bar-nav .aui-btn .aui-iconfont {
+          color: #FFF;
+          font-weight: 900;
+      }
+
+      .aui-bar-nav .aui-pull-right {
+          font-size: 0.95rem;
+      }
+
+      .flex-con {
+          overflow: auto;
+          -webkit-overflow-scrolling: touch;
+      }
+
+      [v-cloak] {
+          display: none;
+      }
+
+      .aui-tab {
+          width: 100%;
+      }
+
+      .aui-tab-item {
+          font-size: 0.95rem;
+          color: #363636;
+          padding: 1.5rem 0 1.25rem 0;
+          line-height: normal;
+          height: auto;
+      }
+
+      .aui-tab-item:active {
+          background: #f9f4f4;
+      }
+
+      .aui-tab-item:first-child:after,
+      .aui-tab-item:nth-child(2):after,
+      .aui-tab-item:nth-child(3):after {
+          content: '';
+          position: absolute;
+          left: auto;
+          top: 1.7rem;
+          bottom: 0;
+          right: 0;
+          height: 1.85rem;
+          width: 0.03rem;
+          background-color: #DCDCDC;
+      }
+
+      .after-hide:after {
+        display:none !important;
+      }
+
+      .number1,
+      .number2,
+      .number3 {
+          font-size: 1.6rem;
+          height: 1.35rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+
+      .title1,
+      .title2,
+      .title3 {
+          font-size: 0.75rem;
+          height: 0.75rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top: 0.75rem;
+      }
+
+      .number1,
+      .title1 {
+          color: #167CFB;
+      }
+
+      .number2,
+      .title2 {
+          color: #FFBF03;
+      }
+
+      .number3,
+      .title3 {
+          color: rgba(19, 201, 122, 1);
+      }
+
+      .aui-tab-img {
+        width:0.8rem;
+        padding-left:0.2rem;
+        margin-right: 0.4rem;
+      }
+
+      .aui-searchbar {
+          background-color: #fff;
+          height: auto!important;
+      }
+
+      .aui-searchbar .aui-searchbar-input {
+          position: relative;
+          height: 2rem;
+          background: pink;
+          margin: 0 1.25rem;
+          background-color: #fff;
+          border: 0.03rem solid #C4C4C4;
+          border-radius: 1rem;
+          margin-bottom: 1rem;
+      }
+
+      .aui-searchbar .aui-searchbar-input #search-input {
+          height: 100%;
+      }
+
+      .aui-searchbar .aui-searchbar-input .search_suer {
+          position: absolute;
+          right: 1rem;
+          top: 0.4rem;
+          width: 1rem;
+          height: 1rem;
+          background: url("../image/MeterManage/Posting/sousuo.png") no-repeat center;
+          background-size: 0.83rem 0.83rem;
+      }
+
+      .aui-searchbar .aui-searchbar-input .search_shanchu {
+          position: absolute;
+          right: 4rem;
+          top: 0.4rem;
+          width: 1rem;
+          height: 1rem;
+          background: url("../image/MeterManage/shanchu.png") no-repeat center;
+          background-size: 0.83rem 0.83rem;
+      }
+
+      .aui-searchbar .aui-searchbar-input .search_shu {
+          position: absolute;
+          right: 3rem;
+          top: 0.4rem;
+          width: 1px;
+          height: 1rem;
+          background: #C4C4C4;
+      }
+
+      .filterAndDownload {
+          background: #fff;
+          width: 100%;
+          padding: 0 1rem;
+          margin: 0.3rem auto;
+      }
+
+      .filterAndDownload-mian {
+          display: flex;
+          width: 100%;
+          flex-flow: row;
+          padding: 0.5rem;
+          font-size: 0.9rem;
+          padding-left: 0.3rem;
+          padding-right: 0rem;
+      }
+
+      .filterAndDownload-mian li {
+          flex: 1;
+      }
+
+      .filterAndDownload-mian li:nth-child(2) {
+          text-align: left;
+      }
+
+      .filterAndDownload-mian li:nth-child(3) {
+          position: relative;
+          border-radius: 0.5rem;
+      }
+
+      .filterAndDownload-mian li:nth-child(3)>div {
+          position: absolute;
+          text-align: center;
+          color: #FFF;
+          border-radius: 0.5rem;
+          background: #167CFB;
+          width: 80%;
+          right: 0.3rem;
+          top: -0.2rem;
+          padding-top: 0.2rem;
+          padding-bottom: 0.2rem;
+      }
+
+      .filterAndDownload-mian li:nth-child(3)>div:active {
+          background: #039be5;
+      }
+
+      .postingTime {
+        color:rgba(170, 170, 170, 1);
+        font-size:0.8rem;
+        line-height:1.3rem;
+      }
+
+      .postingList {
+          width: 100%;
+          height: auto;
+      }
+
+      .float-r {
+        float: right;
+      }
+
+      .list-item {
+          width: 100%;
+          height: auto;
+          padding: 0.6rem 1.3rem;
+          box-sizing: border-box;
+          background-color: #FFF;
+          overflow: auto;
+          border-bottom: 1px solid #F2F2F2;
+      }
+
+      .item-title {
+        display: inline-block;
+        min-width: 3.5rem;
+        text-align: justify;
+        text-align-last: justify;
+      }
+
+      .aui-list-item-text {
+        color: rgba(141, 141, 141, 1);
+        font-size: 0.8rem;
+        padding: 0rem 0 0.1rem 0;
+        align-items: flex-start;
+      }
+
+      .color-blu {
+        color: #167CFB;
+      }
+
+      .color-ora {
+        color: #FFBF03;
+      }
+
+      .color-gre {
+        color: rgba(19, 201, 122, 1);
+      }
+
+      .item-cus {
+        color: rgba(28, 28, 28, 1);
+        font-size: 0.95rem;
+        font-weight: 400;
+      }
+
+      .font7 {
+        font-size: var(--fontsize7);
+      }
+
+      .address-icon {
+        top: 0.2rem;
+        width: 0.6rem;
+        position: absolute;
+      }
+
+      .textRight {
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+      <header class="aui-bar aui-bar-nav" id="header">
+          <div class="aui-pull-left aui-btn" tapmode @click='onBack'>
+              <span class="aui-iconfont aui-icon-left"></span>
+          </div>
+          <div class="aui-title">张贴列表</div>
+          <div class="aui-pull-right aui-btn" tapmode @click="onCodeScanning">
+              <img src="../image/MeterManage/Posting/saoma.png" alt="">
+          </div>
+      </header>
+
+      <div class="aui-tab">
+        <div class="aui-tab-item" @click='onPostingType(1)'>
+            <div class="number1">{{pasteNum}}</div>
+            <div class="title1">
+                <img src="../image/MeterManage/Posting/daizhangtie.png" class='aui-tab-img' alt="">待张贴
+            </div>
+        </div>
+        <div class="aui-tab-item" @click='onPostingType(2)'>
+            <div class="number3">{{saveNum}}</div>
+            <div class="title3">
+                <img src="../image/MeterManage/Posting/yitijiao.png" class='aui-tab-img' alt="">已保存
+            </div>
+        </div>
+        <div class="aui-tab-item" :class="{ 'after-hide': !isClaim }" @click='onPostingType(3)'>
+            <div class="number2">{{submitNum}}</div>
+            <div class="title2">
+                <img src="../image/MeterManage/Posting/ytj.png" class='aui-tab-img' alt="">已提交
+            </div>
+        </div>
+        <div class="aui-tab-item" v-if='isClaim' @click='onPostingType(4)'>
+            <div class="number1">{{claimNum}}</div>
+            <div class="title1">
+                <img src="../image/MeterManage/Posting/daizhangtie.png" class='aui-tab-img' alt="">待认领
+            </div>
+        </div>
+      </div>
+      <div class="aui-searchbar">
+          <div class="aui-searchbar-input aui-border-radius">
+              <input type="search" style='height: 100%;' placeholder="请输入户号搜索" v-model='searchValue'>
+              <div class="search_shanchu" v-if='searchValue != ""' tapmode @click="onDelete"></div>
+              <div class="search_shu"></div>
+              <div class="search_suer" tapmode @click="onSearch"></div>
+          </div>
+      </div>
+
+      <div class="filterAndDownload">
+          <ul class="filterAndDownload-mian">
+              <li>张贴总数:<span>{{postingNum}}</span></li>
+              <li class='postingTime' :class="{ 'textRight': !isClaim }">({{postingTime}})</li>
+              <li v-if='isClaim'>
+                  <div tapmode @click='onClaim'>认 领</div>
+              </li>
+          </ul>
+      </div>
+
+      <div class="postingList flex-con">
+          <div class="list-item" v-for='(item, index) in postingList' :key="index" @click='onOpenTaskDetail(item)'>
+              <div class="item-cont" >
+                <div class="item-cont-cont">
+                    <div class="aui-list-item-text">
+                      <span class='item-cus' style="">{{item.CustomerCode}}</span>
+                    </div>
+                    <div class="aui-list-item-text">
+                      <span class="item-title projectName">工单号</span>：{{item.TaskNo}}
+
+                    </div>
+                    <div class="aui-list-item-text">
+                      <div style='width: 80%; display: inline-block;'>
+                        <span class="item-title">户名</span>：{{item.CustomerName}}
+                      </div>
+                      <div class="float-r color-blu font7" v-show='postingType == 1'>待张贴</div>
+                      <div class="float-r color-gre font7" v-show='postingType == 2'>已保存</div>
+                      <div class="float-r color-ora font7" v-show='postingType == 3'>已提交</div>
+                      <div class="float-r color-blu font7" v-show='postingType == 4'>待认领</div>
+                    </div>
+                    <div class="aui-list-item-text">
+                      <span class="item-title">欠费金额</span>：{{item.ArrearMoney == '' ? 0 : item.ArrearMoney}}
+                    </div>
+                    <div class="aui-list-item-text" style="position: relative;">
+                      <img class='address-icon' src="../image/MeterManage/Posting/dingwei.png" alt="">
+                      <span style='margin-left: 1rem; margin-top: 1px;'>{{item.Address}}</span>
+                    </div>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../public/script/api.js"></script>
+  <script type="text/javascript" src="../../public/script/common.js"></script>
+  <script type="text/javascript" src="../../public/script/remote.js"></script>
+  <script type="text/javascript" src="../../public/script/publicMethod.js"></script>
+  <script type="text/javascript" src="../../public/script/vue/fastclick.min.js"></script>
+  <script type="text/javascript" src="../../public/script/vue/vue.min.js"></script>
+  <script type="text/javascript" src="../../public/script/vue/vant.min.js"></script>
+  <script type="text/javascript" src="../../public/script/vue/vueTouch.js"></script>
+  <script type="text/javascript" src="../../public/script/moment.js"></script>
+  <script type="text/javascript" src="../script/remote.js"></script>
+  <script type="text/javascript" src="../script/meterManageLocalData.js"></script>
+  <script type="text/javascript" src="../../public/script/diy/public.js"></script>
+  <script type="text/javascript">
+  var db;
+  apiready = function() {
+      var header = $api.byId('header');
+      $api.fixStatusBar(header);
+
+      db = api.require("db");
+
+      fnIntVue();
+      Origami.fastclick(document.body) //消除vue的ios端点击延迟
+  };
+
+  function fnIntVue() {
+    window.ApplyTaskVue = new Vue({
+      el: '#wrap',
+      data: {
+          pasteNum: 0,    //待张贴
+          saveNum: 0,  //已保存
+          submitNum: 0,  //已提交
+          claimNum: 0,  //待认领
+          searchValue: '',  //搜索内容
+          postingNum: '0',  //张贴总数
+          postingTime: '0000/00/00',  //时间
+          postingType: 1,  //当前类型
+          postingList: [
+            {CustomerCode: '01010001', TaskNo: '202009030000001', CustomerName: '张三', status: '1', ArrearMoney: '1.25', Address: '马栏山马兰坡'},
+            {CustomerCode: '01010002', TaskNo: '202009030000002', CustomerName: '李四', status: '2', ArrearMoney: "", Address: '马栏山马兰坡'},
+            {CustomerCode: '01010002', TaskNo: '202009030000002', CustomerName: '李四', status: '2', ArrearMoney: "", Address: '马栏山马兰坡'},
+            {CustomerCode: '01010002', TaskNo: '202009030000002', CustomerName: '李四', status: '2', ArrearMoney: "", Address: '马栏山马兰坡'}
+          ],
+
+          isClaim: true,  //是否认领
+
+          taskArrAll: [],  //当前任务总数组
+          pasteArr: [],  //待张贴数组
+          saveArr: [],  //已保存数组
+          submitArr: [],  //已提交数组
+          claimArr: [],  //待认领数组
+
+          taskData: api.pageParam.data,
+          getTaskType: api.pageParam.type,
+      },
+      methods: {
+        onBack() {
+          api.closeWin({});
+        },
+        onCodeScanning() {
+          var _that = this;
+          var userCode = '';
+
+          var FNScanner = api.require('FNScanner');
+          FNScanner.open({
+              autorotation: true
+          }, function(ret, err){
+            console.log(JSON.stringify(ret));
+            console.log(JSON.stringify(err));
+              if (ret) {
+                if (ret.eventType == 'success') {
+                    userCode = ret.content;
+                    _that.onSearchFnc(userCode);
+                }
+              }
+          });
+        },
+        onDelete() {
+          console.log('onDelete');
+          this.searchValue = '';
+          this.onSelectLocal();
+        },
+        onSearch() {
+          console.log('onSearch');
+          if (this.searchValue == '') {
+            vant.Toast('请输入用户编号');
+            return;
+          }
+          this.onSearchFnc(this.searchValue);
+        },
+        onSearchFnc(CustomerCode) {
+          var _that = this;
+          if (api.connectionType != "none") {
+            var body = {
+              CustomerCode: CustomerCode,
+              Status: '7'
+            };
+            if (_that.isClaim) {
+              body.Status = '1';
+            }
+            fnPost('MMS002', body, 'application/json', false, false, function(ret, err) {
+              api.hideProgress();
+              if (ret && ret.Status == '0') {
+                var dataArr = JSON.parse(ret.Data);
+                _that.onJudgeLocal(dataArr, CustomerCode);
+              } else {
+                _that.onSearchData(userCode);
+              }
+            });
+          } else {
+            _that.onSearchData(userCode);
+          }
+        },
+        onClaim() {
+          api.showProgress({
+              style: 'default',
+              animationType: 'fade',
+              title: '努力加载中...',
+              modal: true
+          });
+
+          pGetLocation(function(ret, err) {
+            if (ret.status) {
+                var body = {
+                    body: JSON.stringify({
+                        taskCode: _that.taskData.taskCode,
+                        lng: ret.lon,
+                        lat: ret.lat,
+                        account: $api.getStorage("bwUserName"),
+                        passWord: $api.getStorage("bwPassWord")
+                    })
+                };
+                api.ajax({
+                    url: 'http://' + $api.getStorage('apiUrl') + '/api/services/app/WorkFlow/ConfirmTaskById',
+                    method: 'post',
+                    dataType: "json",
+                    returnAll: false,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": $api.getStorage('loginInfo')
+                    },
+                    data: body
+                },function(ret, err){
+                    api.hideProgress();
+                    if (ret) {
+                        console.log( JSON.stringify( ret ) );
+                        if (ret.success) {
+                            _that.isClaim = false;
+                            vant.Toast('任务认领成功');
+
+                            for (var i = 0; i < array.length; i++) {
+                              var result = db.executeSqlSync({
+                                  name: 'Wsdatabase',
+                                  sql: "UPDATE POSTING_LIST SET Status = '7' WHERE Id = '"+ _that.claimArr.Id +"' AND TaskNo = '"+ _that.taskData.taskCode +"'"
+                              });
+                              console.log(JSON.stringify(result));
+                            }
+                        }
+
+                    } else {
+                        console.log( JSON.stringify( err ) );
+                    }
+                });
+
+            }
+          });
+
+        },
+        onOpenTaskDetail(item) {
+          var _that = this;
+          if (item.status == '7' || item.status == '1') {
+            api.openWin({
+                name: 'Postinglists_edit',
+                url: './Postinglists_edit.html',
+                pageParam: {
+                  data: item,
+                  taskType: _that.getTaskType
+                }
+            });
+          } else {
+            api.openWin({
+                name: 'Postinglists_details',
+                url: './Postinglists_details.html',
+                pageParam: item
+            });
+          }
+        },
+        onPostingType(type) {
+          this.postingType = type;
+          this.postingList = [];
+          var nowArr = [];
+          if (type == 1) {
+            nowArr = this.pasteArr;
+          } else if (type == 2) {
+            nowArr = this.saveArr;
+          } else if (type == 3) {
+            nowArr = this.submitArr;
+          } else if (type == 4) {
+            nowArr = this.claimArr;
+          }
+
+          for (var i = 0; i < nowArr.length; i++) {
+            this.postingList.push(nowArr[i]);
+          }
+        },
+        onGetDataInit() {
+          if (api.connectionType != 'none') {
+            this.onGetPostingList();
+          } else {
+            this.onSelectLocal();
+          }
+        },
+        onGetPostingList() {
+          var _that = this;
+          var body = {
+            TaskNo: _that.taskData.taskCode
+          }
+
+          fnPost('MMS002', body, 'application/json', false, false, function(ret, err) {
+            api.hideProgress();
+            if (ret && ret.Status == '0') {
+              var dataArr = JSON.parse(ret.Data);
+              _that.onJudgeLocal(dataArr, '');
+            } else {
+              _that.onSelectLocal();
+            }
+          });
+        },
+        onSelectLocal() {
+          var _that = this;
+          var selectSql = 'SELECT * FROM POSTING_LIST WHERE TaskNo = "'+ _that.taskData.taskCode +'" AND userName = "'+ $api.getStorage('loginData').userName +'"';
+
+          db.selectSql({
+              name: 'Wsdatabase',
+              sql: selectSql
+          }, function(ret, err){
+              if( ret.status ){
+                  console.log( JSON.stringify( ret ) );
+                  var taskALLArr = ret.data;
+                  _that.postingNum = ret.data.length;
+                  for (var i = 0; i < taskALLArr.length; i++) {
+                    if (taskALLArr[i].Status == '7' && taskALLArr[i].isSave == '0' && taskALLArr[i].isUpload == '0') {
+                      //已认领  未保存  未上传 -- 待张贴
+                      _that.pasteArr.push(taskALLArr[i]);
+                    } else if (taskALLArr[i].Status == '7' && taskALLArr[i].isSave == '1' && taskALLArr[i].isUpload == '0') {
+                      //已认领  已保存  未上传 -- 已保存
+                      _that.saveArr.push(taskALLArr[i]);
+                    } else if (taskALLArr[i].Status == '2' && taskALLArr[i].isUpload == '1') {
+                      //待审核  已上传 -- 已上传
+                      _that.submitArr.push(taskALLArr[i]);
+                    } else if (taskALLArr[i].Status == '1') {
+                      //已分派 -- 待认领
+                      _that.claimArr.push(taskALLArr[i]);
+                    }
+                  }
+
+                  _that.pasteNum = _that.pasteArr.length;
+                  _that.saveNum = _that.saveArr.length;
+                  _that.submitNum = _that.submitArr.length;
+                  _that.claimNum = _that.claimArr.length;
+
+                  this.postingList = [];
+                  var nowArr = [];
+                  if (this.postingType == 1) {
+                    nowArr = this.pasteArr;
+                  } else if (this.postingType == 2) {
+                    nowArr = this.saveArr;
+                  } else if (this.postingType == 3) {
+                    nowArr = this.submitArr;
+                  } else if (this.postingType == 4) {
+                    nowArr = this.claimArr;
+                  }
+
+                  for (var i = 0; i < nowArr.length; i++) {
+                    this.postingList.push(nowArr[i]);
+                  }
+
+              }else{
+                  console.log( JSON.stringify( err ) );
+              }
+          });
+        },
+        onSearchData(CustomerCode) {
+          var _that = this;
+          _that.postingList = [];
+          var selectSql = 'SELECT * FROM POSTING_LIST WHERE TaskNo = "'+ _that.taskData.taskCode +'" AND userName = "'+ $api.getStorage('loginData').userName +'" AND CustomerCode = "'+ CustomerCode +'"';
+          db.selectSql({
+              name: 'Wsdatabase',
+              sql: selectSql
+          }, function(ret, err){
+              if( ret.status ){
+                  console.log( JSON.stringify( ret ) );
+                  if (ret.data.length > 0) {
+                    _that.postingList.push(ret.data[0]);
+                  } else {
+                    vant.Toast('本地未查询到用户：' + CustomerCode + '数据');
+                  }
+
+              } else {
+                  console.log( JSON.stringify( err ) );
+              }
+          });
+
+        },
+        onJudgeLocal(taskArr, CustomerCode) {
+          var _that = this;
+          for (var i = 0; i < taskArr.length; i++) {
+            var selectResylt = db.selectSqlSync({
+                name: 'Wsdatabase',
+                sql: "SELECT * FROM POSTING_LIST WHERE TaskNo = '" + _that.taskData.taskCode + "' AND Status = '7' AND NotUploader = '0' AND userName = '" + $api.getStorage('loginData').userName + "' AND Id = '" + taskArr[i].Id + "'"
+            });
+
+            if (selectResylt.status) {
+              if (selectResylt.data.length > 0) {
+                _that.onUpdateData(taskArr[i]);
+              } else {
+                _that.onInsertData(taskArr[i]);
+              }
+            }
+
+          }
+
+          if (CustomerCode != '') {
+            _that.onSearchData();
+          } else {
+            _that.onSelectLocal();
+          }
+
+        },
+        onInsertData(PostingData) {
+          var insertSql = "INSERT INTO POSTING_LIST("+
+                          "Id,"+
+                          "Source,"+
+                          "Code,"+
+                          "Name,"+
+                          "Status,"+
+                          "CustomerCode,"+
+                          "CustomerName,"+
+                          "Address,"+
+                          "Location,"+
+                          "Nature,"+
+                          "Caliber,"+
+                          "Nameplate,"+
+                          "MeterType,"+
+                          "StampNo,"+
+                          "LastScale,"+
+                          "BeginScale,"+
+                          "EndScale,"+
+                          "Amount,"+
+                          "ArrearMoney,"+
+                          "Description,"+
+                          "Remark,"+
+                          "TaskNo,"+
+                          "OperatedTime,"+
+                          "DispatchTime,"+
+                          "UseTime,"+
+                          "HandleTime,"+
+                          "AuditTime,"+
+                          "AuditTimes,"+
+                          "Files,"+
+                          "Handles,"+
+
+                          "SaveTime,"+
+                          "SaveRemark,"+
+                          "SavePhoto,"+
+                          "PhotoLocation,"+
+                          "isSave,"+
+                          "isUpload,"+
+                          "isFail,"+
+                          "failRemark,"+
+                          "userName,"+
+                          "ReserveOne,"+
+                          "ReserveTwo,"+
+                          "ReserveThree,"+
+                          "ReserveFour,"+
+                          "ReserveFive)VALUES("+
+                          "'"+ PostingData.Id +"',"+
+                          "'"+ PostingData.Source +"',"+
+                          "'"+ PostingData.Code +"',"+
+                          "'"+ PostingData.Name +"',"+
+                          "'"+ PostingData.Status +"',"+
+                          "'"+ PostingData.CustomerCode +"',"+
+                          "'"+ PostingData.CustomerName +"',"+
+                          "'"+ PostingData.Address +"',"+
+                          "'"+ PostingData.Location +"',"+
+                          "'"+ PostingData.Nature +"',"+
+                          "'"+ PostingData.Caliber +"',"+
+                          "'"+ PostingData.Nameplate +"',"+
+                          "'"+ PostingData.MeterType +"',"+
+                          "'"+ PostingData.StampNo +"',"+
+                          "'"+ PostingData.LastScale +"',"+
+                          "'"+ PostingData.BeginScale +"',"+
+                          "'"+ PostingData.EndScale +"',"+
+                          "'"+ PostingData.Amount +"',"+
+                          "'"+ PostingData.ArrearMoney +"',"+
+                          "'"+ PostingData.Description +"',"+
+                          "'"+ PostingData.Remark +"',"+
+                          "'"+ PostingData.TaskNo +"',"+
+                          "'"+ PostingData.OperatedTime +"',"+
+                          "'"+ PostingData.DispatchTime +"',"+
+                          "'"+ PostingData.UseTime +"',"+
+                          "'"+ PostingData.HandleTime +"',"+
+                          "'"+ PostingData.AuditTime +"',"+
+                          "'"+ PostingData.AuditTimes +"',"+
+                          "'"+ PostingData.Files +"',"+
+                          "'"+ PostingData.Handles +"',"+
+
+                          "'',"+
+                          "'',"+
+                          "'',"+
+                          "'',"+
+                          "'0',"+
+                          "'0',"+
+                          "'0',"+
+                          "'',"+
+                          "'"+ $api.getStorage('loginData').userName +"',"+
+                          "'',"+
+                          "'',"+
+                          "'',"+
+                          "'',"+
+                          "'')";
+          var insertResult = db.executeSqlSync({
+            name: 'Wsdatabase',
+            sql: insertSql
+          });
+          console.log(insertResult);
+        },
+        onUpdateData(PostingData) {
+          var updateSql = "UPDATE POSTING_LIST SET "+
+                          "Source = '"+ PostingData.Source +"', "+
+                          "Code = '"+ PostingData.Code +"', "+
+                          "Name = '"+ PostingData.Name +"', "+
+                          "Status = '"+ PostingData.Status +"', "+
+                          "CustomerCode = '"+ PostingData.CustomerCode +"', "+
+                          "CustomerName = '"+ PostingData.CustomerName +"', "+
+                          "Address = '"+ PostingData.Address +"', "+
+                          "Location = '"+ PostingData.Location +"', "+
+                          "Nature = '"+ PostingData.Nature +"', "+
+                          "Caliber = '"+ PostingData.Caliber +"', "+
+                          "Nameplate = '"+ PostingData.Nameplate +"', "+
+                          "MeterType = '"+ PostingData.MeterType +"', "+
+                          "StampNo = '"+ PostingData.StampNo +"', "+
+                          "LastScale = '"+ PostingData.LastScale +"', "+
+                          "BeginScale = '"+ PostingData.BeginScale +"', "+
+                          "EndScale = '"+ PostingData.EndScale +"', "+
+                          "Amount = '"+ PostingData.Amount +"', "+
+                          "ArrearMoney = '"+ PostingData.ArrearMoney +"', "+
+                          "Description = '"+ PostingData.Description +"', "+
+                          "Remark = '"+ PostingData.Remark +"', "+
+                          "OperatedTime = '"+ PostingData.OperatedTime +"', "+
+                          "DispatchTime = '"+ PostingData.DispatchTime +"', "+
+                          "UseTime = '"+ PostingData.UseTime +"', "+
+                          "HandleTime = '"+ PostingData.HandleTime +"', "+
+                          "AuditTime = '"+ PostingData.AuditTime +"', "+
+                          "AuditTimes = '"+ PostingData.AuditTimes +"', "+
+                          "Files = '"+ PostingData.Files +"', "+
+                          "Handles = '"+ PostingData.Handles +"' "+
+                          "WHERE Id = '"+ PostingData.Id +"' AND TaskNo = '"+ PostingData.TaskNo +"'";
+
+          var updateResult = db.executeSqlSync({
+              name: 'Wsdatabase',
+              sql: updateSql
+          });
+          console.log(updateResult);
+        }
+      },
+      mounted: function() {
+        this.onGetPostingList();
+
+        if (api.pageParam.type == "claimTask") {
+          this.isClaim = true;
+          this.postingType = '4';
+
+        } else if (api.pageParam.type == "handle") {
+          this.isClaim = false;
+          this.postingType = '1';
+
+        }
+
+        this.onGetDataInit();
+      }
+    })
+  }
+  </script>
+</html>

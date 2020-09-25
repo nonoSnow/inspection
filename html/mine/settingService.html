@@ -1,0 +1,461 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>设置服务器</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui1.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/vant.css">
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: #FFF;
+            /*overflow: hidden;*/
+        }
+
+        .aui-bar-nav {
+            top: 0;
+            z-index: 1;
+            background-color: #fff;
+            color: #333333;
+            font-size: 0.9rem;
+            font-weight: normal;
+            font-stretch: normal;
+            letter-spacing: 0rem;
+        }
+
+        .aui-bar-nav .aui-btn .aui-iconfont {
+            color: #333333;
+            font-weight: 900;
+        }
+
+        .sureBtn {
+            border-radius: 2.5rem !important;
+            margin: 3rem auto;
+            justify-content: center;
+            height: 2.5rem !important;
+            line-height: 2.5rem !important;
+            width: 80%;
+            display: flex !important;
+            background: #4f79e8 !important;
+            color: #fff;
+            font-size: 18px !important;
+            outline: none;
+        }
+
+        .aui-list-item {
+            background: #fff !important;
+            padding-left: 0 !important;
+            border-bottom: 0.05rem solid #e6e6e6!important;
+        }
+
+        input {
+            outline: none;
+        }
+
+        .title {
+            width: 37% !important;
+            justify-content: flex-end !important;
+            padding-right: 0 !important;
+        }
+        /*地址样式设置*/
+
+        .aui-list-item .aui-row {
+            width: 100%;
+            line-height: 2.2rem;
+            padding: 0 0.5rem;
+        }
+
+        .aui-list-item .aui-row button {
+            background: #fff;
+            border-radius: 3px;
+            border: solid 1px #666666;
+            color: #333;
+            line-height: 1.5rem;
+        }
+        /*取消掉button的按钮边线*/
+
+        button {
+            outline: none;
+        }
+
+        .check1 {
+            width: 0.7rem;
+            height: 0.7rem;
+            margin: 0.8rem 0.3rem 0 0.3rem;
+        }
+
+        .checkTrue {
+            width: 0.7rem;
+            height: 0.7rem;
+            background: url('../../image/mine_frame/checkTrue.jpg');
+            background-size: 0.7rem 0.7rem;
+            margin: 0.8rem 0.3rem 0 0.3rem;
+        }
+
+        .checkFalse {
+            width: 0.7rem;
+            height: 0.7rem;
+            background: url('../../image/mine_frame/checkFalse.jpg');
+            background-size: 0.7rem 0.7rem;
+            margin: 0.8rem 0.3rem 0 0.3rem;
+        }
+
+        .select1 input {
+            width: 1rem;
+            height: 1rem;
+            margin: 0.6rem 0.3rem 0 0.3rem;
+        }
+
+        #footer {
+            background-color: rgba(255, 255, 255, 0.9);
+            position: absolute;
+            bottom: 5%;
+            width: 63vw;
+            left: 16vw;
+            /*left: 3rem;*/
+        }
+
+        #footer ul {
+            width: 12.35rem;
+            height: 2.2rem;
+            background-color: #ffffff;
+            box-shadow: 0rem 0rem 0.23rem 0rem rgba(0, 0, 0, 0.28);
+            border-radius: 1.1rem;
+            opacity: 0.9;
+            margin: 0 auto;
+        }
+
+        #footer ul li {
+            padding-top: 23px;
+            margin-top: 2px;
+            font-size: 12px;
+            background: url() no-repeat center 2px;
+            background-size: auto 20px;
+            text-align: center;
+            float: left;
+            /*margin: 0.1rem 0.91rem;*/
+        }
+
+        #footer ul li:nth-child(1) {
+            background-image: url(../../image/message_frame/delete_active.png);
+            margin: 0.1rem 1rem;
+        }
+
+        #footer ul li:nth-child(2) {
+            background-image: url(../../image/message_frame/sendMessage.png);
+            margin: 0.1rem 1rem;
+        }
+
+        #footer ul li:nth-child(3) {
+            background-image: url(../../image/mine_frame/net.jpg);
+            margin: 0.1rem 0.7rem;
+        }
+
+        #footer ul {
+            padding: 0 1rem;
+        }
+
+        .button_active {
+            background: #4F79E8!important;
+            color: #fff!important;
+            border-color: #4F79E8!important;
+        }
+
+        .aui-radio:checked,
+        .aui-radio.aui-checked,
+        .aui-checkbox:checked,
+        .aui-checkbox.aui-checked {
+            background-color: #4F79E8;
+            border: solid 1px #4f79e8;
+        }
+        /*.aui-radio {
+            width: 1rem;
+            height: 1rem;
+            position: absolute;
+            top: 0.65rem;
+            left: 0.5rem;
+        }*/
+
+        [v-cloak] {
+            display: none;
+        }
+        .aui-content {
+          font-size: 0.7rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='vueElement' v-cloak>
+        <header class="aui-bar aui-bar-nav aui-border-b" id="header">
+            <div class="aui-pull-left aui-btn" tapmode @click="api.closeWin()">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </div>
+            <div class="aui-title">设置服务器</div>
+        </header>
+        <div class="aui-content mine_List">
+            <ul class="aui-list" id="addressDemo">
+                <li class="aui-list-item" v-if='addressHistory.length > 0' v-for='(item,index) in addressHistory' :key='index'>
+                    <div class="aui-row">
+                        <div class="aui-col-xs-2 aui-text-right">地址{{index+1}}:</div>
+                        <div class="aui-col-xs-6"><input class="aui-padded-l-5 input_text" type="text" name="" :value="item.url" placeholder="请输入服务器地址" @blur='inputChange(item,$event)' @focus='api.hideProgress();'></div>
+                        <div class="aui-col-xs-1 check1" :class='{checkFalse:item.checkFalse,checkTrue:item.checkTrue}'></div>
+                        <div class="aui-col-xs-2 aui-text-center"><button type="button" name="button" :class='{button_active:item.buttonActive}' tapmode @click="checkNet(item)">检测</button></div>
+                        <div class="aui-col-xs-1 select1">
+                            <input class="aui-radio" type="radio" name='radio' :checked="item.isCheck" tapmode @click='selectRadio(item)'>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="footer">
+            <ul class="flex-wrap">
+                <li tapmode class="flex-con" tapmode @click="deleteAddress">删除</li>
+                <li tapmode class="flex-con" tapmode @click="addNewAddress">新增</li>
+                <li tapmode class="flex-con" tapmode @click="OpenAddress">启用地址</li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/diy/public.js"></script>
+<script type="text/javascript" src="../../script/remote.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/vue/fastclick.min.js"></script>
+<script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+<script type="text/javascript" src="../../script/vue/vant.min.js"></script>
+<script type="text/javascript">
+    var num = 0;
+    apiready = function() {
+        api.parseTapmode();
+        api.addEventListener({
+            name: 'changedFontSize'
+        }, function(ret, err) {
+            if (ret) {
+                changeFontSize();
+            }
+        });
+        api.parseTapmode();
+        var header = $api.byId('header');
+        // 实现沉浸式状态栏效果
+        $api.fixStatusBar(header);
+        Origami.fastclick(document.body) //消除vue的ios端点击延迟
+
+            // $api.rmStorage('addressHistory');
+        fnInVue();
+    };
+    // fnInVue();
+    function fnInVue() {
+        window.setServiceVue = new Vue({
+            el: '#vueElement', //不可以设置在body上面
+            data: {
+                addressHistory: [],
+                currentAddressUrl: $api.getStorage('OpenAddress') != undefined ? $api.getStorage('OpenAddress') : "",
+                inputValue: "",
+                currentSelctAddress: null,
+            },
+            methods: {
+                initServiceUrl:function() {
+                    var _this = this;
+                    var addressHistory = $api.getStorage('addressHistory');
+                    if (addressHistory != undefined && addressHistory != null && addressHistory != '') {
+                        _this.addressHistory = addressHistory;
+                    }
+                },
+                inputChange:function(data, event) {
+                    this.addressHistory.forEach(function(item, index) {
+                        if (item.url == event.target.value) {
+                            vant.Toast('改地址已存在');
+                            return
+                        }
+                    })
+                    data.url = event.target.value;
+                },
+                selectRadio:function(params) {
+                    params.isCheck = params.isCheck == false ? true : true;
+                    this.currentSelctAddress = params;
+                    this.addressHistory.forEach(function(item, index) {
+                        if (params.url != item.url) {
+                            item.isCheck = false;
+                        }
+                    });
+                },
+                addNewAddress:function() {
+                    this.addressHistory.push({
+                        url: "",
+                        isCheck: false,
+                        checkFalse: false,
+                        checkTrue: false,
+                        buttonActive: false, //检测按钮选中背景色
+                    });
+                },
+                checkNet:function(item) {
+                    // 检测地址，检测成功后添加到缓存中
+                    // 按钮添加active颜色，移除不是当前元素的所有button的active颜色
+                    var _this = this;
+                    item.buttonActive = true;
+                    var headers = {};
+                    headers["Content-Type"] = 'application/json';
+                    var testData = {
+                        body: JSON.stringify({
+
+                        })
+                    };
+                    var url = 'http://' + item.url + '/api/services/app/PushInterface/ConnectionTest';
+                    api.showProgress({
+                        title: '加载中...',
+                        modal: false
+                    });
+                    api.ajax({
+                        url: url,
+                        method: 'post',
+                        timeout: 100,
+                        dataType: 'json',
+                        returnAll: false,
+                        headers: headers,
+                        data: testData
+                    }, function(ret, err) {
+                        api.hideProgress();
+                        if (ret) {
+                            if (ret.result && ret.success) {
+                                item.buttonActive = false;
+                                item.checkFalse = false;
+                                item.checkTrue = true;
+                                var addressHistory = $api.getStorage('addressHistory');
+                                if (addressHistory == undefined || addressHistory == null) {
+                                    addressHistory = [];
+                                }
+                                if (addressHistory.length == 0) {
+                                    addressHistory.push(item);
+                                } else {
+                                  var number = 0;
+                                  addressHistory.forEach(function(item1,index){
+                                    if(item1.url != item.url){
+                                      number++;
+                                      if(number == addressHistory.length){
+                                          addressHistory.push(item);
+                                      }
+                                    }
+                                  });
+                                }
+                                $api.setStorage('addressHistory', addressHistory);
+                            }
+                        } else if (err) {
+                            vant.Toast('地址输入错误');
+                            item.buttonActive = false;
+                            item.checkFalse = true;
+                            item.checkTrue = false;
+                        }
+                    });
+                },
+                OpenAddress:function() {
+                    var _this = this;
+                    if (_this.currentSelctAddress == null) {
+                        vant.Toast('请选择要启用的地址');
+                        return
+                    }
+                    if (_this.currentSelctAddress.checkFalse) {
+                        api.toast({
+                            msg: '该地址不可用',
+                            duration: 2000,
+                            location: 'bottom'
+                        });
+                        return false;
+                    }
+                    if (_this.currentSelctAddress.checkTrue) {
+                        vant.Dialog.confirm({
+                            title: '提示',
+                            message: '确定启用服务器地址吗？'
+                        }).then(function(){
+                            var addressValue = _this.currentSelctAddress.url;
+                            var addressHistory = $api.getStorage('addressHistory');
+                            addressHistory.forEach(function(item,index){
+                              if(item.url == addressValue){
+                                item.isCheck = true;
+                              }
+                            });
+                            $api.setStorage('addressHistory',addressHistory);
+                            $api.setStorage('OpenAddress', addressValue);
+                            $api.setStorage('apiUrl', addressValue);
+                            api.sendEvent({
+                                name: 'changeApiUrl',
+                            });
+                            api.toast({
+                                msg: '启用成功',
+                                duration: 2000,
+                                location: 'bottom'
+                            });
+                        }).catch(function(){});
+                    } else {
+                        vant.Toast('请先检测服务器地址');
+                    }
+                },
+                deleteAddress:function() {
+                    var _this = this;
+
+                    if (_this.currentSelctAddress != null) {
+                        vant.Dialog.confirm({
+                            title: '提示',
+                            message: '确定删除服务器地址吗？'
+                        }).then(function(){
+                            // 删除一个地址后，后面的地址名称相应的改变
+                            var deleteIndex = _this.addressHistory.findIndex(function(item) {
+                                return index = item.url == _this.currentSelctAddress.url ? item.url == _this.currentSelctAddress.url : null
+                            });
+                            if (deleteIndex != null) {
+                                var addressHistory = $api.getStorage('addressHistory');
+                                if (addressHistory.length == 1) {
+                                    vant.Dialog.confirm({
+                                        title: '提示',
+                                        message: '这是最后一个服务器地址，确定删除吗？'
+                                    }).then(function(){
+                                        _this.deleteLocalData(addressHistory, deleteIndex);
+                                    }).catch(function(){});
+                                } else {
+                                    _this.deleteLocalData(addressHistory, deleteIndex);
+                                }
+                            }
+
+                        }).catch(function(){});
+
+                    } else {
+                        vant.Toast('请选择要删除的地址');
+                    }
+                },
+                deleteLocalData:function(addressHistory, deleteIndex) {
+                    var _this = this;
+                    _this.addressHistory.splice(deleteIndex, 1);
+                    var dIndex = addressHistory.findIndex(function(item) {
+                        return index = (item.url == _this.currentSelctAddress.url ? item.url == _this.currentSelctAddress.url : null);
+                    });
+                    if (dIndex != null) {
+                        addressHistory.splice(dIndex, 1);
+                    }
+                    $api.setStorage('addressHistory', addressHistory);
+                    var OpenAddress = $api.getStorage('OpenAddress');
+                    $api.setStorage('isChangeApiUrl', "true");
+                    if (OpenAddress == _this.currentSelctAddress.url) {
+                        $api.setStorage('apiUrl', null);
+                    }
+                    api.sendEvent({
+                        name: 'changeApiUrl',
+                    });
+                    _this.currentSelctAddress = null;
+                }
+            },
+            mounted: function() {
+                this.initServiceUrl();
+            }
+        });
+    }
+</script>
+
+</html>

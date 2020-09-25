@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>稽核任务详情</title>
+    <link rel="stylesheet" type="text/css" href="../public/css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../public/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../public/css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../public/css/vant.css" />
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: #F3F3F3;
+        }
+
+        .aui-bar-nav {
+            top: 0;
+            z-index: 1;
+            background: linear-gradient(90deg, rgba(46, 142, 250, 1), rgba(49, 89, 235, 1));
+            color: #FFF;
+            font-size: 0.95rem;
+            font-weight: normal;
+            font-stretch: normal;
+            letter-spacing: 0rem;
+        }
+
+        .aui-bar-nav .aui-btn .aui-iconfont {
+            color: #FFF;
+            font-weight: 900;
+        }
+
+        .aui-bar-nav .aui-pull-right {
+            font-size: 0.95rem;
+        }
+
+        .flex-con {
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+        .info-title {
+          width: 100%;
+          background-color: #FFFFFF;
+        }
+
+        .info-title-cont {
+          width: 96%;
+          line-height: 57.5px;
+          margin: 0px 2%;
+        }
+
+        .title-cont-title {
+          color: #1F1F1F;
+          font-size: 18px;
+          display: inline-block;
+        }
+
+        .title-cont-time {
+          color: #C5C5C5;
+          font-size: 14px;
+          display: inline-block;
+          float: right;
+        }
+
+        .aui-content {
+            height: 100%;
+            margin-bottom: 2.5rem;
+        }
+
+        .content {
+            margin: .5rem 1rem;
+            background-color: #fff;
+            border-radius: 0.8rem;
+            padding-top: .5rem;
+            padding-bottom: .9rem;
+            margin-bottom: 5rem;
+        }
+
+        .row {
+            margin: 0rem 25px 0rem 25px;
+            line-height: 2rem;
+            border-bottom: 1px solid #F2F2F2;
+        }
+
+        .text-left {
+            width: 38%;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+
+        .text-left-title {
+            display: inline-block;
+            text-align: justify;
+            text-align-last: justify;
+            width: 90%;
+        }
+
+        .text-right {
+            margin-left: 0px;
+            font-size: 0.9rem;
+            color: #656265;
+            display: inline-block;
+            width: calc(60% - 0px);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            vertical-align: top;
+            padding-left: 0.2rem;
+        }
+
+        .images {
+            vertical-align: text-top;
+        }
+
+        .images>img {
+            width: 1.05rem;
+            height: 0.85rem;
+            float: right;
+        }
+
+        .addressIcon {
+            background: url(./image/dingwei.png) no-repeat 0 0;
+            background-size: 100% 100%;
+            width: .6rem;
+            height: .7rem;
+            display: inline-block;
+        }
+
+        .textColor {
+            color: #2045FF;
+        }
+
+        .photoList {
+            margin-top: 8px;
+            /*margin-bottom: 14px;*/
+        }
+
+        .phont {
+            width: 3.6rem;
+            height: 2.8rem;
+            position: relative;
+            display: inline-block;
+            margin-right: .7rem;
+        }
+
+        .phont img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .fj-item {
+            display: inline-block;
+            width: 30%;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #707070;
+            position: relative;
+        }
+
+        .video-div {
+            margin-right: 5%;
+        }
+
+
+        #footer {
+          width: 100%;
+          height: 5rem;
+          border-top: 1px solid #CCCCCC;
+          box-sizing: border-box;
+          padding: 2%;
+        }
+
+        .footer-title {
+          width: 100%;
+          text-align: left;
+        }
+
+        .footer-title-text {
+          font-size: 18px;
+          color: #1F1F1F;
+        }
+
+        .footer-title-cont {
+          font-size: 18px;
+          color: #626262;
+        }
+
+        .aui-progress-bar{
+          width: 50%; background-image: linear-gradient(to right, #6DE5A5 , #00D665);border-radius: 7px;
+        }
+
+        .activityStatus {
+          color: #00C45D;
+        }
+
+        .progress-text {
+          width: 100%;
+          height: auto;
+          text-align: center;
+          font-size: 14px;
+        }
+
+        .submit-text {
+          display: inline-block;
+          float: left;
+          text-align: left;
+        }
+
+        .examine-text {
+          text-align: left;
+        }
+
+        .end-text {
+          display: inline-block;
+          float: right;
+          text-align: left;
+        }
+
+        .footer-time {
+          font-size: 10px;
+          color: #ACACAC;
+        }
+    </style>
+  </head>
+  <body>
+      <div id="wrap" class="flex-wrap flex-vertical">
+        <header class="aui-bar aui-bar-nav" id="header">
+            <div class="aui-pull-left aui-btn" tapmode @click='onBack'>
+                <span class="aui-iconfont aui-icon-left"></span>
+            </div>
+            <div class="aui-title">任务详情</div>
+        </header>
+
+        <div class="info-title">
+          <div class="info-title-cont">
+            <span class="title-cont-title">{{taskTypeName}}</span>
+            <span class="title-cont-time">{{taskTypeTime}}</span>
+          </div>
+        </div>
+
+        <div class="flex-con aui-content">
+          <div class="content">
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">户名</span>:
+                </div>
+                <div class="text-right">
+                    <span>{{CustomerName}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">户号</span>:
+                </div>
+                <div class="text-right">
+                    <span>{{CustomerCode}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">用户地址</span>:
+                </div>
+                <div class="text-right">
+                    <span>{{Address}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">水表位置</span>:
+                </div>
+                <div class="text-right">
+                    <span>{{TableLocation}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">用水性质</span>:
+                </div>
+                <div class="text-right">
+                    <span>{{Nature}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">口径</span>:
+                </div>
+                <div class="text-right">
+                    <span>{{Caliber}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">稽核止度</span>:
+                </div>
+                <div class="text-right">
+                    <span>{{AuditReadScale}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">稽核状态</span>:
+                </div>
+                <div class="text-right">
+                    <span>{{AuditStatus}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">备注</span>:
+                </div>
+                <div class="text-right">
+                    <span>{{Remark}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">处理照片</span>
+                </div>
+                <div class="text-right images">
+                    <img src="./image/paizhao.png" alt="">
+                </div>
+                <div class="photoList">
+                    <div class="phont" v-for="(item,index) in phoneList" :key="index">
+                        <img :src="item" alt="" @click="pBrowserPicture(index, phoneList)">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">附件</span>
+                </div>
+                <div class="text-right images">
+                    <img src="./image/fujian.png" alt="">
+                </div>
+                <div class="photoList">
+                    <div class="fj-item video-div" @click='onPlayVideo' v-if='showVideoDiv'>
+                        <div class="" style="width: 100%; height: 2.9rem; position: relative;">
+                            <img src="./image/video.png" style="width: 50%;position: absolute; top: 50%; left: 50%;margin-top: -15%;margin-left:-25%;" alt="" />
+                        </div>
+                        视频文件
+                    </div>
+                    <div class="fj-item audio-div" @click='onPlayAudio' v-if='showAudioDiv'>
+                        <div class="" style="width: 100%; height: 2.9rem; position: relative;">
+                            <img src="./image/audio.png" style="width: 25%;position: absolute; top: 50%; left: 50%;margin-top: -15%;margin-left:-12.5%;" alt="" />
+                        </div>
+                        音频文件
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="border-bottom: none;">
+                <p>
+                    <i class="addressIcon"></i>
+                    <span class="textColor">{{Location}}</span>
+                </p>
+            </div>
+          </div>
+        </div>
+        <footer class="aui-bar aui-bar-tab" id="footer">
+            <div class="footer-title">
+              <span class="footer-title-text">任务进度：</span>
+              <span class="footer-title-cont">{{taskProgress}}</span>
+            </div>
+            <div class="aui-progress aui-progress-xs" style="margin-top: 10px;margin-bottom:5px;">
+              <div class="aui-progress-bar" ref='progressbg'></div>
+            </div>
+            <div class="progress-text">
+              <span class="submit-text">
+                <span>提交</span>
+                <div class="footer-time submit-time">{{submitTime}}</div>
+              </span>
+              <span class="examine-text">
+                <span :class="{activityStatus:taskStatus==true}">审核中</span>
+                <div class="footer-time examine-time" :class="{activityStatus:taskStatus==true}">{{examineTime}}</div>
+              </span>
+              <span class="end-text">
+                <span :class="{activityStatus:taskStatus==false}">已结束</span>
+                <div class="footer-time end-time" :class="{activityStatus:taskStatus==false}">{{endTime}}</div>
+              </span>
+            </div>
+        </footer>
+      </div>
+  </body>
+  <script type="text/javascript" src="../public/script/api.js"></script>
+  <script type="text/javascript" src="../public/script/common.js"></script>
+  <script type="text/javascript" src="../public/script/moment.js"></script>
+  <script type="text/javascript" src="../public/script/diy/public.js"></script>
+  <script type="text/javascript" src="../public/script/vue/fastclick.min.js"></script>
+  <script type="text/javascript" src="../public/script/vue/vue.min.js"></script>
+  <script type="text/javascript" src="../public/script/vue/vant.min.js"></script>
+  <script type="text/javascript" src="../public/script/vue/vueTouch.js"></script>
+  <script type="text/javascript" src="../public/script/publicMethod.js"></script>
+  <script type="text/javascript">
+    apiready = function() {
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+
+        fnIntVue();
+        Origami.fastclick(document.body) //消除vue的ios端点击延迟
+    }
+
+    function fnIntVue() {
+      window.ApplyTaskVue = new Vue({
+        el: '#wrap',
+        data: {
+            taskTypeName: '',
+            taskTypeTime: '',
+            CustomerName: '',
+            CustomerCode: '',
+            Address: '',
+            TableLocation: '',
+            Nature: '',
+            Caliber: '',
+            AuditReadScale: '',
+            AuditStatus: '',
+            Remark: '',
+            phoneList: '',
+            showVideoDiv: '',
+            videoPath: '',
+            showAudioDiv: '',
+            audioPath: '',
+            Location: '',
+
+            taskStatus: true,
+            taskProgress: '',      //任务进度
+            submitTime: '',        //提交时间
+            examineTime: '',       //审核时间
+            endTime: '',           //结束时间
+
+            TaskData: api.pageParam.data,  //云平台传的任务信息
+        },
+        methods: {
+          onBack() {
+            api.closeWin({});
+          },
+          onPlayVideo() {
+            api.openVideo({
+                url: this.videoPath
+            });
+          },
+          onPlayAudio() {
+            var audioStreamer = api.require('audioStreamer');
+            audioStreamer.openPlayer({
+                path: this.audioPath
+            }, function(ret) {
+                if (ret.status) {
+                    console.log(JSON.stringify(ret));
+                }
+            });
+          },
+          onGetTaskData() {
+            var _that = this;
+            var body = {
+                'Id': this.TaskData.thirdTaskId
+            };
+            fnPost('MMS002', body, 'application/json', false, false, function(ret, err) {
+              api.hideProgress();
+              if (ret) {
+                if (ret.Status == '0') {
+                    var deailObj = JSON.parse(ret.Data);
+                }
+              }
+            });
+          },
+          onShowHtml(taskDetail) {
+            this.taskTypeName = taskDetail.Name;
+            this.taskTypeTime = taskDetail.HandleTime.substring(0,10);
+            this.CustomerCode = taskDetail.CustomerCode;
+            this.CustomerName = taskDetail.CustomerName;
+            this.Address = taskDetail.Address;
+            this.Location = taskDetail.Location;
+            this.Nature = taskDetail.Nature;
+            this.Caliber = taskDetail.Caliber;
+            this.submitTime = taskDetail.HandleTime.substring(0,10);
+            this.Remark = taskDetail.Handles[0].Remark;
+
+            if (taskDetail.Status == '2') {
+              //待审核
+              this.taskProgress = '待审核';
+
+              this.taskStatus = true;
+              this.$refs.progressbg.style.width = "50%";
+
+              this.examineTime = taskDetail.Handles[0].OperatedTime.substring(0,10);
+              this.endTime = '';
+            } else {
+              //已结束
+              this.taskProgress = '已结束(' + taskDetail.StatusName + ')';
+
+              this.taskStatus = false;
+              this.$refs.progressbg.style.width = "100%";
+
+              this.examineTime = taskDetail.Handles[1].OperatedTime.substring(0,10);
+              this.endTime = taskDetail.Handles[0].OperatedTime.substring(0,10);
+            }
+
+            if (taskDetail.Code == '45') {
+              this.AuditReadScale = taskDetail.AuditReadScale;
+              if (taskDetail.AuditStatus == '0') {
+                this.AuditStatus = '异常';
+              } else if(taskDetail.AuditStatus == '1') {
+                this.AuditStatus = '正常';
+              } else if(taskDetail.AuditStatus == '5') {
+                this.AuditStatus = '未见表';
+              }
+
+              for (var i = 0; i < taskDetail.Files.length; i++) {
+                this.phoneList.push("http://" + $api.getStorage('apiUrl') + taskDetail.Files[i].Path);
+              }
+            } else if (taskDetail.Code == '43') {
+              this.RecordEndScale = taskDetail.RecordEndScale;
+              this.RecordAmount = taskDetail.RecordAmount;
+
+              for (var i = 0; i < taskDetail.Files.length; i++) {
+                var item = taskDetail.Files[i];
+                var fileType = item.Path.substring(item.Path.lastIndexOf('.'));
+                if (fileType == '.jpg' || fileType == '.png') {
+                  this.phoneList.push("http://" + $api.getStorage('apiUrl') + item.Path);
+                } else if (fileType == '.mp4' || fileType == '.avi' || fileType == '.mov') {
+                  this.videoPath = "http://" + $api.getStorage('apiUrl') + item.Path;
+                  this.showVideoDiv = true;
+                } else {
+                  this.audioPath = "http://" + $api.getStorage('apiUrl') + item.Path;
+                  this.showAudioDiv = true;
+                }
+              }
+            }
+
+          },
+        },
+        mounted: function() {
+          this.onGetTaskData();
+        }
+      })
+    }
+  </script>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>删除消息frame页面</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui1.css" />
+    <link rel="stylesheet" type="text/css" href="../css/dialog.css" />
+    <link rel="stylesheet" type="text/css" href="../css/dialogAlert.css" />
+    <link rel="stylesheet" type="text/css" href="../css/vant.css" />
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript" src="../script/zepto.js"></script>
+<script type="text/javascript" src="../script/aui-dialog.js"></script>
+<script type="text/javascript" src="../script/vue/vue.min.js"></script>
+<script type="text/javascript" src="../script/vue/vant.min.js"></script>
+<script>
+    var dialog = new auiDialog();
+    apiready = function() {
+        api.addEventListener({
+            name: 'changedFontSize'
+        }, function(ret, err) {
+            if (ret) {
+                changeFontSize();
+            }
+        });
+        //删除弹出确认提示框
+        // dialog.alert({
+        //     title: api.pageParam.msg,
+        //     buttons: ['确定', '取消']
+        // }, function(ret) {
+        //     if (ret.buttonIndex == 1) {
+        //         if (api.pageParam.jsfun != "") {
+        //             if (api.pageParam.frameName != "") {
+        //                 api.execScript({
+        //                     name: api.pageParam.winName,
+        //                     frameName: api.pageParam.frameName,
+        //                     script: api.pageParam.jsfun
+        //                 });
+        //             } else {
+        //                 api.sendEvent({
+        //                     name: 'deleteMessage',
+        //                     extra: {}
+        //                 });
+        //             }
+        //         }
+        //         setTimeout(function() {
+        //             api.closeFrame({});
+        //         }, 100);
+        //     } else if (ret.buttonIndex == 2) {
+        //         setTimeout(function() {
+        //             api.closeFrame({});
+        //         }, 100);
+        //     }
+        // })
+        if (api.pageParam != undefined) {
+            if (api.pageParam.type == 'closeApp') {
+                vant.Dialog.alert({
+                    title: '提示',
+                    message: '没有开起GPS定位，即将强制退出登录！'
+                }).then(() => {
+                    api.closeWidget({
+                        id: 'A6093184835886',
+                        retData: {
+                            name: 'closeWidget'
+                        },
+                        animation: {
+                            type: 'flip',
+                            subType: 'from_bottom',
+                            duration: 500
+                        },
+                        silent: true
+                    });
+                });
+            } else if (api.pageParam.type == 'ClearLocalCompletedData') {
+                vant.Dialog.confirm({
+                    title: '提示',
+                    message: '确定删除本地已上传的数据和照片吗?'
+                }).then(() => {
+                  onClearLocalDataAllcompletedData();
+                    api.closeFrame({
+                        name: 'delete_frame'
+                    });
+                }).catch(() => {
+                    api.closeFrame({
+                        name: 'delete_frame'
+                    });
+
+                })
+
+            } else if (api.pageParam.type == "updateCbData") { //首页更新抄表管家数据提示
+                vant.Dialog.alert({
+                    title: '提示',
+                    message: '抄表管家里面还存在没有上传的数据，请完成上传以后再更进行数据更新',
+                    showConfirmButton:false,
+                    showCancelButton:true
+                }).catch(() => {
+                  setTimeout(function() {
+                      api.closeFrame({});
+                  }, 100);
+                });
+
+            } else {
+                dataQuery(true, function(ret) { //注销提示
+                    if (ret.status) {
+                      vant.Dialog.alert({
+                          title: '提示',
+                          message: "" + ret.appName + "里面还存在没有上传的数据，请完成上传以后再注销",
+                          showConfirmButton:false,
+                          showCancelButton:true
+                      }).catch(() => {
+                        setTimeout(function() {
+                            api.closeFrame({});
+                        }, 100);
+                      });
+                    } else {
+
+                      vant.Dialog.confirm({
+                          title: '提示',
+                          message: api.pageParam.msg
+                      }).then(() => {
+                        if (api.pageParam.jsfun != "") {
+                            if (api.pageParam.frameName != "") {
+                                api.execScript({
+                                    name: api.pageParam.winName,
+                                    frameName: api.pageParam.frameName,
+                                    script: api.pageParam.jsfun
+                                });
+                            } else {
+                                api.sendEvent({
+                                    name: 'deleteMessage',
+                                    extra: {}
+                                });
+                            }
+                        }
+                        setTimeout(function() {
+                            api.closeFrame({});
+                        }, 100);
+                      }).catch(() => {
+                        setTimeout(function() {
+                            api.closeFrame({});
+                        }, 100);
+
+                      })
+                    }
+                });
+            }
+        }
+
+    };
+</script>
+
+</html>

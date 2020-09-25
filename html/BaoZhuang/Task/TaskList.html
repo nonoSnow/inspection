@@ -1,0 +1,303 @@
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>任务列表</title>
+    <link rel="stylesheet" type="text/css" href="../../public/css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/vant.css" />
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: #F3F3F3;
+        }
+
+        .aui-bar-nav {
+            top: 0;
+            z-index: 1;
+            background: linear-gradient(90deg, rgba(46, 142, 250, 1), rgba(49, 89, 235, 1));
+            color: #FFF;
+            font-size: 0.95rem;
+            font-weight: normal;
+            font-stretch: normal;
+            letter-spacing: 0rem;
+        }
+
+        .aui-bar-nav .aui-btn .aui-iconfont {
+            color: #FFF;
+            font-weight: 900;
+        }
+
+        .flex-con {
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            background-color: #FFF;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+        .aui-bar-nav .aui-pull-right {
+            font-size: 0.95rem;
+        }
+
+        .item {
+            width: 90%;
+            height: auto;
+            margin: auto;
+            padding: 0.5rem 0rem;
+            border-bottom: 1px solid #CCC;
+        }
+
+        .text-left {
+            width: 4.5rem;
+            font-size: 0.9rem;
+            float: left;
+        }
+
+        .text-left-title {
+            display: inline-block;
+            text-align: justify;
+            text-align-last: justify;
+            width: 90%;
+        }
+
+        .text-right {
+            width: calc(100% - 7rem);
+            margin-left: 0px;
+            font-size: 0.9rem;
+            color: #A7A7A7;
+            padding-left: 0.2rem;
+            float: left;
+        }
+
+        .item-item {
+            width: 100%;
+            margin-bottom: 0.5rem;
+            display: flex;
+        }
+
+        .item-text {
+            width: 2.5rem;
+            float: right;
+            font-size: 0.7rem;
+            color: #2045FF;
+            margin-top: 0.15rem;
+            text-align: right;
+        }
+
+        .item-icon {
+            font-size: 0.9rem;
+            color: #CCC;
+            float: right;
+            display: block;
+            width: 2.5rem;
+            text-align: right;
+        }
+
+        .aui-searchbar {
+            background-color: #fff;
+            height: auto!important;
+            margin-bottom: 0.5rem;
+        }
+
+        .aui-searchbar .aui-searchbar-input {
+            position: relative;
+            width: 90%;
+            height: 2rem;
+            margin: 0.5rem 5%;
+            background-color: #fff;
+            border: 0.03rem solid #C4C4C4;
+            border-radius: 1rem;
+        }
+
+        .aui-searchbar .aui-searchbar-input #search-input {
+            height: 100%;
+        }
+
+        .aui-searchbar .aui-searchbar-input .search_suer {
+            position: absolute;
+            right: 1rem;
+            top: 0.4rem;
+            width: 1rem;
+            height: 1rem;
+            background: url("../image/sousuo.png") no-repeat center;
+            background-size: 0.83rem 0.83rem;
+        }
+
+        .aui-searchbar .aui-searchbar-input .search_shanchu {
+            position: absolute;
+            right: 4rem;
+            top: 0.4rem;
+            width: 1rem;
+            height: 1rem;
+            background: url("../image/shanchu.png") no-repeat center;
+            background-size: 0.83rem 0.83rem;
+        }
+
+        .aui-searchbar .aui-searchbar-input .search_shu {
+            position: absolute;
+            right: 3rem;
+            top: 0.4rem;
+            width: 1px;
+            height: 1rem;
+            background: #C4C4C4;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header class="aui-bar aui-bar-nav" id="header">
+            <div class="aui-pull-left aui-btn" tapmode @click='onBack'>
+                <span class="aui-iconfont aui-icon-left"></span>
+            </div>
+            <div class="aui-title">事务待办</div>
+        </header>
+
+        <div class="aui-searchbar">
+            <div class="aui-searchbar-input aui-border-radius">
+                <input type="search" style='height: 100%;' placeholder="请输入工程编号搜索" v-model='searchValue'>
+                <div class="search_shanchu" v-if='searchValue != ""' tapmode @click="onDelete"></div>
+                <div class="search_shu"></div>
+                <div class="search_suer" tapmode @click="onSearch"></div>
+            </div>
+        </div>
+
+        <div class="flex-con">
+            <div class="item" v-if='item.needDealtNum > 0' v-for='(item, index) in projectList' @click='onOpenTaskType'>
+                <div class="item-item">
+                    <div class="text-left">
+                        <span class="text-left-title">工程类型</span>:
+                    </div>
+                    <div class="text-right">
+                        {{item.projectType}}
+                    </div>
+                    <span class="item-text" v-if='taskType == "handle"'>
+                      待办理
+                    </span>
+                    <span class="item-text" v-if='taskType == "detail"'>
+                      已办理
+                    </span>
+                </div>
+                <div class="item-item">
+                    <div class="text-left">
+                        <span class="text-left-title">环节名称</span>:
+                    </div>
+                    <div class="text-right">
+                        <span>{{item.projectName}}</span>
+                    </div>
+                    <span class="aui-iconfont aui-icon-right item-icon"></span>
+                </div>
+                <div class="item-item" style="margin-bottom: 0rem;">
+                    <div class="text-left">
+                        <div v-if='taskType == "handle"'><span class="text-left-title">待办数量</span>:</div>
+                        <div  v-if='taskType == "detail"'><span class="text-left-title">已办数量</span>:</div>
+                    </div>
+                    <div class="text-right">
+                        <span>{{item.needDealtNum}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="../../public/script/api.js"></script>
+<script type="text/javascript" src="../../public/script/common.js"></script>
+<script type="text/javascript" src="../../public/script/remote.js"></script>
+<script type="text/javascript" src="../../public/script/publicMethod.js"></script>
+<script type="text/javascript" src="../../public/script/vue/fastclick.min.js"></script>
+<script type="text/javascript" src="../../public/script/vue/vue.min.js"></script>
+<script type="text/javascript" src="../../public/script/vue/vant.min.js"></script>
+<script type="text/javascript" src="../../public/script/vue/vueTouch.js"></script>
+<script type="text/javascript" src="../../public/script/moment.js"></script>
+<script type="text/javascript" src="../../public/script/diy/public.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+
+
+        fnIntVue();
+        Origami.fastclick(document.body) //消除vue的ios端点击延迟
+    };
+
+    function fnIntVue() {
+        window.TaskVue = new Vue({
+            el: '#wrap',
+            data: {
+                taskType: api.pageParam.type,
+
+                searchValue: '',
+                projectList: [{
+                    projectType: '非居民用水用户工程非居民用水用户工程非居民用水用户工程非居民用水用户工程',
+                    projectName: '决算审核',
+                    needDealtNum: '24'
+                }, {
+                    projectType: '零星用水工程',
+                    projectName: '勘查分配',
+                    needDealtNum: '52'
+                }, {
+                    projectType: '居民用水用户工程',
+                    projectName: '材料审核',
+                    needDealtNum: '12'
+                }, {
+                    projectType: '零星用水工程',
+                    projectName: '确认安装',
+                    needDealtNum: '55'
+                }, {
+                    projectType: '零星用水工程',
+                    projectName: '工程施工',
+                    needDealtNum: '0'
+                }, {
+                    projectType: '零星用水工程',
+                    projectName: '申请验收',
+                    needDealtNum: '29'
+                }, {
+                    projectType: '零星用水工程',
+                    projectName: '验收申请',
+                    needDealtNum: '8'
+                }, {
+                    projectType: '零星用水工程',
+                    projectName: '安装竣工',
+                    needDealtNum: '0'
+                }, {
+                    projectType: '零星用水工程',
+                    projectName: '验收通过',
+                    needDealtNum: '26'
+                }]
+            },
+            methods: {
+                onBack() {
+                    api.closeWin({});
+                },
+                onDelete() {
+                    this.searchValue = '';
+                },
+                onSearch() {
+                    console.log('onSearch');
+                },
+                onOpenTaskType() {
+                    var _that = this;
+                    api.openWin({
+                        name: 'TaskTypeList',
+                        url: './TaskTypeList.html',
+                        pageParam: {
+                            type: _that.taskType
+                        }
+                    });
+
+                }
+            },
+            mounted: function() {
+              console.log(this.taskType);
+            }
+        })
+    }
+</script>
+
+</html>

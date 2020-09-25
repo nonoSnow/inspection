@@ -1,0 +1,22 @@
+.task-item-label {
+  width: 2rem;
+  height: 2rem;
+}
+
+.task-icon {
+  height: 1rem;
+}
+
+.task-item-overdue {
+  background: rgba(255,105,102,0.16);
+  border: 1px solid #FF6966;
+  border-radius: 0.2rem;
+  padding: 0.3rem 0.4rem;
+  color: #FF6966;
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  background-color: #E6E6E6;
+}

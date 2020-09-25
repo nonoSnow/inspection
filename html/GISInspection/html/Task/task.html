@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>任务</title>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/public.css">
+    <link rel="stylesheet" type="text/css" href="../../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../../css/task.css">
+  </head>
+  <body>
+    <div class="flex-wrap flex-vertical height100">
+      <header class="aui-bar aui-bar-nav aui-bar-light bgi-none" id="header">
+          <div class="aui-title">任务</div>
+      </header>
+
+      <div class="header-type display-flex text-cent line-height25 color-666">
+        <div class="flex1 header-type-item color-598" tapmode onclick="onMenu(0)">
+            <span class="line-height1">
+              进行中
+              <div class="type-line bgc-blue margin-top3 width60"></div>
+            </span>
+        </div>
+        <div class="flex1 header-type-item" tapmode onclick="onMenu(1)">
+            <span class="line-height1">
+              待接收
+              <div class="type-line margin-top3 width60"></div>
+            </span>
+        </div>
+        <div class="flex1 header-type-item" tapmode onclick="onMenu(2)">
+            <span class="line-height1">
+              已暂停
+              <div class="type-line margin-top3 width60"></div>
+            </span>
+        </div>
+        <div class="flex1 header-type-item" tapmode onclick="onMenu(3)">
+            <span class="line-height1">
+              已完成
+              <div class="type-line margin-top3 width60"></div>
+            </span>
+        </div>
+      </div>
+
+      <div class="flex-con flex-content height100 bgc-f3">
+        <ul class="aui-content-padded">
+          <li class="padding75 bgc-ff border-radius4 relative line-height1">
+              <img src="../../image/plan.png" class='task-item-label absolute right75 top0' alt="">
+              <div class="aui-list-item-inner block font-S9">
+                <div class="aui-list-item-title display-flex">
+                  <img src="../../image/task-icon.png" class='task-icon' alt="">
+                  <span class="margin-left3 font-w4">阳光小区巡检计划</span>
+                </div>
+                <div class="margin-top10 font-S75 color-666">实际开始：2020-09-24 9:00</div>
+                <div class="margin-top6 font-S75 color-666 relative">
+                  预计完成：2020-09-24 18:00
+                  <div class="absolute bottom0 right0 task-item-overdue" style="">
+                    超期 8.3h
+                  </div>
+                </div>
+                <div class="line margin-top75 margin-bot5"></div>
+                <div class="display-flex font-S8">
+                  <div class="flex1 text-cent border-right">
+                    暂停
+                  </div>
+                  <div class="flex1 text-cent">
+                    完成
+                  </div>
+                </div>
+              </div>
+          </li>
+          <li class="padding75 bgc-ff border-radius4 relative line-height1 margin-top75">
+              <img src="../../image/temporary.png" class='task-item-label absolute right75 top0' alt="">
+              <div class="aui-list-item-inner block font-S9">
+                <div class="aui-list-item-title display-flex">
+                  <img src="../../image/task-icon.png" class='task-icon' alt="">
+                  <span class="margin-left3 font-w4">阳光小区巡检计划</span>
+                </div>
+                <div class="margin-top10 font-S75 color-666">实际开始：2020-09-24 9:00</div>
+                <div class="margin-top6 font-S75 color-666 relative">
+                  预计完成：2020-09-24 18:00
+                  <div class="absolute bottom0 right0 task-item-overdue" style="">
+                    超期 8.3h
+                  </div>
+                </div>
+                <div class="line margin-top75 margin-bot5"></div>
+                <div class="display-flex font-S8">
+                  <div class="flex1 text-cent border-right">
+                    暂停
+                  </div>
+                  <div class="flex1 text-cent">
+                    完成
+                  </div>
+                </div>
+              </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </body>
+  <script type="text/javascript" src="../../../public/script/api.js"></script>
+  <script type="text/javascript" src="../../../public/script/common.js"></script>
+  <script type="text/javascript" src="../../../public/script/remote.js"></script>
+
+  <script type="text/javascript" src="../../script/public.js"></script>
+  <script type="text/javascript" src="../../script/task.js"></script>
+</html>

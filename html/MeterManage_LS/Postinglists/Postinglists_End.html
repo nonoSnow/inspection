@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>张贴列表已完成界面</title>
+    <link rel="stylesheet" type="text/css" href="../../public/css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/vant.css" />
+
+    <style>
+      html,
+      body {
+          width: 100%;
+          height: 100%;
+          background-color: #F3F3F3;
+      }
+
+      .aui-bar-nav {
+          top: 0;
+          z-index: 1;
+          background: linear-gradient(90deg, rgba(46, 142, 250, 1), rgba(49, 89, 235, 1));
+          color: #FFF;
+          font-size: 0.95rem;
+          font-weight: normal;
+          font-stretch: normal;
+          letter-spacing: 0rem;
+      }
+
+      .aui-bar-nav .aui-btn .aui-iconfont {
+          color: #FFF;
+          font-weight: 900;
+      }
+
+      .aui-bar-nav .aui-pull-right {
+          font-size: 0.95rem;
+      }
+
+      .flex-con {
+          overflow: auto;
+          -webkit-overflow-scrolling: touch;
+      }
+
+      [v-cloak] {
+          display: none;
+      }
+
+      .aui-searchbar {
+          background-color: #fff;
+          height: auto!important;
+      }
+
+      .aui-searchbar .aui-searchbar-input {
+          position: relative;
+          height: 2rem;
+          background: pink;
+          margin: 0 1.25rem;
+          background-color: #fff;
+          border: 0.03rem solid #C4C4C4;
+          border-radius: 1rem;
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+      }
+
+      .aui-searchbar .aui-searchbar-input #search-input {
+          height: 100%;
+      }
+
+      .aui-searchbar .aui-searchbar-input .search_suer {
+          position: absolute;
+          right: 1rem;
+          top: 0.4rem;
+          width: 1rem;
+          height: 1rem;
+          background: url("../image/MeterManage/Posting/sousuo.png") no-repeat center;
+          background-size: 0.83rem 0.83rem;
+      }
+
+      .aui-searchbar .aui-searchbar-input .search_shanchu {
+          position: absolute;
+          right: 4rem;
+          top: 0.4rem;
+          width: 1rem;
+          height: 1rem;
+          background: url("../image/MeterManage/shanchu.png") no-repeat center;
+          background-size: 0.83rem 0.83rem;
+      }
+
+      .aui-searchbar .aui-searchbar-input .search_shu {
+          position: absolute;
+          right: 3rem;
+          top: 0.4rem;
+          width: 1px;
+          height: 1rem;
+          background: #C4C4C4;
+      }
+
+      .filterAndDownload {
+          background: #fff;
+          width: 100%;
+          padding: 0 1rem;
+          margin: 0.3rem auto;
+      }
+
+      .filterAndDownload-mian {
+          display: flex;
+          width: 100%;
+          flex-flow: row;
+          padding: 0.5rem;
+          font-size: 0.9rem;
+          padding-left: 0.3rem;
+          padding-right: 0rem;
+      }
+
+      .filterAndDownload-mian li {
+          flex: 1;
+      }
+
+      .filterAndDownload-mian li:nth-child(2) {
+          text-align: right;
+      }
+
+      .postingTime {
+        color:rgba(170, 170, 170, 1);
+        font-size:0.8rem;
+        line-height:1.3rem;
+      }
+
+      .postingList {
+          width: 100%;
+          height: auto;
+      }
+
+      .float-r {
+        float: right;
+      }
+
+      .list-item {
+          width: 100%;
+          height: auto;
+          padding: 0.6rem 1.3rem;
+          box-sizing: border-box;
+          background-color: #FFF;
+          overflow: auto;
+          border-bottom: 1px solid #F2F2F2;
+      }
+
+      .item-title {
+        display: inline-block;
+        min-width: 3.5rem;
+        text-align: justify;
+        text-align-last: justify;
+      }
+
+      .aui-list-item-text {
+        color: rgba(141, 141, 141, 1);
+        font-size: 0.8rem;
+        padding: 0rem 0 0.1rem 0;
+        align-items: flex-start;
+      }
+
+      .color-blu {
+        color: #167CFB;
+      }
+
+      .color-ora {
+        color: #FFBF03;
+      }
+
+      .color-gre {
+        color: rgba(19, 201, 122, 1);
+      }
+
+      .item-cus {
+        color: rgba(28, 28, 28, 1);
+        font-size: 0.95rem;
+        font-weight: 400;
+      }
+
+      .font7 {
+        font-size: var(--fontsize7);
+      }
+
+      .address-icon {
+        top: 0.2rem;
+        width: 0.6rem;
+        position: absolute;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="wrap" class="flex-wrap flex-vertical">
+      <header class="aui-bar aui-bar-nav" id="header">
+          <div class="aui-pull-left aui-btn" tapmode @click='onBack'>
+              <span class="aui-iconfont aui-icon-left"></span>
+          </div>
+          <div class="aui-title">张贴列表</div>
+          <div class="aui-pull-right aui-btn" tapmode @click="onCodeScanning">
+              <img src="../image/MeterManage/Posting/saoma.png" alt="">
+          </div>
+      </header>
+
+      <div class="aui-searchbar">
+          <div class="aui-searchbar-input aui-border-radius">
+              <input type="search" style='height: 100%;' placeholder="请输入户号搜索" v-model='searchValue'>
+              <div class="search_shanchu" v-if='searchValue != ""' tapmode @click="onDelete"></div>
+              <div class="search_shu"></div>
+              <div class="search_suer" tapmode @click="onSearch"></div>
+          </div>
+      </div>
+
+      <div class="filterAndDownload">
+          <ul class="filterAndDownload-mian">
+              <li>张贴总数:<span>{{postingNum}}</span></li>
+              <li class='postingTime'>({{postingTime}})</li>
+          </ul>
+      </div>
+
+      <div class="postingList flex-con">
+          <div class="list-item" v-for='(item, index) in postingList' :key="index" @click='onOpenTaskDetail(item)'>
+              <div class="item-cont" >
+                <div class="item-cont-cont">
+                    <div class="aui-list-item-text">
+                      <span class='item-cus' style="">{{item.CustomerCode}}</span>
+                    </div>
+                    <div class="aui-list-item-text">
+                      <span class="item-title projectName">工单号</span>：{{item.TaskNo}}
+
+                    </div>
+                    <div class="aui-list-item-text">
+                      <div style='width: 80%; display: inline-block;'>
+                        <span class="item-title">户名</span>：{{item.CustomerName}}
+                      </div>
+                      <div class="float-r color-ora font7">{{item.StatusName}}</div>
+                    </div>
+                    <div class="aui-list-item-text">
+                      <span class="item-title">欠费金额</span>：{{item.ArrearMoney == '' ? 0 : item.ArrearMoney}}
+                    </div>
+                    <div class="aui-list-item-text" style="position: relative;">
+                      <img class='address-icon' src="../image/MeterManage/Posting/dingwei.png" alt="">
+                      <span style='margin-left: 1rem; margin-top: 1px;'>{{item.Address}}</span>
+                    </div>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../public/script/api.js"></script>
+  <script type="text/javascript" src="../../public/script/common.js"></script>
+  <script type="text/javascript" src="../../public/script/remote.js"></script>
+  <script type="text/javascript" src="../../public/script/publicMethod.js"></script>
+  <script type="text/javascript" src="../../public/script/vue/fastclick.min.js"></script>
+  <script type="text/javascript" src="../../public/script/vue/vue.min.js"></script>
+  <script type="text/javascript" src="../../public/script/vue/vant.min.js"></script>
+  <script type="text/javascript" src="../../public/script/vue/vueTouch.js"></script>
+  <script type="text/javascript" src="../../public/script/moment.js"></script>
+  <script type="text/javascript" src="../script/remote.js"></script>
+  <script type="text/javascript" src="../script/meterManageLocalData.js"></script>
+  <script type="text/javascript" src="../../public/script/diy/public.js"></script>
+  <script type="text/javascript">
+  var db;
+  apiready = function() {
+      var header = $api.byId('header');
+      $api.fixStatusBar(header);
+
+      db = api.require("db");
+
+      fnIntVue();
+      Origami.fastclick(document.body) //消除vue的ios端点击延迟
+  };
+
+  function fnIntVue() {
+    window.ApplyTaskVue = new Vue({
+      el: '#wrap',
+      data: {
+          searchValue: '',  //搜索内容
+          postingNum: '0',  //张贴总数
+          postingTime: '0000/00/00',  //时间
+          postingList: [
+            {CustomerCode: '01010001', TaskNo: '202009030000001', CustomerName: '张三', status: '1', ArrearMoney: '1.25', Address: '马栏山马兰坡'},
+            {CustomerCode: '01010002', TaskNo: '202009030000002', CustomerName: '李四', status: '2', ArrearMoney: "", Address: '马栏山马兰坡'},
+            {CustomerCode: '01010002', TaskNo: '202009030000002', CustomerName: '李四', status: '2', ArrearMoney: "", Address: '马栏山马兰坡'},
+            {CustomerCode: '01010002', TaskNo: '202009030000002', CustomerName: '李四', status: '2', ArrearMoney: "", Address: '马栏山马兰坡'}
+          ],
+
+          taskData: api.pageParam.data,
+      },
+      methods: {
+        onBack() {
+          api.closeWin({});
+        },
+        onCodeScanning() {
+          var _that = this;
+          var userCode = '';
+
+          var FNScanner = api.require('FNScanner');
+          FNScanner.open({
+              autorotation: true
+          }, function(ret, err){
+            console.log(JSON.stringify(ret));
+            console.log(JSON.stringify(err));
+              if (ret) {
+                if (ret.eventType == 'success') {
+                    userCode = ret.content;
+                    _that.onGetPostingList(userCode);
+                }
+              }
+          });
+        },
+        onDelete() {
+          console.log('onDelete');
+          this.searchValue = '';
+        },
+        onSearch() {
+          console.log('onSearch');
+          if (this.searchValue == '') {
+            vant.Toast('请输入用户编号');
+            return;
+          }
+          this.onGetPostingList(this.searchValue);
+        },
+        onOpenTaskDetail(item) {
+          api.openWin({
+              name: 'Postinglists_details',
+              url: './Postinglists_details.html',
+              pageParam: item
+          });
+        },
+        onGetPostingList(CustomerCode) {
+          var _that = this;
+          var body = {
+            TaskNo: _that.taskData.taskCode,
+            CustomerCode: CustomerCode
+          }
+
+          fnPost('MMS002', body, 'application/json', false, false, function(ret, err) {
+            api.hideProgress();
+            if (ret) {
+              if (ret.Status == '0') {
+                var dataArr = JSON.parse(ret.Data);
+                for (var i = 0; i < dataArr.length; i++) {
+                  this.postingList.push(dataArr[i]);
+                }
+              } else {
+                vant.Toast(ret.Message);
+              }
+            } else {
+              vant.Toast(err.msg);
+            }
+          });
+        },
+      },
+      mounted: function() {
+        this.onGetPostingList('');
+
+        this.onGetDataInit();
+      }
+    })
+  }
+  </script>
+</html>

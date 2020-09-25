@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>任务指派</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/vant.css" />
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: #F3F3F3;
+        }
+
+        .aui-bar-nav {
+            top: 0;
+            z-index: 1;
+            background: linear-gradient(90deg, rgba(46, 142, 250, 1), rgba(49, 89, 235, 1));
+            color: #FFF;
+            font-size: 0.95rem;
+            font-weight: normal;
+            font-stretch: normal;
+            letter-spacing: 0rem;
+        }
+
+        .aui-bar-nav .aui-btn .aui-iconfont {
+            color: #FFF;
+            font-weight: 900;
+        }
+
+        .aui-bar-nav .aui-pull-right {
+            font-size: 0.95rem;
+        }
+
+        .flex-con {
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+        .assignDiv {
+            height: 3.3rem;
+            line-height: 3.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 0.78rem;
+            background-color: #fff;
+            margin-bottom: 0.6rem;
+        }
+
+        .toAssign {
+            font-size: 0.85rem;
+            color: #363636;
+        }
+
+        #footer {
+            width: 100%;
+            height: 2.5rem;
+            text-align: center;
+            position: fixed;
+            background-color: #FFF;
+            bottom: 0;
+            border-top: 1px solid #eee;
+        }
+
+        #footer .assign_btn {
+          margin: 0.3rem auto;
+          padding: 3px 0rem;
+          border-radius: 10px;
+          background-color: #2970FF !important;
+          height: 1.75rem;
+          width: 5rem;
+          display: block;
+        }
+
+        .assignList {
+            width: 100%;
+            height: auto;
+            margin-top: 0.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .list-item {
+            width: 100%;
+            height: auto;
+            padding: 0.6rem 0.78rem;
+            box-sizing: border-box;
+            background-color: #FFF;
+            overflow: auto;
+            border-bottom: 1px solid #F2F2F2;
+        }
+
+        .item-check {
+          max-width: 8%;
+          float: left;
+          vertical-align: top;
+          margin-right: 2%;
+          margin-top: 2px;
+        }
+
+        .item-cont {
+          width: 90%;
+          float: left;
+        }
+
+        .avatar {
+            width: 1.33rem;
+            height: 1.33rem;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .biaowu {
+            background: url("../../image/Task/biaowu.png")no-repeat center;
+            background-size: 100% 100%;
+        }
+
+        .yinxiao {
+            background: url("../../image/Task/yingye@2x.png")no-repeat center;
+            background-size: 100% 100%;
+        }
+
+        .chaobiao {
+            background: url("../../image/Task/chaobiao.png")no-repeat center;
+            background-size: 100% 100%;
+        }
+
+        .item-cont-cont {
+          display: inline-block;
+          width: calc(98% - 1.33rem);
+        }
+
+        .assign {
+            float: right;
+            color: #FF9320;
+        }
+
+        .item-title {
+          display: inline-block;
+          min-width: 3.5rem;
+          text-align: justify;
+          text-align-last: justify;
+        }
+
+        .aui-list-item-text {
+          font-size: 0.75rem;
+          color: #A7A7A7;
+          padding: 0rem 0 0.1rem 0;
+          align-items: flex-start;
+        }
+
+        .aui-list-item-text.projectName {
+            color: #4D4D4D
+        }
+
+        .check-all {
+          float: left;
+          margin-left: 0.78rem;
+          margin-top: 0.65rem;
+        }
+
+        .handler-cont {
+          font-size: 0.9rem;
+          font-weight: 400;
+          color: #626262;
+          width: 68%;
+          display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap" class="flex-wrap flex-vertical" v-cloak>
+        <header class="aui-bar aui-bar-nav" id="header">
+            <div class="aui-pull-left aui-btn" tapmode @click='onBack'>
+                <span class="aui-iconfont aui-icon-left"></span>
+            </div>
+            <div class="aui-title">任务指派</div>
+        </header>
+
+        <div class="assignDiv">
+            <div class="toAssign">
+                待指派任务总数：{{assignCount}}
+            </div>
+        </div>
+
+        <div class="assignList flex-con">
+            <div class="list-item" v-for='(item, index) in list' :key="index">
+                <div class='item-check'>
+                    <input class='aui-checkbox' type='checkbox' name='checkbox' @change='onItemCheck()' v-model='item.isChecked'>
+                </div>
+                <div class="item-cont" @click='onOpenTaskDetail'>
+                  <div class="avatar biaowu"></div>
+                  <div class="item-cont-cont">
+                      <div class="aui-list-item-text" style="font-size: 0.9rem;color: #1C1C1C;">
+                        <span class="item-title">任务编号</span>：{{item.taskCode}}
+                      </div>
+                      <div class="aui-list-item-text">
+                        <span class="item-title projectName">工程名称</span>：{{item.name}}
+                        <div class="assign">待指派</div>
+                      </div>
+                      <div class="aui-list-item-text">
+                        <span class="item-title">用户编号</span>：{{item.customerCode}}
+                      </div>
+                      <div class="aui-list-item-text">
+                        <span class="item-title">用户名称</span>：{{item.customerName}}
+                      </div>
+                      <div class="aui-list-item-text">
+                        <span class="item-title">用户名称</span>：{{item.customerAddress}}
+                      </div>
+                      <div class="aui-list-item-text">
+                        <span class="item-title">创建时间</span>：{{moment(item.creationTime).format("YYYY-MM-DD HH:mm:ss")}}
+                      </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+        <footer id="footer">
+            <div class="check-all" style="">
+              <label><input class="aui-checkbox" type="checkbox" name="checkbox" @change='onCheckAll' v-model='isCheckedAll'> 全选</label>
+            </div>
+            <div class="aui-btn aui-btn-info assign_btn" @click='onTaskAssign'>指派</div>
+        </footer>
+
+        <van-dialog v-model="showDialog" :before-close="beforeClose" show-cancel-button>
+          <div class="dialog-div" id="dialog">
+            <div class="dialog-content" style='padding: 1rem 1.5rem;'>
+              <div class="dialog-handler" style="font-size: 16px;color: #000; margin-bottom: 10px;">
+                <span style="min-width: 3rem; text-align: justify; text-align-last: justify; display: inline-block;">办理人</span>:
+                <div id="waselect" class="handler-cont" style="width: calc(95% - 3.5rem);border-bottom: 1px solid #D8D8D8;position: relative; margin-left: 5%;">
+                  <input id="reviewstate" readonly style="width: 100%; height: 27px;" type="text" value="请选择"/>
+                  <i class="aui-iconfont aui-icon-down" style="position: absolute;right: 0;top: 15%;"></i>
+                </div>
+              </div>
+              <div class="dialog-remark" style="font-size: 16px;color: #000;">
+                <div style="vertical-align: top;display: inline-block;">
+                  <span style="min-width: 3rem; text-align: justify; text-align-last: justify; display: inline-block; ">备注</span>:
+                </div>
+                <div id="waselect" class="handler-cont" style="width: calc(95% - 3.5rem);border-bottom: 1px solid #D8D8D8;position: relative; margin-left: 5%;">
+                  <textarea v-model='dialogText' style="height: 90px; border: 1px solid #ccc; box-sizing: border-box; padding: 8px;"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </van-dialog>
+    </div>
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/remote.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/vue/fastclick.min.js"></script>
+<script type="text/javascript" src="../../script/vue/vue.min.js"></script>
+<script type="text/javascript" src="../../script/vue/vant.min.js"></script>
+<script type="text/javascript" src="../../script/moment.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+
+        fnIntVue();
+        Origami.fastclick(document.body) //消除vue的ios端点击延迟
+    }
+
+    function fnIntVue() {
+        var AssignVue = new Vue({
+            el: '#wrap',
+            data: {
+                assignCount: 0,         //待指派总数
+
+                list: [],               //任务指派列表
+                isCheckedAll: false,    //全选标识
+
+                showDialog: false,      //指派弹窗显示
+                dialogText: '',         //指派弹窗备注
+            },
+            methods: {
+                onBack() {
+                    //关闭当前页面
+                    api.closeWin({});
+                },
+                onItemCheck() {
+                    //列表复选框点击
+                    var isAllCheck = true;
+                    for (var i = 0; i < this.list.length; i++) {
+                      if (this.list[i].isChecked == false) {
+                        isAllCheck = false;
+                      }
+                      if (i == this.list.length - 1) {
+                        if (isAllCheck) {
+                          this.isCheckedAll = true;
+                        } else {
+                          this.isCheckedAll = false;
+                        }
+                      }
+                    }
+                },
+                onCheckAll () {
+                  for (var i = 0; i < this.list.length; i++) {
+                    this.list[i].isChecked = this.isCheckedAll;
+                  }
+                },
+                onOpenTaskDetail() {
+                  console.log('onOpenTaskDetail');
+                  // api.openWin({
+                  //     name: 'page1',
+                  //     url: '../MeterManage_LS/tableTask/tableTask.html',
+                  //     pageParam: {
+                  //         name: 'test'
+                  //     }
+                  // });
+                  api.openWin({
+                      name: 'page1',
+                      url: '../GISInspection/html/main.html',
+                      pageParam: {
+                          name: 'test'
+                      }
+                  });
+                  // api.openWin({
+                  //     name: 'page1',
+                  //     url: '../MeterManage_LS/tableTask/stopAfterWater.html',
+                  //     pageParam: {
+                  //         name: 'test'
+                  //     }
+                  // });
+                  // api.openWin({
+                  //     name: 'page1',
+                  //     url: '../MeterManage_LS/Postinglists/Postinglists.html',
+                  //     pageParam: {
+                  //         name: 'test'
+                  //     }
+                  // });
+                  // api.openWin({
+                  //     name: 'page1',
+                  //     url: '../Audit_LS/AuditTaskDetail.html',
+                  //     pageParam: {
+                  //         name: 'test'
+                  //     }
+                  // });
+                  // api.openWin({
+                  //     name: 'page1',
+                  //     url: '../Audit_LS/AuditTask.html',
+                  //     pageParam: {
+                  //         name: 'test'
+                  //     }
+                  // });
+                  // api.openWin({
+                  //     name: 'page1',
+                  //     url: '../MeterManage_LS/tableTask/stopAfterWaterDetail.html',
+                  //     pageParam: {
+                  //         name: 'test'
+                  //     }
+                  // });
+                  // api.openWin({
+                  //     name: 'page1',
+                  //     url: '../MeterManage_LS/tableTask/tableTaskDetail.html',
+                  //     pageParam: {
+                  //         name: 'test'
+                  //     }
+                  // });
+                  // api.openWin({
+                  //     name: 'page1',
+                  //     url: '../BaoZhuang/Home.html',
+                  //     pageParam: {
+                  //         name: 'test'
+                  //     }
+                  // });
+                  // api.openWin({
+                  //     name: 'page1',
+                  //     url: '../MeterManage_LS/MeterManage.html',
+                  //     pageParam: {
+                  //         name: 'test'
+                  //     }
+                  // });
+
+                },
+                onTaskAssign() {
+                  var isDataArr = true;
+                  for (var i = 0; i < this.list.length; i++) {
+                    if (this.list[i].isChecked == true) {
+                      isDataArr = false;
+                      break;
+                    }
+                  }
+
+                  if (isDataArr) {
+                    vant.Toast("请选择指派任务");
+                    return;
+                  }
+
+                  this.showDialog = true;
+                },
+                beforeClose(action, done) {
+                  var _that = this;
+                  if(action === 'confirm') {
+                      done(); //提交成功
+                  } else if(action === 'cancel') {
+                      done(); //关闭
+                  }
+                },
+            },
+            mounted: function() {
+              for (var i = 0; i < 10; i++) {
+                this.list.push({
+                  'taskCode': '857857857' + i,
+                  'name': '校表' + i,
+                  'customerCode': '010101000' + i,
+                  'customerName': '张三' + i,
+                  'customerAddress': '地址' + i,
+                  'creationTime': '2020-08-31 14:00:00',
+                  'isChecked': false
+                });
+              }
+            }
+        })
+    }
+</script>
+
+</html>

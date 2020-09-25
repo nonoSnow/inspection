@@ -1,0 +1,372 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+.flex-vertical {
+    -webkit-box-orient: vertical;
+    -webkit-flex-flow: column;
+    flex-flow: column;
+}
+
+.flex-wrap {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.flex-con {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+.flex-content {
+    -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
+    word-break: break-all;
+}
+
+.top0 {
+  top: 0;
+}
+
+.top10 {
+	top: 2.25rem;
+}
+
+.top435 {
+	top: 4.35rem;
+}
+
+.z-index0 {
+	z-index: 0;
+}
+
+.z-index10 {
+	z-index: 10;
+}
+
+.box-siz {
+	box-sizing: border-box;
+}
+
+.font-S6 {
+  font-size: 0.6rem;
+}
+
+.font-S75 {
+	font-size: 0.75rem;
+}
+
+.font-S8 {
+	font-size: 0.8rem;
+}
+
+.font-S9 {
+	font-size: 0.9rem;
+}
+
+.font-w4 {
+  font-weight: 400;
+}
+
+.border-top {
+	border-top: 1px solid #E6E6E6;
+}
+
+.border-right {
+  border-right: 1px solid #E6E6E6;
+}
+
+.text-cent {
+	text-align: center;
+}
+
+.text-left {
+	text-align: left;
+}
+
+.text-right {
+	text-align: right;
+}
+
+.display-flex {
+	display: flex;
+}
+
+.flex1 {
+	flex: 1;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex1-auto {
+  flex: 1 1 auto;
+}
+
+.float-rig {
+	float: right;
+}
+
+.float-let {
+  float: left;
+}
+
+.map-header {
+	width: 90%;
+	height: 2.25rem;
+	left: 5%;
+	background-color:rgba(0,0,0,0);
+}
+
+.map-header .aui-btn .aui-iconfont {
+  color: #333333;
+  font-weight: 400;
+  left: 0;
+}
+
+.map-header .header-cont {
+  width: 100%;
+  height: 2.25rem;
+  background-color: #FFF;
+  color: #333333;
+  border-radius: 8px;
+	box-sizing: border-box;
+  border: 1px solid #CCC;
+}
+
+.map-header .aui-btn {
+	height: 2.2rem;
+}
+
+.map-header .aui-pull-right {
+    font-size: 0.75rem;
+    padding: 0rem 0.5rem;
+    color: #333333;
+}
+
+.map-header .aui-title {
+  font-size: 0.9rem;
+}
+
+.footer-gis {
+	width: 100%;
+	height: 2.5rem;
+	display: flex;
+	line-height: 2.5rem;
+}
+
+.margin-top3 {
+	margin-top: 0.3rem;
+}
+
+.margin-top42 {
+	margin-top: 4.2rem;
+}
+
+.margin-top5 {
+	margin-top: 0.5rem;
+}
+
+.margin-top6 {
+	margin-top: 0.6rem;
+}
+
+.margin-top75 {
+  margin-top: 0.75rem;
+}
+
+.margin-top10 {
+  margin-top: 1rem;
+}
+
+.margin-bot3 {
+	margin-bottom: 0.3rem;
+}
+
+.margin-bot5 {
+	margin-bottom: 0.5rem;
+}
+
+.margin-left3 {
+  margin-left: 0.3rem;
+}
+
+.margin-left5 {
+  margin-left: 0.5rem;
+}
+
+.line-height1 {
+	line-height: 1;
+}
+
+.line-height15 {
+	line-height: 1.5;
+}
+
+.right75 {
+  right: 0.75rem;
+}
+
+.right5 {
+	right: 5%;
+}
+
+.right0 {
+  right: 0;
+}
+
+.type-line {
+	height: 0.2rem;
+	border-radius: 0.15rem;
+}
+
+.bgc-blue {
+	background-color: #5982FF;
+}
+
+.bgc-f3 {
+	background-color: #F3F3F3;
+}
+
+.bgc-ff {
+	background-color: #FFFFFF;
+}
+
+.fixed {
+	position: fixed;
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.bottom0 {
+	bottom: 0;
+}
+
+.map-btn-div {
+  width: 2.2rem;
+  height: auto;
+}
+
+.map-btn-bs {
+  width: 2.2rem;
+  height: auto;
+  box-shadow: 0 3px 9px 0 rgba(0,0,0,0.20);
+}
+
+
+
+.border-radius4 {
+  border-radius: 0.4rem;
+}
+
+.map-btn-img {
+  margin: 0rem auto;
+  padding: 0.6rem 0rem 0.2rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  box-sizing: initial;
+}
+
+.map-btn-line {
+  width: 80%;
+  height: 1px;
+  margin: auto;
+  background-color: #E6E6E6;
+}
+
+.enlarge {
+  width: 0.7rem;
+  height: auto;
+  margin: 0rem 0.75rem;
+  padding: 1rem 0rem 0.6rem;
+}
+
+.narrow {
+  width: 0.7rem;
+  height: auto;
+  margin: 0rem 0.75rem;
+  padding: 1rem 0rem;
+}
+
+.map-location-div {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+.left5 {
+  left: 5%;
+}
+
+.bottom385 {
+  bottom: 1.35rem;
+}
+
+.location-one {
+  width: 1rem;
+  height: 1rem;
+  margin: 0.6rem;
+}
+
+.location-two {
+  width: 1.4rem;
+  height: 1.4rem;
+  margin: 0.4rem;
+}
+
+.header-type {
+	width: 100%;
+	height: 2.5rem;
+	box-shadow: 0 1px 4px 0 rgba(0,0,0,0.10);
+}
+
+.bgi-none {
+	background-image: none!important;
+}
+
+.line-height25 {
+	line-height: 2.5rem
+}
+
+.width60 {
+	width: 60%;
+	margin-left: 20%;
+}
+
+.padding-top5 {
+	padding-top: 5rem!important;
+}
+
+.height100 {
+	height: 100%;
+}
+
+.block {
+	display: block !important;
+}
+
+.padding75 {
+	padding: 0.75rem !important;
+}
+
+.color-333 {
+  color: #333333;
+}
+
+.color-666 {
+  color: #666666;
+}
+
+.color-598 {
+  color: #5982FF;
+}

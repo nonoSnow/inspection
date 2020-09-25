@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>任务处理-停复水</title>
+    <link rel="stylesheet" type="text/css" href="../../public/css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../public/css/vant.css" />
+
+    <style>
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        background-color: #F3F3F3;
+    }
+
+    .aui-bar-nav {
+        top: 0;
+        z-index: 1;
+        background: linear-gradient(90deg, rgba(46, 142, 250, 1), rgba(49, 89, 235, 1));
+        color: #FFF;
+        font-size: 0.95rem;
+        font-weight: normal;
+        font-stretch: normal;
+        letter-spacing: 0rem;
+    }
+
+    .aui-bar-nav .aui-btn .aui-iconfont {
+        color: #FFF;
+        font-weight: 900;
+    }
+
+    .aui-bar-nav .aui-pull-right {
+        font-size: 0.95rem;
+    }
+
+    .flex-con {
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    [v-cloak] {
+        display: none;
+    }
+
+    #footer {
+        width: 100%;
+        height: 2.5rem;
+        text-align: center;
+        position: fixed;
+        background-color: #FFF;
+        bottom: 0;
+        border-top: 1px solid #eee;
+    }
+
+    #footer .assign_btn {
+        margin: 0.3rem auto;
+        padding: 3px 0rem;
+        border-radius: 10px;
+        background-color: #2970FF !important;
+        height: 1.75rem;
+        width: 5rem;
+        display: block;
+    }
+
+    .aui-content {
+        height: 100%;
+        margin-bottom: 2.5rem;
+    }
+
+    .content {
+        margin: .5rem 1rem;
+        background-color: #fff;
+        border-radius: 0.8rem;
+        padding-top: .5rem;
+        padding-bottom: .9rem;
+    }
+
+    .row {
+        margin: 0rem 25px 0rem 25px;
+        line-height: 2rem;
+        border-bottom: 1px solid #F2F2F2;
+    }
+
+    .text-left {
+        width: 38%;
+        font-size: 0.9rem;
+        display: inline-block;
+    }
+
+    .text-left-title {
+        display: inline-block;
+        text-align: justify;
+        text-align-last: justify;
+        width: 90%;
+    }
+
+    .text-right {
+        margin-left: 0px;
+        font-size: 0.9rem;
+        color: #656265;
+        display: inline-block;
+        width: calc(60% - 0px);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        vertical-align: top;
+        padding-left: 0.2rem;
+    }
+
+    .bg-red {
+      background-color: red !important;
+    }
+
+    .disposeRow{
+      margin-top: .5rem;
+    }
+
+    .textarea{
+      border: 1px solid #D8D8D8;
+      border-radius: 0.13rem;
+      padding: 0.25rem 0.5rem;
+      color: #626262;
+    }
+
+    .textarea textarea {
+      font-size: 14px;
+      line-height: 1.5;
+      border-radius: 3px;
+    }
+
+    .images {
+        vertical-align: text-top;
+    }
+
+    .images>img {
+      width: 1.05rem;
+      height: 0.85rem;
+      float: right;
+    }
+
+    .addressIcon {
+        background: url(../image/MeterManage/dingwei.png) no-repeat 0 0;
+        background-size: 100% 100%;
+        width: .6rem;
+        height: .7rem;
+        display: inline-block;
+    }
+
+    .textColor {
+        color: #2045FF;
+    }
+
+    .phont {
+        width: 3.6rem;
+        height: 2.8rem;
+        position: relative;
+        display: inline-block;
+        margin-right: .7rem;
+    }
+
+    .phont img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .delectImg{
+      background: url(../image/MeterManage/shanchu.png) no-repeat 0 0;
+      background-size: 100% 100%;
+      width: .8rem;
+      height: .8rem;
+      display: inline-block;
+      position: absolute;
+      right: -7px;
+      top: -7px;
+    }
+    </style>
+</head>
+
+<body>
+
+    <div id="wrap" class="flex-wrap flex-vertical">
+        <header class="aui-bar aui-bar-nav" id="header">
+            <div class="aui-pull-left aui-btn" tapmode @click='onBack'>
+                <span class="aui-iconfont aui-icon-left"></span>
+            </div>
+            <div class="aui-title">任务处理</div>
+        </header>
+
+        <div class="flex-con aui-content">
+          <div class="content">
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">任务类型</span>:
+                </div>
+                <div class="text-right">
+                    <span>{{projectName}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">户名</span>:
+                </div>
+                <div class="text-right">
+                    <span>{{CustomerName}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">户号</span>:
+                </div>
+                <div class="text-right">
+                    <span>{{CustomerCode}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">地址</span>:
+                </div>
+                <div class="text-right">
+                    <span>{{Address}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">表位</span>:
+                </div>
+                <div class="text-right">
+                    <span>{{tableLocation}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">表号</span>:
+                </div>
+                <div class="text-right">
+                    <span>{{tableCode}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">口径</span>:
+                </div>
+                <div class="text-right">
+                    <span>{{Caliber}}</span>
+                </div>
+            </div>
+            <div class="row" >
+              <div class="text-left ">
+                <span class="text-left-title">处理结果</span>:
+              </div>
+              <van-radio-group v-model="resultSelect">
+                 <van-row>
+                  <van-col span="12">
+                    <van-radio name="0" shape="square" :disabled="isArrears" :disabled="isClaim">{{cutSucessText}}</van-radio>
+                  </van-col>
+                  <van-col span="12">
+                    <van-radio name="1" shape="square" :disabled="isArrears" :disabled="isClaim">{{cutErrText}}</van-radio>
+                  </van-col>
+                </van-row>
+                <van-row class="disposeRow" style="margin-bottom: 8px;">
+                 <van-col span="12">
+                   <van-radio name="2" shape="square" :disabled="isClaim">无需处理</van-radio>
+                 </van-col>
+               </van-row>
+              </van-radio-group>
+            </div>
+
+            <div class="row">
+              <div class="text-left">
+                <span class="text-left-title">办理情况</span>
+              </div>
+              <div class="textarea" style="margin-bottom: 8px;">
+                <textarea name="name" rows="16" cols="80" v-model="causeText"></textarea>
+              </div>
+            </div>
+
+            <div class="row">
+                <div class="text-left">
+                    <span class="text-left-title">照片</span>
+                </div>
+                <div class="text-right images">
+                    <img @click="onOpenCamera" src="../image/MeterManage/paizhao.png" alt="">
+                </div>
+                <div class="photoList">
+                    <div class="phont" v-for="(item,index) in phoneList" :key="index">
+                        <i class="delectImg" @click="onDelectPic(index)"></i>
+                        <img :src="item" alt="" @click="pBrowserPicture(index, phoneList)">
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="border-bottom: none;">
+              <p @click='onGetLocation'>
+                  <i class="addressIcon"></i>
+                  <span class="textColor">{{Location}}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div id="footer">
+          <div v-show='isClaim' class="aui-btn aui-btn-info assign_btn bg-red" @click='onClaim'>认领</div>
+          <div v-show='!isClaim' class="aui-btn aui-btn-info assign_btn" :disabled='isSubmit' @click='onSubmit'>提交</div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript" src="../../public/script/api.js"></script>
+<script type="text/javascript" src="../../public/script/common.js"></script>
+<script type="text/javascript" src="../../public/script/moment.js"></script>
+<script type="text/javascript" src="../../public/script/publicMethod.js"></script>
+<script type="text/javascript" src="../../public/script/vue/fastclick.min.js"></script>
+<script type="text/javascript" src="../../public/script/vue/vue.min.js"></script>
+<script type="text/javascript" src="../../public/script/vue/vant.min.js"></script>
+<script type="text/javascript" src="../../public/script/vue/vueTouch.js"></script>
+<script type="text/javascript" src="../../public/script/diy/public.js"></script>
+<script type="text/javascript" src="../script/remote.js"></script>
+<script type="text/javascript" src="../../public/script/diy/public.js"></script>
+<script type="text/javascript">
+    var db;
+    apiready = function() {
+      db = api.require('db');
+
+      //home键监听
+      api.addEventListener({
+          name: 'keyback'
+      }, function(ret, err) {
+        if (TaskVue.getTaskType == 'handle') { //任务处理 返回事件
+          api.sendEvent({
+              name: 'refreshCloudMyTask',
+              extra: {
+                  type: '1'
+              }
+          });
+        } else if (TaskVue.getTaskType == 'claimTask') { //任务领用 返回事件
+          api.sendEvent({
+              name: 'refreshCloudClaim',
+              extra: {
+                  type: '1'
+              }
+          });
+        }
+        api.closeWin();
+      });
+
+      var header = $api.byId('header');
+      $api.fixStatusBar(header);
+      bMap = api.require("bMap");
+
+      fnIntVue();
+      Origami.fastclick(document.body); //消除vue的ios端点击延迟
+    };
+
+    function fnIntVue() {
+        window.TaskVue = new Vue({
+            el: '#wrap',
+            data: {
+                projectName: '',
+                CustomerName: '',
+                CustomerCode: '01010011',
+                Address: '',
+                tableLocation: '',
+                tableCode: '',
+                Caliber: '',
+                resultSelect: '',
+                cutSucessText: '关阀成功',
+                cutErrText: '关阀失败',
+                causeText: '',
+                Location: '',
+                Longitude: 0,
+                Latitude: 0,
+
+                isArrears: false,  //是否欠费
+                isClaim: false,  //是否认领
+
+                phoneList: [],  //照片数组
+                isSubmit: false, //提交优化
+
+                TaskData: api.pageParam.data,
+                getTaskType: api.pageParam.type,
+            },
+            computed: {
+
+            },
+            methods: {
+              onBack() {
+                api.closeWin({});
+              },
+              onOpenCamera() {
+                if(this.isClaim) {
+                  return;
+                }
+                var _that = this;
+                api.actionSheet({
+                  cancelTitle: '取消',
+                  buttons: ['拍照', '相册']
+                }, function(ret, err){
+                    var options = {
+                        type: 'camera',
+                        waterMark: true,
+                        waterMarkData: {
+                            code: _that.CustomerCode,
+                        }
+                    };
+                    if (ret.buttonIndex == 1) { //打开相机
+                        options.type = 'camera';
+                    }
+                    if (ret.buttonIndex == 2) {
+                        options.type = 'pic';
+                    }
+                    if (ret.buttonIndex > 0 && ret.buttonIndex < 3) {
+                        pGetPicture(options, function(ret, err) {
+                            if (ret.status) {
+                                ret.imgList.forEach(function(item, index) {
+                                    if (_that.phoneList.length < 5) {
+                                        _that.phoneList.push(item);
+                                    } else {
+                                        vant.Toast('最多只能上传5张图片');
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+              },
+              onGetLocation() {
+                this.Location = "正在定位中...";
+                this.Longitude = 0;
+                this.Latitude = 0;
+
+                pGetNameFromCoords(function(ret, err) {
+                    if (ret.status) {
+                        TaskVue.Longitude = ret.lon;
+                        TaskVue.Latitude = ret.lat;
+                        TaskVue.Location = ret.address;
+                    } else {
+                        TaskVue.Location = "定位失败";
+                    }
+                });
+              },
+              onDelectPic(index) {
+                if (this.isClaim) {
+                    return;
+                }
+                var _that = this;
+                vant.Dialog.confirm({
+                        title: '提示',
+                        message: '是否确定删除照片?',
+                    })
+                    .then(function() {
+                      var fs = api.require("fs");
+                      fs.remove({
+                          path: _that.phoneList[index]
+                      });
+                      _that.phoneList.splice(index, 1);
+                    })
+                    .catch(function() {
+                        return;
+                    });
+              },
+              onGetDataInit() {
+                if (api.connectionType != 'none') {
+                  this.onGetData();
+                } else {
+                  this.onGetLocalData();
+                }
+              },
+              onGetData() {
+                var _that = this;
+                var body = {
+                    'Id': _that.TaskData.thirdTaskId
+                };
+                fnPost('MMS002', body, 'application/json', false, false, (ret, err)=>{
+                    api.hideProgress();
+                    console.log(JSON.stringify(ret));
+                    if (ret && ret.Status == 0) {
+                      var data = JSON.parse(ret.Data);
+                      db.selectSql({
+                          name: 'Wsdatabase',
+                          sql: "SELECT * FROM AUDIT_TASK_LIST WHERE Id = '"+ _that.TaskData.thirdTaskId +"' AND userName = '"+ $api.getStorage('loginData').userName +"'"
+                      }, function(ret, err){
+                          if( ret.status ){
+                              if (ret.data.length > 0) {
+                                _that.onUpdateFnc(data[0], ret.data[0]);
+                              } else {
+                                _that.onInsertFnc(data[0]);
+                              }
+                          }else{
+                              console.log( JSON.stringify( err ) );
+                          }
+                      });
+                    } else {
+                      //请求失败 - 查询本地数据
+                      this.onGetLocalData();
+                    }
+                });
+              },
+              onGetLocalData() {
+                var _that = this;
+                db.selectSql({
+                    name: 'Wsdatabase',
+                    sql: "SELECT * FROM AUDIT_TASK_LIST WHERE Id = '"+ _that.TaskData.thirdTaskId +"' AND userName = '"+ $api.getStorage('loginData').userName +"' AND isUploadAndSave != '1'"
+                }, function(ret, err){
+                    if( ret.status ){
+                        console.log( JSON.stringify( ret ) );
+                        if (ret.data.length > 0) {
+                          _that.onShowHtml(ret.data[0]);
+                        } else {
+                          vant.Toast("未查询到本地数据");
+                        }
+                    }else{
+                        vant.Toast("未查询到本地数据");
+                        console.log( JSON.stringify( err ) );
+                    }
+                });
+              },
+              onInsertFnc(taskInfo) {
+                var _that = this;
+                var insertSql = "INSERT INTO AUDIT_TASK_LIST VALUES ("+
+                                "'"+ taskItem.Id +"',"+
+                                "'"+ taskItem.Source +"',"+
+                                "'"+ taskItem.Code +"',"+
+                                "'"+ taskItem.Name +"',"+
+                                "'"+ taskItem.Status +"',"+
+                                "'"+ taskItem.StatusName +"',"+
+                                "'"+ taskItem.CustomerCode +"',"+
+                                "'"+ taskItem.CustomerName +"',"+
+                                "'"+ taskItem.Mobile +"',"+
+                                "'"+ taskItem.Telphone +"',"+
+                                "'"+ taskItem.Address +"',"+
+                                "'"+ taskItem.Location +"',"+
+                                "'"+ taskItem.Nature +"',"+
+                                "'"+ taskItem.SubNature +"',"+
+                                "'"+ taskItem.Caliber +"',"+
+                                "'"+ taskItem.Nameplate +"',"+
+                                "'"+ taskItem.MeterType +"',"+
+                                "'"+ taskItem.StampNo +"',"+
+                                "'"+ taskItem.LastScale +"',"+
+                                "'"+ taskItem.BeginScale +"',"+
+                                "'"+ taskItem.EndScale +"',"+
+                                "'"+ taskItem.Amount +"',"+
+                                "'"+ taskItem.ArrearMoney +"',"+
+                                "'"+ taskItem.Description +"',"+
+                                "'"+ taskItem.Remark +"',"+
+                                "'"+ taskItem.OperatorId +"',"+
+                                "'"+ taskItem.OperatedTime +"',"+
+                                "'"+ taskItem.TaskNo +"',"+
+                                "'"+ taskItem.RecordBeginScale +"',"+
+                                "'"+ taskItem.RecordEndScale +"',"+
+                                "'"+ taskItem.RecordAmount +"',"+
+                                "'"+ taskItem.RecordTypdId +"',"+
+                                "'"+ taskItem.RecordTypdName +"',"+
+                                "'"+ taskItem.LastReadScale +"',"+
+                                "'"+ taskItem.AuditReadScale +"',"+
+                                "'"+ taskItem.DispatchTime +"',"+
+                                "'"+ taskItem.UseTime +"',"+
+                                "'"+ taskItem.HandleTime +"',"+
+                                "'"+ taskItem.AuditTime +"',"+
+                                "'"+ taskItem.AuditTimes +"',"+
+                                "'"+ JSON.stringify(taskItem.Files) +"',"+
+                                "'"+ JSON.stringify(taskItem.Handles) +"',"+
+                                "'"+ JSON.stringify(taskItem.Coordinates) +"',"+
+                                "'','','','','','','','','','','','','','','','','0','','"+ $api.getStorage('loginData').userName +"','','0','','','','','','')";
+                db.executeSql({
+                    name: 'Wsdatabase',
+                    sql: insertSql
+                }, function(ret, err){
+                    if( ret.status ){
+                        _that.onGetLocalData();
+                    }else{
+                        console.log( JSON.stringify( err ) );
+                    }
+                });
+              },
+              onUpdateFnc(taskInfo) {
+                var _that = this;
+                var updateSql = "UPDATE AUDIT_TASK_LIST SET "+
+                                "Source = '"+ taskItem.Source +"',"+
+                                "Code = '"+ taskItem.Code +"',"+
+                                "Name = '"+ taskItem.Name +"',"+
+                                "Status = '"+ taskItem.Status +"',"+
+                                "StatusName = '"+ taskItem.StatusName +"',"+
+                                "CustomerCode = '"+ taskItem.CustomerCode +"',"+
+                                "CustomerName = '"+ taskItem.CustomerName +"',"+
+                                "Mobile = '"+ taskItem.Mobile +"',"+
+                                "Telphone = '"+ taskItem.Telphone +"',"+
+                                "Address = '"+ taskItem.Address +"',"+
+                                "Location = '"+ taskItem.Location +"',"+
+                                "Nature = '"+ taskItem.Nature +"',"+
+                                "SubNature = '"+ taskItem.SubNature +"',"+
+                                "Caliber = '"+ taskItem.Caliber +"',"+
+                                "Nameplate = '"+ taskItem.Nameplate +"',"+
+                                "MeterType = '"+ taskItem.MeterType +"',"+
+                                "StampNo = '"+ taskItem.StampNo +"',"+
+                                "LastScale = '"+ taskItem.LastScale +"',"+
+                                "BeginScale = '"+ taskItem.BeginScale +"',"+
+                                "EndScale = '"+ taskItem.EndScale +"',"+
+                                "Amount = '"+ taskItem.Amount +"',"+
+                                "ArrearMoney = '"+ taskItem.ArrearMoney +"',"+
+                                "Description = '"+ taskItem.Description +"',"+
+                                "Remark = '"+ taskItem.Remark +"',"+
+                                "OperatorId = '"+ taskItem.OperatorId +"',"+
+                                "OperatedTime = '"+ taskItem.OperatedTime +"',"+
+                                "RecordBeginScale = '"+ taskItem.RecordBeginScale +"',"+
+                                "RecordEndScale = '"+ taskItem.RecordEndScale +"',"+
+                                "RecordAmount = '"+ taskItem.RecordAmount +"',"+
+                                "RecordTypdId = '"+ taskItem.RecordTypdId +"',"+
+                                "RecordTypdName = '"+ taskItem.RecordTypdName +"',"+
+                                "LastReadScale = '"+ taskItem.LastReadScale +"',"+
+                                "AuditReadScale = '"+ taskItem.AuditReadScale +"',"+
+                                "DispatchTime = '"+ taskItem.DispatchTime +"',"+
+                                "UseTime = '"+ taskItem.UseTime +"',"+
+                                "HandleTime = '"+ taskItem.HandleTime +"',"+
+                                "AuditTime = '"+ taskItem.AuditTime +"',"+
+                                "AuditTimes = '"+ taskItem.AuditTimes +"',"+
+                                "Handles = '"+ JSON.stringify(taskItem.Handles) +"'";
+                if (taskItem.Status == '7' && localData.isUploadAndSave == '1') {
+                  updateSql += ", isUploadAndSave = '2'";
+                }
+                updateSql += "WHERE Id = '"+ taskItem.Id +"' AND userName = '"+ $api.getStorage('loginData').userName +"'";
+                db.executeSql({
+                    name: 'Wsdatabase',
+                    sql: updateSql
+                }, function(ret, err){
+                    if( ret.status ){
+                        _that.onGetLocalData();
+                    }else{
+                        console.log( JSON.stringify( err ) );
+                    }
+                });
+              },
+              onClaim() {
+                var _that = this;
+                api.showProgress({
+                    style: 'default',
+                    animationType: 'fade',
+                    title: '努力加载中...',
+                    modal: true
+                });
+                pGetLocation((ret, err) =>{
+                  if (ret.status) {
+                    _that.Longitude = ret.lon;
+                    _that.Latitude = ret.lat;
+                    var body = {
+                        body: JSON.stringify({
+                            taskCode: _that.TaskData.taskCode,
+                            lng: ret.lon,
+                            lat: ret.lat,
+                            account: $api.getStorage("bwUserName"),
+                            passWord: $api.getStorage("bwPassWord")
+                        })
+                    };
+
+                    api.ajax({
+                        url: 'http://' + $api.getStorage('apiUrl')+'/api/services/app/WorkFlow/ConfirmTaskById',
+                        method: 'post',
+                        dataType: "json",
+                        returnAll: false,
+                        headers: {"Content-Type":"application/json","Authorization": $api.getStorage('loginInfo')},
+                        data: body
+                    },function(ret, err){
+                        api.hideProgress();
+                        if (ret) {
+                            if (ret.success) {
+                              var result = db.executeSqlSync({
+                                  name: 'Wsdatabase',
+                                  sql: "UPDATE AUDIT_TASK_LIST SET Status = '7' WHERE Id ='" + _that.TaskData.thirdTaskId + "'"
+                              });
+                              updateMyTaskSheets(ret.result);
+                              _that.isClaim = false;
+                            } else {
+                              vant.Toast(ret.Message);
+                            }
+                        } else {
+                            vant.Toast(err.msg);
+                        }
+                    });
+
+                  }
+                });
+              },
+              onSubmit() {
+                var _that = this;
+
+                _that.isSubmit = true;
+                if(this.resultSelect == ""){
+                  vant.Toast('请选择处理结果!');
+                  _that.isSubmit = false;
+                  return;
+                }
+
+                //验证是否打开gps
+                var gpsmodel = api.require('gpsState');
+                gpsmodel.gpsstate(function(ret) {
+                  if (!ret.gps) {
+                    api.openFrame({
+                        name: 'checkOpenGPS_frm',
+                        url: 'widget://html/mine/checkOpenGPS_frm.html',
+                        rect: {
+                            x: 0,
+                            y: 0,
+                            w: 'auto',
+                            h: 'auto'
+                        },
+                        bounces: false,
+                        bgColor: 'rgba(0,0,0,0.1)',
+                    });
+                    _that.isSubmit = false;
+                  } else {
+                    if (api.connectionType != 'none') {
+                      _that.onSubmitGis();
+                    }
+                    _that.onSubmitData();
+                  }
+                });
+              },
+              onSubmitGis() {
+                var _that = this;
+                pGetNameFromCoords(function(ret, err) {
+                  if (ret.status) {
+                    _that.Longitude = ret.lon;
+                    _that.Latitude = ret.lat;
+                    _that.Location = ret.address;
+
+                    var gpsBody = {
+                      Type: _that.TaskData.ServiceTypeId,
+                      TaskId: _that.TaskData.thirdTaskId,
+                      CustomerCode: _that.CustomerCode,
+                      Longitude: _that.Longitude,
+                      Latitude: _that.Latitude,
+                      Address: _that.Location,
+                      ClientId: api.deviceModel,
+                      ClientName: api.deviceName,
+                      CollectedTime: dataTime(),
+                    };
+
+                    fnPost('MMS010', gpsBody, 'application/json', false, false, function(ret, err){
+                        console.log(JSON.stringify(ret));
+                        console.log(JSON.stringify(err));
+                    });
+                  }
+                });
+              },
+              onSubmitData() {
+                var _that = this;
+                var fileUrls = '';
+
+                for (var i = 0; i < _that.phoneList.length; i++) {
+                  fileUrls += _that.phoneList[i] + '|';
+                }
+                if (fileUrls != '') {
+                  fileUrls = fileUrls.substring(0, fileUrls.length - 1);
+                }
+
+                if ($api.getStorage('meterManageUploadPicture') == 1 || api.connectionType == 'none') {
+                  var msg = '';
+                  if ($api.getStorage('meterManageUploadPicture') == 1) {
+                    msg = '当前设置为数据及图片单独上传，是否确定保存？';
+                  } else {
+                    msg = '当前无网络，数据将保存至本地，是否保存？';
+                  }
+                  vant.Dialog.confirm({
+                          title: '提示',
+                          message: msg,
+                      })
+                      .then(function() {
+                        _that.onSaveLocal(fileUrls, '1', '');
+                      })
+                      .catch(function() {
+                          _that.isSubmit = false;
+                          return;
+                      });
+                } else {
+                  var body = {
+                    Id: _that.TaskData.thirdTaskId,
+                    Remark: _that.causeText,
+                    AuditStatus: _that.resultSelect,
+                    OperatedTime: _that.turnTime(new Date())
+                  }
+
+                  fnPost('MMS006', body, 'application/json', false, false, function(ret, err) {
+                    api.hideProgress();
+                    if (ret) {
+                      if (ret.Status == 0) {
+                        vant.Toast('提交成功');
+
+                        api.openWin({
+                            name: 'stopAfterWaterDetail',
+                            url: './stopAfterWaterDetail.html',
+                            pageParam: {
+                                data: _that.TaskData,
+                                type: _that.getTaskType
+                            }
+                        });
+                      } else {
+                        _that.isSubmit = false;
+                        _that.onSaveLocal(fileUrls, '0', ret.Message);
+                      }
+                    } else {
+                      _that.isSubmit = false;
+                      _that.onSaveLocal(fileUrls, '0', err.msg);
+                    }
+                  }, _that.phoneList);
+                }
+              },
+              onSaveLocal(fileUrl, saveType, errMsg) {
+                var _taht = this;
+                var saveSql = "UPDATE AUDIT_TASK_LIST SET "+
+                              "UserRemark = '"+ this.causeText +"',"+
+                              "AuditStatus = '"+ this.resultSelect +"',"+
+                              "OperatedTime = '"+ this.turnTime(new Date()) +"',"+
+                              "FileUrl = '"+ fileUrls +"',"+
+                              "LocationAddress = '"+ this.Longitude +","+ this.Latitude +"',"+
+                              "isUploadAndSave = '2',"+
+                              "SaveTime = '"+ this.turnTime(new Date()) +"'";
+                if (saveType == '0') {
+                  saveSql += ", isFail = '1',"+
+                             "FailRemark = '"+ errMsg +"'";
+                }
+                saveSql += "WHERE Id = '"+ this.dataObj.thirdTaskId +"'";
+                db.executeSql({
+                    name: 'Wsdatabase',
+                    sql: saveSql
+                }, function(ret, err){
+                    if( ret.status ){
+                        pUpdataMytaskSheetsStatus(_taht.TaskData);
+                        var msg = '';
+                        if (saveType == '1') {
+                          msg = '数据保存本地成功';
+                        } else if (saveType == '0') {
+                          msg = '提交数据失败，数据保存本地成功';
+                        }
+                        vant.Toast(msg);
+                    }else{
+                        vant.Toast('数据保存本地失败');
+                        console.log( JSON.stringify( err ) );
+                    }
+                });
+
+              },
+              onShowHtml(taskInfo) {
+                this.TaskData.ServiceTypeId = taskInfo.Code;
+
+                this.projectName = taskInfo.Name;
+                this.CustomerName = taskInfo.CustomerCode;
+                this.CustomerCode = taskInfo.CustomerCode;
+                this.Address = taskInfo.Address;
+                this.tableLocation = taskInfo.Location;
+                this.tableCode = taskInfo.StampNo;
+                this.Caliber = taskInfo.Caliber;
+
+                this.causeText = taskInfo.UserRemark;
+                this.resultSelect = taskInfo.AuditStatus;
+
+                if (taskInfo.LocationAddress != '') {
+                  var LocationAddress = retData.data[0].LocationAddress.split(",");
+                  this.Longitude = LocationAddress[0];
+                  this.Latitude = LocationAddress[1];
+
+                  if (api.connectionType == 'none') {
+                    this.Location = this.Longitude +','+ this.Latitude;
+                  } else {
+                    bMap.getNameFromCoords({
+                        lon: this.Longitude,
+                        lat: this.Latitude
+                    }, (ret, err) => {
+                        if (ret.status) {
+                          _that.Location = ret.address;
+                        } else {
+                          _that.Location = "获取位置失败";
+                        }
+                    });
+                  }
+                } else {
+                  this.onGetLocation();
+                }
+
+                if (taskInfo.FileUrl != '') {
+                  _that.phoneList = retData.data[0].FileUrl.split("|");
+                }
+              },
+              turnTime(myDate){//转时间
+                return myDate.getFullYear() + "-" + ((myDate.getMonth() + 1) < 10 ? "0"+(myDate.getMonth() + 1) : (myDate.getMonth() + 1)) + "-" +
+                              (myDate.getDate() < 10 ? "0"+(myDate.getDate()) : (myDate.getDate()));
+              },
+            },
+            mounted: function () {
+                if (this.getTaskType == 'claimTask') {
+                    this.isClaim = true;
+                }else if (this.getTaskType == 'handle') {
+                    this.isClaim = false;
+                }
+
+            },
+        })
+    }
+
+
+</script>
+
+</html>

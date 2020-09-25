@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, initial-scale=1.0, width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>GPS提示frame页面</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/aui1.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/dialog.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/dialogAlert.css" />
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+
+</body>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/zepto.js"></script>
+<script type="text/javascript" src="../../script/aui-dialog.js"></script>
+<script>
+    var dialog = new auiDialog();
+    apiready = function() {
+        api.addEventListener({
+            name: 'changedFontSize'
+        }, function(ret, err) {
+            if (ret) {
+                changeFontSize();
+            }
+        });
+
+
+        dialogAlert({
+            title: '提示',
+            content: "您的GPS定位未开启,是否立即去开启?",
+            buttons: ['确定', '取消'],
+        }, function(ret) {
+            if (ret.buttonIndex == 1) {
+              var gpsmodel = api.require('gpsState');
+                  gpsmodel.opengps();
+                  api.closeFrame();
+            } else {
+              dialogAlert({
+                  title: '提示',
+                  content: "若需开启定位，请到我的-设置里面去开启定位",
+                  buttons: ['确定'],
+              }, function(ret) {
+                if (ret.buttonIndex == 1) {
+                  api.closeFrame({
+                   name: 'updateVersion_frame'
+                  });
+                  api.closeFrame();
+                }
+              });
+            }
+        });
+
+    };
+</script>
+
+</html>
