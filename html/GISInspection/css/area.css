@@ -1,0 +1,7 @@
+
+.map-footer {
+  box-shadow: 0 -3px 9px 0 rgba(0,0,0,0.16);
+  border-radius: 16px 16px 0 0;
+  transition: all 0.1s;
+  z-index: 999;
+}

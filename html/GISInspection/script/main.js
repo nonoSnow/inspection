@@ -54,17 +54,15 @@ function funIniGroup() {
     }, function(ret, err) {});
 }
 
-function onFotterMenu(index) {
+function onFotterMenu(index, el) {
   api.setFrameGroupIndex({
       name: 'group',
       index: index,
   });
-  var footerList = document.getElementsByClassName('flex1');
-  var footerline = document.getElementsByClassName('type-line');
-  for (var i = 0; i < footerList.length; i++) {
-    $api.removeCls(footerList[i], 'color-598');
-    $api.removeCls(footerline[i], 'bgc-blue');
-  }
-  $api.addCls(footerList[index], 'color-598');
-  $api.addCls(footerline[index], 'bgc-blue');
+
+  $('.flex1').removeClass('color-598');
+  $(el).addClass('color-598');
+
+  $('.type-line').removeClass('bgc-blue');
+  $(el).children().children().addClass('bgc-blue');
 }

@@ -19,19 +19,19 @@
       </header>
 
       <div class="header-type display-flex text-cent line-height25 color-666">
-        <div class="flex1 header-type-item color-598" tapmode onclick="onMenu(0)">
+        <div class="flex1 header-type-item color-598" tapmode onclick="onMenu(0, this)">
             <span class="line-height1">
               待处理
               <div class="type-line bgc-blue margin-top3 width60"></div>
             </span>
         </div>
-        <div class="flex1 header-type-item" tapmode onclick="onMenu(1)">
+        <div class="flex1 header-type-item" tapmode onclick="onMenu(1, this)">
             <span class="line-height1">
               转工单
               <div class="type-line margin-top3 width60"></div>
             </span>
         </div>
-        <div class="flex1 header-type-item" tapmode onclick="onMenu(2)">
+        <div class="flex1 header-type-item" tapmode onclick="onMenu(2, this)">
             <span class="line-height1">
               已关闭
               <div class="type-line margin-top3 width60"></div>
@@ -62,7 +62,7 @@
               <div class="flex1-auto color-666">提交事件：2020-09-22 18:00</div>
             </div>
           </li>
-          
+
         </ul>
       </div>
     </div>
@@ -70,6 +70,7 @@
   <script type="text/javascript" src="../../../public/script/api.js"></script>
   <script type="text/javascript" src="../../../public/script/common.js"></script>
   <script type="text/javascript" src="../../../public/script/remote.js"></script>
+  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
 
   <script type="text/javascript" src="../../script/public.js"></script>
   <script type="text/javascript" src="../../script/method.js"></script>

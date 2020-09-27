@@ -19,25 +19,25 @@
       </header>
 
       <div class="header-type display-flex text-cent line-height25 color-666">
-        <div class="flex1 header-type-item color-598" tapmode onclick="onMenu(0)">
+        <div class="flex1 header-type-item color-598" tapmode onclick="onMenu(0, this)">
             <span class="line-height1">
               进行中
               <div class="type-line bgc-blue margin-top3 width60"></div>
             </span>
         </div>
-        <div class="flex1 header-type-item" tapmode onclick="onMenu(1)">
+        <div class="flex1 header-type-item" tapmode onclick="onMenu(1, this)">
             <span class="line-height1">
               待接收
               <div class="type-line margin-top3 width60"></div>
             </span>
         </div>
-        <div class="flex1 header-type-item" tapmode onclick="onMenu(2)">
+        <div class="flex1 header-type-item" tapmode onclick="onMenu(2, this)">
             <span class="line-height1">
               已暂停
               <div class="type-line margin-top3 width60"></div>
             </span>
         </div>
-        <div class="flex1 header-type-item" tapmode onclick="onMenu(3)">
+        <div class="flex1 header-type-item" tapmode onclick="onMenu(3, this)">
             <span class="line-height1">
               已完成
               <div class="type-line margin-top3 width60"></div>
@@ -50,7 +50,7 @@
           <li class="padding75 bgc-ff border-radius4 relative line-height1">
               <img src="../../image/plan.png" class='task-item-label absolute right75 top0' alt="">
               <div class="aui-list-item-inner block font-S9">
-                <div class="aui-list-item-title display-flex">
+                <div class="display-flex">
                   <img src="../../image/task-icon.png" class='task-icon' alt="">
                   <span class="margin-left3 font-w4">阳光小区巡检计划</span>
                 </div>
@@ -105,6 +105,7 @@
   <script type="text/javascript" src="../../../public/script/api.js"></script>
   <script type="text/javascript" src="../../../public/script/common.js"></script>
   <script type="text/javascript" src="../../../public/script/remote.js"></script>
+  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
 
   <script type="text/javascript" src="../../script/public.js"></script>
   <script type="text/javascript" src="../../script/task.js"></script>
