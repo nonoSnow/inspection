@@ -35,7 +35,7 @@ function onMenu(index, el) {
     $('.line').addClass('aui-hide');
     $('.item-footer').addClass('aui-hide');
   }
-  onCheckMenu(index, el, function(){
+  onCheckMenu(el, function(){
     console.log(123);
   });
 }

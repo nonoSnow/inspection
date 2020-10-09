@@ -1,14 +1,18 @@
 
+function onBack() {
+  api.closeWin({});
+}
+
 /*
  *  头部-类型点击公共方法
  */
-function onCheckMenu(index, el, callback) {
+function onCheckMenu(el, callback) {
 
   $('.header-type-item').removeClass('color-598');
   $('.type-line').removeClass('bgc-blue');
 
   $(el).addClass('color-598');
-  $(el).children().children().addClass('bgc-blue')
+  $(el).children().children().addClass('bgc-blue');
 
   callback();
 }
@@ -75,9 +79,9 @@ function onShowList(element, minH, maxH, mapListStatus, bodyHeight,callback) {
              $('.' + element).css('height', minH + maxH + 'px');
              mapListStatus = 1;
          }
+
+         callback(mapListStatus);
        }
    },false);
-
-   callback(mapListStatus);
 
  }

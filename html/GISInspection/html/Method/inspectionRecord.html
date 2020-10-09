@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>巡检记录</title>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../../css/public.css">
+  </head>
+  <body>
+    <div class="flex-wrap flex-vertical height100">
+      <header class="aui-bar aui-bar-nav aui-bar-light bgi-none header-box-shadow" id="header">
+          <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
+              <span class='aui-iconfont aui-icon-left'></span>
+          </div>
+          <div class="aui-title">巡检记录</div>
+      </header>
+
+      <div class="flex-con flex-content height100 bgc-f3">
+        <ul class="aui-content-padded line-height1 font-S75">
+          <li class="padding75 bgc-ff border-radius4">
+            <div class="inline-block color-666">基础信息</div>
+            <div class="line margin-top6 margin-bot6"></div>
+            <div>名称：阀门</div>
+            <div class="margin-top75">编号：2089882848575756</div>
+            <div class="margin-top75">坐标：116.556663,39.975432</div>
+            <div class="margin-top75">
+              状态：
+              <span class='inline-block task-status-circular bgc-gre margin-right3'></span>
+              正常
+            </div>
+            <div class="margin-top75">地址：南京市溧水区交通路阳光小区98号</div>
+          </li>
+
+          <li class="padding75 bgc-ff border-radius4 margin-top75">
+            <div class="width100 color-666">
+              <span>设备信息</span>
+              <span class="float-rig"><i class="aui-iconfont aui-icon-calendar"></i> 2020-02</span>
+            </div>
+            <div class="line margin-top6 margin-bot6"></div>
+            <div class="inspection-record-item">
+              <div class="record-item-line relative">
+                <span class="record-line-spot" style="margin-top: 1.35rem;"></span>
+                <span class="record-line absolute"></span>
+              </div>
+              <div class="record-item-cont">
+                <div class="record-tiem">2020-02-01 14:12:52</div>
+                <div class="record-info padding75">
+                  <div>巡检人：张三</div>
+                  <div class="margin-top6">
+                    状态：
+                    <span class='inline-block task-status-circular bgc-dan margin-right3'></span>
+                    异常
+                  </div>
+                  <div class="margin-top6">事件类型：漏损事件</div>
+                  <div class="margin-top6">异常类型：管道损坏、偷盗水时间</div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../../public/script/api.js"></script>
+  <script type="text/javascript" src="../../../public/script/common.js"></script>
+  <script type="text/javascript" src="../../../public/script/remote.js"></script>
+  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+  <script type="text/javascript" src="../../../public/script/aui-popup.js"></script>
+
+  <script type="text/javascript" src="../../script/public.js"></script>
+  <script type="text/javascript" src="../../script/inspectionRecord.js"></script>
+</html>

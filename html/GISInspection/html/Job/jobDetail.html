@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>工单详情</title>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/public.css">
+    <link rel="stylesheet" type="text/css" href="../../css/common.css">
+  </head>
+  <body>
+    <div class="flex-wrap flex-vertical height100">
+      <header class="aui-bar aui-bar-nav aui-bar-light bgi-none header-box-shadow" id="header">
+          <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
+              <span class='aui-iconfont aui-icon-left'></span>
+          </div>
+          <div class="aui-title">工单详情</div>
+      </header>
+
+      <div class="flex-con flex-content height100 bgc-f3">
+        <ul class="aui-content-padded line-height1 font-S75">
+          <li class="padding75 bgc-ff border-radius4">
+            <div class="color-666">基础信息</div>
+            <div class="line margin-top6 margin-bot6"></div>
+            <div>工单类型：核查情况</div>
+            <div class="margin-top75 relative">
+              <span class="transfer-text">负责人：张三</span>
+              <img src="../../image/transfer.png" class="transfer" alt="">
+              <span class="transfer-text">李四</span>
+              <span class="transfer-text color-598 absolute right0">转派原因 <span class="aui-iconfont aui-icon-right"></span></span>
+            </div>
+            <div class="margin-top75">
+              状态：
+              <span class='inline-block task-status-circular bgc-war margin-right3'></span>
+              待巡检
+            </div>
+            <div class="margin-top75">预计完成时间：2020-08-23 09:21:35</div>
+
+            <div class="margin-top12">工单内容:</div>
+            <div class="width100 height6 bgc-f5f6 border-radius4 margin-top75 padding75 line-height15">工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容</div>
+
+            <div class="margin-top12">工单附件:</div>
+            <div class="width100 heightauto display-flex margin-top75 file-list">
+              <div class="flex1">
+                <div class="file-div"></div>
+              </div>
+              <div class="flex1">
+                <div class="file-div margin-auto"></div>
+              </div>
+              <div class="flex1">
+                <div class="file-div margin-auto"></div>
+              </div>
+              <div class="flex1">
+                <div class="file-div float-rig"></div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <footer class="aui-bar aui-bar-tab display-flex footer">
+        <div class="flex1">
+          <div class='footer-btn btn-border'>
+            关闭工单
+          </div>
+        </div>
+        <div class="flex1">
+          <div class='footer-btn btn-border'>
+            查看地图
+          </div>
+        </div>
+        <div class="flex1">
+          <div class='footer-btn bgc-blue color-fff'>
+            转派
+          </div>
+        </div>
+        <div class="flex1">
+          <div class='footer-btn bgc-blue color-fff'>
+            接收
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../../public/script/api.js"></script>
+  <script type="text/javascript" src="../../../public/script/common.js"></script>
+  <script type="text/javascript" src="../../../public/script/remote.js"></script>
+  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+
+  <script type="text/javascript" src="../../script/public.js"></script>
+</html>

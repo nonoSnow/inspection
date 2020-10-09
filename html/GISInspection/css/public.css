@@ -33,6 +33,10 @@ body {
   top: 0;
 }
 
+.top15 {
+  top: -0.15rem;
+}
+
 .top10 {
 	top: 2.25rem;
 }
@@ -47,6 +51,10 @@ body {
 
 .z-index10 {
 	z-index: 10;
+}
+
+.z-index20 {
+  z-index: 20;
 }
 
 .box-siz {
@@ -73,12 +81,24 @@ body {
   font-weight: 400;
 }
 
+.font-bold {
+  font-weight: bold;
+}
+
 .border-top {
 	border-top: 1px solid #E6E6E6;
 }
 
 .border-right {
   border-right: 1px solid #E6E6E6;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #E6E6E6;
+}
+
+.border-none {
+  border: none!important;
 }
 
 .text-cent {
@@ -95,6 +115,14 @@ body {
 
 .display-flex {
 	display: flex;
+}
+
+.block {
+	display: block !important;
+}
+
+.inline-block {
+  display: inline-block;
 }
 
 .flex1 {
@@ -161,6 +189,18 @@ body {
 	line-height: 2.5rem;
 }
 
+.margin-center {
+  margin: 0rem 0.75rem;
+}
+
+.margin-auto {
+  margin: 0rem auto;
+}
+
+.margin-top0 {
+  margin-top: 0;
+}
+
 .margin-top3 {
 	margin-top: 0.3rem;
 }
@@ -185,12 +225,32 @@ body {
   margin-top: 1rem;
 }
 
+.margin-top12 {
+  margin-top: 1.2rem;
+}
+
+.margin-top145 {
+  margin-top: 1.45rem;
+}
+
+.margin-top200 {
+  margin-top: 2rem;
+}
+
+.margin-bot0 {
+	margin-bottom: 0rem;
+}
+
 .margin-bot3 {
 	margin-bottom: 0.3rem;
 }
 
 .margin-bot5 {
 	margin-bottom: 0.5rem;
+}
+
+.margin-bot6 {
+	margin-bottom: 0.6rem;
 }
 
 .margin-bot75 {
@@ -202,15 +262,23 @@ body {
 }
 
 .margin-left3 {
-  margin-left: 0.3rem;
+  margin-left: 0.3rem!important;
 }
 
 .margin-left5 {
   margin-left: 0.5rem;
 }
 
+.margin-right3 {
+  margin-right: 0.3rem!important;;
+}
+
 .margin-075 {
   margin: 0rem 0.75rem 0.75rem;
+}
+
+.margin-75 {
+  margin: 0.75rem;
 }
 
 .line-height1 {
@@ -229,25 +297,45 @@ body {
 	right: 5%;
 }
 
+.right3 {
+  right: 0.3rem;
+}
+
 .right0 {
   right: 0;
 }
 
 .type-line {
-	height: 0.2rem;
+	height: 0.1rem;
 	border-radius: 0.15rem;
 }
 
 .bgc-blue {
-	background-color: #5982FF;
+	background-color: #5982FF!important;
 }
 
 .bgc-f3 {
-	background-color: #F3F3F3;
+	background-color: #F3F3F3!important;
 }
 
 .bgc-ff {
-	background-color: #FFFFFF;
+	background-color: #FFFFFF!important;
+}
+
+.bgc-gre {
+  background-color: #7AE645!important;
+}
+
+.bgc-war {
+  background-color: #FFAA33!important;
+}
+
+.bgc-dan {
+  background-color: red;
+}
+
+.bgc-f5f6 {
+  background-color:  #F5F6F7;
 }
 
 .fixed {
@@ -266,6 +354,10 @@ body {
 	bottom: 0;
 }
 
+.bottom250 {
+  bottom: 2.5rem;
+}
+
 .map-btn-div {
   width: 2.2rem;
   height: auto;
@@ -275,9 +367,17 @@ body {
   width: 2.2rem;
   height: auto;
   box-shadow: 0 3px 9px 0 rgba(0,0,0,0.20);
+  background-color: #FFF;
+  z-index: 20;
 }
 
+.border-radius2 {
+  border-radius: 0.2rem !important;
+}
 
+.border-radius-top3 {
+  border-radius: 0.3rem 0.3rem 0 0;
+}
 
 .border-radius4 {
   border-radius: 0.4rem !important;
@@ -356,12 +456,20 @@ body {
 	margin-left: 20%;
 }
 
-.padding-top5 {
-	padding-top: 5rem!important;
+.width75 {
+  width: 75%!important;
 }
 
 .width100 {
-  width: 100%;
+  width: 100%!important;
+}
+
+.padding75 {
+	padding: 0.75rem !important;
+}
+
+.padding-top5 {
+	padding-top: 5rem!important;
 }
 
 .heightauto {
@@ -372,29 +480,51 @@ body {
 	height: 100%;
 }
 
-.block {
-	display: block !important;
-}
-
-.padding75 {
-	padding: 0.75rem !important;
+.line {
+  width: 100%;
+  height: 1px;
+  background-color: #E6E6E6;
 }
 
 .color-333 {
-  color: #333333;
+  color: #333333!important;
+}
+
+.color-656 {
+  color: #656F89!important;
 }
 
 .color-666 {
-  color: #666666;
+  color: #666666!important;
 }
 
 .color-598 {
-  color: #5982FF;
+  color: #5982FF!important;
+}
+
+.color-999 {
+  color: #999999!important;
 }
 
 .color-fff {
-  color: #FFFFFF;
+  color: #FFFFFF!important;
 }
+
+.color-red {
+  color: red!important;
+}
+
+ .required:before {
+     content: "*";
+     color: red;
+     font-size: 0.75rem;
+     width: 0.75rem;
+     height: 0.75rem;
+     display: inline-block;
+     vertical-align: middle;
+     text-align: center;
+     line-height: 0.8rem;
+ }
 
 .aui-searchbar-square {
   background-color: #fff;
@@ -413,13 +543,286 @@ body {
     height: 40px;
 }
 
+.search-btn {
+  min-width: 3.2rem;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  margin-top: 0.25rem;
+  border-left: 1px solid #D7D8DB;
+}
+
 .list-xl {
   width: 1.6rem;
   height: 0.45rem;
-  transform:rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.transition-status2 {
+  width: 1.8rem;
+  height: 0.2rem;
+  border-radius: 0.3rem;
+  background-color: #CCC;
 }
 
 .list-search {
   width: 90%;
   margin: 0 auto;
+}
+
+.footer {
+  height: 2.5rem;
+  box-shadow: 0 -2px 8px 0 rgba(0,0,0,0.12);
+}
+
+.footer-btn {
+  width: 90%;
+  height: 2rem;
+  line-height: 2rem;
+  margin: 0.25rem auto;
+  border-radius: 0.3rem;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.btn-disabled {
+  color: #999999!important;
+  background-color: #D6D7D9!important;
+}
+
+.btn-border {
+  line-height: 1.8rem;
+  border: 2px solid #69728C;
+}
+
+.map-footer {
+  box-shadow: 0 -3px 9px 0 rgba(0,0,0,0.16);
+  border-radius: 16px 16px 0 0;
+  transition: all 0.1s;
+  z-index: 10;
+}
+
+.list-item-cont {
+  width: 100%;
+  height: 1.25rem;
+  line-height: 1.25rem;
+}
+
+.item-btn {
+  float: right;
+  width: auto;
+  padding: 0rem 0.3rem;
+  height: 100%;
+  text-align: center;
+  border-radius: 0.2rem;
+}
+
+.danger {
+  color: #FF6966;
+  background: rgba(255,105,102,0.16);
+  border: 1px solid #FF6966;
+}
+
+.default {
+  color: #1890FF;
+  background: rgba(24,144,255,0.15);
+  border: 1px solid #1890FF;
+}
+
+.warning {
+  color: #FFAA33;
+  background: rgba(255,170,51,0.16);
+  border: 1px solid #FFAA33;
+}
+
+.header-box-shadow {
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.10);
+}
+
+.task-icon {
+    height: 1rem;
+}
+
+.task-item-overdue {
+  background: rgba(255,105,102,0.16);
+  border: 1px solid #FF6966;
+  border-radius: 0.2rem;
+  padding: 0.3rem 0.4rem;
+  color: #FF6966;
+}
+
+.task-status-circular {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 100%;
+}
+
+.item-input {
+  width: 100%;
+  height: 2rem;
+  line-height: 2rem;
+  background-color: #F5F6F7;
+  border-radius: 0.2rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.item-input input {
+  width: 100%;
+  height: 100%;
+}
+
+.item-input span {
+  position: absolute;
+  right: 0.75rem;
+  top: 0;
+}
+
+.height6{
+  height: 6rem;
+}
+
+.file-div {
+  width: 3.5rem;
+  height: 3.5rem;
+  background: #F5F6F7;
+  text-align: center;
+  border-radius: 0.2rem;
+}
+
+.file-img {
+  width: 1.4rem;
+}
+
+.file-text {
+  font-size: 0.65rem;
+  color: #989DB4;
+}
+
+/*
+ *自定义底部弹出框
+ */
+.custom-popup {
+  width: 100%;
+  height: auto;
+  bottom: 0;
+  background-color: #FFF;
+  border-radius: 0.3rem 0.3rem 0 0;
+  display: none;
+}
+
+.custom-popup-item {
+  height: 2.5rem;
+  line-height: 2.5rem;
+  border-bottom: 1px solid #E6E6E6;
+}
+
+.custom-popup-interval {
+  width: 100%;
+  height: 0.3rem;
+  background-color: #F3F3F3;
+}
+
+.aui-mask {
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 20;
+}
+
+.abnormal-type-title {
+  width: 100%;
+  height: 1.05rem;
+  line-height: 1.05rem;
+  position: relative;
+  font-size: 0.75rem;
+  color: #666666;
+}
+
+.abnormal-title-bgc {
+  width: 1.6rem;
+  height: 1.05rem;
+  opacity: 0.5;
+  background-image: linear-gradient(270deg, rgba(89,130,255,0.00) 0%, #5982FF 100%);
+  border-radius: 0.1rem 0 0 0.1rem;
+  position: absolute;
+}
+
+.abnormal-title-text {
+  margin-left: 0.55rem;
+}
+
+.abnormal-type-item {
+  width: 100%;
+  height: auto;
+  display: flex;
+  margin-top: 1rem;
+}
+
+.aui-checkbox {
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-top: 0.2rem;
+}
+
+.aui-radio {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* 巡检记录列表 */
+.inspection-record-item {
+  width: 100%;
+  height: 9rem;
+  display: flex;
+}
+
+.record-item-line {
+  width: 8%;
+  height: 100%;
+}
+
+.record-line-spot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 100%;
+  position: relative;
+  z-index: 10;
+  background-color: #5982FF;
+}
+
+.record-line {
+  width: 0.1rem;
+  height: 100%;
+  background-color: #E1E1E6;
+  left: 0.15rem;
+}
+
+.record-item-cont {
+  width: 92%;
+  height: 100%;
+}
+
+.record-tiem {
+  width: 100%;
+  height: 0.75rem;
+  color: #333;
+  line-height: 0.75rem;
+  margin: 1.2rem 0rem 0.6rem;
+}
+
+.record-info {
+  width: 100%;
+  height: 6.4rem;
+  border-radius: 0.4rem;
+  box-sizing: border-box;
+  border: 1px solid #E1E1E6;
+  background-color:  #F7F7F9;
+}
+
+.transfer {
+  width: 0.75rem;
+  height: 0.75rem;
+  display: inline-block;
+}
+
+.transfer-text {
+  vertical-align: top;
 }

@@ -13,9 +13,12 @@
 
     <link rel="stylesheet" type="text/css" href="../../css/area.css">
   </head>
-  <body id='body'>
+  <body>
       <header class="aui-bar aui-bar-nav map-header fixed" id="header">
         <div class='header-cont'>
+          <div class='aui-pull-left aui-btn aui-hide' tapmode onclick="onBack()">
+              <span class='aui-iconfont aui-icon-left'></span>
+          </div>
           <div class='aui-title'>片区</div>
           <a class='aui-pull-right'>
               <span>添加片区</span>
@@ -26,6 +29,7 @@
       <div class="fixed bottom0 bgc-ff width100 map-footer flex-wrap flex-vertical" id='map-footer' style='height: 114px;'>
         <div class="width100 text-cent margin-bot5 status1" tapmode onclick='onShowItem()'>
           <img src="../../image/upper.png" class='list-xl' alt="">
+          <span class="transition-status2 aui-hide"></span>
           <p style='height: 1rem; line-height: 1rem;'>片区列表</p>
         </div>
         <div class="width100 margin-bot75 status2">
@@ -41,7 +45,7 @@
         </div>
         <div class='flex-con flex-content map-list'>
           <ul class="aui-content-padded margin-075">
-            <li class="padding75 bgc-f3 border-radius4 line-height1 list-item">
+            <li class="padding75 bgc-f3 border-radius4 line-height1 list-item" tapmode onclick="onOpenAreaDetail()">
               <div class="aui-list-item-inner block font-S9">
                 <div class="font-w4 color-333">片区名称：阳光小区巡检路线</div>
                 <div class="margin-top6 color-666">管道长度：6.83 km</div>
