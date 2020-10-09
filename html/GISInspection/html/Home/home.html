@@ -8,8 +8,9 @@
     <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
     <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
 
-    <link rel="stylesheet" type="text/css" href="../../css/public.css">
-    <link rel="stylesheet" type="text/css" href="../../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../../js/sntgis/sntgis.css"/>
   </head>
   <body>
     <header class="aui-bar aui-bar-nav map-header snt-bar-fiexd" id="header">
@@ -21,9 +22,14 @@
       </div>
     </header>
 
+
+    <!-- 地图 -->
+    <div class="map-box">
+        <div class="map" id="map"></div>
+    </div>
+
     <!-- 用于测试 -->
     <div class="aui-btn aui-btn-blue" style='top: 5rem; left: 5%;' tapmode onclick="onOpenTaskInfo()">任务详情</div>
-
     <div class="map-btn-div top435 fixed right5">
         <div class="map-btn-bs border-radius4">
           <div class="font-S6 text-cent">
@@ -62,11 +68,16 @@
       <div class="map-location-div fixed left5 bottom385 map-btn-bs border-radius4">
         <img src="../../image/location1.png" class='location-one' alt="">
       </div>
+
   </body>
   <script type="text/javascript" src="../../../public/script/api.js"></script>
   <script type="text/javascript" src="../../../public/script/common.js"></script>
   <script type="text/javascript" src="../../../public/script/remote.js"></script>
   <script type="text/javascript" src="../../../public/script/zepto.js"></script>
-
-  <script type="text/javascript" src="../../script/home.js"></script>
+  <script type="text/javascript" src="../../script/sntgis/sntgis.js"></script>
+  <script type="text/javascript" src="../../script/sntgis/sntgis_extend.js"></script>
+  <script type="text/javascript" src="../../script/ajaxApi.js"></script>
+  <script type="text/javascript" src="../../script/ajaxMethod.js"></script>
+  <script type="text/javascript" src="../../script/home/gis.js"></script>
+  <script type="text/javascript" src="../../script/home/home.js"></script>
 </html>
