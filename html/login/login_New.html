@@ -573,15 +573,15 @@
                     var password = _this.password;
                     var loginedData = _this.loginedData;
                     var rememberAutoLogin = _this.rememberAutoLogin;
-                    if (isEmpty(userName) || isEmpty(password)) {
-                        var name = _this.accountCheckboxChecked ? '账号' : '手机号';
-                        api.toast({
-                            msg: '' + name + '或密码不能为空',
-                            duration: 2000,
-                            location: 'top'
-                        });
-                        return;
-                    }
+                    // if (isEmpty(userName) || isEmpty(password)) {
+                    //     var name = _this.accountCheckboxChecked ? '账号' : '手机号';
+                    //     api.toast({
+                    //         msg: '' + name + '或密码不能为空',
+                    //         duration: 2000,
+                    //         location: 'top'
+                    //     });
+                    //     return;
+                    // }
                     if (api.connectionType != 'none') {
                         var serviceAddress = $api.getStorage('apiUrl');
                         if (serviceAddress == null || serviceAddress == undefined || serviceAddress == ' ') {
@@ -601,11 +601,13 @@
                                 lat = CurrentLocation.lat;
                             }
                         }
+                        console.log(password)
                         var loginData = {
                             userName: userName,
-                            password: password,
+                            // password: password,
+                            password: '123abc!@#',
                             rememberMe: rememberAutoLogin,
-                            tenantCode: "",
+                            tenantCode: "njls",
                             encryptPassword: "",
                             lng: lon,
                             lat: lat,
@@ -614,10 +616,11 @@
                         };
                         var loginDataPc = {
                                 userName: userName,
-                                password: password,
+                                // password: password,
+                                password: '123abc!@#',
                                 rememberMe: rememberAutoLogin,
                                 validCode: "",
-                                tenantCode: "cdzls", //  njjn
+                                tenantCode: "njls", //  njjn
                                 sessionId: "",
                                 isVerificationCode: true,
                                 loginType: "",
