@@ -1,7 +1,25 @@
+
+var nowTaskType;
+
 apiready = function() {
   var header = $api.byId('header');
   // 实现沉浸式状态栏效果
   $api.fixStatusBar(header);
+
+  nowTaskType = api.pageParam.type;
+  if (nowTaskType == '0') {
+    $('.task-stop').html('暂停');
+    $('.task-complete').html('完成');
+  } else if (nowTaskType == '1') {
+    $('.task-stop').html('关闭');
+    $('.task-complete').html('启动');
+  } else if (nowTaskType == '2') {
+    $('.task-stop').html('关闭');
+    $('.task-complete').html('重启');
+  } else if (nowTaskType == '3') {
+    $('.footer').addClass('aui-hide');
+    $('.flex-con').removeClass('margin-bot250');
+  }
 
   onMenu(0, '');
 

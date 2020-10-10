@@ -269,6 +269,10 @@ body {
   margin-left: 0.5rem;
 }
 
+.margin-right0 {
+  margin-right: 0!important;
+}
+
 .margin-right3 {
   margin-right: 0.3rem!important;;
 }
@@ -287,6 +291,10 @@ body {
 
 .line-height15 {
 	line-height: 1.5;
+}
+
+.right350 {
+  right: 3.5rem;
 }
 
 .right75 {
@@ -332,6 +340,14 @@ body {
 
 .bgc-dan {
   background-color: red;
+}
+
+.bgc-5cd {
+  background-color: #5CDBD3!important;
+}
+
+.bgc-cc6 {
+  background-color: #CC66FF!important;
 }
 
 .bgc-f5f6 {
@@ -681,12 +697,21 @@ body {
   height: 6rem;
 }
 
+.file-list {
+  width: 100%;
+  height: auto;
+  display: inline-table;
+  margin-top: 0.75rem;
+}
+
 .file-div {
-  width: 3.5rem;
+  width: 23.5%;
   height: 3.5rem;
+  display: inline-block;
+  margin-right: 2%;
   background: #F5F6F7;
-  text-align: center;
   border-radius: 0.2rem;
+  text-align: center;
 }
 
 .file-img {
