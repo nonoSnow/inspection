@@ -601,7 +601,6 @@
                                 lat = CurrentLocation.lat;
                             }
                         }
-                        console.log(password)
                         var loginData = {
                             userName: userName,
                             // password: password,
@@ -612,7 +611,8 @@
                             lng: lon,
                             lat: lat,
                             account: "",
-                            passWord: password
+                            passWord: '123abc!@#'
+                            // passWord: password
                         };
                         var loginDataPc = {
                                 userName: userName,
@@ -680,6 +680,7 @@
                         }, 'application/json', false, false, function(ret, err) {
                             if (ret) {
                                 if (ret.success) {
+                                    console.log(JSON.stringify(ret.result))
                                     // 为用户表添加数据
                                     insertUserInfoToTable(userName, password);
                                     // 保存用户登录成功后所有信息 zxf 2019.12.9
@@ -821,7 +822,6 @@
 
                                     }
                                 });
-
                             }
                         }
                     });

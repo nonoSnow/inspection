@@ -10,30 +10,33 @@
 * error 失败回调函数
 */
 function ajaxMethod(options) {
+
     if(!options.url) return false;
     var data = {}, url = options.url, headers = options.headers || {};
     var userinfo = $api.getStorage('userLoginInformation')
     // headers['Authorization'] = 'Bearer ' +  userinfo.loginSuccessData.accessToken
-    headers['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEwMjk0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6Ik5KTFMiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsi5rqn5rC05pm65oWn5rC05Yqh566h55CG5ZGY6KeS6ImyIiwi6K6_5a6i54K5566h55CG6KeS6ImyIl0sImh0dHA6Ly93d3cuYXNwbmV0Ym9pbGVycGxhdGUuY29tL2lkZW50aXR5L2NsYWltcy90ZW5hbnRJZCI6IjEwMTU5IiwiVXNlck5hbWUiOiJOSkxTIiwiT3JnSWQiOiIxMDI5NCIsIlRydWVOYW1lIjoi5rqn5rC05pm65oWn5rC05Yqh566h55CG5ZGY55So5oi3IiwiQXZhdGVyIjoiIiwiT3JnTmFtZSI6Iua6p-awtOaZuuaFp-awtOWKoSIsIlRlbmFudE5hbWUiOiLmuqfmsLTmmbrmhafmsLTliqEiLCJUZW5hbnRDb25uZWN0U3RyaW5nIjoiIiwiUm9sZXMiOiIxNjMxODIsMTYzMTg0Iiwic3ViIjoiMTAyOTQiLCJqdGkiOiJlMWFlNWRkNC03NWNiLTRjNmItOTdkMy0zNmM3OGVmN2E3NzUiLCJpYXQiOjE2MDIwNTg5MTEsIm5iZiI6MTYwMjA1ODkxMSwiZXhwIjoxNjAyMTAyMTExLCJpc3MiOiJTbnRTb2Z0IiwiYXVkIjoiU250U29mdCJ9.vU43B0NXUjA1zTCunj-10XNCfwXdy3LcCnkWd84JqiQ'
+    headers['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEwMjk0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6Ik5KTFMiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsi5rqn5rC05pm65oWn5rC05Yqh566h55CG5ZGY6KeS6ImyIiwi6K6_5a6i54K5566h55CG6KeS6ImyIl0sImh0dHA6Ly93d3cuYXNwbmV0Ym9pbGVycGxhdGUuY29tL2lkZW50aXR5L2NsYWltcy90ZW5hbnRJZCI6IjEwMTU5IiwiVXNlck5hbWUiOiJOSkxTIiwiT3JnSWQiOiIxMDI5NCIsIlRydWVOYW1lIjoi5rqn5rC05pm65oWn5rC05Yqh566h55CG5ZGY55So5oi3IiwiQXZhdGVyIjoiIiwiT3JnTmFtZSI6Iua6p-awtOaZuuaFp-awtOWKoSIsIlRlbmFudE5hbWUiOiLmuqfmsLTmmbrmhafmsLTliqEiLCJUZW5hbnRDb25uZWN0U3RyaW5nIjoiIiwiUm9sZXMiOiIxNjMxODIsMTYzMTg0Iiwic3ViIjoiMTAyOTQiLCJqdGkiOiIyMDkzMDdkNS1kZjRlLTQ0MjMtOWFjOS01MDU2NWFlOTI1YzAiLCJpYXQiOjE2MDI0NjU4NjAsIm5iZiI6MTYwMjQ2NTg2MCwiZXhwIjoxNjAyNTA5MDYwLCJpc3MiOiJTbnRTb2Z0IiwiYXVkIjoiU250U29mdCJ9.eTGgvdS00uPYrqovK1tMIZRuK5mi6l64l_5pFv02k5Q'
+
     if(!options.type || options.type !='get') {
-        // 上传data数据与上传文件不能同时存在
+        // 上传data数据与上传文件不能同时存在 其中一种存在另一种就不能存在
         if(options.files || options.values) {
             data.files = options.files || {};
             data.values = options.values || {};
         } else if (options.stream) {
             data.stream = options.stream;
         } else {
-            // var jsonData = options.data || {};
             data.body = JSON.stringify(options.data || {});
-            // data.body = options.data || {}
             headers['Content-Type'] = 'application/json';
         }
+
     } else {
         // 当请求类型为get是 将参数以&形式连接到请求地址后面
         var urlStr = connectRequestData(options.data);
         if(urlStr)
-            url += '?' + connectRequestData(options.data);
+            url += '?' + urlStr;
     }
+
+    // 请求数据
     api.ajax({
         url: url,
         method: options.type || 'post',
@@ -48,6 +51,8 @@ function ajaxMethod(options) {
             if(options.error) options.error(err);
         }
     });
+
+    
 }
 
 /**
