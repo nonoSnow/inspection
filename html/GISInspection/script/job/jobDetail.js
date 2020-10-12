@@ -51,19 +51,7 @@ function showData(id,jobStatus){
     console.log(JSON.stringify(ret));
     $('#detailList').html('');
     var data = {
-        list: [{
-          Id:"1",
-          typeStr:status,
-          creationTime:"2020-09-22 18:00",
-          completeTime:"2020-09-22 18:00"
-        },
-        {
-          Id:"2",
-          typeStr:"施工2",
-          creationTime:"2020-09-22 18:00",
-          completeTime:"2020-09-22 18:00"
-        }
-        ]
+        list: {}
     };
     var str = template("jobList", data);
     $('#detailList').append(str);
@@ -71,7 +59,11 @@ function showData(id,jobStatus){
 
   function showErr(err){
     console.log(JSON.stringify(err));
-    alert("加载失败")
+    if(err.body.error.message){
+      alert(err.body.error.message)
+    }else {
+      alert("加载失败")
+    }
   }
 }
 
