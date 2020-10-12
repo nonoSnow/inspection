@@ -49,7 +49,7 @@ function showData(id,jobStatus){
   function showRet(ret){
     console.log("****************************"+id);
     console.log(JSON.stringify(ret));
-    $('#dataList').html('');
+    $('#detailList').html('');
     var data = {
         list: [{
           Id:"1",
@@ -66,7 +66,7 @@ function showData(id,jobStatus){
         ]
     };
     var str = template("jobList", data);
-    $('#dataList').append(str);
+    $('#detailList').append(str);
   }
 
   function showErr(err){
