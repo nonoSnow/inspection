@@ -10,3 +10,14 @@ function onMenu(index, el) {
     console.log('method');
   });
 }
+
+function onOpenMethodDetail() {
+  api.openWin({
+      name: 'taskInfoSubmit',
+      url: '../home/taskInfoSubmit.html',
+      pageParam: {
+          type: 'detail'
+      }
+  });
+
+}

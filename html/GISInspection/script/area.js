@@ -69,10 +69,33 @@ function onTransitionStatus(mapListStatus) {
   }
 }
 
+function onGetSearchVal() {
+  console.log($("#search-input").val());
+  var searchVal = $("#search-input").val();
+  if (searchVal != '' && searchVal != ' ') {
+    $('.search-btn').removeClass('aui-hide');
+    $('.aui-searchbar-clear-btn').css('display', 'inline-block');
+  } else {
+    $('.search-btn').addClass('aui-hide');
+    $('.aui-searchbar-clear-btn').css('display', 'none');
+  }
+}
+
 function onOpenAreaDetail() {
   api.openWin({
       name: 'areaDetail',
       url: './areaDetail.html',
+      pageParam: {
+          name: 'test'
+      }
+  });
+
+}
+
+function onOpenAdd() {
+  api.openWin({
+      name: 'addArea',
+      url: './addArea.html',
       pageParam: {
           name: 'test'
       }

@@ -3,9 +3,6 @@ apiready = function() {
   // 实现沉浸式状态栏效果
   $api.fixStatusBar(header);
 
-  $('.map-add').addClass('aui-hide');
-  $('.map-line').addClass('aui-hide');
-
   console.log(JSON.stringify($api.getStorage('userLoginInformation')));
   // 获取当前用户的位置及在线信息
   getUserLoactionInfo();

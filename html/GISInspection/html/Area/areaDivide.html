@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>区域划分</title>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/public.css">
+    <link rel="stylesheet" type="text/css" href="../../css/common.css">
+  </head>
+  <body>
+    <header class="aui-bar aui-bar-nav map-header fixed" id="header">
+      <div class='header-cont'>
+        <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
+            <span class='aui-iconfont aui-icon-left'></span>
+        </div>
+        <div class='aui-title'>区域划分</div>
+      </div>
+    </header>
+
+    <div class="map-btn-div fixed bottom450 right5">
+        <div class="map-btn-bs border-radius4">
+          <div class="font-S6 text-cent">
+            <img src="../../image/divide.png" class='map-btn-img' alt="">
+            <span class="margin-bot3">划分</span>
+          </div>
+        </div>
+
+        <div class="map-btn-bs border-radius4 margin-top200">
+          <div class="right-item-item">
+            <img src="../../image/enlarge.png" class='enlarge' alt="">
+          </div>
+          <div class="right-item-item">
+            <img src="../../image/narrow.png" class='narrow' alt="">
+          </div>
+        </div>
+      </div>
+
+      <footer class="aui-bar aui-bar-tab display-flex footer">
+        <div class="flex1">
+          <div class='footer-btn btn-border task-stop'>
+            重置区域
+          </div>
+        </div>
+        <div class="flex1">
+          <div class='footer-btn bgc-blue color-fff task-complete'>
+            保存区域
+          </div>
+        </div>
+      </footer>
+
+  </body>
+  <script type="text/javascript" src="../../../public/script/api.js"></script>
+  <script type="text/javascript" src="../../../public/script/common.js"></script>
+  <script type="text/javascript" src="../../../public/script/remote.js"></script>
+  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+
+  <script type="text/javascript" src="../../script/public.js"></script>
+  <script type="text/javascript" src="../../script/areaDivide.js"></script>
+</html>

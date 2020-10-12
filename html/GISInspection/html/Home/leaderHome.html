@@ -4,13 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
     <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
-    <title>首页</title>
+    <title>领导首页</title>
     <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
     <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
 
     <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/common.css"/>
-    <link rel="stylesheet" type="text/css" href="../../js/sntgis/sntgis.css"/>
   </head>
   <body>
     <header class="aui-bar aui-bar-nav map-header snt-bar-fiexd" id="header">
@@ -19,32 +18,27 @@
             <span class='aui-iconfont aui-icon-close'></span>
         </div>
         <div class='aui-title'>GIS巡检系统</div>
+        <a class='aui-pull-right' tapmode onclick="onOpenUserList()">
+            <span>人员列表</span>
+        </a>
       </div>
     </header>
-
 
     <!-- 地图 -->
     <div class="map-box">
         <div class="map" id="map"></div>
     </div>
 
-    <!-- 用于测试 -->
-    <div class="aui-btn aui-btn-blue" style='top: 5rem; left: 5%;' tapmode onclick="onOpenTaskInfo()">任务详情</div>
     <div class="map-btn-div top435 fixed right5">
         <div class="map-btn-bs border-radius4">
           <div class="font-S6 text-cent">
             <img src="../../image/online.png" class='map-btn-img' alt="">
-            <span class="margin-bot3">在线</span>
+            <span class="margin-bot3">人员</span>
           </div>
           <div class="map-btn-line"></div>
           <div class="font-S6 text-cent" tapmode onclick="onOpenReport()">
             <img src="../../image/online.png" class='map-btn-img' alt="">
             <span class="margin-bot3">上报</span>
-          </div>
-          <div class="map-btn-line map-line"></div>
-          <div class="font-S6 text-cent map-add">
-            <img src="../../image/add.png" class='map-btn-img' alt="">
-            <span class="margin-bot3">新增</span>
           </div>
         </div>
 
@@ -79,5 +73,5 @@
   <script type="text/javascript" src="../../script/ajaxApi.js"></script>
   <script type="text/javascript" src="../../script/ajaxMethod.js"></script>
   <script type="text/javascript" src="../../script/home/gis.js"></script>
-  <script type="text/javascript" src="../../script/home/home.js"></script>
+  <script type="text/javascript" src="../../script/leaderHome.js"></script>
 </html>

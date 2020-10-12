@@ -1,77 +1,80 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
-    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
     <title>事件</title>
-    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
-    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css" />
 
     <link rel="stylesheet" type="text/css" href="../../css/public.css">
     <link rel="stylesheet" type="text/css" href="../../css/common.css">
     <link rel="stylesheet" type="text/css" href="../../css/method.css">
-  </head>
-  <body>
-    <div class="flex-wrap flex-vertical height100">
-      <header class="aui-bar aui-bar-nav aui-bar-light bgi-none" id="header">
-          <div class="aui-title">事件</div>
-      </header>
+</head>
 
-      <div class="header-type display-flex text-cent line-height25 color-666">
-        <div class="flex1 header-type-item color-598" tapmode onclick="onMenu(0, this)">
-            <span class="line-height1">
+<body>
+    <div class="flex-wrap flex-vertical height100">
+        <header class="aui-bar aui-bar-nav aui-bar-light bgi-none" id="header">
+            <div class="aui-title">事件</div>
+        </header>
+
+        <div class="header-type display-flex text-cent line-height25 color-666">
+            <div class="flex1 header-type-item color-598" tapmode onclick="onMenu(0, this)">
+                <span class="line-height1">
               待处理
               <div class="type-line bgc-blue margin-top3 width60"></div>
             </span>
-        </div>
-        <div class="flex1 header-type-item" tapmode onclick="onMenu(1, this)">
-            <span class="line-height1">
+            </div>
+            <div class="flex1 header-type-item" tapmode onclick="onMenu(1, this)">
+                <span class="line-height1">
               转工单
               <div class="type-line margin-top3 width60"></div>
             </span>
-        </div>
-        <div class="flex1 header-type-item" tapmode onclick="onMenu(2, this)">
-            <span class="line-height1">
+            </div>
+            <div class="flex1 header-type-item" tapmode onclick="onMenu(2, this)">
+                <span class="line-height1">
               已关闭
               <div class="type-line margin-top3 width60"></div>
             </span>
+            </div>
         </div>
-      </div>
 
-      <div class="flex-con flex-content height100 bgc-f3">
-        <ul class="aui-content-padded">
-          <li class="method-item padding75 bgc-ff border-radius4 display-flex">
-            <div class="item-img">
-              <img src="../../image/method-item.png" class='method-item-img' alt="">
-            </div>
-            <div class="item-text height100 display-flex flex-column line-height15 font-S8">
-              <div class="flex1-auto color-333">事件类型：巡检异常</div>
-              <div class="flex1-auto color-666">异常类型：外观损坏</div>
-              <div class="flex1-auto color-666">提交事件：2020-09-22 18:00</div>
-            </div>
-          </li>
+        <div class="flex-con flex-content height100 bgc-f3">
+            <ul class="aui-content-padded">
+                <li class="method-item padding75 bgc-ff border-radius4 display-flex" tapmode onclick="onOpenMethodDetail()">
+                    <div class="item-img">
+                        <img src="../../image/method-item.png" class='method-item-img' alt="">
+                    </div>
+                    <div class="item-text height100 display-flex flex-column line-height15 font-S8">
+                        <div class="flex1-auto color-333">事件类型：巡检异常</div>
+                        <div class="flex1-auto color-666">异常类型：外观损坏</div>
+                        <div class="flex1-auto color-666">提交事件：2020-09-22 18:00</div>
+                    </div>
+                </li>
 
-          <li class="method-item padding75 bgc-ff border-radius4 display-flex margin-top75">
-            <div class="item-img">
-              <img src="../../image/method-item.png" class='method-item-img' alt="">
-            </div>
-            <div class="item-text height100 display-flex flex-column line-height15 font-S8">
-              <div class="flex1-auto color-333">事件类型：巡检异常</div>
-              <div class="flex1-auto color-666">异常类型：外观损坏</div>
-              <div class="flex1-auto color-666">提交事件：2020-09-22 18:00</div>
-            </div>
-          </li>
+                <li class="method-item padding75 bgc-ff border-radius4 display-flex margin-top75">
+                    <div class="item-img">
+                        <img src="../../image/method-item.png" class='method-item-img' alt="">
+                    </div>
+                    <div class="item-text height100 display-flex flex-column line-height15 font-S8">
+                        <div class="flex1-auto color-333">事件类型：巡检异常</div>
+                        <div class="flex1-auto color-666">异常类型：外观损坏</div>
+                        <div class="flex1-auto color-666">提交事件：2020-09-22 18:00</div>
+                    </div>
+                </li>
 
-        </ul>
-      </div>
+            </ul>
+        </div>
     </div>
-  </body>
-  <script type="text/javascript" src="../../../public/script/api.js"></script>
-  <script type="text/javascript" src="../../../public/script/common.js"></script>
-  <script type="text/javascript" src="../../../public/script/remote.js"></script>
-  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+</body>
+<script type="text/javascript" src="../../../public/script/api.js"></script>
+<script type="text/javascript" src="../../../public/script/common.js"></script>
+<script type="text/javascript" src="../../../public/script/remote.js"></script>
+<script type="text/javascript" src="../../../public/script/zepto.js"></script>
 
-  <script type="text/javascript" src="../../script/public.js"></script>
-  <script type="text/javascript" src="../../script/method.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../script/method.js"></script>
+
 </html>
