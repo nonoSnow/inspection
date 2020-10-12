@@ -1,0 +1,91 @@
+
+.head-item {
+  width: 100%;
+  height: auto;
+  background-color: #FFF;
+}
+
+.heade-title {
+  width: 100%;
+  height: 1.4rem;
+  line-height: 1.4rem;
+  font-size: 0.8rem;
+  color: #333;
+  background-color: #F5F5F6;
+  padding-left: 0.8rem;
+}
+
+.head-cont {
+  width: 100%;
+  height: auto;
+}
+
+.cont-item {
+  width: 100%;
+  height: 3.6rem;
+  display: flex;
+}
+
+.cont-item-avatar {
+  width: 3.6rem;
+  height: 3.6rem;
+  padding: 0.4rem;
+  display: inline-block;
+}
+
+.avatar {
+  width: 2.8rem;
+  height: 2.8rem;
+  line-height: 2.8rem;
+  background-color: #5982FF;
+  border-radius: 100%;
+  text-align: center;
+  font-size: 0.6rem;
+  color: #fff;
+}
+
+.cont-item-cont {
+  width: calc(90% - 2.8rem);
+  height: 100%;
+  padding: 0.4rem 0rem;
+  line-height: 1.4rem;
+  display: inline-block;
+  border-bottom: 1px solid #E6E6E6;
+}
+
+.head-info {
+  width: 80%;
+  height: 100%;
+  display: inline-block;
+}
+
+.head-name {
+  font-size: 0.85rem;
+  color: #333;
+}
+
+.head-phone {
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.head-check {
+  width: 15%;
+  height: 100%;
+  display: inline-block;
+  text-align: center;
+  vertical-align: top;
+}
+
+.list-Indexes {
+  width: 6%;
+  height: 100px;
+  position: fixed;
+  top: 20%;
+  right: 0rem;
+}
+
+.list-Indexes p{
+  font-size: 0.65rem;
+  text-align: center;
+}

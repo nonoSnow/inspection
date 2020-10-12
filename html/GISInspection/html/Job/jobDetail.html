@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>工单详情</title>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/public.css">
+    <link rel="stylesheet" type="text/css" href="../../css/common.css">
+  </head>
+  <body>
+    <div class="flex-wrap flex-vertical height100">
+      <header class="aui-bar aui-bar-nav aui-bar-light bgi-none header-box-shadow" id="header">
+          <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
+              <span class='aui-iconfont aui-icon-left'></span>
+          </div>
+          <div class="aui-title">工单详情</div>
+      </header>
+
+      <div class="flex-con flex-content height100 bgc-f3 margin-bot250">
+        <ul class="aui-content-padded line-height1 font-S75">
+
+          <li class="padding75 bgc-ff border-radius4 margin-bot75 job-ok aui-hide">
+            <div class="color-666">工单反馈</div>
+            <div class="line margin-top6 margin-bot6"></div>
+            <div>查漏：D15，12m</div>
+            <div class="margin-top75">查漏延伸：D25，13m；D25，13m</div>
+            <div class="margin-top75">预估漏损：135m³</div>
+            <div class="margin-top75">漏损地点：南京市溧水区交通路阳光小区98号</div>
+          </li>
+
+          <li class="padding75 bgc-ff border-radius4">
+            <div class="color-666">基础信息</div>
+            <div class="line margin-top6 margin-bot6"></div>
+            <div>工单类型：核查情况</div>
+            <div class="margin-top75 relative job-receive">
+              <span class="transfer-text">负责人：张三</span>
+              <img src="../../image/transfer.png" class="transfer" alt="">
+              <span class="transfer-text">李四</span>
+              <span class="transfer-text color-598 absolute right0" tapmode onclick="onOpenCloseTurn('0')">转派原因 <span class="aui-iconfont aui-icon-right"></span></span>
+            </div>
+            <div class="margin-top75 handle-head">负责人：张三</div>
+            <div class="margin-top75">
+              状态：
+              <span class='inline-block task-status-circular margin-right3 job-status'></span>
+              <span class="job-status-text">待接收</span>
+            </div>
+            <div class="margin-top75">预计完成时间：2020-08-23 09:21:35</div>
+
+            <div class="margin-top12">工单内容:</div>
+            <div class="width100 height6 bgc-f5f6 border-radius4 margin-top75 padding75 line-height15">工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容</div>
+
+            <div class="margin-top12">工单附件:</div>
+            <div class="file-list">
+              <div class="file-div">
+
+              </div>
+              <div class="file-div">
+
+              </div>
+              <div class="file-div">
+
+              </div>
+              <div class="file-div margin-right0">
+
+              </div>
+            </div>
+          </li>
+
+          <li class="padding75 bgc-ff border-radius4 margin-top6">
+            <div class="color-666">事件信息</div>
+            <div class="line margin-top6 margin-bot6"></div>
+            <div>名称：阀门</div>
+            <div class="margin-top75">编号：2089882848575756</div>
+            <div class="margin-top75">坐标：116.556663,39.975432</div>
+            <div class="margin-top75">地址：南京市溧水区交通路阳光小区98号</div>
+            <div class="margin-top75">巡检人：李四</div>
+            <div class="margin-top75">联系电话：15087694326</div>
+            <div class="margin-top75">事件提交时间：2020-08-23 09:21:35</div>
+            <div class="margin-top75">
+              设备状态：
+              <span class='inline-block task-status-circular bgc-dan margin-right3'></span>
+              异常
+            </div>
+            <div class="margin-top75">异常类型：外观破损</div>
+            <div class="margin-top75">事件类型：巡检事件</div>
+            <div class="margin-top75">预估漏损量：100m³</div>
+            <div class="margin-top12">巡检内容:</div>
+            <div class="width100 height6 bgc-f5f6 border-radius4 margin-top75 padding75 line-height15">工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容</div>
+
+            <div class="margin-top12">工单附件</div>
+            <div class="file-list">
+              <div class="file-div">
+
+              </div>
+              <div class="file-div">
+
+              </div>
+              <div class="file-div">
+
+              </div>
+              <div class="file-div margin-right0">
+
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <footer class="aui-bar aui-bar-tab display-flex footer">
+        <div class="flex1">
+          <div class='footer-btn btn-border' tapmode onclick="onOpenCloseTurn('1')">
+            关闭工单
+          </div>
+        </div>
+        <div class="flex1">
+          <div class='footer-btn btn-border' tapmode >
+            查看地图
+          </div>
+        </div>
+        <div class="flex1 handle-btn">
+          <div class='footer-btn bgc-blue color-fff' tapmode onclick="onOpenHandle()">
+            填写工单
+          </div>
+        </div>
+        <div class="flex1 turn-btn">
+          <div class='footer-btn bgc-blue color-fff' tapmode onclick="onOpenCloseTurn('2')">
+            转派
+          </div>
+        </div>
+        <div class="flex1 receive-btn">
+          <div class='footer-btn bgc-blue color-fff' tapmode >
+            接收
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../../public/script/api.js"></script>
+  <script type="text/javascript" src="../../../public/script/common.js"></script>
+  <script type="text/javascript" src="../../../public/script/remote.js"></script>
+  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+
+  <script type="text/javascript" src="../../script/public.js"></script>
+  <script type="text/javascript" src="../../script/jobDetail.js"></script>
+</html>

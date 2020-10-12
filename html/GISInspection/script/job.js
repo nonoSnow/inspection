@@ -1,10 +1,13 @@
 
+var jobType = 0;
+
 apiready = function() {
   var header = $api.byId('header');
   $api.fixStatusBar(header);
 }
 
 function onMenu(index, el) {
+  jobType = index;
   if (index == 0) {
     $('.charge').removeClass('aui-hide');
     $('.start-time').removeClass('aui-hide');
@@ -35,7 +38,19 @@ function onMenu(index, el) {
     $('.line').addClass('aui-hide');
     $('.item-footer').addClass('aui-hide');
   }
-  onCheckMenu(index, el, function(){
+  onCheckMenu(el, function(){
     console.log(123);
   });
+}
+
+// 任务详情
+function onOpenJobDetail() {
+  api.openWin({
+      name: 'jobDetail',
+      url: './jobDetail.html',
+      pageParam: {
+          type: jobType
+      }
+  });
+
 }

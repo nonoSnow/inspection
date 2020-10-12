@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
     <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
-    <title>工单</title>
+    <title>人员列表</title>
     <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
     <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
 
@@ -14,60 +14,65 @@
   <body>
     <div class="flex-wrap flex-vertical height100">
       <header class="aui-bar aui-bar-nav aui-bar-light bgi-none" id="header">
-          <div class="aui-title">工单</div>
+          <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
+              <span class='aui-iconfont aui-icon-left'></span>
+          </div>
+          <div class="aui-title">人员列表</div>
       </header>
 
       <div class="header-type display-flex text-cent line-height25 color-666">
         <div class="flex1 header-type-item color-598" tapmode onclick="onMenu(0, this)">
             <span class="line-height1">
-              进行中
+              全部(2)
               <div class="type-line bgc-blue margin-top3 width60"></div>
             </span>
         </div>
         <div class="flex1 header-type-item" tapmode onclick="onMenu(1, this)">
             <span class="line-height1">
-              待接收
+              在线(1)
               <div class="type-line margin-top3 width60"></div>
             </span>
         </div>
-        <div class="flex1 header-type-item" tapmode onclick="onMenu(2, this)">
+        <div class="flex1 header-type-item" tapmode onclick="onMenu(1, this)">
             <span class="line-height1">
-              已完成
+              离线(1)
               <div class="type-line margin-top3 width60"></div>
             </span>
         </div>
       </div>
 
       <div class="flex-con flex-content height100 bgc-f3">
-        <ul class="aui-content-padded">
-          <li class="padding75 bgc-ff border-radius4 line-height1" tapmode onclick="onOpenJobDetail()">
-              <div class="aui-list-item-inner block font-S9">
-                <div class="display-flex">
-                  <img src="../../image/job-icon.png" class='task-icon' alt="">
-                  <span class="margin-left3 font-w4">工单类型：施工维修</span>
-                </div>
-                <div class="margin-top10 font-S75 color-666 charge">负责人：张三</div>
-                <div class="margin-top6 font-S75 color-666 start-time">
-                  开始时间：2020-09-22 18:00
-                </div>
-                <div class="margin-top6 font-S75 color-666 end-time aui-hide">
-                  完成时间：2020-09-22 18:00
-                </div>
-                <div class="line margin-top75 margin-bot5"></div>
-                <div class="display-flex font-S8 item-footer">
-                  <div class="flex1 text-cent border-right">
-                    暂停
-                  </div>
-                  <div class="flex1 text-cent">
-                    完成
-                  </div>
-                </div>
-              </div>
+        <ul class="aui-content-padded color-333 font-S75">
+          <li class="padding75 bgc-ff border-radius4">
+            <div class="relative ">
+              姓名：张三
+              <span class="absolute right0">
+                <span class="aui-iconfont aui-icon-date font-bold color-598"></span>
+                时长：8h
+              </span>
+            </div>
+            <div class="margin-top6">任务：阳光小区巡检任务</div>
+            <div class="margin-top6">
+              上线：2020-08-21 09:15:28
+            </div>
+          </li>
+          <li class="padding75 bgc-ff border-radius4 margin-top75">
+            <div class="relative ">
+              姓名：张三
+              <span class="absolute right0">
+                <span class="aui-iconfont aui-icon-date font-bold"></span>
+                时长：8h
+              </span>
+            </div>
+            <div class="margin-top6">任务：阳光小区巡检任务</div>
+            <div class="margin-top6">
+              上线：2020-08-21 09:15:28
+            </div>
           </li>
         </ul>
       </div>
-    </div>
 
+    </div>
   </body>
   <script type="text/javascript" src="../../../public/script/api.js"></script>
   <script type="text/javascript" src="../../../public/script/common.js"></script>
@@ -75,5 +80,5 @@
   <script type="text/javascript" src="../../../public/script/zepto.js"></script>
 
   <script type="text/javascript" src="../../script/public.js"></script>
-  <script type="text/javascript" src="../../script/job.js"></script>
+  <script type="text/javascript" src="../../script/userList.js"></script>
 </html>

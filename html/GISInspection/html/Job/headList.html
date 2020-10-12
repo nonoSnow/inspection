@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>负责人列表</title>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/public.css">
+    <link rel="stylesheet" type="text/css" href="../../css/common.css">
+
+    <link rel="stylesheet" type="text/css" href="../../css/headList.css">
+  </head>
+  <body>
+    <div class="flex-wrap flex-vertical height100">
+      <header class="aui-bar aui-bar-nav aui-bar-light bgi-none" id="header">
+          <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
+              <span class='aui-iconfont aui-icon-left'></span>
+          </div>
+          <div class="aui-title">负责人</div>
+      </header>
+      <div class="width100">
+        <div class="aui-searchbar aui-searchbar-square margin-top75 margin-bot75" id="search">
+            <div class="aui-searchbar-input border-radius4 margin-left3 margin-right3">
+                <i class="aui-iconfont aui-icon-search color-333"></i>
+                <input type="search" placeholder="请输入片区名称" id="search-input">
+                <div class="aui-searchbar-clear-btn">
+                    <i class="aui-iconfont aui-icon-close"></i>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="flex-con flex-content height100 bgc-f3 relative">
+        <ul class="head-list" style="width: 100%; height: 100%; background-color: #fff;">
+          <!-- <li class="head-item" style="width: 100%; height: auto;">
+            <div class="heade-title" style="width: 100%; height: 1.4rem; line-height: 1.4rem; font-size: 0.8rem; color: #333; background-color: #F5F5F6; padding-left: 0.8rem;">
+              A
+            </div>
+            <div class="head-cont" style="width: 100%; height: auto;">
+              <div class="cont-item" style="width: 100%; height: 3.6rem; display: flex;">
+                <div class="cont-item-avatar" style="width: 3.6rem; height: 3.6rem; padding: 0.4rem; display: inline-block;">
+                  <div class="avatar" style="width: 2.8rem; height: 2.8rem; line-height: 2.8rem; background-color: #5982FF; border-radius: 100%; text-align: center; font-size: 0.6rem; color: #fff;">测试</div>
+                </div>
+                <div class="cont-item-cont" style="width: calc(90% - 2.8rem); height: 100%; padding: 0.4rem 0rem; line-height: 1.4rem; display: inline-block; border-bottom: 1px solid #E6E6E6;">
+                  <div style="width: 80%; height: 100%; display: inline-block;">
+                    <p style="font-size: 0.85rem; color: #333;">测试</p>
+                    <p style="font-size: 0.75rem; color: #999;">15087654325</p>
+                  </div>
+                  <div style="width: 15%; height: 100%; display: inline-block; text-align: center; vertical-align: top;">
+                    <input style="margin-top: 0.9rem;" class="aui-radio" type="radio" name="radio2">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li> -->
+        </ul>
+        <div class="list-Indexes">
+            <!-- <p>
+              <a href="#titleA" id="indexA" name="indexA">A</a>
+            </p> -->
+        </div>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../../public/script/api.js"></script>
+  <script type="text/javascript" src="../../../public/script/common.js"></script>
+  <script type="text/javascript" src="../../../public/script/remote.js"></script>
+  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+  <script type="text/javascript" src="../../../public/script/template.js"></script>
+
+  <script type="text/javascript" src="../../script/public.js"></script>
+  <!-- 首字母排序插件 -->
+  <script type="text/javascript" src="../../script/ChinesePY.js"></script>
+  <script type="text/javascript" src="../../script/headList.js"></script>
+  <script type="text/template" id='headList'>
+    {{each items value i}}
+      {{if value.data.length > 0}}
+      <li class="head-item">
+        <div class="heade-title">
+          <a href="#index{{value.letter}}" name="title{{value.letter}}" id="title{{value.letter}}">{{value.letter}}</a>
+        </div>
+        <div class="head-cont">
+          {{each value.data values j}}
+          <div class="cont-item">
+            <div class="cont-item-avatar">
+              <div class="avatar">{{values.Name}}</div>
+            </div>
+            {{if value.data.length - 1 == j}}
+            <div class="cont-item-cont border-none">
+            {{else}}
+            <div class="cont-item-cont">
+            {{/if}}
+              <div class='head-info'>
+                <p class='head-name'>{{values.Name}}{{value.data.length}}{{j}}</p>
+                <p class='head-phone'>{{values.Phone}}</p>
+              </div>
+              <div class="head-check">
+                <input class="aui-radio margin-top10" type="radio" name="radio2">
+              </div>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+      </li>
+      {{/if}}
+    {{/each}}
+  </script>
+</html>

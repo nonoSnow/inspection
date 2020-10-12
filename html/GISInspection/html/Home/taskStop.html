@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>暂停任务</title>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../../css/public.css">
+  </head>
+  <body>
+    <div class="flex-wrap flex-vertical height100">
+      <header class="aui-bar aui-bar-nav aui-bar-light bgi-none header-box-shadow" id="header">
+          <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
+              <span class='aui-iconfont aui-icon-left'></span>
+          </div>
+          <div class="aui-title">任务详情</div>
+      </header>
+
+      <div class="flex-con flex-content height100 bgc-f3">
+        <ul class="aui-content-padded line-height1 font-S75">
+          <li class="padding75 bgc-ff border-radius4 relative line-height1">
+            <div class="aui-list-item-inner block font-S9">
+              <div class="display-flex relative">
+                <img src="../../image/task-icon.png" class='task-icon' alt="">
+                <span class="margin-left3 font-w4">阳光小区巡检计划</span>
+                <div class="absolute top15 right0 task-item-overdue font-S6" style="">
+                  超期 8.3h
+                </div>
+              </div>
+              <div class="margin-top10 font-S75 color-666">实际开始：2020-09-24 9:00</div>
+              <div class="margin-top6 font-S75 color-666">
+                预计完成：2020-09-24 18:00
+              </div>
+            </div>
+          </li>
+
+          <li class="padding75 bgc-ff border-radius4 margin-top75">
+            <div class="color-666">说明原因</div>
+            <div class="margin-top75 bgc-f3 border-radius2 padding75 height6">
+              <textarea name="name" class='width100 height100' placeholder="请填写巡检内容"></textarea>
+            </div>
+            <div class="margin-top12 color-666">上传附件</div>
+            <div class="margin-top75 file-div">
+              <img src="../../image/camera.png" class="margin-top75 margin-bot3 file-img" alt="">
+              <span class="file-text">上传照片</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <footer class="aui-bar aui-bar-tab display-flex footer">
+        <div class="flex1">
+          <div class='footer-btn bgc-blue color-fff btn-disabled'>
+            提交原因
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../../public/script/api.js"></script>
+  <script type="text/javascript" src="../../../public/script/common.js"></script>
+  <script type="text/javascript" src="../../../public/script/remote.js"></script>
+  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+  <script type="text/javascript" src="../../../public/script/aui-popup.js"></script>
+
+  <script type="text/javascript" src="../../script/public.js"></script>
+  <script type="text/javascript" src="../../script/taskStop.js"></script>
+</html>

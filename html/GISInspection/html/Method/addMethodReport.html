@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>上报事件</title>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../../css/public.css">
+  </head>
+  <body>
+    <div class="flex-wrap flex-vertical height100">
+      <header class="aui-bar aui-bar-nav aui-bar-light bgi-none header-box-shadow" id="header">
+          <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
+              <span class='aui-iconfont aui-icon-left'></span>
+          </div>
+          <div class="aui-title">事件详情</div>
+      </header>
+
+      <div class="flex-con flex-content height100 bgc-f3 margin-bot250">
+        <ul class="aui-content-padded line-height1 font-S75">
+          <li class="padding75 bgc-ff border-radius4">
+            <div class="color-666"><span class="required"></span>事件类型</div>
+            <div class="item-input margin-top6 relative" >
+              <input id="methodType" type="text" placeholder="请选择事件类型" readonly>
+              <span class="aui-iconfont aui-icon-plus font-S9" aui-popup-for="methodTypePop"></span>
+            </div>
+            <div class="color-666 margin-top12"><span class="required"></span>异常类型</div>
+            <div class="item-input margin-top6 relative" >
+              <input type="text" readonly placeholder="请选择异常类型">
+              <span class="aui-iconfont aui-icon-plus font-S9" aui-popup-for="abnormalTypePop"></span>
+            </div>
+            <div class="color-666 margin-top12">预估损失水量</div>
+            <div class="item-input margin-top6 relative" >
+              <input type="text" placeholder="请输入预估损失水量">
+              <span class="color-656">m³</span>
+            </div>
+          </li>
+
+          <li class="padding75 bgc-ff border-radius4 margin-top75">
+            <div class="color-666">设备点坐标</div>
+            <div class="item-input margin-top6 relative" tapmode onclick="onOpenArea(1)">
+              <input type="text" readonly placeholder="请选择设备坐标点">
+              <span class="aui-iconfont aui-icon-location font-S9"></span>
+            </div>
+            <div class="color-666 margin-top12">地址</div>
+            <div class="item-input margin-top6 relative" tapmode onclick="onOpenArea(2)">
+              <input type="text" readonly placeholder="请选择设备地址">
+              <span class="aui-iconfont aui-icon-location font-S9"></span>
+            </div>
+          </li>
+
+          <li class="padding75 bgc-ff border-radius4 margin-top75">
+            <div class="color-666">巡检内容</div>
+            <div class="margin-top6 bgc-f3 border-radius2 padding75 height6">
+              <textarea name="name" class='width100 height100' placeholder="请填写巡检内容"></textarea>
+            </div>
+            <div class="margin-top12 color-666">上传附件</div>
+            <div class="margin-top6 file-div">
+              <img src="../../image/camera.png" class="margin-top75 margin-bot3 file-img" alt="">
+              <span class="file-text">上传照片</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <footer class="aui-bar aui-bar-tab display-flex footer">
+        <div class="flex1">
+          <div class='footer-btn bgc-blue color-fff btn-disabled'>
+            提交
+          </div>
+        </div>
+      </footer>
+    </div>
+    <!-- 事件类型弹框 -->
+    <div class="aui-popup custom-popup font-S8 text-cent" id="methodTypePop">
+      <div class="custom-popup-item border-radius-top3 color-999 margin-center">
+        请选择事件类型
+      </div>
+      <ul class="aui-content-padded color-333 margin-bot0 margin-top0 custom-popup-list">
+        <li class="custom-popup-item">漏损事件</li>
+        <li class="custom-popup-item">爆管事件</li>
+        <li class="custom-popup-item">违章事件</li>
+        <li class="custom-popup-item border-none">其他事件</li>
+      </ul>
+      <div class="custom-popup-interval"></div>
+      <div class="custom-popup-item border-none color-666" tapmode onclick="onHidePopup()">
+          取消
+      </div>
+    </div>
+
+    <!-- 异常类型弹框 -->
+    <div class="aui-popup custom-popup font-S8" id="abnormalTypePop">
+      <div class="custom-popup-item border-radius-top3 color-999 margin-center text-cent">
+        <span class="float-let">取消</span>请选择事件类型<span class="float-rig color-598">确定</span>
+      </div>
+      <ul class="aui-content-padded color-333 margin-top0 margin-bot250">
+        <div class="abnormal-type-title margin-top75">
+          <span class="abnormal-title-bgc float-let"></span>
+          <span class="abnormal-title-text">稽查办公室</span>
+        </div>
+        <div class="abnormal-type-item">
+          <div class="flex1">
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 管道损坏</label>
+          </div>
+          <div class="flex1">
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 偷盗水事件</label>
+          </div>
+          <div class="flex1"></div>
+        </div>
+
+        <div class="abnormal-type-title margin-top200">
+          <span class="abnormal-title-bgc float-let"></span>
+          <span class="abnormal-title-text">二管所</span>
+        </div>
+        <div class="abnormal-type-item">
+          <div class="flex1">
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 参数异常</label>
+          </div>
+          <div class="flex1">
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 设备损坏</label>
+          </div>
+          <div class="flex1">
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 异常事件</label>
+          </div>
+        </div>
+
+        <div class="abnormal-type-title margin-top200">
+          <span class="abnormal-title-bgc float-let"></span>
+          <span class="abnormal-title-text">镇村科/分公司/管线科/经营科</span>
+        </div>
+        <div class="abnormal-type-item">
+          <div class="flex1">
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 管道损坏</label>
+          </div>
+          <div class="flex1">
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 偷盗水事件</label>
+          </div>
+          <div class="flex1">
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 异常事件</label>
+          </div>
+        </div>
+        <div class="abnormal-type-item">
+          <div class="flex1">
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 管道损坏</label>
+          </div>
+          <div class="flex1">
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 偷盗水事件</label>
+          </div>
+          <div class="flex1">
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 异常事件</label>
+          </div>
+        </div>
+      </ul>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../../public/script/api.js"></script>
+  <script type="text/javascript" src="../../../public/script/common.js"></script>
+  <script type="text/javascript" src="../../../public/script/remote.js"></script>
+  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+  <script type="text/javascript" src="../../../public/script/aui-popup.js"></script>
+
+  <script type="text/javascript" src="../../script/public.js"></script>
+  <script type="text/javascript" src="../../script/addMethodReport.js"></script>
+</html>

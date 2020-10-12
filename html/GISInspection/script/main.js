@@ -9,10 +9,6 @@ apiready = function() {
   funIniGroup();
 }
 
-function onBack() {
-  api.closeWin({});
-}
-
 function funIniGroup() {
     api.openFrameGroup({
         name: 'group',

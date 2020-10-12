@@ -6,7 +6,18 @@ apiready = function() {
 }
 
 function onMenu(index, el) {
-  onCheckMenu(index, el, function(){
+  onCheckMenu(el, function(){
     console.log('method');
   });
+}
+
+function onOpenMethodDetail() {
+  api.openWin({
+      name: 'taskInfoSubmit',
+      url: '../home/taskInfoSubmit.html',
+      pageParam: {
+          type: 'detail'
+      }
+  });
+
 }
