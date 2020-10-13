@@ -6,7 +6,7 @@ apiready = function() {
   $api.fixStatusBar(header);
 
   jobType = api.pageParam.type;
-  console.log(api.pageParam.Id);
+  // console.log(api.pageParam.Id);
   showData(api.pageParam.Id,jobStatus)
   if (jobType == 0) {
     $('.turn-btn').addClass('aui-hide');
@@ -47,8 +47,8 @@ function showData(id,jobStatus){
   }
   getJobDeatil("api/services/Inspection/WorkOrderService/GetWorkOrderDetails",data,showRet,showErr);
   function showRet(ret){
-    console.log("****************************"+id);
-    console.log(JSON.stringify(ret));
+    // console.log("****************************"+id);
+    // console.log(JSON.stringify(ret));
     $('#detailList').html('');
     var data = {
         list: {}
@@ -58,7 +58,7 @@ function showData(id,jobStatus){
   }
 
   function showErr(err){
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(err));
     if(err.body.error.message){
       alert(err.body.error.message)
     }else {
@@ -68,7 +68,7 @@ function showData(id,jobStatus){
 }
 
 function onOpenCloseTurn(type) {
-  console.log(type);
+  // console.log(type);
   api.openWin({
       name: 'jobCloseTurn',
       url: './jobCloseTurn.html',
