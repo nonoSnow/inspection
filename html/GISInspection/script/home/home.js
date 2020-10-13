@@ -28,6 +28,7 @@ function getUserLoactionInfo () {
             pageIndex: 1
         },
         success: function(result) {
+            console.log(JSON.stringify(result))
         },
         error: function(err) {
             JSON.stringify(err)
