@@ -1,49 +1,84 @@
 
 var headArr = [];
-var checkId;
+var checkHeadObj;
 
 apiready = function() {
     var header = $api.byId('header');
     // 实现沉浸式状态栏效果
     $api.fixStatusBar(header);
-
     getIndexesData();
     onGetData();
+    $('#search-input').on({
+      'input propertychange': function() {
+          // console.log($(this).val());
+        }
+    })
 }
+// 点击搜索
+function search(){
+  api.showProgress({
+      style: 'default',
+      animationType: 'fade',
+      title: '搜索中...',
+      modal: false
+  });
+  console.log($("#search-input").val());
+  var scrollVal = $("#search-input").val();
+  getUserList("api/services/app/Information/GetSelectPersonnelAsync?key="+scrollVal,"",showRet,showErr);
+  function showRet(ret){
+    api.hideProgress();
+    $('.head-list').html('');
+    if(ret.success){
+        headArr = ret.result;
+        var returnData =  pySegSort(headArr);
+        var listData = {items: returnData};
+        var str = template('headList', listData);
+        $('.head-list').append(str);
+    }
+  }
 
+  function showErr(err){
+    api.hideProgress();
+    console.log(JSON.stringify(err));
+    if(err.body){
+      alert(err.body)
+    }else {
+      alert("加载失败")
+    }
+  }
+}
 // 请求接口获取人员列表
 function onGetData() {
+    // alert("1")
+    api.showProgress({
+        style: 'default',
+        animationType: 'fade',
+        title: '加载中...',
+        modal: false
+    });
+
     getUserList("api/services/app/Information/GetOrganizationAndPersonnel","",showRet,showErr);
     function showRet(ret){
-      console.log(JSON.stringify(ret));
+      api.hideProgress();
       $('.head-list').html('');
-      // headArr = ret;
-      // var returnData =  pySegSort(headArr);
-      // var listData = {items: returnData};
-      // var str = template('headList', listData);
-      // $('.head-list').append(str);
+      if(ret.success){
+          headArr = ret.result.personnelAll;
+          var returnData =  pySegSort(headArr);
+          var listData = {items: returnData};
+          var str = template('headList', listData);
+          $('.head-list').append(str);
+      }
     }
 
     function showErr(err){
-      console.log(JSON.stringify(err));
+      api.hideProgress();
       if(err.body){
         alert(err.body)
       }else {
         alert("加载失败")
       }
     }
-
-    headArr = [{id:'1',Name: '阿西吧', Phone: '123456'},{id:'2',Name: '阿哦哦', Phone: '123456'},{id:'3',Name: '阿哦哦', Phone: '123456'},{id:'4',Name: '阿哦哦', Phone: '123456'},{id:'5',Name: '吃西吧', Phone: '123456'},{id:'6',Name: '吧西吧', Phone: '123456'},{id:'7',Name: '看西吧', Phone: '123456'}];
 }
-
-// function onGetData() {
-//     headArr = [{id:'1',Name: '阿西吧', Phone: '123456'},{id:'2',Name: '阿哦哦', Phone: '123456'},{id:'3',Name: '阿哦哦', Phone: '123456'},{id:'4',Name: '阿哦哦', Phone: '123456'},{id:'5',Name: '吃西吧', Phone: '123456'},{id:'6',Name: '吧西吧', Phone: '123456'},{id:'7',Name: '看西吧', Phone: '123456'}];
-//
-//     var returnData =  pySegSort(headArr);
-//     var listData = {items: returnData};
-//     var str = template('headList', listData);
-//     $('.head-list').append(str);
-// }
 
 function getIndexesData() {
   var indexesData = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
@@ -59,7 +94,7 @@ function getIndexesData() {
 //根据拼音首字母返回分组
 function pySegSort(arr) {
   pyArr = arr.map(o => {
-    return  Pinyin.getWordsCode(o.Name.substring(0,1));
+    return  Pinyin.getWordsCode(o.name.substring(0,1));
   });
 
   var letters = "ABCDEFGHJKLMNOPQRSTWXYZ".split('');
@@ -81,11 +116,22 @@ function pySegSort(arr) {
 
 // 选中负责人
 function checkHead(el){
-  checkId = $(el).attr('param');
+  checkHeadObj = $(el).attr('param');
   $("#sure").removeClass('aui-hide')
 }
 // 确定请求接口 传递数据
 function onCheck(){
-  alert(checkId)
+  console.log(checkHeadObj);
+  api.sendEvent({
+      name: 'headList',
+      extra: {
+          checkHeadObj
+      }
+  });
+  api.openWin({
+      name: 'addJob',
+      url: './addJob.html'
+  });
+
   // alert($(el).attr('param'))
 }

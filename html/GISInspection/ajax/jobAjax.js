@@ -44,6 +44,7 @@ function getUserList(path,data,showRet,showErr){
   console.log(baseUrl+path);
   var options = {
     url:baseUrl+path,
+    type:"get",
     data:data,
     success:function(ret){
       // console.log(JSON.stringify(ret));
