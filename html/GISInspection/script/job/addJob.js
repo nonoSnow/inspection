@@ -12,6 +12,12 @@ apiready = function() {
         onHidePopup();
       });
     });
+
+    api.addEventListener({
+        name: 'headList'
+    }, function(ret, err) {
+        alert(JSON.stringify(ret.value));
+    });
 }
 
 var popup = new auiPopup();

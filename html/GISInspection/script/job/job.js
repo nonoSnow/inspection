@@ -10,10 +10,10 @@ apiready = function() {
 // 获取待接收、进行中、已完成的工单 接口调用
 function showData(data,status){
   getJobDataSingle("api/services/Inspection/WorkOrderService/GetWorkOrderListApp",data,showRet,showErr);
-  console.log(JSON.stringify($api.getStorage('loginData')));
+  // console.log(JSON.stringify($api.getStorage('loginData')));
   function showRet(ret){
-    console.log("--------------------------"+status);
-    console.log(JSON.stringify(ret));
+    // console.log("--------------------------"+status);
+    // console.log(JSON.stringify(ret));
     $('#dataList').html('');
     var data = {
         list: [{
@@ -35,8 +35,12 @@ function showData(data,status){
   }
 
   function showErr(err){
-    console.log(JSON.stringify(err));
-    alert("加载失败")
+    // console.log(JSON.stringify(err));
+    if(err.body.error.message){
+      alert(err.body.error.message)
+    }else {
+      alert("加载失败")
+    }
   }
 }
 // 初始化进行中的工单列表
@@ -82,7 +86,7 @@ function onMenu(index, el) {
     initCompleted()
   }
   onCheckMenu(el, function(){
-    console.log(123);
+    // console.log(123);
   });
 }
 
@@ -125,7 +129,7 @@ function onMenu(index, el) {
 
 // 任务详情
 function onOpenJobDetail(el) {
-  console.log($(el).attr('param'));
+  // console.log($(el).attr('param'));
   api.openWin({
       name: 'jobDetail',
       url: './jobDetail.html',
