@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/home.css"/>
     <link rel="stylesheet" type="text/css" href="../../js/sntgis/sntgis.css"/>
   </head>
   <body>
@@ -25,16 +26,22 @@
 
     <!-- 地图 -->
     <div class="map-box">
-        <div class="map" id="map"></div>
+        <div class="map" id="maphome"></div>
     </div>
 
     <!-- 用于测试 -->
-    <div class="aui-btn aui-btn-blue" style='top: 5rem; left: 5%;' tapmode onclick="onOpenTaskInfo()">任务详情</div>
+    <!-- <div class="aui-btn aui-btn-blue" style='top: 5rem; left: 5%;' tapmode onclick="onOpenTaskInfo()">任务详情</div> -->
     <div class="map-btn-div top435 fixed right5">
         <div class="map-btn-bs border-radius4">
-          <div class="font-S6 text-cent">
-            <img src="../../image/online.png" class='map-btn-img' alt="">
-            <span class="margin-bot3">在线</span>
+          <div class="font-S6 text-cent member-status">
+            <div class="unline">
+                <img src="../../image/unline.png" class='map-btn-img' alt="">
+                <span class="margin-bot3">离线</span>
+            </div>
+            <div class="online">
+                <img src="../../image/online.png" class='map-btn-img' alt="">
+                <span class="margin-bot3">在线</span>
+            </div>
           </div>
           <div class="map-btn-line"></div>
           <div class="font-S6 text-cent" tapmode onclick="onOpenReport()">
@@ -56,10 +63,10 @@
         </div>
 
         <div class="map-btn-bs border-radius4 margin-top6">
-          <div class="right-item-item">
+          <div class="right-item-item map-scale-btn up" tapmode>
             <img src="../../image/enlarge.png" class='enlarge' alt="">
           </div>
-          <div class="right-item-item">
+          <div class="right-item-item map-scale-btn down" tapmode>
             <img src="../../image/narrow.png" class='narrow' alt="">
           </div>
         </div>
@@ -76,8 +83,9 @@
   <script type="text/javascript" src="../../../public/script/zepto.js"></script>
   <script type="text/javascript" src="../../script/sntgis/sntgis.js"></script>
   <script type="text/javascript" src="../../script/sntgis/sntgis_extend.js"></script>
+  <script type="text/javascript" src="../../script/common/gis.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
   <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
-  <script type="text/javascript" src="../../ajax/home.js"></script>
-  <script type="text/javascript" src="../../script/home/gis.js"></script>
+  <script type="text/javascript" src="../../ajax/homeajax.js"></script>
   <script type="text/javascript" src="../../script/home/home.js"></script>
 </html>

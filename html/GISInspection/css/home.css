@@ -1,0 +1,10 @@
+.member-status > div {
+    display: none;
+}
+.member-status .unline, .member-status.on .online {
+    display: block;
+}
+
+.member-status .online, .member-status.on .unline {
+    display: none;
+}

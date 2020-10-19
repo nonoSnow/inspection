@@ -17292,7 +17292,6 @@ ol.layer.Group.prototype.handleLayersChanged_ = function(event) {
           this.handleLayersAdd_, this),
       ol.events.listen(layers, ol.CollectionEventType.REMOVE,
           this.handleLayersRemove_, this));
-
   for (var id in this.listenerKeys_) {
     this.listenerKeys_[id].forEach(ol.events.unlistenByKey);
   }
@@ -96457,6 +96456,3 @@ OPENLAYERS.ol = ol;
 
   return OPENLAYERS.ol;
 }));
-
-
-
