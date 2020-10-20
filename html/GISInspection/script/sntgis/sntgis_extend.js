@@ -284,7 +284,7 @@ SNTGIS.NetWork.getFeaturesByCoords = function (layer, coords, callback) {
         url = url.replace('/'+layerNameArray[0],''); //获取服务器wfs服务地址
         var xml = getInsectsOGCXMLFromParams(SNTGIS.workSpace, layerNameArray[0], layerNameArray[1], coords);
         var ajax = new XMLHttpRequest();
-        var ajax = new XMLHttpRequest();
+        // var ajax = new XMLHttpRequest();
         ajax.open('POST', url);
         ajax.setRequestHeader('Content-Type', 'text/plain;charset=UTF-8');
         ajax.setRequestHeader("Authorization", authenticateUser(SNTGIS.userName, SNTGIS.passWord));
@@ -302,10 +302,10 @@ SNTGIS.NetWork.getFeaturesByCoords = function (layer, coords, callback) {
 }
 
 //根据geojson的url信息获取范围内的管网信息
-SNTGIS.NetWork.getFeaturesByCoords = function (url, coords, layerName,workSpaceName) {
+SNTGIS.NetWork.getFeaturesByCoordsList = function (url, coords, layerName,workSpaceName) {
     var xml = getInsectsOGCXMLFromParams(SNTGIS.workSpace, workSpaceName, layerName, coords);
     var ajax = new XMLHttpRequest();
-    var ajax = new XMLHttpRequest();
+    // var ajax = new XMLHttpRequest();
     ajax.open('POST', url);
     ajax.setRequestHeader('Content-Type', 'text/plain;charset=UTF-8');
     ajax.setRequestHeader("Authorization", authenticateUser(SNTGIS.userName, SNTGIS.passWord));
@@ -322,7 +322,7 @@ SNTGIS.NetWork.getFeaturesByCoords = function (url, coords, layerName,workSpaceN
 }
 
 
-//通过参数获取OGC的相交XML访问代码   
+//通过参数获取OGC的相交XML访问代码
 //Filter定义了三种操作符：地理操作符（Spatial operators），比较操作符（Comparison operators）和逻辑操作符（Logical operators）。
 //Spatial operators定义了地理属性的操作方式，他们有：Equals，Disjoint，Touches，Within，Overlaps，Crosses，Intersects，Contains，DWithin， Beyond，BBOX。
 //Comparison operators定义了标量属性的操作方式，他们有：PropertyIsEqualTo，PropertyIsNotEqualTo，PropertyIsLessThan，PropertyIsGreaterThan， PropertyIsLessThanOrEq，PropertyIsGreaterThanO，PropertyIsLike，PropertyIsNull， PropertyIsBetween。

@@ -70,3 +70,23 @@ function getOrderList(options) {
     })
     ajaxMethod(options);
 }
+
+
+function getDeviceList(options) {
+    // var userLoginInformation= $api.getStorage('userLoginInformation');
+    // var data = {
+    //     userId: userLoginInformation.currentUserInfo.userInfo.userId
+    // }
+    var data = options.data;
+    var options = Object.assign({}, options, {
+        url: gisUrl + 'SearchPipe/SearchByExtent',
+        data: {
+            body: JSON.stringify(data)
+        },
+        error: function(err) {
+            console.log(JSON.stringify(err))
+            if(options.fail) options.fail(err);
+        }
+    })
+    ajaxMethod(options);
+}
