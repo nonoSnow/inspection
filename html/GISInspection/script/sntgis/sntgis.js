@@ -16637,7 +16637,9 @@ ol.View.prototype.rotate = function(rotation, opt_anchor) {
  * @api
  */
 ol.View.prototype.setCenter = function(center) {
+    console.log(JSON.stringify(center))
   this.set(ol.ViewProperty.CENTER, center);
+  console.log(this.getAnimating())
   if (this.getAnimating()) {
     this.cancelAnimations();
   }

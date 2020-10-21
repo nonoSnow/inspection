@@ -64,23 +64,48 @@
             });
         },
 
-        // 向地图中添加悬浮元素
+        /** 向地图中添加悬浮元素
+         * layObj 悬浮元素需要的数据
+         * name  悬浮元素需要作为对象存储的名称及类名的名称依据  非必填
+         * position 二位数据  悬浮位置的数组列表 必填
+         * isShow 是否一开始就添加到地图中   true为是  false 后期添加  默认为true
+         * centerPosition  是否默认需要将地图定位到居中位置  是传入居中位置[经度， 维度]
+         * dom  标签id除了序号的名称 比如  aa-0 传入#aa  序号在id中必须有的  从0开始
+        */
         addOverLayer: function(layObj) {
-            var name = layObj.name || 'overlay';
-            var index = layObj.index || 1;
-            if(layObj.isCenter) {
-                // this.map.getView().setCenter(layObj.position);
+            layObj = Object.assign({}, {
+                name: 'anchor',
+                positioning: 'center-center',
+                isShow: true
+            }, layObj)
+            var location = layObj.position
+            var dom = layObj.dom;
+            for(var i = 0; i< location.length; i++) {
+                layObj.position = location[i];
+
+                layObj.dom = dom + '-' + i
+                layObj.index = i
+                this.addOverLayerEvent(layObj)
             }
+            if(layObj.centerPosition) {
+                this.map.getView().setCenter(layObj.centerPosition);
+            }
+        },
+
+        addOverLayerEvent: function(layObj) {
+            var name = layObj.name;
+            var index = layObj.index;
             var elDom = document.querySelector(layObj.dom);
+
             layObj = Object.assign({}, {
                 positioning: 'center-center',
-                className: 'customer-anchor customer-anchor-1',
+                className: 'customer-' + name + 'customer-' + name + '-' + index,
                 element: elDom
             }, layObj);
 
             var overlayEl = new window.ol.Overlay(layObj);
-            this[name] = {...this[name], [index + '']: overlayEl}
-            this.map.addOverlay(overlayEl);
+            this[name] = {...this[name], [index + ''] : overlayEl}
+            layObj.isShow ? this.map.addOverlay(overlayEl) : '';
         },
 
         // 初始化区域图层
@@ -126,8 +151,8 @@
                 stroke: new window.ol.style.Stroke({
                     color: 'rgba(252, 7, 7, 1)',
                     width: 3
-                    })
                 })
+            })
             let selectPointSource = new window.ol.source.Vector({});
             this[sourcename] = selectPointSource;
             var selectPointLayer = new window.ol.layer.Vector({
@@ -258,7 +283,7 @@
               var xmin = Math.min.apply(null, xArray);
               var ymax = Math.max.apply(null, yArray);
               var ymin = Math.min.apply(null, yArray);
-              this.map.getView().fit([xmin, ymin, xmax, ymax]);
+            //   this.map.getView().fit([xmin, ymin, xmax, ymax]);
         },
 
         // 根据区域 获取 区域内的管点管线  并选中管点管线
@@ -269,22 +294,15 @@
             console.log(selectFeature)
             var polygon = selectFeature.getGeometry();
             // coordinates =
-            var wktPoint = new window.ol.format.WKT().writeGeometry(polygon, {
-        		dataProjection : "EPSG:4326",
-        		featureProjection : "EPSG:3857"
-        	});
+            // var wktPoint = new window.ol.format.WKT().writeGeometry(polygon, {
+        	// 	dataProjection : "EPSG:4326",
+        	// 	featureProjection : "EPSG:3857"
+        	// });
             let _this = this;
             // 获取选中的图层边界点
             // console.log(deviceInfo.areaPoint)
             var areaExtent = deviceInfo.areaPoint.split(';').join(' ');
             areaExtent = areaExtent.substring(0, areaExtent.length - 1);
-            console.log(areaExtent)
-            // areaExtent = areaExtent.replace(/\,/g, "哈");
-            // areaExtent = areaExtent.replace(/\s+/g, ",");
-            // areaExtent = areaExtent.replace(/\哈/g, " ");
-            // console.log(areaExtent)
-            // var wktPoint = 'POLYGON((' + areaExtent + '))';
-            console.log(wktPoint)
             // console.log(workSpace)
             window.SNTGIS.workSpace = workSpace;
             // console.log(_this)

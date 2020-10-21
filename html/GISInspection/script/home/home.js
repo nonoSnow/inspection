@@ -40,7 +40,7 @@ apiready = function() {
     $(".map-location-div").on('click', function() {
         getMemberLocation(function(location) {
             indexMap.map.getView().setCenter(location);
-            indexMap['memberlay']['1'].setPosition(location);
+            indexMap['memberlay']['0'].setPosition(location);
         });
     })
 
@@ -55,7 +55,9 @@ indexMap = new Map({
 });
 indexMap.initArea();
 drawAreaList();
+// setCurrentMapLocation();
 indexMap.initDeviceLayer()
+
 $(".home-device").on('click', function() {
     var feature = indexMap.selectFeature;
     if(!feature) return false;
@@ -114,14 +116,16 @@ $(".home-device").on('click', function() {
 */
 function setCurrentMapLocation() {
     getMemberLocation(function(location) {
+        console.log(location)
         $(".map-member-img").css({opacity: 1})
         indexMap.addOverLayer({
             dom: '#map-member-img',
-            position: location,
+            // position: [location],
+            position: [location],
             offset: [38.5, -43.5],
             isCenter: true,
             name: 'memberlay',
-            index: 1
+            centerPosition: location
         })
     });
 }
