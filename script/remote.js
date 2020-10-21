@@ -96,16 +96,6 @@ function fnPost(path, data, contentType, isLogin, isPut, callback) {
       title: '加载中',
       modal: false
   });
-  console.log('http://' + $api.getStorage('apiUrl')+'/api/' + path)
-  console.log(JSON.stringify({
-      url: 'http://' + $api.getStorage('apiUrl')+'/api/' + path,
-      method: isPut ? 'put' : 'post',
-      timeout: 60,
-      dataType: 'json',
-      returnAll: false,
-      headers: headers,
-      data: data
-  }))
   api.ajax({
       url: 'http://' + $api.getStorage('apiUrl')+'/api/' + path,
       method: isPut ? 'put' : 'post',

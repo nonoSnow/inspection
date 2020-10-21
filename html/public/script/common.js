@@ -10,15 +10,15 @@ String.prototype.replaceAll = function(s1, s2) {
  * @param 任意
  * @return 对象
  */
-Object.prototype.assignNew = function() {
-    var obj = arguments[0]
-    for (var i = 1; i < arguments.length; i++) {
-        for (var prop in arguments[i]) {
-            obj[prop] = arguments[i][prop]
-        }
-    }
-    return obj
-}
+// Object.prototype.assignNew = function() {
+//     var obj = arguments[0]
+//     for (var i = 1; i < arguments.length; i++) {
+//         for (var prop in arguments[i]) {
+//             obj[prop] = arguments[i][prop]
+//         }
+//     }
+//     return obj
+// }
 /**
  * 日期转字符串
  * @param fmt
@@ -45,6 +45,25 @@ Date.prototype.Format = function(fmt) {   
     }   
     return fmt;
 }
+
+/**
+ * 合并对象重写
+ * @param 任意
+ * @return 对象
+ */
+// Object.prototype.assignNew = function() {
+//     var obj = arguments[0]
+//     console.log(JSON.stringify(arguments))
+//     for (var i = 1; i < arguments.length; i++) {
+//         if($api.jsonToStr(arguments[i]) != "{}") {
+//             for (var prop in arguments[i]) {
+//                 console.log(prop)
+//                 obj[prop] = arguments[i][prop]
+//             }
+//         }
+//     }
+//     return obj
+// }
 
 //获取时分秒
 function getTime(data) {
