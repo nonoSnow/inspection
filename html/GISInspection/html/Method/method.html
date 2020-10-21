@@ -12,6 +12,45 @@
     <link rel="stylesheet" type="text/css" href="../../css/public.css">
     <link rel="stylesheet" type="text/css" href="../../css/common.css">
     <link rel="stylesheet" type="text/css" href="../../css/method.css">
+    <style type='text/css'>
+      html,
+      body {
+          width: 100%;
+          height: 100%;
+          /*background-color: #f5f5f5;*/
+      }
+      .method-item{
+        margin-top: 0.75rem;
+      }
+      .footer {
+          width: 100%;
+          height: 3.53rem;
+          position: fixed;
+          bottom: 0rem;
+          display: flex;
+          justify-content: center;
+          background: #fff;
+      }
+
+      .footer .ReportIncident {
+          width: 15rem;
+          height: 2.2rem;
+          background-color: #4f79e8;
+          color: #fff;
+          border-radius: 1.1rem;
+          font-size: 0.8rem;
+          font-weight: normal;
+          font-stretch: normal;
+          letter-spacing: 0.08rem;
+          padding: 0.5rem 5rem 0.73rem 5.8rem;
+              margin-top: 0.63rem;
+      }
+
+      .ReportIncident.active {
+          background: #fff;
+          color: #4f79e8;
+      }
+    </style>
 </head>
 
 <body>
@@ -41,8 +80,8 @@
             </div>
         </div>
 
-        <div class="flex-con flex-content height100 bgc-f3">
-            <ul class="aui-content-padded">
+        <!-- <div class="flex-con flex-content height100 bgc-f3">
+            <ul class="aui-content-padded" id="dataList">
                 <li class="method-item padding75 bgc-ff border-radius4 display-flex" tapmode onclick="onOpenMethodDetail()">
                     <div class="item-img">
                         <img src="../../image/method-item.png" class='method-item-img' alt="">
@@ -66,6 +105,15 @@
                 </li>
 
             </ul>
+        </div> -->
+        <div class="flex-con flex-content height100 bgc-f3">
+          <ul class="aui-content-padded" id="dataList">
+          </ul>
+        </div>
+        <div class="footer">
+            <div class="ReportIncident open-win" onclick="openw()">
+                上报事件
+            </div>
         </div>
     </div>
 </body>
@@ -73,8 +121,68 @@
 <script type="text/javascript" src="../../../public/script/common.js"></script>
 <script type="text/javascript" src="../../../public/script/remote.js"></script>
 <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+<script type="text/javascript" src="../../../public/script/template.js"></script>
 
 <script type="text/javascript" src="../../script/public.js"></script>
-<script type="text/javascript" src="../../script/method.js"></script>
+<script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+<script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
+<script type="text/javascript" src="../../ajax/methodAjax.js"></script>
 
+<script type="text/javascript" src="../../script/method/method.js"></script>
+<script type="text/template" id='onPending'>
+  <!-- 事件待处理 -->
+  {{each list value i}}
+  <li class="method-item padding75 bgc-ff border-radius4 display-flex" tapmode onclick="onOpenMethodDetail(this)" param="{{value.Id}}">
+      <div class="item-img">
+          <img src="../../image/method-item.png" class='method-item-img' alt="">
+      </div>
+      <div class="item-text height100 display-flex flex-column line-height15 font-S8">
+          <div class="flex1-auto color-333">事件类型：{{value.type}}</div>
+          <div class="flex1-auto color-666">异常类型：{{value.errorType}}</div>
+          <div class="flex1-auto color-666">提交时间：{{value.creationTime}}</div>
+      </div>
+  </li>
+  {{/each}}
+</script>
+<script type="text/template" id='workOrder'>
+  <!-- 事件转工单 -->
+  {{each list value i}}
+  <li class="method-item padding75 bgc-ff border-radius4 display-flex" tapmode onclick="onOpenMethodDetail(this)" param="{{value.Id}}">
+      <div class="item-img">
+          <img src="../../image/method-item.png" class='method-item-img' alt="">
+      </div>
+      <div class="item-text height100 display-flex flex-column line-height15 font-S8">
+          <div class="flex1-auto color-333">事件类型：{{value.type}}</div>
+          <div class="flex1-auto color-666">异常类型：{{value.errorType}}</div>
+          <div class="flex1-auto color-666">提交时间：{{value.creationTime}}</div>
+      </div>
+  </li>
+  {{/each}}
+</script>
+<script type="text/template" id='closed'>
+  <!-- 事件已关闭 -->
+  {{each list value i}}
+  <li class="method-item padding75 bgc-ff border-radius4 display-flex" tapmode onclick="onOpenMethodDetail(this)" param="{{value.Id}}">
+      <div class="item-img">
+          <img src="../../image/method-item.png" class='method-item-img' alt="">
+      </div>
+      <div class="item-text height100 display-flex flex-column line-height15 font-S8">
+          <div class="flex1-auto color-333">事件类型：{{value.type}}</div>
+          <div class="flex1-auto color-666">异常类型：{{value.errorType}}</div>
+          <div class="flex1-auto color-666">提交时间：{{value.creationTime}}</div>
+      </div>
+  </li>
+  {{/each}}
+</script>
+<script type="text/javascript">
+function openw() {
+  api.openWin({
+    name: 'addMethodReport',
+    url: './addMethodReport.html',
+    pageParam: {
+      name: 'test'
+    }
+  });
+}
+</script>
 </html>

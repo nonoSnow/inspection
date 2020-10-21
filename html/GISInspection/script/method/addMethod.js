@@ -21,6 +21,7 @@ apiready = function() {
           onHideAbnormalTypPopup();
       });
     });
+    onSubmit();
 }
 var popup = new auiPopup();
 // 关闭事件类型弹窗
@@ -30,6 +31,32 @@ function onHidePopup(){
 // 关闭异常类型弹窗
 function onHideAbnormalTypPopup(){
     popup.hide(document.getElementById("abnormalTypePop"));
+}
+
+// 提交事件添加
+function onSubmit(){
+  var data = {
+    type:0,
+    errorType:'',
+    taskId:0,
+    status:0,
+    waterLoss:'',
+    content:'',
+    resourceInfoList:[]
+  }
+  getInsertEvent("api/services/Inspection/EventService/InsertEvent",data,showRet,showErr);
+  function showRet(ret){
+    alert(JSON.stringify(ret));
+  }
+
+  function showErr(err){
+    // console.log(JSON.stringify(err));
+    if(err.body.error.message){
+      alert(err.body.error.message)
+    }else {
+      alert("加载失败")
+    }
+  }
 }
 
 function onOpenArea(type) {

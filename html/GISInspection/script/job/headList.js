@@ -17,11 +17,13 @@ function onGetData() {
     function showRet(ret){
       console.log(JSON.stringify(ret));
       $('.head-list').html('');
-      // headArr = ret;
-      // var returnData =  pySegSort(headArr);
-      // var listData = {items: returnData};
-      // var str = template('headList', listData);
-      // $('.head-list').append(str);
+      if(ret.success){
+          headArr = ret.result.personnelAll;
+          var returnData =  pySegSort(headArr);
+          var listData = {items: returnData};
+          var str = template('headList', listData);
+          $('.head-list').append(str);
+      }
     }
 
     function showErr(err){
@@ -32,8 +34,6 @@ function onGetData() {
         alert("加载失败")
       }
     }
-
-    headArr = [{id:'1',Name: '阿西吧', Phone: '123456'},{id:'2',Name: '阿哦哦', Phone: '123456'},{id:'3',Name: '阿哦哦', Phone: '123456'},{id:'4',Name: '阿哦哦', Phone: '123456'},{id:'5',Name: '吃西吧', Phone: '123456'},{id:'6',Name: '吧西吧', Phone: '123456'},{id:'7',Name: '看西吧', Phone: '123456'}];
 }
 
 // function onGetData() {
