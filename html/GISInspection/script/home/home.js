@@ -49,14 +49,23 @@ apiready = function() {
     getHomeOrderList();
     drawAreaList()
 }
+// pc调试使用
 // 初始化地图
-indexMap = new Map({
-    mapid: 'maphome'
-});
-indexMap.initArea();
-drawAreaList();
+// indexMap = new Map({
+//     mapid: 'maphome'
+// });
+// indexMap.initArea();
+// drawAreaList();
 // setCurrentMapLocation();
-indexMap.initDeviceLayer()
+// indexMap.initDeviceLayer()
+// // 点击定位图标将员工的位置定位到屏幕中间
+// $(".map-location-div").on('click', function() {
+//     // getMemberLocation(function(location) {
+//         console.log(111)
+//         indexMap.map.getView().setCenter([106.54258025120019,29.561620073599133]);
+//         // indexMap['memberlay']['0'].setPosition([106.54258025120019,29.561620073599133]);
+//     // });
+// })
 
 $(".home-device").on('click', function() {
     var feature = indexMap.selectFeature;
@@ -116,16 +125,18 @@ $(".home-device").on('click', function() {
 */
 function setCurrentMapLocation() {
     getMemberLocation(function(location) {
-        console.log(location)
+        var location = [106.54258025120019,29.561620073599133];
+        location = [parseFloat(location[0]), parseFloat(location[1])]
+        var position = [];
+        position.push(location);
         $(".map-member-img").css({opacity: 1})
         indexMap.addOverLayer({
             dom: '#map-member-img',
-            // position: [location],
-            position: [location],
+            position: position,
             offset: [38.5, -43.5],
-            isCenter: true,
+            // isCenter: true,
             name: 'memberlay',
-            centerPosition: location
+            // centerPosition: location
         })
     });
 }
@@ -139,7 +150,6 @@ function setOnlineStatus(status) {
             IsOnline: status ? false : true
         },
         success: function(ret) {
-            console.log(JSON.stringify(ret))
             memberStatus = status ? 0 : 1;
             $api.setStorage('isOnline', memberStatus);
             if(memberStatus) {

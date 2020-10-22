@@ -67,9 +67,9 @@
         /** 向地图中添加悬浮元素
          * layObj 悬浮元素需要的数据
          * name  悬浮元素需要作为对象存储的名称及类名的名称依据  非必填
-         * position 二位数据  悬浮位置的数组列表 必填
+         * position 二位数据  悬浮位置的数组列表 必填 如：[[106.54258025120019,29.561620073599133],[106.54258025120019,29.561620073599133]]
          * isShow 是否一开始就添加到地图中   true为是  false 后期添加  默认为true
-         * centerPosition  是否默认需要将地图定位到居中位置  是传入居中位置[经度， 维度]
+         * centerPosition  是否默认需要将地图定位到居中位置  是传入居中位置[经度， 维度]  非必传
          * dom  标签id除了序号的名称 比如  aa-0 传入#aa  序号在id中必须有的  从0开始
         */
         addOverLayer: function(layObj) {
@@ -78,11 +78,10 @@
                 positioning: 'center-center',
                 isShow: true
             }, layObj)
-            var location = layObj.position
+            var locationList = layObj.position
             var dom = layObj.dom;
-            for(var i = 0; i< location.length; i++) {
-                layObj.position = location[i];
-
+            for(var i = 0; i< locationList.length; i++) {
+                layObj.position = locationList[i];
                 layObj.dom = dom + '-' + i
                 layObj.index = i
                 this.addOverLayerEvent(layObj)
@@ -96,13 +95,11 @@
             var name = layObj.name;
             var index = layObj.index;
             var elDom = document.querySelector(layObj.dom);
-
             layObj = Object.assign({}, {
                 positioning: 'center-center',
-                className: 'customer-' + name + 'customer-' + name + '-' + index,
+                className: 'customer-' + name + ' ' + 'customer-'  + name + '-' + index,
                 element: elDom
             }, layObj);
-
             var overlayEl = new window.ol.Overlay(layObj);
             this[name] = {...this[name], [index + ''] : overlayEl}
             layObj.isShow ? this.map.addOverlay(overlayEl) : '';
@@ -283,7 +280,7 @@
               var xmin = Math.min.apply(null, xArray);
               var ymax = Math.max.apply(null, yArray);
               var ymin = Math.min.apply(null, yArray);
-            //   this.map.getView().fit([xmin, ymin, xmax, ymax]);
+              this.map.getView().fit([xmin, ymin, xmax, ymax]);
         },
 
         // 根据区域 获取 区域内的管点管线  并选中管点管线
@@ -291,162 +288,61 @@
         getCommonEle: function(deviceInfo, name) {
 
             var selectFeature = this.selectFeature;
-            console.log(selectFeature)
             var polygon = selectFeature.getGeometry();
-            // coordinates =
-            // var wktPoint = new window.ol.format.WKT().writeGeometry(polygon, {
-        	// 	dataProjection : "EPSG:4326",
-        	// 	featureProjection : "EPSG:3857"
-        	// });
             let _this = this;
             // 获取选中的图层边界点
-            // console.log(deviceInfo.areaPoint)
             var areaExtent = deviceInfo.areaPoint.split(';').join(' ');
             areaExtent = areaExtent.substring(0, areaExtent.length - 1);
-            // console.log(workSpace)
-            window.SNTGIS.workSpace = workSpace;
-            // console.log(_this)
-            // console.log(areaExtent)
-            // this.getFeaturesByCoords(_this.lineLayer, areaExtent, function() {
-            //     console.log(11)
-            // })
-            // 获取区域与管线图层相交的所有元素
-            if(deviceInfo.lineList.length > 0) {
-                window.SNTGIS.NetWork.getFeaturesByCoords(_this.lineLayer, areaExtent, function (data) {
-                    console.log(data)
-                    _this.getLineListInArea(data, deviceInfo.lineList, name)
-                    // _this.lineInArea = data;
-                    // if (type) {
-                    //     // console.log(deviceInfo.selectLine)
-                    //     // _this.drawLineSelect(deviceInfo.selectLine)
-                    //     _this.getLineListInArea(data, deviceInfo.selectLine, type);
-                    // }
-                })
-            }
-            if(deviceInfo.pointList.length > 0) {
-                // 获取区域与管点图层相交的所有元素
-                window.SNTGIS.NetWork.getFeaturesByCoords(_this.pointLayer, areaExtent, function (data) {
-                    _this.pointInArea = data;
-                    console.log(data)
-                    _this.getPointListInArea(data, deviceInfo.pointList, name);
-                    // if (type) {
-                    //     // _this.drawPointSelect(deviceInfo.selectPoint)
-                    //     _this.getPointListInArea(data, deviceInfo.selectPoint, type);
-                    // }
-                })
-            }
 
+            this.getDeviceList({
+                data: areaExtent,
+                success: function(res) {
+                    this.getLineListInArea(res.line, deviceInfo.lineList, name)
+                    this.getPointListInArea(res.point, deviceInfo.pointList, name)
+                }
+            })
         },
-
-        getFeaturesByCoords(layer, coords, callback) { //IsSelect 为false时为搜索页面查询信息，不可点击， 为ture是，为首页查询信息，可以select查询信息
-        //    DataObj = data;
-        //    DataObj.IsSelect = IsSelect;
-           // point
-        //    var url = `http://119.3.192.111:5431/geoserver/OpenGIS/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=OpenGIS%3AGetPointByName&outputFormat=application%2Fjson&viewparams=number:${data.number}`;
-        //    var url=getAppMapSetConfig.collectPoint+`:${data.number}`;
-        // http://118.122.84.146:8595/geoserver/wms
-           var source = layer.getSource();
-           var layerName = source.params_.LAYERS;
-           var layerNameArray = layerName.split(":");
-           if (layerNameArray.length == 2) {
-               var ajax = new XMLHttpRequest();
-               var url = source.urls[0];
-            //    var url = source.urls[0].replace('/wms','/wfs');
-            // console.log(layerNameArray[0])
-            //    url = url.replace('/'+layerNameArray[0],'');
-               console.log(url)
-               ajax.open('get', url);
-               ajax.withCredentials = true;
-               ajax.setRequestHeader("Authorization", authenticateUser('admin', "Sntsoft123"));
-               ajax.send();
-               ajax.onreadystatechange = function() {
-                   if (ajax.readyState == 4 && ajax.status == 200) {
-                       console.log(ajax.responseText)
-                       feature = queryPointInfoclayersource.getFormat().readFeatures(ajax.responseText);
-                       queryPointInfoclayersource.addFeatures(feature);
-                   }
-               };
-               ajax.ontimeout = function(e) {
-
-               };
-               ajax.onerror = function(e) {
-
-               };
-            }
-        //    map.getView().setZoom(18);
+        getDeviceList: function(options) {
+            var data = options.data;
+            var options = Object.assign({}, options, {
+                url: gisUrl + 'SearchPipe/GetPipeByExtent' + "?coords=" + options.data,
+                type: 'get',
+                timeout: 30,
+                error: function(err) {
+                    if(options.fail) options.fail(err);
+                },
+                success: function(res) {
+                    options.success(res);
+                }
+            })
+            ajaxMethod(options);
         },
-
-        // getFeaturesByCoords: function(layer, coords, callback) {
-        //     console.log(222)
-        //     var source = layer.getSource();
-        //     var layerName = source.params_.LAYERS;
-        //     var layerNameArray = layerName.split(":");
-        //     if (layerNameArray.length == 2) {
-        //         var url = source.urls[0].replace('/wms','/wfs');
-        //         url = url.replace('/'+layerNameArray[0],''); //获取服务器wfs服务地址
-        //         var xml = getInsectsOGCXMLFromParams(SNTGIS.workSpace, layerNameArray[0], layerNameArray[1], coords);
-        //         console.log(xml)
-        //         ajaxMethod({
-        //             url: url,
-        //             data: xml,
-        //             headers: {
-        //                 'Content-Type': 'text/plain;charset=UTF-8',
-        //                 'Authorization': authenticateUser(SNTGIS.userName, SNTGIS.passWord)
-        //             },
-        //             timeout: 30,
-        //             success: function(res) {
-        //                 console.log(JOSN.stringify(res))
-        //             },
-        //             fail: function(err) {
-        //                 console.log(JOSN.stringify(err))
-        //             }
-        //         })
-        //         // var ajax = new XMLHttpRequest();
-        //         // var ajax = new XMLHttpRequest();
-        //         // ajax.open('POST', url);
-        //         // ajax.setRequestHeader('Content-Type', 'text/plain;charset=UTF-8');
-        //         // ajax.setRequestHeader("Authorization", authenticateUser(SNTGIS.userName, SNTGIS.passWord));
-        //         // ajax.send(xml);
-        //         // ajax.onreadystatechange = function () {
-        //         //     if (ajax.readyState == 4 && ajax.status == 200) {
-        //         //         try {
-        //         //             callback(JSON.parse(ajax.responseText).features)
-        //         //         } catch (error) {
-        //         //             console.log(error)
-        //         //         }
-        //         //     }
-        //         // };
-        //     }
-        // },
-
         // 根据数据返回的管线 判断是否在传入的区域内 并绘制在区域内的管线
         getLineListInArea: function(allLineList, checkedLine, name) {
             var lineList = [];
-            console.log(checkedLine)
             for(let i = 0; i < checkedLine.length; i++) {
                 for(let j = 0; j < allLineList.length; j++) {
-                    if(checkedLine[i].deviceCode ==allLineList[j].properties.LineNumber) {
-                        let x = (allLineList[j].geometry.coordinates[0][0] + allLineList[j].geometry.coordinates[1][0]) / 2;
-                        let y = (allLineList[j].geometry.coordinates[0][1] + allLineList[j].geometry.coordinates[1][1]) / 2;
+                    if(checkedLine[i].deviceCode ==allLineList[j].lineNumber) {
+                        var flats = allLineList[j].geom.match(/LINESTRING\((.*)\)/)[2].split(' ');
+                        var coordinates = []
+                        for(var i = 0; i < flats.length; i++) {
+                            coordinates.push(flats.split(','))
+                        }
+                        let x = (coordinates[0][0] + coordinates[1][0]) / 2;
+                        let y = (coordinates[0][1] + coordinates[1][1]) / 2;
                         lineList.push({
-                            deviceCode: allLineList[j].properties.LineNumber,
-                            deviceName: allLineList[j].properties.Material,
+                            deviceCode: allLineList[j].lineNumber,
+                            deviceName: allLineList[j].material,
                             devicePoint: x + ',' + y,
-                            address: allLineList[j].properties.Location,
-                            deviceLoaction: allLineList[j].geometry.coordinates,
+                            address: allLineList[j].properties.location,
+                            deviceLoaction: coordinates,
                         });
                         break;
                     }
                 }
             }
-            // if(type == 1) {
-            //     this.areaObj.lineLength = lineLength;
-            //     this.areaObj.lineList = lineList;
             console.log(lineList)
             this.drawLineSelect(lineList, name);
-            // }else if(type == 2) {
-            //     this.drawLineCheckFunc(lineList);
-            // }
         },
 
         // 根据数据返回的管点 判断是否在传入的区域内 并绘制在区域内的管点
@@ -454,25 +350,20 @@
             var pointList = [];
             for(let i = 0; i < checkedPoint.length; i++) {
                 for(let j = 0; j < allPointList.length; j++) {
-                    console.log(checkedPoint)
-                    if(checkedPoint[i].deviceCode ==allPointList[j].properties.PointNumbe) {
+                    if(checkedPoint[i].deviceCode ==allPointList[j].pointNumbe) {
+                        var coordinates = allLineList[j].geom.match(/POINT\((.*)\)/)[2];
                         pointList.push({
-                            deviceCode: allPointList[j].properties.PointNumbe,
-                            deviceName: allPointList[j].properties.PointName,
-                            devicePoint: allPointList[j].geometry.coordinates.join(','),
-                            address: allPointList[j].properties.Location,
-                            deviceLoaction: allPointList[j].geometry.coordinates
+                            deviceCode: allPointList[j].properties.pointNumbe,
+                            deviceName: allPointList[j].properties.pointName,
+                            devicePoint: coordinates,
+                            address: allPointList[j].properties.location,
+                            deviceLoaction: coordinates.split(',')
                         });
                         break;
                     }
                 }
             }
-            // if(type == 1) {
-            //     this.areaObj.selectPoint = pointList;
-                this.drawPointSelect(pointList);
-            // } else if(type == 2) {
-            //     this.drawPointCheckFunc(pointList);
-            // }
+            this.drawPointSelect(pointList, name);
         },
         // 选中管线
         drawLineSelect: function(selectLineList, name) {

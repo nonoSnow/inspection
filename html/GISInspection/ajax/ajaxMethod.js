@@ -39,15 +39,6 @@ function ajaxMethod(options) {
         if(urlStr)
             url += '?' + urlStr;
     }
-    console.log(JSON.stringify({
-        url: url,
-        method: options.type || 'post',
-        timeout: options.timeout || 10,
-        dataType: 'json',
-        headers: headers,
-        data: data,
-        timeout: options.timeout || 20
-    }))
     // 请求数据
     api.ajax({
         url: url,
