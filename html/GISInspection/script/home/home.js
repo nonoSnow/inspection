@@ -31,7 +31,17 @@ apiready = function() {
     });
     indexMap.initArea();
     indexMap.initDeviceLayer()
+    indexMap.initLineOrbit()
+    for(var i = 0; i<userRoute.length; i++) {
+        var coordinates = [];
+        for( var i = 0; i < userRoute.length; i++) {
+            var point = userRoute[i].Location.split(',')
+            coordinates.push([Number(point[0]), Number(point[1])])
+        }
+        console.log(coordinates)
+        indexMap.drawOribitRoute(coordinates)
 
+    }
     // 实现沉浸式状态栏效果
     var header = $api.byId('header');
     $api.fixStatusBar(header);
@@ -73,22 +83,22 @@ apiready = function() {
 }
 // pc调试使用
 // 初始化地图
-indexMap = new Map({
-    mapid: 'maphome'
-});
-indexMap.initArea();
-drawAreaList();
-indexMap.initLineOrbit()
-for(var i = 0; i<userRoute.length; i++) {
-    var coordinates = [];
-    for( var i = 0; i < userRoute.length; i++) {
-        var point = userRoute[i].Location.split(',')
-        coordinates.push([Number(point[0]), Number(point[1])])
-    }
-    console.log(coordinates)
-    indexMap.drawOribitRoute(coordinates)
-
-}
+// indexMap = new Map({
+//     mapid: 'maphome'
+// });
+// indexMap.initArea();
+// drawAreaList();
+// indexMap.initLineOrbit()
+// for(var i = 0; i<userRoute.length; i++) {
+//     var coordinates = [];
+//     for( var i = 0; i < userRoute.length; i++) {
+//         var point = userRoute[i].Location.split(',')
+//         coordinates.push([Number(point[0]), Number(point[1])])
+//     }
+//     console.log(coordinates)
+//     indexMap.drawOribitRoute(coordinates)
+//
+// }
 // // setCurrentMapLocation();
 // indexMap.initDeviceLayer()
 // // 点击定位图标将员工的位置定位到屏幕中间
