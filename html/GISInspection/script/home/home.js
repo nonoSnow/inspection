@@ -2,6 +2,27 @@
 // 工单及任务总列表   工单列表    任务列表
 var taskOrderList = [], orderList = [], taskList = [], resultIndex = 0;
 var indexMap = {}, memberStatus = 0, activeDevice = '';
+var userRoute = [{
+    Location: "104.144765,30.01259",
+    taskId: null,
+    taskName: "",
+    CreationTime: "08:21:13"
+}, {
+    Location: "104.134716,30.014519",
+    taskId: null,
+    taskName: "",
+    CreationTime: "09:05:10"
+}, {
+    Location: "104.148385,29.984948",
+    taskId: null,
+    taskName: "",
+    CreationTime: "09:10:28"
+}, {
+    Location: "104.148231,29.984775",
+    taskId: null,
+    taskName: "",
+    CreationTime: "09:11:16"
+}]
 apiready = function() {
 
     // 初始化地图
@@ -9,6 +30,7 @@ apiready = function() {
         mapid: 'maphome'
     });
     indexMap.initArea();
+    indexMap.initDeviceLayer()
 
     // 实现沉浸式状态栏效果
     var header = $api.byId('header');
@@ -51,12 +73,23 @@ apiready = function() {
 }
 // pc调试使用
 // 初始化地图
-// indexMap = new Map({
-//     mapid: 'maphome'
-// });
-// indexMap.initArea();
-// drawAreaList();
-// setCurrentMapLocation();
+indexMap = new Map({
+    mapid: 'maphome'
+});
+indexMap.initArea();
+drawAreaList();
+indexMap.initLineOrbit()
+for(var i = 0; i<userRoute.length; i++) {
+    var coordinates = [];
+    for( var i = 0; i < userRoute.length; i++) {
+        var point = userRoute[i].Location.split(',')
+        coordinates.push([Number(point[0]), Number(point[1])])
+    }
+    console.log(coordinates)
+    indexMap.drawOribitRoute(coordinates)
+
+}
+// // setCurrentMapLocation();
 // indexMap.initDeviceLayer()
 // // 点击定位图标将员工的位置定位到屏幕中间
 // $(".map-location-div").on('click', function() {

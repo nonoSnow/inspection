@@ -141,16 +141,16 @@
         initDeviceLayer: function(name) {
             var layername = name ? name + 'PointLayer' : 'selectPointLayer'
             var sourcename = name ? name + 'PointSource' : 'selectPointSource'
-            let selectPointStyle = new window.ol.style.Style({
+            var selectPointStyle = new window.ol.style.Style({
                 fill: new window.ol.style.Fill({
-                    color: 'rgba(196, 211, 231, 0.5)'
+                    color: 'rgba(250, 175, 25, 0.6)'
                 }),
                 stroke: new window.ol.style.Stroke({
-                    color: 'rgba(252, 7, 7, 1)',
-                    width: 3
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    width: 1
                 })
             })
-            let selectPointSource = new window.ol.source.Vector({});
+            var selectPointSource = new window.ol.source.Vector({});
             this[sourcename] = selectPointSource;
             var selectPointLayer = new window.ol.layer.Vector({
                 source: selectPointSource,
@@ -163,16 +163,16 @@
             var linelayer = name ? name + 'LineLayer' : 'selectLineLayer'
             var linesource = name ? name + 'LineSource' : 'selectLineSource'
 
-            let selectLineStyle = new window.ol.style.Style({
+            var selectLineStyle = new window.ol.style.Style({
                 fill: new window.ol.style.Fill({
-                    color: 'rgba(252, 7, 7, 0.5)'
+                    color: 'rgba(54, 217, 217, 1)'
                 }),
                 stroke: new window.ol.style.Stroke({
-                    color: 'rgba(48, 99, 181, 0.5)',
+                    color: 'rgba(54, 217, 217, 1)',
                     width: 4
                 }),
             })
-            let selectLineSource = new window.ol.source.Vector({});
+            var selectLineSource = new window.ol.source.Vector({});
             this[linesource] = selectLineSource;
 
             var selectLineLayer = new window.ol.layer.Vector({
@@ -182,6 +182,134 @@
             });
             this[linelayer] = selectLineLayer;
             this.map.addLayer(selectLineLayer);
+        },
+
+        // 初始化人员轨迹图层
+        initLineOrbit: function(name) {
+            var _this = this;
+            var layername = name ? name + 'OrbitLayer' : 'lineOrbitLayer'
+            var sourcename = name ? name + 'OrbitSource' : 'lineOrbitSource'
+
+            let orbitSource = new window.ol.source.Vector({});
+            this[sourcename] = orbitSource;
+            var orbitLayer = new window.ol.layer.Vector({
+                source: orbitSource,
+                updateWhileInteracting: true,
+                style: _this.orbitStyle
+            });
+            this[layername] = orbitLayer;
+            this.map.addLayer(orbitLayer);
+        },
+        /*
+            feature: 地图上的要素对象，既有属性，也有坐标图形。
+            res：当前地图分辨率参数。
+        */
+        orbitStyle: function(feature, res) {
+            var geometry = feature.getGeometry();
+            var length = geometry.getLength();
+            var stpes=40;
+            var geo_steps=stpes*res;
+            console.log(length)
+            console.log(geometry)
+            console.log(res)
+            var arrowsNum=parseInt(length/geo_steps);
+            var styles = [
+              // linestring
+              new ol.style.Style({
+                  stroke: new window.ol.style.Stroke({
+                      color: 'rgba(29, 191, 124, 1)',
+                      width: 6
+                  }),
+              })
+            ];
+            var tree = new RBush();
+            geometry.forEachSegment(function(start, end) {
+                var dx = end[0] - start[0];
+                var dy = end[1] - start[1];
+                //计算每个segment的方向，即箭头旋转方向
+                var rotation = Math.atan2(dy, dx);
+                var geom=new ol.geom.LineString([start,end]);
+                var extent=geom.getExtent();
+                var item = {
+                  minX: extent[0],
+                  minY: extent[1],
+                  maxX: extent[2],
+                  maxY: extent[3],
+                  geom: geom,
+                  rotation:rotation
+                };
+                tree.insert(item);
+            });
+            for(var i = 1; i < arrowsNum; i++ ){
+                var arraw_coor = geometry.getCoordinateAt( i * 1.0 / arrowsNum );
+                var tol=10;//查询设置的点的容差，测试地图单位是米。如果是4326坐标系单位为度的话，改成0.0001.
+                var arraw_coor_buffer = [arraw_coor[0]-tol, arraw_coor[1]-tol, arraw_coor[0]+tol, arraw_coor[1]+tol];
+                //进行btree查询
+                var treeSearch = tree.search({
+                    minX: arraw_coor_buffer[0],
+                    minY: arraw_coor_buffer[1],
+                    maxX: arraw_coor_buffer[2],
+                    maxY: arraw_coor_buffer[3]
+                });
+                var arrow_rotation;
+                //只查询一个，那么肯定是它了，直接返回
+                if(treeSearch.length == 1 )
+                    arrow_rotation = treeSearch[0].rotation;
+                else if(treeSearch.length > 1){
+                    var results = treeSearch.filter(function(item){
+                      //箭头点与segment相交，返回结果。该方法实测不是很准，可能是计算中间结果
+                      //保存到小数精度导致查询有点问题
+                      // if(item.geom.intersectsCoordinate(arraw_coor))
+                      //   return true;
+
+                      //换一种方案，设置一个稍小的容差，消除精度问题
+                        var _tol=1;//消除精度误差的容差
+                        if(item.geom.intersectsExtent([arraw_coor[0]-_tol,arraw_coor[1]-_tol,arraw_coor[0]+_tol,arraw_coor[1]+_tol]))
+                            return true;
+                    })
+                    if(results.length > 0)
+                        arrow_rotation=results[0].rotation;
+                }
+                console.log(arrow_rotation)
+                styles.push(new ol.style.Style({
+                    geometry: new ol.geom.Point(arraw_coor),
+                    image: new ol.style.Icon({
+                      src: '../../image/icon-arrow3.png',
+                    //   anchor: [0.75, 0.5],
+                      rotateWithView: true,
+                      rotation: arrow_rotation
+                    })
+                }));
+            }
+            // console.log(tree)
+            // geometry.forEachSegment(function(start, end) {
+            //    var dx = end[0] - start[0];
+            //    var dy = end[1] - start[1];
+            //    var rotation = Math.atan2(dy, dx);
+            //    // arrows
+            //    styles.push(new ol.style.Style({
+            //         geometry: new ol.geom.Point(end),
+            //         image: new ol.style.Icon({
+            //           src: '../../image/icon-arrow2.png',
+            //           anchor: [0.75, 0.5],
+            //           rotateWithView: true,
+            //           rotation: rotation
+            //         })
+            //     }));
+            // });
+            // switch (true) {
+            //     case true:
+            //         return new window.ol.style.Style({
+            //             fill: new window.ol.style.Fill({
+            //                 color: 'rgba(29, 191, 124, 1)'
+            //             }),
+            //             stroke: new window.ol.style.Stroke({
+            //                 color: 'rgba(29, 191, 124, 1)',
+            //                 width: 6
+            //             }),
+            //         })
+            // }
+            return styles;
         },
 
         // 开启地图点击事件 选中区域 并执行其他操作
@@ -286,62 +414,63 @@
         // 根据区域 获取 区域内的管点管线  并选中管点管线
         // 根据区域得出与区域相交的元素
         getCommonEle: function(deviceInfo, name) {
-
             var selectFeature = this.selectFeature;
             var polygon = selectFeature.getGeometry();
-            let _this = this;
+            var _this = this;
             // 获取选中的图层边界点
             var areaExtent = deviceInfo.areaPoint.split(';').join(' ');
             areaExtent = areaExtent.substring(0, areaExtent.length - 1);
-
+            console.log(areaExtent)
             this.getDeviceList({
-                data: areaExtent,
-                success: function(res) {
-                    this.getLineListInArea(res.line, deviceInfo.lineList, name)
-                    this.getPointListInArea(res.point, deviceInfo.pointList, name)
+                data: {
+                    coords: areaExtent
+                },
+                success: function(ret) {
+                    _this.getLineListInArea(ret.result.line, deviceInfo.lineList, name)
+                    _this.getPointListInArea(ret.result.point, deviceInfo.pointList, name)
                 }
             })
         },
         getDeviceList: function(options) {
-            var data = options.data;
-            var options = Object.assign({}, options, {
-                url: gisUrl + 'SearchPipe/GetPipeByExtent' + "?coords=" + options.data,
+            reqOptions = Object.assign({}, options, {
+                url: gisUrl + 'SearchPipe/GetPipeByExtent',
                 type: 'get',
                 timeout: 30,
+                data: options.data,
                 error: function(err) {
                     if(options.fail) options.fail(err);
                 },
-                success: function(res) {
-                    options.success(res);
+                success: function(ret) {
+                    options.success(ret);
                 }
             })
-            ajaxMethod(options);
+            ajaxMethod(reqOptions);
         },
         // 根据数据返回的管线 判断是否在传入的区域内 并绘制在区域内的管线
         getLineListInArea: function(allLineList, checkedLine, name) {
             var lineList = [];
-            for(let i = 0; i < checkedLine.length; i++) {
-                for(let j = 0; j < allLineList.length; j++) {
+            for(var i = 0; i < checkedLine.length; i++) {
+                for(var j = 0; j < allLineList.length; j++) {
                     if(checkedLine[i].deviceCode ==allLineList[j].lineNumber) {
-                        var flats = allLineList[j].geom.match(/LINESTRING\((.*)\)/)[2].split(' ');
+                        var flats = allLineList[j].geom.match(/LINESTRING\((.*)\)/)[1].split(',');
                         var coordinates = []
-                        for(var i = 0; i < flats.length; i++) {
-                            coordinates.push(flats.split(','))
+                        for(var k = 0; k < flats.length; k++) {
+                            coordinates.push(flats[k].split(' '))
                         }
-                        let x = (coordinates[0][0] + coordinates[1][0]) / 2;
-                        let y = (coordinates[0][1] + coordinates[1][1]) / 2;
+                        let x = (Number(coordinates[0][0]) + Number(coordinates[1][0])) / 2;
+                        let y = (Number(coordinates[0][1]) + Number(coordinates[1][1])) / 2;
                         lineList.push({
                             deviceCode: allLineList[j].lineNumber,
                             deviceName: allLineList[j].material,
                             devicePoint: x + ',' + y,
-                            address: allLineList[j].properties.location,
+                            address: allLineList[j].location,
                             deviceLoaction: coordinates,
                         });
                         break;
                     }
                 }
             }
-            console.log(lineList)
+            console.log(JSON.stringify(lineList))
             this.drawLineSelect(lineList, name);
         },
 
@@ -351,18 +480,19 @@
             for(let i = 0; i < checkedPoint.length; i++) {
                 for(let j = 0; j < allPointList.length; j++) {
                     if(checkedPoint[i].deviceCode ==allPointList[j].pointNumbe) {
-                        var coordinates = allLineList[j].geom.match(/POINT\((.*)\)/)[2];
+                        var coordinates = allPointList[j].geom.match(/POINT\((.*)\)/)[1];
                         pointList.push({
-                            deviceCode: allPointList[j].properties.pointNumbe,
-                            deviceName: allPointList[j].properties.pointName,
-                            devicePoint: coordinates,
-                            address: allPointList[j].properties.location,
-                            deviceLoaction: coordinates.split(',')
+                            deviceCode: allPointList[j].pointNumbe,
+                            deviceName: allPointList[j].pointName,
+                            devicePoint: coordinates.split(' ').join(','),
+                            address: allPointList[j].location,
+                            deviceLoaction: coordinates.split(' ')
                         });
                         break;
                     }
                 }
             }
+            console.log(pointList)
             this.drawPointSelect(pointList, name);
         },
         // 选中管线
@@ -380,11 +510,34 @@
         drawPointSelect: function(selectPointList, name) {
             var pointsource = name ? name + 'PointSource' : 'selectPointSource'
             for(let i = 0; i< selectPointList.length; i++) {
+                console.log(selectPointList[i].deviceLoaction)
                 let pointFeatype = new window.ol.Feature({
-                    geometry: new window.ol.geom.Circle(selectPointList[i].deviceLoaction, 0.00005)
+                    geometry: new window.ol.geom.Circle([Number(selectPointList[i].deviceLoaction[0]), Number(selectPointList[i].deviceLoaction[1])], 0.00005)
                 })
                 this[pointsource].addFeature(pointFeatype);
             }
+        },
+
+        // 根据多点绘制路径
+        drawOribitRoute: function(pointList, name) {
+            var sourcename = name ? name + 'OrbitSource' : 'lineOrbitSource'
+            var feature = new ol.Feature({
+                geometry: new ol.geom.LineString(pointList)
+            })
+            console.log(feature)
+
+            this[sourcename].addFeature(feature);
+
+            // var coordinates = []
+            // for(var i = 0; i< pointList.length; i++) {
+            //     pointList
+            // }
+            // var coordinates = [];
+            // for( var i = 0; i < pointList.length; i++) {
+            //     var point = pointList[i].Location.split(',')
+            //     coordinates.push([Number(point[0]), Number(point[1])])
+            // }
+            // console.log(coordinates)
         },
 
         // 改变地图的缩放  isScale 表示放大还是缩小  0表示缩小  1表示放大
