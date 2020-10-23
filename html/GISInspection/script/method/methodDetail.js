@@ -10,12 +10,12 @@ apiready = function() {
 // 获取事件详情
 function showDetailsData(id){
   var data = {
-    Id: id
+    id: id
   }
   getEventDetail("api/services/Inspection/EventService/GetEventDetails",data,showRet,showErr);
   function showRet(ret){
-    // console.log(JSON.stringify(ret));
-    alert(JSON.stringify(ret))
+    console.log(JSON.stringify(ret));
+    // alert(JSON.stringify(ret))
     $('#detailList').html('');
     var data = {
       list: {}
