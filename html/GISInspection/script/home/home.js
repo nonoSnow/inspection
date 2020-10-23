@@ -2,6 +2,27 @@
 // 工单及任务总列表   工单列表    任务列表
 var taskOrderList = [], orderList = [], taskList = [], resultIndex = 0;
 var indexMap = {}, memberStatus = 0, activeDevice = '';
+var userRoute = [{
+    Location: "104.144765,30.01259",
+    taskId: null,
+    taskName: "",
+    CreationTime: "08:21:13"
+}, {
+    Location: "104.134716,30.014519",
+    taskId: null,
+    taskName: "",
+    CreationTime: "09:05:10"
+}, {
+    Location: "104.148385,29.984948",
+    taskId: null,
+    taskName: "",
+    CreationTime: "09:10:28"
+}, {
+    Location: "104.148231,29.984775",
+    taskId: null,
+    taskName: "",
+    CreationTime: "09:11:16"
+}]
 apiready = function() {
 
     // 初始化地图
@@ -9,7 +30,18 @@ apiready = function() {
         mapid: 'maphome'
     });
     indexMap.initArea();
+    indexMap.initDeviceLayer()
+    indexMap.initLineOrbit()
+    for(var i = 0; i<userRoute.length; i++) {
+        var coordinates = [];
+        for( var i = 0; i < userRoute.length; i++) {
+            var point = userRoute[i].Location.split(',')
+            coordinates.push([Number(point[0]), Number(point[1])])
+        }
+        console.log(coordinates)
+        indexMap.drawOribitRoute(coordinates)
 
+    }
     // 实现沉浸式状态栏效果
     var header = $api.byId('header');
     $api.fixStatusBar(header);
@@ -49,14 +81,34 @@ apiready = function() {
     getHomeOrderList();
     drawAreaList()
 }
+// pc调试使用
 // 初始化地图
-indexMap = new Map({
-    mapid: 'maphome'
-});
-indexMap.initArea();
-drawAreaList();
-// setCurrentMapLocation();
-indexMap.initDeviceLayer()
+// indexMap = new Map({
+//     mapid: 'maphome'
+// });
+// indexMap.initArea();
+// drawAreaList();
+// indexMap.initLineOrbit()
+// for(var i = 0; i<userRoute.length; i++) {
+//     var coordinates = [];
+//     for( var i = 0; i < userRoute.length; i++) {
+//         var point = userRoute[i].Location.split(',')
+//         coordinates.push([Number(point[0]), Number(point[1])])
+//     }
+//     console.log(coordinates)
+//     indexMap.drawOribitRoute(coordinates)
+//
+// }
+// // setCurrentMapLocation();
+// indexMap.initDeviceLayer()
+// // 点击定位图标将员工的位置定位到屏幕中间
+// $(".map-location-div").on('click', function() {
+//     // getMemberLocation(function(location) {
+//         console.log(111)
+//         indexMap.map.getView().setCenter([106.54258025120019,29.561620073599133]);
+//         // indexMap['memberlay']['0'].setPosition([106.54258025120019,29.561620073599133]);
+//     // });
+// })
 
 $(".home-device").on('click', function() {
     var feature = indexMap.selectFeature;
@@ -116,16 +168,18 @@ $(".home-device").on('click', function() {
 */
 function setCurrentMapLocation() {
     getMemberLocation(function(location) {
-        console.log(location)
+        var location = [106.54258025120019,29.561620073599133];
+        location = [parseFloat(location[0]), parseFloat(location[1])]
+        var position = [];
+        position.push(location);
         $(".map-member-img").css({opacity: 1})
         indexMap.addOverLayer({
             dom: '#map-member-img',
-            // position: [location],
-            position: [location],
+            position: position,
             offset: [38.5, -43.5],
-            isCenter: true,
+            // isCenter: true,
             name: 'memberlay',
-            centerPosition: location
+            // centerPosition: location
         })
     });
 }
@@ -139,7 +193,6 @@ function setOnlineStatus(status) {
             IsOnline: status ? false : true
         },
         success: function(ret) {
-            console.log(JSON.stringify(ret))
             memberStatus = status ? 0 : 1;
             $api.setStorage('isOnline', memberStatus);
             if(memberStatus) {

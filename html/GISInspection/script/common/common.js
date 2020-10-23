@@ -15,7 +15,7 @@ function getMemberLocation(callback) {
                 var location = bd09towgs84(ret.lon, ret.lat);
                 callback(location)
             } else {
-                alert(err.code);
+                alert(JSON.stringify(err));
             }
         })
     })
