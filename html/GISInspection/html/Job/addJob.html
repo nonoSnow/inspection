@@ -8,8 +8,8 @@
     <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
     <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
 
-    <link rel="stylesheet" type="text/css" href="../../css/public.css">
     <link rel="stylesheet" type="text/css" href="../../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../../css/public.css">
   </head>
   <body>
     <div class="flex-wrap flex-vertical height100">
@@ -35,7 +35,8 @@
             </div>
             <div class="color-666 margin-top12"><span class="required"></span>预计完成时间</div>
             <div class="item-input margin-top6 relative" >
-              <input type="text" placeholder="请选择时间" readonly>
+              <!-- <input type="text" placeholder="请选择时间" readonly> -->
+              <input readonly class="form-control" type="text" id="date-group1-3" placeholder="请选择时间">
               <span class="aui-iconfont aui-icon-calendar font-S9"></span>
             </div>
           </li>
@@ -79,12 +80,12 @@
         请选择工单类型
       </div>
       <ul class="aui-content-padded color-333 margin-bot0 margin-top0 custom-popup-list">
-        <li class="custom-popup-item">查漏</li>
-        <li class="custom-popup-item">查漏延伸</li>
-        <li class="custom-popup-item">维修管道</li>
-        <li class="custom-popup-item">维修管道延伸</li>
-        <li class="custom-popup-item">违章罚款</li>
-        <li class="custom-popup-item border-none">贫水区改造</li>
+        <li class="custom-popup-item" value="1">查漏</li>
+        <li class="custom-popup-item" value="2">查漏延伸</li>
+        <li class="custom-popup-item" value="3">维修管道</li>
+        <li class="custom-popup-item" value="4">维修管道延伸</li>
+        <li class="custom-popup-item" value="5">违章罚款</li>
+        <li class="custom-popup-item border-none" value="6">贫水区改造</li>
       </ul>
       <div class="custom-popup-interval"></div>
       <div class="custom-popup-item border-none color-666" tapmode onclick="onHidePopup()">
@@ -98,6 +99,7 @@
   <script type="text/javascript" src="../../../public/script/zepto.js"></script>
   <script type="text/javascript" src="../../../public/script/aui-popup.js"></script>
 
-  <script type="text/javascript" src="../../script/public.js"></script>
+  <script type="text/javascript" src="../../script/date/rolldate.min.js"></script>
   <script type="text/javascript" src="../../script/job/addJob.js"></script>
+  <script type="text/javascript" src="../../script/public.js"></script>
 </html>
