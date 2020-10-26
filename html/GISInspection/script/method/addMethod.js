@@ -14,7 +14,7 @@ apiready = function() {
       });
     });
     // 点击选择异常类型
-    $(".abnormal-type-list .flex1").each(function() {
+    $(".abnormal-type-list label").each(function() {
       $(this).click(function() {
           // alert($(this).text())
           $('#abnormalType').val($(this).text());
@@ -24,6 +24,10 @@ apiready = function() {
     onSubmit();
 }
 var popup = new auiPopup();
+
+// function saveCheck (){
+//   onHideAbnormalTypPopup();
+// }
 // 关闭事件类型弹窗
 function onHidePopup(){
     popup.hide(document.getElementById("methodTypePop"));
