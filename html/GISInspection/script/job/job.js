@@ -41,6 +41,11 @@ function showData(data,status){
     }else {
       alert("加载失败")
     }
+    // if(err.body){
+    //   alert(err.msg);
+    // }else {
+    //   alert("加载失败");
+    // }
   }
 }
 // 初始化进行中的工单列表

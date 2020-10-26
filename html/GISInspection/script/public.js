@@ -85,3 +85,72 @@ function onShowList(element, minH, maxH, mapListStatus, bodyHeight,callback) {
    },false);
 
  }
+
+/**
+* 获取照片
+* @param {type} 类型（相册或者拍照）
+**/
+function getPicture(type, showRet, showErr) {
+  api.getPicture({
+    sourceType: type,
+    encodingType: 'jpg',
+    mediaValue: 'pic',
+    destinationType: 'url',
+    allowEdit: true,
+    quality: 60,
+    targetWidth: 750,
+    targetHeight: 750,
+    saveToPhotoAlbum: false
+  }, function(ret, err) {
+      if (ret) {
+          uploadPic(ret.data, success, error);
+          function success(ret) {
+            showRet(ret);
+          }
+
+          function error(err) {
+            showErr(err)
+          }
+      } else {
+          alert(JSON.stringify(err));
+          showErr(err);
+      }
+  });
+}
+
+/**
+* 上传图片
+* @param {path} 图片路径，单图片上传
+**/
+function uploadPic(path, success, error) {
+  console.log(path);
+  var data = {
+    files: path
+  }
+  upLoadPicture('api/UploadFiles/UploadProfilePicture', data, showRet, showErr);
+
+  function showRet(ret) {
+    if (ret.success) {
+      success(ret.result.items);
+    }
+  }
+
+  function showErr(err) {
+    error(err);
+  }
+}
+
+/**
+* 删除数组中指定的元素
+* @param {data} 数组
+* @param {startIndex} 开始下标
+* @param {length} 删除长度
+**/
+function deleteArray(data, startIndex, length) {
+  var len = length || 1;
+  console.log(len);
+  console.log(JSON.stringify(data));
+  console.log(startIndex);
+  data.splice(startIndex, len);
+  return data;
+}

@@ -880,3 +880,43 @@ body {
 .transfer-text {
   vertical-align: top;
 }
+
+/*拍照后显示列表*/
+.img-list {
+  width: 100%;
+  height: auto;
+  display: inline-table;
+}
+
+.top06 {
+  top: 0.6rem;
+}
+
+.top21 {
+  top: 2.1rem;
+}
+
+.left15 {
+  left: 33%;
+}
+
+.left0 {
+  left: 0;
+}
+
+.camera-img {
+  width: 100%;
+}
+
+.overflow {
+  overflow: hidden;
+}
+
+.del-icon {
+  width: 0.7rem;
+  height: 0.7rem;
+  right: -0.25rem;
+  top: -0.25rem;
+  background: red;
+  color: green;
+}

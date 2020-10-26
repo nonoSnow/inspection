@@ -29,8 +29,8 @@
         <p style='height: 1rem; line-height: 1rem;'>设备信息</p>
       </div>
       <div class='flex-con flex-content map-list'>
-        <ul class="aui-content-padded margin-075">
-          <li class="padding75 bgc-f3 border-radius4">
+        <ul id="inspectDetailBox" class="aui-content-padded margin-075">
+          <!-- <li class="padding75 bgc-f3 border-radius4">
             <div class='list-item-cont'>
               信息：阀门
               <div class='item-btn warning'>
@@ -41,7 +41,7 @@
             <div class="list-item-cont margin-top3">坐标：116.557771,39.972465</div>
             <div class="list-item-cont margin-top3 inspector">巡检人：李四</div>
             <div class="list-item-cont margin-top3 completion-time">地址：南京市溧水区交通路阳光小区98号</div>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
@@ -67,7 +67,32 @@
   <script type="text/javascript" src="../../../public/script/common.js"></script>
   <script type="text/javascript" src="../../../public/script/remote.js"></script>
   <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+  <script type="text/javascript" src="../../../public/script/template.js"></script>
 
   <script type="text/javascript" src="../../script/public.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
+  <script type="text/javascript" src="../../ajax/taskAjax.js"></script>
   <script type="text/javascript" src="../../script/equipmentMapInfo.js"></script>
+  <script type="text/template" id='inspectDetail'>
+    <!-- 设备信息 -->
+    <li class="padding75 bgc-f3 border-radius4">
+      <div class='list-item-cont'>
+        信息：{{name}}
+        {{if inspectionStatus == 1}}
+        <div class='item-btn warning'>
+          待巡检
+        </div>
+        {{else if inspectionStatus == 2}}
+        <div class='item-btn warning'>
+          已巡检
+        </div>
+        {{/if}}
+      </div>
+      <div class="list-item-cont margin-top3">编号：{{code}}</div>
+      <div class="list-item-cont margin-top3">坐标：{{point}}</div>
+      <div class="list-item-cont margin-top3 inspector">巡检人：{{person}}</div>
+      <div class="list-item-cont margin-top3 completion-time">地址：{{address}}</div>
+    </li>
+  </script>
 </html>
