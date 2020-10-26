@@ -1,6 +1,7 @@
 var headList; // 负责人信息
 var jobType; // 工单类型
 var source=2; // 来源：1：PC端；2：APP；3：第三方（管网）
+var imgList = []; //图片列表
 apiready = function() {
         var header = $api.byId('header');
         // 实现沉浸式状态栏效果
@@ -25,6 +26,9 @@ apiready = function() {
             headList = JSON.parse(ret.value.checkHeadObj);
             $('#person').val(headList.name);
         });
+
+        // 初始化图片列表
+        showImg(imgList);
     }
     // 初始化日期
 var rd = new Rolldate({
@@ -112,7 +116,7 @@ function subJob(){
     return false;
   }
   // 判断巡检区域是否填写
-  // 判断附件是否存在
+  console.log(JSON.stringify(imgList));
   var data = {
     content:$("#content").val(),  //工单内容
     type:jobType,     //工单类型（1：查漏；2：查漏延伸；3：维修管道；4：维修管道延伸；5：违章罚款；6：贫水区改造）
@@ -123,6 +127,7 @@ function subJob(){
     planCompleteTime:$("#planCompleteTime").val()+":00:00",   //预计完成时间
     areaId:1,                      //区域（路线）ID
     source:source,                //来源：1：PC端；2：APP；3：第三方（管网）
+    resourceInfoList:imgList
     // resourceInfoList:{
     //   resourceId:,    //附件Id
     //   url:,           //附件地址
@@ -143,7 +148,7 @@ function uploadData(data){
       title: '提交中...',
       modal: false
   });
-  addJobData("api/services/Inspection/WorkOrderService/InsertWorkOrder",data,showRet,showErr);
+  jobPostMethod("api/services/Inspection/WorkOrderService/InsertWorkOrder",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
     console.log(JSON.stringify(ret));
@@ -184,6 +189,77 @@ function clearData(){
   $('#jobType').val("");
   jobType="";
   headList={};
-  $("#person").val("")
-  $("#planCompleteTime").val("")
+  $("#person").val("");
+  $("#planCompleteTime").val("");
+  imgList=[];
+  showImg(imgList);
+}
+
+// 上传附件 图片
+// 点击拍照div弹出底部选择框，选择相册或者拍照
+function action() {
+  api.actionSheet({
+      buttons: ['拍照', '相册选择']
+  }, function(ret, err) {
+    console.log(JSON.stringify(ret));
+    console.log(JSON.stringify(err));
+    if (ret.buttonIndex == 1) {
+      // 选择了拍照
+      var type = 'camera';
+      getPicture(type, showRet, showErr);
+
+      function showRet(ret) {
+        console.log(JSON.stringify(ret));
+        if(ret.length>0){
+          imgList.push(ret[0]);
+          showImg(imgList);
+        }
+      }
+
+      function showErr(err) {
+        console.log(JSON.stringify(err));
+      }
+    } else if (ret.buttonIndex == 2) {
+      // 选择了从相册选择
+      var type = 'album';
+      getPicture(type, showRet, showErr);
+
+      function showRet(ret) {
+        // console.log(JSON.stringify(ret));
+
+        if(ret.length>0){
+          imgList.push(ret[0]);
+          // console.log(JSON.stringify(imgList));
+          showImg(imgList);
+        }
+      }
+
+      function showErr(err) {
+        console.log(JSON.stringify(err));
+      }
+    }
+  })
+}
+// 显示图片
+function showImg(data) {
+  console.log(JSON.stringify(data));
+  var param = {
+    list: data,
+    url: baseUrl
+  }
+  $('#imgBox').html('');
+  var str = template('imgData', param);
+  console.log(str);
+  $('#imgBox').append(str);
+  // $('#imgBox').prepend(str);
+}
+// 删除图片
+function deleteImg(that) {
+  if (that != null) {
+    var imgIndex = $(that).attr('parse');
+    console.log(imgIndex);
+    imgList = deleteArray(imgList, imgIndex);
+    console.log(JSON.stringify(imgList));
+    showImg(imgList);
+  }
 }
