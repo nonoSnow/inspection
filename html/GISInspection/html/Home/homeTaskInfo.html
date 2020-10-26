@@ -43,8 +43,60 @@
       </div>
 
       <div class='flex-con flex-content height100 bgc-f3 margin-bot250'>
-        <ul class="aui-content-padded task-info line-height1 font-S75 color-333 aui-hide">
-          <li class="padding75 bgc-ff border-radius4">
+        <ul id="taskDetail" class="aui-content-padded task-info line-height1 font-S75 color-333">
+          <!-- <li class="padding75 bgc-ff border-radius4">
+            <div class="display-flex">
+              <div class='inline-block info-list-title'>任务名称：</div>
+              <div class='inline-block text-right info-list-cont'>{{taskDetail.name}}</div>
+            </div>
+            <div class="display-flex margin-top145">
+              <div class='inline-block info-list-title'>任务类别：</div>
+              <div class='inline-block text-right info-list-cont'>{{taskDetail.typeStr}}</div>
+            </div>
+            <div class="display-flex margin-top145">
+              <div class='inline-block info-list-title'>任务状态：</div>
+              <div class='inline-block text-right info-list-cont'>
+                <span class='inline-block task-status-circular bgc-gre'></span>
+                {{taskDetail.statusStr}}
+              </div>
+            </div>
+            <div class="display-flex margin-top145">
+              <div class='inline-block info-list-title'>巡检片区：</div>
+              <div class='inline-block text-right info-list-cont'>{{taskDetail.areaName}}</div>
+            </div>
+          </li>
+          <li class="padding75 bgc-ff border-radius4 margin-top75">
+            <div class="display-flex">
+              <div class='inline-block info-list-title'>任务负责人：</div>
+              <div class='inline-block text-right info-list-cont'>{{taskDetail.person}}</div>
+            </div>
+            <div class="display-flex margin-top145">
+              <div class='inline-block info-list-title'>任务参与人：</div>
+              <div class='inline-block text-right info-list-cont'>{{taskDetail.participant}}</div>
+            </div>
+            <div class="display-flex margin-top145">
+              <div class='inline-block info-list-title'>预计开始时间：</div>
+              <div class='inline-block text-right info-list-cont'>{{planStartTime}}</div>
+            </div>
+            <div class="display-flex margin-top145">
+              <div class='inline-block info-list-title'>预计结束时间：</div>
+              <div class='inline-block text-right info-list-cont'>{{planEndTime}}</div>
+            </div>
+            <div class="display-flex margin-top145">
+              <div class='inline-block info-list-title'>总计时长：</div>
+              <div class='inline-block text-right info-list-cont'>{{taskDetail.pauseTime}}</div>
+            </div>
+            <div class="display-flex margin-top145">
+              <div class='inline-block info-list-title'>实际结束时间：</div>
+              <div class='inline-block text-right info-list-cont'>暂无</div>
+            </div>
+          </li>
+          <li class="padding75 bgc-ff border-radius4 margin-top75">
+            <div class='inline-block info-list-title'>任务备注：</div>
+            <div class="line margin-top6 margin-bot6"></div>
+            <div class="line-height15">{{taskDetail.remark}}</div>
+          </li> -->
+          <!-- <li class="padding75 bgc-ff border-radius4">
             <div class="display-flex">
               <div class='inline-block info-list-title'>任务名称：</div>
               <div class='inline-block text-right info-list-cont'>阳光小区巡检计划</div>
@@ -95,16 +147,16 @@
             <div class='inline-block info-list-title'>任务备注：</div>
             <div class="line margin-top6 margin-bot6"></div>
             <div class="line-height15">任务备注任务备注任务备注任务备注任务备注任务备注任务备注任务备注任务备注任务备注任务备注任务备注任务备注任务备注任务备注任务备注任务备注</div>
-          </li>
+          </li> -->
 
-          <li class="padding75 bgc-ff border-radius4 margin-top75">
+          <!-- <li class="padding75 bgc-ff border-radius4 margin-top75"> -->
             <!-- 测试代码   后期删除更改为图片 -->
-            <div style='width: 100%; height: 6rem; text-align: center; line-height: 6rem; background-color: #CCC;'>地图图片</div>
-          </li>
+            <!-- <div style='width: 100%; height: 6rem; text-align: center; line-height: 6rem; background-color: #CCC;'>地图图片</div>
+          </li> -->
         </ul>
 
 
-        <ul class="aui-content-padded task-list line-height1 font-S75 color-333 aui-hide">
+        <!-- <ul class="aui-content-padded task-list line-height1 font-S75 color-333 aui-hide">
           <li class="padding75 bgc-ff border-radius4" tapmode onclick="onOpenEquipment()">
             <div class='list-item-cont'>
               名称：阀门
@@ -129,17 +181,17 @@
             <div class="list-item-cont margin-top3 inspector">巡检人：李四</div>
             <div class="list-item-cont margin-top3 completion-time">完成时间：2020-08-01 12:09:05</div>
           </li>
-        </ul>
+        </ul> -->
       </div>
 
       <footer class="aui-bar aui-bar-tab display-flex footer">
         <div class="flex1">
-          <div class='footer-btn btn-border task-stop' tapmode onclick="onOpenTaskStop()">
+          <div class='footer-btn btn-border task-stop' tapmode onclick="clickFirst()">
             暂停
           </div>
         </div>
         <div class="flex1">
-          <div class='footer-btn bgc-blue color-fff task-complete'>
+          <div class='footer-btn bgc-blue color-fff task-complete' tapmode onclick="clickSecond()">
             完成
           </div>
         </div>
@@ -150,7 +202,108 @@
   <script type="text/javascript" src="../../../public/script/common.js"></script>
   <script type="text/javascript" src="../../../public/script/remote.js"></script>
   <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+  <script type="text/javascript" src="../../../public/script/template.js"></script>
 
   <script type="text/javascript" src="../../script/public.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
+  <script type="text/javascript" src="../../ajax/taskAjax.js"></script>
   <script type="text/javascript" src="../../script/homeTaskInfo.js"></script>
+  <script type="text/template" id='taskBasicInfo'>
+    <!-- 基础信息 -->
+    <li class="padding75 bgc-ff border-radius4">
+      <div class="display-flex">
+        <div class='inline-block info-list-title'>任务名称：</div>
+        <div class='inline-block text-right info-list-cont'>{{name}}</div>
+      </div>
+      <div class="display-flex margin-top145">
+        <div class='inline-block info-list-title'>任务类别：</div>
+        <div class='inline-block text-right info-list-cont'>{{typeStr}}</div>
+      </div>
+      <div class="display-flex margin-top145">
+        <div class='inline-block info-list-title'>任务状态：</div>
+        <div class='inline-block text-right info-list-cont'>
+          {{if status == 2}}
+          <span class='inline-block task-status-circular bgc-gre'></span>
+          {{else if status == 1}}
+          <span class='inline-block task-status-circular bgc-blue'></span>
+          {{else if status == 3}}
+          <span class='inline-block task-status-circular bgc-war'></span>
+          {{else if status == 5 || status == 6}}
+          <span class='inline-block task-status-circular bgc-5cd'></span>
+          {{/if}}
+          {{statusStr}}
+        </div>
+      </div>
+      <div class="display-flex margin-top145">
+        <div class='inline-block info-list-title'>巡检片区：</div>
+        <div class='inline-block text-right info-list-cont'>{{areaName}}</div>
+      </div>
+    </li>
+    <li class="padding75 bgc-ff border-radius4 margin-top75">
+      <div class="display-flex">
+        <div class='inline-block info-list-title'>任务负责人：</div>
+        <div class='inline-block text-right info-list-cont'>{{person}}</div>
+      </div>
+      <div class="display-flex margin-top145">
+        <div class='inline-block info-list-title'>任务参与人：</div>
+        <div class='inline-block text-right info-list-cont'>{{participant}}</div>
+      </div>
+      <div class="display-flex margin-top145">
+        <div class='inline-block info-list-title'>预计开始时间：</div>
+        <div class='inline-block text-right info-list-cont'>{{planStartTime}}</div>
+      </div>
+      <div class="display-flex margin-top145">
+        <div class='inline-block info-list-title'>预计结束时间：</div>
+        <div class='inline-block text-right info-list-cont'>{{planEndTime}}</div>
+      </div>
+    </li>
+    <li class="padding75 bgc-ff border-radius4 margin-top75">
+      <div class='inline-block info-list-title'>任务备注：</div>
+      <div class="line margin-top6 margin-bot6"></div>
+      <div class="line-height15">{{remark}}</div>
+    </li>
+    <li class="padding75 bgc-ff border-radius4 margin-top75">
+      <!-- 测试代码   后期删除更改为图片 -->
+      <div style='width: 100%; height: 6rem; text-align: center; line-height: 6rem; background-color: #CCC;'>地图图片</div>
+    </li>
+  </script>
+
+  <script type="text/template" id='toBeInspected'>
+    <!-- 待巡点 -->
+    {{each list value i}}
+    <li class="padding75 bgc-ff border-radius4 margin-bot5" tapmode onclick="onOpenEquipment(this)" parse="{{value}}">
+      <div class='list-item-cont'>
+        名称：{{value.name}}
+      </div>
+      <div class="list-item-cont margin-top3">编号：{{value.code}}</div>
+      <div class="list-item-cont margin-top3">地址：{{value.address}}</div>
+    </li>
+    {{/each}}
+  </script>
+
+  <script type="text/template" id='inspected'>
+    <!-- 已巡点 -->
+    {{each list value i}}
+    <li class="padding75 bgc-ff border-radius4 margin-bot5" tapmode onclick="onOpenEquipment(this)" parse="{{value}}">
+      <div class='list-item-cont'>
+        名称：{{value.name}}
+        {{if status == 2}}
+        <div class='item-btn default'>
+          {{value.statusStr}}
+        </div>
+        {{else if status == 3}}
+        <div class='item-btn danger'>
+          {{value.statusStr}}
+        </div>
+        {{/if}}
+      </div>
+      <div class="list-item-cont margin-top3">编号：{{value.code}}</div>
+      <div class="list-item-cont margin-top3">地址：{{value.address}}</div>
+      <div class="list-item-cont margin-top3 inspector">巡检人：{{value.person}}</div>
+      <div class="list-item-cont margin-top3 completion-time">完成时间：{{value.time}}</div>
+    </li>
+    {{/each}}
+  </script>
+
 </html>

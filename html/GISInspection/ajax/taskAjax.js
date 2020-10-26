@@ -1,6 +1,7 @@
-// 我的工单
-// 获取我的工单接口数据
-function getJobDataSingle(path,data,showRet,showErr){
+// 我的任务
+
+// 获取我的任务接口数据
+function getTaskDataSingle(path,data,showRet,showErr){
   console.log(baseUrl+path);
   var options = {
     url:baseUrl+path,
@@ -16,13 +17,12 @@ function getJobDataSingle(path,data,showRet,showErr){
   }
   ajaxMethod(options)
 }
-// 获取领导工单接口数据
+
+// 获取领导任务接口数据
 function getJobDataAll(){}
 
-// 工单详情
-// 获取工单详情接口
-function getJobDeatil(path,data,showRet,showErr){
-  console.log(baseUrl+path);
+// 获取任务详情基础信息
+function getTaskBasicInfo(path,data,showRet,showErr) {
   var options = {
     url:baseUrl+path,
     data:data,
@@ -38,13 +38,10 @@ function getJobDeatil(path,data,showRet,showErr){
   ajaxMethod(options)
 }
 
-// 负责人
-// 请求接口获取人员列表
-function getUserList(path,data,showRet,showErr){
-  console.log(baseUrl+path);
+// 获取任务详情（巡检点列表）
+function getInspectDataList(path,data,showRet,showErr) {
   var options = {
     url:baseUrl+path,
-    type:"get",
     data:data,
     success:function(ret){
       // console.log(JSON.stringify(ret));
@@ -58,13 +55,28 @@ function getUserList(path,data,showRet,showErr){
   ajaxMethod(options)
 }
 
-// 新增工单
-// 上传新增的工单
-function addJobData(path,data,showRet,showErr){
-  console.log(baseUrl+path);
+// 获取巡检设备详情
+function getInspectDetails(path,data,showRet,showErr) {
   var options = {
     url:baseUrl+path,
     data:data,
+    success:function(ret){
+      // console.log(JSON.stringify(ret));
+      showRet(ret)
+    },
+    error:function(err){
+      // console.log(JSON.stringify(err));
+      showErr(err)
+    }
+  }
+  ajaxMethod(options)
+}
+
+// 任务状态变更
+function changeTaskStatus(path,data,showRet,showErr) {
+  var options = {
+    url: baseUrl+path,
+    data: data,
     success:function(ret){
       // console.log(JSON.stringify(ret));
       showRet(ret)

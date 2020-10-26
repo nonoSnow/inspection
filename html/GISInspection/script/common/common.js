@@ -172,3 +172,10 @@ function getLocationGPS(callback) {
     window.bd09towgs84 = bd09towgs84;
 
 })(window)
+
+/**
+* 每隔5分钟上传一次员工定位
+**/
+function upLocation() {
+  
+}

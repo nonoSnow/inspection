@@ -22,8 +22,8 @@
 
       <div class="flex-con flex-content height100 bgc-f3">
         <ul class="aui-content-padded line-height1 font-S75">
-          <li class="padding75 bgc-ff border-radius4 relative line-height1">
-            <div class="aui-list-item-inner block font-S9">
+          <li id="taskDetail" class="padding75 bgc-ff border-radius4 relative line-height1">
+            <!-- <div class="aui-list-item-inner block font-S9">
               <div class="display-flex relative">
                 <img src="../../image/task-icon.png" class='task-icon' alt="">
                 <span class="margin-left3 font-w4">阳光小区巡检计划</span>
@@ -35,26 +35,42 @@
               <div class="margin-top6 font-S75 color-666">
                 预计完成：2020-09-24 18:00
               </div>
-            </div>
+            </div> -->
           </li>
 
           <li class="padding75 bgc-ff border-radius4 margin-top75">
-            <div class="color-666">说明原因</div>
+            <div class="color-666"><span class="required"></span>说明原因</div>
             <div class="margin-top75 bgc-f3 border-radius2 padding75 height6">
-              <textarea name="name" class='width100 height100' placeholder="请填写巡检内容"></textarea>
+              <textarea id='suspendedResonBox' name="name" class='width100 height100' placeholder="请填写巡检内容"></textarea>
             </div>
             <div class="margin-top12 color-666">上传附件</div>
-            <div class="margin-top75 file-div">
+            <div id="imgBox" class="img-list">
+              <!-- <div class="margin-top75 file-div relative">
+
+              </div> -->
+              <!-- <div class="margin-top75 file-div relative">
+                <div class="absolute">x</div>
+              </div> -->
+              <!-- <div class="margin-top75 file-div relative" tapmode onclick="action()">
+                <div class="file-img absolute top06 left15">
+                  <img src="../../image/camera.png" class="camera-img" alt="">
+                </div>
+                <div class="absolute top21 text-cent file-text width100">
+                  上传照片
+                </div>
+              </div> -->
+            </div>
+            <!-- <div class="margin-top75 file-div">
               <img src="../../image/camera.png" class="margin-top75 margin-bot3 file-img" alt="">
               <span class="file-text">上传照片</span>
-            </div>
+            </div> -->
           </li>
         </ul>
       </div>
 
       <footer class="aui-bar aui-bar-tab display-flex footer">
         <div class="flex1">
-          <div class='footer-btn bgc-blue color-fff btn-disabled'>
+          <div class='footer-btn bgc-blue color-fff btn-disabled' tapmode onclick="submitReson()">
             提交原因
           </div>
         </div>
@@ -66,7 +82,50 @@
   <script type="text/javascript" src="../../../public/script/remote.js"></script>
   <script type="text/javascript" src="../../../public/script/zepto.js"></script>
   <script type="text/javascript" src="../../../public/script/aui-popup.js"></script>
+  <script type="text/javascript" src="../../../public/script/template.js"></script>
 
+  <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+    <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
+  <script type="text/javascript" src="../../ajax/publicAjax.js"></script>
   <script type="text/javascript" src="../../script/public.js"></script>
   <script type="text/javascript" src="../../script/taskStop.js"></script>
+  <script type="text/template" id='taskDetails'>
+    <!-- 基本信息 -->
+    <div class="aui-list-item-inner block font-S9">
+      <div class="display-flex relative">
+        <img src="../../image/task-icon.png" class='task-icon' alt="">
+        <span class="margin-left3 font-w4">{{name}}</span>
+        {{if OverdueTime != null && OverdueTime != ''}}
+        <div class="absolute top15 right0 task-item-overdue font-S6" style="">
+          超期 {{OverdueTime}}
+        </div>
+        {{/if}}
+      </div>
+      <div class="margin-top10 font-S75 color-666">实际开始：{{startTime}}</div>
+      <div class="margin-top6 font-S75 color-666">
+        预计完成：{{planEndTime}}
+      </div>
+    </div>
+  </script>
+  <script type="text/template" id='imgData'>
+    <!-- 图片列表 -->
+    <!-- <div class="margin-top75 file-div relative">
+      <img src="" class="width100 height100" alt="">
+      <div class="absolute top0 right0 del-icon">x</div>
+    </div> -->
+    {{each list value i}}
+    <div class="margin-top75 file-div relative">
+      <img src="{{url}}{{value.url}}" class="width100 height100" alt="">
+      <div class="absolute top0 right0 del-icon" tapmode onclick="deleteImg(this)" parse="{{i}}">x</div>
+    </div>
+    {{/each}}
+    <div class="margin-top75 file-div relative" tapmode onclick="action()">
+      <div class="file-img absolute top06 left15">
+        <img src="../../image/camera.png" class="camera-img" alt="">
+      </div>
+      <div class="absolute top21 text-cent file-text width100">
+        上传照片
+      </div>
+    </div>
+  </script>
 </html>
