@@ -39,7 +39,6 @@ function ajaxMethod(options) {
         if(urlStr)
             url += '?' + urlStr;
     }
-<<<<<<< HEAD
     // console.log(JSON.stringify({
     //     url: url,
     //     method: options.type || 'post',
@@ -49,7 +48,6 @@ function ajaxMethod(options) {
     //     data: data,
     //     timeout: options.timeout || 20
     // }))
-=======
     var requestOption = {
         url: url,
         method: options.type,
@@ -63,7 +61,6 @@ function ajaxMethod(options) {
     // if(options.type != 'get') {
     //     requestOption.data = data
     // }
->>>>>>> 24b8c638998a811324a2b6e880a61fb08e6f0c8b
     // 请求数据
     // console.log(headers)
     // $.ajax({
