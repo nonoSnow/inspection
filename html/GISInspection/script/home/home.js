@@ -2,6 +2,27 @@
 // 工单及任务总列表   工单列表    任务列表
 var taskOrderList = [], orderList = [], taskList = [], resultIndex = 0;
 var indexMap = {}, memberStatus = 0, activeDevice = '';
+var userRoute = [{
+    Location: "104.144765,30.01259",
+    taskId: null,
+    taskName: "",
+    CreationTime: "08:21:13"
+}, {
+    Location: "104.134716,30.014519",
+    taskId: null,
+    taskName: "",
+    CreationTime: "09:05:10"
+}, {
+    Location: "104.148385,29.984948",
+    taskId: null,
+    taskName: "",
+    CreationTime: "09:10:28"
+}, {
+    Location: "104.148231,29.984775",
+    taskId: null,
+    taskName: "",
+    CreationTime: "09:11:16"
+}]
 apiready = function() {
 
     // 初始化地图
@@ -9,7 +30,10 @@ apiready = function() {
         mapid: 'maphome'
     });
     indexMap.initArea();
-
+    indexMap.initDeviceLayer()
+    indexMap.initLineOrbit()
+    drawOrditOnMap(userRoute);
+    drawAnmateByOribt(userRoute);
     // 实现沉浸式状态栏效果
     var header = $api.byId('header');
     $api.fixStatusBar(header);
@@ -21,6 +45,8 @@ apiready = function() {
 
     // 获取当前用户的位置 并向地图中添加
     setCurrentMapLocation();
+    drawOrditOnMap(userRoute);
+    drawAnmateByOribt(userRoute);
 
     // 缩放地图事件
     $(".map-scale-btn").on('click', function() {
@@ -40,7 +66,7 @@ apiready = function() {
     $(".map-location-div").on('click', function() {
         getMemberLocation(function(location) {
             indexMap.map.getView().setCenter(location);
-            indexMap['memberlay']['1'].setPosition(location);
+            indexMap['memberlay']['0'].setPosition(location);
         });
     })
 
@@ -49,13 +75,29 @@ apiready = function() {
     getHomeOrderList();
     drawAreaList()
 }
+// pc调试使用
 // 初始化地图
-indexMap = new Map({
-    mapid: 'maphome'
-});
-indexMap.initArea();
-drawAreaList();
-indexMap.initDeviceLayer()
+// indexMap = new Map({
+//     mapid: 'maphome'
+// });
+// indexMap.initArea();
+// drawAreaList();
+// indexMap.initLineOrbit()
+// drawOrditOnMap(userRoute);
+// // drawAnmateByOribt(userRoute);
+// slideMemberAnimate()
+
+// // setCurrentMapLocation();
+// indexMap.initDeviceLayer()
+// // 点击定位图标将员工的位置定位到屏幕中间
+// $(".map-location-div").on('click', function() {
+//     // getMemberLocation(function(location) {
+//         console.log(111)
+//         indexMap.map.getView().setCenter([106.54258025120019,29.561620073599133]);
+//         // indexMap['memberlay']['0'].setPosition([106.54258025120019,29.561620073599133]);
+//     // });
+// })
+
 $(".home-device").on('click', function() {
     var feature = indexMap.selectFeature;
     if(!feature) return false;
@@ -114,14 +156,18 @@ $(".home-device").on('click', function() {
 */
 function setCurrentMapLocation() {
     getMemberLocation(function(location) {
+        var location = [106.54258025120019,29.561620073599133];
+        location = [parseFloat(location[0]), parseFloat(location[1])]
+        var position = [];
+        position.push(location);
         $(".map-member-img").css({opacity: 1})
         indexMap.addOverLayer({
             dom: '#map-member-img',
-            position: location,
+            position: position,
             offset: [38.5, -43.5],
-            isCenter: true,
+            // isCenter: true,
             name: 'memberlay',
-            index: 1
+            // centerPosition: location
         })
     });
 }
@@ -135,7 +181,6 @@ function setOnlineStatus(status) {
             IsOnline: status ? false : true
         },
         success: function(ret) {
-            console.log(JSON.stringify(ret))
             memberStatus = status ? 0 : 1;
             $api.setStorage('isOnline', memberStatus);
             if(memberStatus) {
@@ -200,27 +245,66 @@ function drawAreaList() {
     }
 }
 
-// // 获取当前用户的位置及在线信息
-// function getUserLoactionInfo () {
-//     var userLoginInformation = $api.getStorage('userLoginInformation');
-//     ajaxMethod({
-//         url: apiUrl + 'PersonService/GetAllLocationPageList',
-//         data: {
-//             OneDay: '',
-//             UserName: userLoginInformation.currentUserInfo.userInfo.trueName,
-//             maxResultCount: 10,
-//             pageIndex: 1
-//         },
-//         success: function(result) {
-//             console.log(JSON.stringify(result))
-//         },
-//         error: function(err) {
-//             JSON.stringify(err)
-//         }
-//     })
+// 根据人员位置列表会绘制人员轨迹
+function drawOrditOnMap(userRoute) {
+    for(var i = 0; i<userRoute.length; i++) {
+        var coordinates = [];
+        for( var i = 0; i < userRoute.length; i++) {
+            var point = userRoute[i].Location.split(',')
+            coordinates.push([Number(point[0]), Number(point[1])])
+        }
+        console.log(coordinates)
+        indexMap.drawOribitRoute(coordinates)
+
+    }
+}
+
+// 根据人员位置列表绘制人员运动轨迹
+function drawAnmateByOribt(userRoute) {
+    var position = userRoute[0].Location.split(',');
+    $(".map-member-img").eq(1).css({opacity: 1})
+    indexMap.addOverLayer({
+        dom: '#map-orbit',
+        position: [[Number(position[0]), Number(position[1])]],
+        offset: [0, -23.5],
+        // isCenter: true,
+        name: 'oribtlay',
+        centerPosition: [Number(position[0]), Number(position[1])]
+    })
+    addMemberAnimate(userRoute)
+}
+
+// 执行人员跳动
+function addMemberAnimate(userRoute) {
+    var index = 1
+    setInterval(function() {
+        var location = userRoute[index].Location.split(',');
+        indexMap['oribtlay']['0'].setPosition([location[0], location[1]]);
+        index++;
+        if(index >= userRoute.length) index = 0;
+    }, 1000)
+}
+
+// function slideMemberAnimate() {
+//     console.log(indexMap)
+//     var features = indexMap['lineOrbitSource'].getFeatures()[0];
+//     // moveFeature(features)
+//     indexMap.map.on('postcompose', features)
 // }
-
-
+//
+// function moveFeature(event) {
+//     var geometry = features.getGeometry();
+//     var length = geometry.getLength();
+//     var stpes=5;
+//     var geo_steps=stpes * res;
+//     var arrowsNum=Math.floor(length/geo_steps);
+//     for(var i = 0; i< arrowsNum; i++) {
+//         var arraw_coor = geometry.getCoordinateAt( i * 1.0 / arrowsNum );
+//         console.log(arraw_coor)
+//     }
+//     var vectorContext = event.vectorContext;
+//     var frameState = event.frameState;
+// }
 
 // 用于测试
 function onOpenTaskInfo() {

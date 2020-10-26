@@ -57,3 +57,22 @@ function getUserList(path,data,showRet,showErr){
   }
   ajaxMethod(options)
 }
+
+// 新增工单
+// 上传新增的工单
+function addJobData(path,data,showRet,showErr){
+  console.log(baseUrl+path);
+  var options = {
+    url:baseUrl+path,
+    data:data,
+    success:function(ret){
+      // console.log(JSON.stringify(ret));
+      showRet(ret)
+    },
+    error:function(err){
+      // console.log(JSON.stringify(err));
+      showErr(err)
+    }
+  }
+  ajaxMethod(options)
+}
