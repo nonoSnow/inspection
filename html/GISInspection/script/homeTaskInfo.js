@@ -69,31 +69,39 @@ function onOpenEquipment(that) {
   if (that != null) {
     var data = JSON.parse($(that).attr("parse"));
     console.log(JSON.stringify(data));
-    var param = {
-      deviceId: data.Id,
-      taskId: taskId,
-      status: data.status,
-      inspectionStatus: data.InspectionStatus
-    }
-    console.log(JSON.stringify(param));
+    // var param = {
+    //   deviceId: data.Id,
+    //   taskId: taskId,
+    //   status: data.status,
+    //   inspectionStatus: data.InspectionStatus,
+    //   inspectionStatusStr: data.inspectionStatusStr,
+    //   address: data.address
+    // }
+    // console.log(JSON.stringify(param));
     api.openWin({
         name: 'equipmentMapInfo',
         url: './equipmentMapInfo.html',
         pageParam: {
             name: 'test',
-            data: param
+            data: data,
+            taskId: taskId
         }
     });
   }
 }
 
 
-function onOpenTaskDetail() {
+function onOpenTaskDetail(that) {
+  var data = $(that).attr('parse');
+  data = JSON.parse(data);
+  console.log(typeof(data));
+  // console.log(JSON.stringify(data)):
   api.openWin({
       name: 'taskInfoSubmit',
       url: './taskInfoSubmit.html',
       pageParam: {
-          type: 'detail'
+          type: 'detail',
+          data: data
       }
   });
 
@@ -103,12 +111,15 @@ function onOpenTaskDetail() {
 function clickFirst(){
   if (nowTaskType == '0') {
     // 进行中任务
+    // 点击了暂停
     onOpenTaskStop();
   } else if (nowTaskType == '1') {
     // 待启动任务
+    // 点击了关闭
 
   } else if (nowTaskType == '2') {
     // 已暂停任务
+    // 点击了关闭
   }
 }
 
@@ -116,12 +127,15 @@ function clickFirst(){
 function clickSecond() {
   if (nowTaskType == '0') {
     // 进行中任务
-    // onOpenTaskStop();
+    // 点击了完成
+    console.log('点击了完成');
   } else if (nowTaskType == '1') {
     // 待启动任务
+    // 点击了启动
 
   } else if (nowTaskType == '2') {
     // 已暂停任务
+    // 点击了重启
   }
 }
 
@@ -249,13 +263,15 @@ function getInspecteList(param, status) {
         Id: 1,
         name: '蝶阀',
         code: 'code 19886674503',
-        address: '渝中区上清寺9号'
+        address: '渝中区上清寺9号',
+        status: 2
       },
       {
         Id: 2,
         name: '阀门',
         code: 'code 19886674503',
-        address: '渝中区上清寺9号'
+        address: '渝中区上清寺9号',
+        status: 3
       }
     ]
   }

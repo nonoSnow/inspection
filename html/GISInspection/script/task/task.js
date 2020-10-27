@@ -1,7 +1,9 @@
 var taskTypeIndex = 0;
+var daiXunTotal = 0;
 
 apiready = function() {
   var header = $api.byId('header');
+  console.log(JSON.stringify(header));
   $api.fixStatusBar(header);
   initOngoing();
 }
@@ -23,6 +25,7 @@ function initReceived(){
     pageIndex: 1,
     MaxResultCount: 10
   }
+  // console.log(JSON.stringify(data));
   showData(data,'received');
 }
 
@@ -47,6 +50,8 @@ function initCompleted(){
 }
 
 function showData(data, status) {
+  console.log(JSON.stringify(data));
+  console.log(data);
   $('#taskList').html('');
   getTaskDataSingle("api/services/Inspection/InspectionTaskService/AppGetTaskList",data,showRet,showErr);
 
@@ -101,7 +106,7 @@ function showData(data, status) {
   }
 
   function showErr(err){
-    // console.log(JSON.stringify(err));
+    console.log(JSON.stringify(err));
     if(err.code == 1){
       alert(err.body.error.message)
     }else if(err.code == 0){
@@ -150,6 +155,8 @@ function onOpenTaskDetail(that) {
 
 // 点击暂停
 function openTaskStop(that) {
+  var e = e || window.event;
+  e.stopPropagation();
   // 先获取任务详情，再进入暂停页面
   // var taskId = JSON.parse($(that).attr("parse"));
   // var data = {
@@ -200,6 +207,184 @@ function openTaskStop(that) {
       }
   });
 }
+
+// 点击完成任务
+function completedTask(that) {
+  var e = e || window.event;
+  e.stopPropagation();
+  var taskId = $(that).attr('parse');
+  console.log(taskId);
+  var data = {
+    taskId: taskId,
+    status: 1,
+    PageIndex: 1,
+    MaxResultCount: 10
+  }
+  getDaiXunDev(data);
+}
+
+// 点击关闭任务
+function closeTask(that) {
+  var e = e || window.event;
+  e.stopPropagation();
+  var taskId = $(that).attr('parse');
+  var taskName = $(that).attr('taskName');
+  var message = '您确定要关闭' + taskName + '吗？'
+  api.confirm({
+      msg: message,
+      buttons: ['确定', '取消']
+  }, function(ret, err) {
+      if (ret.buttonIndex == 1) {
+        //点击确定，关闭任务
+        var param = {
+          id: data.taskId,
+          operate: 4
+        }
+
+        changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', param, showRet, showErr);
+
+        function showRet(ret) {
+          // 修改状态成功，完成成功
+          initReceived();
+        }
+
+        function showErr(err) {
+
+        }
+      }
+  });
+}
+
+// 点击启动
+function startUpTask(that) {
+  var e = e || window.event;
+  e.stopPropagation();
+
+  var taskId = $(that).attr('parse');
+  var data = {
+    id: taskId,
+    operate: 3
+  }
+
+  changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', param, showRet, showErr);
+
+  function showRet(ret) {
+
+  }
+
+  function showErr(err) {
+
+  }
+}
+
+// 重启任务
+function reStartTask(that) {
+  var e = e || window.event;
+  e.stopPropagation();
+
+  var taskId = $(that).attr('parse');
+
+  var data = {
+    id: taskId,
+    operate: 5
+  }
+
+  changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', param, showRet, showErr);
+
+  function showRet(ret) {
+
+  }
+
+  function showErr(err) {
+
+  }
+}
+
+
+// 获取当前任务还有多少个未巡检的设备
+function getDaiXunDev(data) {
+  // var message = '该任务中有126个待巡点未完成！您确定要完成该任务吗？'
+  // api.confirm({
+  //     msg: message,
+  //     buttons: ['确定', '取消']
+  // }, function(ret, err) {
+  //     if (ret.buttonIndex == 1) {
+  //       //点击确定，完成任务
+  //       var param = {
+  //         id: data.taskId,
+  //         operate: 2
+  //       }
+  //
+  //       changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', param, showRet, showErr);
+  //
+  //       function showRet(ret) {
+  //
+  //       }
+  //
+  //       function showErr(err) {
+  //
+  //       }
+  //     }
+  // });
+
+  getInspectDataList("api/services/Inspection/InspectionTaskService/AppGetInspectionPointList",data,showRet,showErr);
+
+  function showRet(ret) {
+    var daiXunTotal = reet.result.totalCount;
+    var message = '该任务中有' + daiXunTotal + '个待巡点未完成！您确定要完成该任务吗？'
+    api.confirm({
+        msg: message,
+        buttons: ['确定', '取消']
+    }, function(ret, err) {
+        if (ret.buttonIndex == 1) {
+          //点击确定，完成任务
+          var param = {
+            id: data.taskId,
+            operate: 2
+          }
+
+          changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', param, showRet, showErr);
+
+          function showRet(ret) {
+            // 修改状态成功，完成成功
+            initOngoing();
+          }
+
+          function showErr(err) {
+
+          }
+        }
+    });
+  }
+
+  function showErr(err) {
+    if (err.statusCode == 500) {
+      if (err.body.error) {
+        api.toast({
+            msg: err.body.error.message,
+            duration: 2000,
+            location: 'middle'
+        });
+      }
+    } else {
+      if (err.body.error) {
+        api.toast({
+            msg: err.body.error.message,
+            duration: 2000,
+            location: 'middle'
+        });
+      } else {
+        api.toast({
+            msg: err.msg,
+            duration: 2000,
+            location: 'middle'
+        });
+      }
+    }
+  }
+
+}
+
 
 function onItemLeft() {
   var e = e || window.event;
