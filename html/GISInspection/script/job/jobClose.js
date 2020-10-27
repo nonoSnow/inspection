@@ -1,12 +1,13 @@
 
 var imgList = []; //图片列表
 var Id; //工单ID
-
+var jobType; //工单传过来的值
 apiready = function() {
   var header = $api.byId('header');
   $api.fixStatusBar(header);
   //获取工单ID
   Id = parseInt(api.pageParam.Id);
+  jobType=api.pageParam.jobType;
   console.log(Id);
   // 初始化图片列表
   showImg(imgList);
@@ -74,12 +75,19 @@ function clearData(){
   $("#closeReason").val();
   imgList=[];
   showImg(imgList);
-  api.openWin({
-      name: 'job',
-      url: './job.html',
-      reload:true
+  // api.openWin({
+  //     name: 'job',
+  //     url: './job.html',
+  //     reload:true
+  // });
+  api.sendEvent({
+      name: 'initJob',
+      extra: {
+          funcName: jobType,
+      }
   });
-
+  // onBack();
+  api.openWin()
 }
 // 上传附件 图片
 // 点击拍照div弹出底部选择框，选择相册或者拍照

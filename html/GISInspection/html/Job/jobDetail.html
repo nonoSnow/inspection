@@ -132,7 +132,7 @@
           </div>
         </div>
         <div class="flex1 receive-btn">
-          <div class='footer-btn bgc-blue color-fff' tapmode >
+          <div class='footer-btn bgc-blue color-fff' tapmode onclick="onReceived()">
             接收
           </div>
         </div>
@@ -144,6 +144,7 @@
   <script type="text/javascript" src="../../../public/script/remote.js"></script>
   <script type="text/javascript" src="../../../public/script/zepto.js"></script>
   <script type="text/javascript" src="../../../public/script/template.js"></script>
+  <script type="text/javascript" src="../../../public/script/aui-dialog.js"></script>
 
   <script type="text/javascript" src="../../script/public.js"></script>
   <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
@@ -165,30 +166,32 @@
       <li class="padding75 bgc-ff border-radius4">
         <div class="color-666">工单信息</div>
         <div class="line margin-top6 margin-bot6"></div>
-        <div>工单类型：核查情况</div>
+        <div>工单类型：{{typeStr}}</div>
         <div class="margin-top75 relative job-receive">
-          <span class="transfer-text">负责人：张三</span>
+          <span class="transfer-text">负责人：{{workTranfer.workPerson}}</span>
           <img src="../../image/transfer.png" class="transfer" alt="">
-          <span class="transfer-text">李四</span>
+          <span class="transfer-text">{{workTranfer.transferPerson}}</span>
           <span class="transfer-text color-598 absolute right0" tapmode onclick="onOpenCloseTurn('0')">转派原因 <span class="aui-iconfont aui-icon-right"></span></span>
         </div>
-        <div class="margin-top75 handle-head">负责人：张三</div>
+        <div class="margin-top75 handle-head">负责人：{{person}}</div>
         <div class="margin-top75">
           状态：
           <span class='inline-block task-status-circular margin-right3 job-status'></span>
-          <span class="job-status-text">待接收</span>
+          <span class="job-status-text">{{statusStr}}</span>
         </div>
-        <div class="margin-top75">预计完成时间：2020-08-23 09:21:35</div>
+        <div class="margin-top75">预计完成时间：{{planCompleteTime}}</div>
 
         <div class="margin-top12">工单内容:</div>
-        <div class="width100 height6 bgc-f5f6 border-radius4 margin-top75 padding75 line-height15">工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容</div>
+        <div class="width100 height6 bgc-f5f6 border-radius4 margin-top75 padding75 line-height15">{{content}}</div>
 
         <div class="margin-top12">工单附件:</div>
         <div class="file-list">
+          {{each resourcelist value i}}
           <div class="file-div">
-
+            <img src="{{url}}{{value.url}}" class="width100 height100" alt="">
           </div>
-          <div class="file-div">
+          {{/each}}
+          <!-- <div class="file-div">
 
           </div>
           <div class="file-div">
@@ -196,30 +199,30 @@
           </div>
           <div class="file-div margin-right0">
 
-          </div>
+          </div> -->
         </div>
       </li>
-
+      {{if eventDetails}}
       <li class="padding75 bgc-ff border-radius4 margin-top6">
         <div class="color-666">事件信息</div>
         <div class="line margin-top6 margin-bot6"></div>
-        <div>名称：阀门</div>
-        <div class="margin-top75">编号：2089882848575756</div>
-        <div class="margin-top75">坐标：116.556663,39.975432</div>
+        <div>名称：{{eventDetails.deviceName}}</div>
+        <div class="margin-top75">编号：{{eventDetails.deviceCode}}</div>
+        <div class="margin-top75">坐标：{{eventDetails.devicePoint}}</div>
         <div class="margin-top75">地址：南京市溧水区交通路阳光小区98号</div>
-        <div class="margin-top75">巡检人：李四</div>
-        <div class="margin-top75">联系电话：15087694326</div>
-        <div class="margin-top75">事件提交时间：2020-08-23 09:21:35</div>
+        <div class="margin-top75">巡检人：{{eventDetails.creationName}}</div>
+        <div class="margin-top75">联系电话：{{eventDetails.phone}}</div>
+        <div class="margin-top75">事件提交时间：{{eventDetails.creationTime}}</div>
         <div class="margin-top75">
           设备状态：
           <span class='inline-block task-status-circular bgc-dan margin-right3'></span>
-          异常
+          {{eventDetails.statusStr}}
         </div>
-        <div class="margin-top75">异常类型：外观破损</div>
-        <div class="margin-top75">事件类型：巡检事件</div>
-        <div class="margin-top75">预估漏损量：100m³</div>
+        <div class="margin-top75">异常类型：{{eventDetails.errorType}}</div>
+        <div class="margin-top75">事件类型：{{eventDetails.typeStr}}</div>
+        <div class="margin-top75">预估漏损量：{{eventDetails.predictWaterLoss}}m³</div>
         <div class="margin-top12">巡检内容:</div>
-        <div class="width100 height6 bgc-f5f6 border-radius4 margin-top75 padding75 line-height15">工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容工单内容</div>
+        <div class="width100 height6 bgc-f5f6 border-radius4 margin-top75 padding75 line-height15">{{eventDetails.content}}</div>
 
         <div class="margin-top12">工单附件</div>
         <div class="file-list">
@@ -237,6 +240,6 @@
           </div>
         </div>
       </li>
-
+      {{/if}}
   </script>
 </html>

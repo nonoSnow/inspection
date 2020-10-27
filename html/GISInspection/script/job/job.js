@@ -7,8 +7,21 @@ apiready = function() {
   initOngoing();
   // 获取负责人
   var userLoginInformation = $api.getStorage('userLoginInformation');
-  console.log(JSON.stringify(userLoginInformation));
-  headName=userLoginInformation.currentUserInfo.userInfo.orgName
+  // console.log(JSON.stringify(userLoginInformation));
+  headName=userLoginInformation.currentUserInfo.userInfo.orgName;
+  onMenu(jobType)
+  // 监听事件 刷新页面
+  api.addEventListener({
+      name: 'initJob'
+  }, function(ret, err){
+      if( ret ){
+          //  alert( JSON.stringify( ret ) );
+           onMenu(parseInt(ret.value.funcName))
+      }else{
+           alert( JSON.stringify( err ) );
+      }
+  });
+
 }
 
 // 获取待接收、进行中、已完成的工单 接口调用
@@ -24,12 +37,12 @@ function showData(data,status){
   function showRet(ret){
     api.hideProgress();
 
-    console.log("--------------------------"+status);
+    // console.log("--------------------------"+status);
     // console.log(JSON.stringify(ret));
     if(ret.success){
       $('#dataList').html('');
       var data = transT(ret.result.items);
-      console.log(JSON.stringify(data));
+      // console.log(JSON.stringify(data));
       if(data.length){
         var list = {list:data};
         var str = template(status, list);
@@ -44,7 +57,7 @@ function showData(data,status){
   function showErr(err){
     api.hideProgress();
 
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(err));
     if(err.body.error.message){
       alert(err.body.error.message)
     }else {
@@ -106,7 +119,7 @@ function onMenu(index, el) {
 
 // 任务详情
 function onOpenJobDetail(el) {
-  // console.log($(el).attr('param'));
+  console.log($(el).attr('param'));
   api.openWin({
       name: 'jobDetail',
       url: './jobDetail.html',
@@ -135,7 +148,7 @@ function onReceived(el){
   function showRet(ret){
     api.hideProgress();
     if(ret.success){
-      console.log(JSON.stringify(data));
+      // console.log(JSON.stringify(data));
       api.toast({
           msg: '接收成功',
           duration: 2000,
@@ -148,7 +161,7 @@ function onReceived(el){
   function showErr(err){
     api.hideProgress();
 
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(err));
     if(err.body.error.message){
       alert(err.body.error.message)
     }else {
@@ -160,13 +173,14 @@ function onReceived(el){
 // 关闭工单
 function onCloseJob(el){
   var Id=$(el).attr('param'); //工单ID
-  console.log(Id);
+  // console.log(Id);
   // 跳转到关闭工单页面
   api.openWin({
       name: 'jobClose',
       url: './jobClose.html',
       pageParam: {
-          Id:Id
+          Id:Id,
+          jobType:jobType
       }
   });
 }
@@ -179,4 +193,18 @@ function transT(data){
     data[i].headName = headName;
   }
   return data
+}
+
+// 填写工单
+function onWrite(el){
+  var Id=$(el).attr('param'); //工单ID
+  // console.log(Id);
+  // 跳转到关闭工单页面
+  api.openWin({
+      name: 'jobHandle',
+      url: './jobHandle.html',
+      pageParam: {
+          Id:Id
+      }
+  });
 }
