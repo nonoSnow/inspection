@@ -91,8 +91,6 @@ function action() {
         console.log(JSON.stringify(err));
         // showImg(imgList);
       }
-
-      // showImg(imgList);
     }
   })
 }

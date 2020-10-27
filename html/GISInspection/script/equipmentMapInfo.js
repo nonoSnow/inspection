@@ -1,4 +1,5 @@
 var inspectParam;
+var taskId;
 console.log('---------------------');
 apiready = function() {
   var header = $api.byId('header');
@@ -7,6 +8,8 @@ apiready = function() {
 
   console.log('进入设备详情页面了');
   inspectParam = api.pageParam.data;
+  taskId = api.pageParam.taskId;
+
   console.log(JSON.stringify(inspectParam));
   getInspectDetail();
 }
@@ -22,11 +25,13 @@ function onOpenReport() {
 }
 
 function onOpenSubmit() {
+
   api.openWin({
       name: 'taskInfoSubmit',
       url: './taskInfoSubmit.html',
       pageParam: {
-          type: 'handle'
+          type: 'handle',
+          data: inspectParam
       }
   });
 

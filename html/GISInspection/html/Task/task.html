@@ -163,10 +163,10 @@
           </div> -->
           <div class="line margin-top75 margin-bot5 item-bot-btn"></div>
           <div class="display-flex font-S8 item-bot-btn">
-              <div class="flex1 text-cent border-right item-left" tapmode onclick="openTaskStop()" parse="{{value.Id}}">
+              <div class="flex1 text-cent border-right item-left" tapmode onclick="openTaskStop(this)" parse="{{value.Id}}">
                   暂停
               </div>
-              <div class="flex1 text-cent item-right" tapmode onclick="onItemRight()">
+              <div class="flex1 text-cent item-right" tapmode onclick="completedTask(this)" parse="{{value.Id}}">
                   完成
               </div>
           </div>
@@ -209,10 +209,10 @@
           </div> -->
           <div class="line margin-top75 margin-bot5 item-bot-btn"></div>
           <div class="display-flex font-S8 item-bot-btn">
-              <div class="flex1 text-cent border-right item-left" tapmode onclick="onItemLeft()">
+              <div class="flex1 text-cent border-right item-left" tapmode onclick="closeTask(this)" taskName="{{value.name}}" parse="{{value.Id}}">
                   关闭
               </div>
-              <div class="flex1 text-cent item-right" tapmode onclick="onItemRight()">
+              <div class="flex1 text-cent item-right" tapmode onclick="startUpTask(this)" parse="{{value.Id}}">
                   启动
               </div>
           </div>
@@ -224,7 +224,7 @@
 <script type="text/template" id='suspended'>
   <!-- 任务已暂停 -->
   {{each list value i}}
-  <li class="padding75 bgc-ff border-radius4 relative line-height1 margin-bot5" tapmode onclick="onOpenTaskDetail(this, '{{value.id}}')">
+  <li class="padding75 bgc-ff border-radius4 relative line-height1 margin-bot5" tapmode onclick="onOpenTaskDetail(this)" parse="{{value.id}}">
       {{if value.type == 1 }}
       <img src="../../image/temporary.png" class='task-item-label absolute right75 top0' alt="">
       {{else if value.type == 2}}
@@ -246,10 +246,10 @@
           </div>
           <div class="line margin-top75 margin-bot5 item-bot-btn"></div>
           <div class="display-flex font-S8 item-bot-btn">
-              <div class="flex1 text-cent border-right item-left" tapmode onclick="onItemLeft()">
+              <div class="flex1 text-cent border-right item-left" tapmode onclick="closeTask(this)" taskName="{{value.name}}" parse="{{value.Id}}">
                   关闭
               </div>
-              <div class="flex1 text-cent item-right" tapmode onclick="onItemRight()">
+              <div class="flex1 text-cent item-right" tapmode onclick="reStartTask(this)" parse="{{value.Id}}">
                   重启
               </div>
           </div>

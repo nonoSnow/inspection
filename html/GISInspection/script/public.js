@@ -102,15 +102,25 @@ function getPicture(type, showRet, showErr) {
     targetHeight: 750,
     saveToPhotoAlbum: false
   }, function(ret, err) {
+    console.log(JSON.stringify(ret));
+    console.log(JSON.stringify(err));
       if (ret) {
-          uploadPic(ret.data, success, error);
-          function success(ret) {
-            showRet(ret);
+          if (ret.data != '') {
+            uploadPic(ret.data, success, error);
+            function success(ret) {
+              showRet(ret);
+            }
+
+            function error(err) {
+              showErr(err)
+            }
+          } else {
+            showErr({
+              code: 0,
+              message: '没有选择图片'
+            })
           }
 
-          function error(err) {
-            showErr(err)
-          }
       } else {
           alert(JSON.stringify(err));
           showErr(err);
