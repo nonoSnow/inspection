@@ -142,6 +142,22 @@ function action() {
       function showErr(err) {
         console.log(JSON.stringify(err));
         // showImg(imgList);
+        if(err.body.error != undefined){
+          // alert(err.body.error.message);
+          api.toast({
+              msg: err.body.error.message,
+              duration: 2000,
+              location: 'middle'
+          });
+
+        }else{
+          // alert(err.msg);
+          api.toast({
+              msg: err.msg,
+              duration: 2000,
+              location: 'middle'
+          });
+        }
       }
 
       // showImg(imgList);
@@ -160,6 +176,22 @@ function action() {
       function showErr(err) {
         console.log(JSON.stringify(err));
         // showImg(imgList);
+        if(err.body.error != undefined){
+          // alert(err.body.error.message);
+          api.toast({
+              msg: err.body.error.message,
+              duration: 2000,
+              location: 'middle'
+          });
+
+        }else{
+          // alert(err.msg);
+          api.toast({
+              msg: err.msg,
+              duration: 2000,
+              location: 'middle'
+          });
+        }
       }
     }
   })

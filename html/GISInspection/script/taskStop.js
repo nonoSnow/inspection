@@ -42,12 +42,13 @@ function setDetails(data) {
   $('#taskDetail').append(str);
 }
 
-// 提交原因暂停
+// 提交原因(暂停)
 function submitReson() {
   console.log(submitFlag);
   if (submitFlag) {
     console.log('有原因，可以提交');
 
+    suspendedTask();
   }
 }
 
@@ -72,6 +73,22 @@ function action() {
       function showErr(err) {
         console.log(JSON.stringify(err));
         // showImg(imgList);
+        if(err.body.error != undefined){
+          // alert(err.body.error.message);
+          api.toast({
+              msg: err.body.error.message,
+              duration: 2000,
+              location: 'middle'
+          });
+
+        }else{
+          // alert(err.msg);
+          api.toast({
+              msg: err.msg,
+              duration: 2000,
+              location: 'middle'
+          });
+        }
       }
 
       // showImg(imgList);
@@ -90,6 +107,22 @@ function action() {
       function showErr(err) {
         console.log(JSON.stringify(err));
         // showImg(imgList);
+        if(err.body.error != undefined){
+          // alert(err.body.error.message);
+          api.toast({
+              msg: err.body.error.message,
+              duration: 2000,
+              location: 'middle'
+          });
+
+        }else{
+          // alert(err.msg);
+          api.toast({
+              msg: err.msg,
+              duration: 2000,
+              location: 'middle'
+          });
+        }
       }
     }
   })
@@ -121,23 +154,40 @@ function showImg(data) {
 // 暂停任务
 function suspendedTask() {
   var data = {
-    id: taskId,
+    id: details.id,
     reason: remark,
     operate: 1,
     resourceInfoList: imgList
   }
 
+  console.log(JSON.stringify(data));
   changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', data, showRet, showErr);
 
   function showRet(ret) {
     console.log(JSON.stringify(ret));
+    // 操作成功
+    // 返回列表页
+    openTask();
   }
 
   function showErr(err) {
-    if(err.code == 1){
-      alert(err.body.error.message)
-    }else if(err.code == 0){
-      alert(err.msg);
+    console.log(JSON.stringify(err));
+    console.log(JSON.stringify(err.body.error));
+    if(err.body.error != undefined){
+      // alert(err.body.error.message);
+      api.toast({
+          msg: err.body.error.message,
+          duration: 2000,
+          location: 'middle'
+      });
+
+    }else{
+      // alert(err.msg);
+      api.toast({
+          msg: err.msg,
+          duration: 2000,
+          location: 'middle'
+      });
     }
   }
 }
@@ -151,4 +201,11 @@ function deleteImg(that) {
     console.log(JSON.stringify(imgList));
     showImg(imgList);
   }
+}
+
+function openTask() {
+  api.openWin({
+      name: 'Task',
+      url: '../task/task.html'
+  });
 }

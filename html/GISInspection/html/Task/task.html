@@ -15,12 +15,12 @@
 </head>
 
 <body>
-    <div class="flex-wrap flex-vertical height100">
+    <div id="flex-box" class="flex-wrap flex-vertical height100">
         <header class="aui-bar aui-bar-nav aui-bar-light bgi-none" id="header">
             <div class="aui-title">任务</div>
         </header>
 
-        <div class="header-type display-flex text-cent line-height25 color-666">
+        <div id="flex-vertical" class="header-type display-flex text-cent line-height25 color-666">
             <div class="flex1 header-type-item color-598" tapmode onclick="onMenu(0, this)">
                 <span class="line-height1">
               进行中
@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <div class="flex-con flex-content height100 bgc-f3">
+        <div id="list-box" class="flex-con flex-content bgc-f3 overflowScroll">
           <ul class="aui-content-padded" id="taskList">
           </ul>
             <!-- <ul class="aui-content-padded">
@@ -113,6 +113,13 @@
                 </li>
             </ul> -->
         </div>
+        <footer id="footer" class="aui-bar aui-bar-tab display-flex footer">
+          <div class="flex1">
+            <div class='footer-btn bgc-blue color-fff' tapmode onclick="openAddTask()">
+              新增任务
+            </div>
+          </div>
+        </footer>
     </div>
 
 </body>
@@ -132,7 +139,7 @@
 <script type="text/template" id='onGoing'>
   <!-- 任务进行中 -->
   {{each list value i}}
-  <li class="padding75 bgc-ff border-radius4 relative line-height1 margin-bot5" tapmode onclick="onOpenTaskDetail(this)" parse="{{value.Id}}">
+  <li class="padding75 bgc-ff border-radius4 relative line-height1 margin-bot5" tapmode onclick="onOpenTaskDetail(this)" parse="{{value.id}}">
       {{if value.type == 1 }}
       <img src="../../image/temporary.png" class='task-item-label absolute right75 top0' alt="">
       {{else if value.type == 2}}
@@ -163,10 +170,10 @@
           </div> -->
           <div class="line margin-top75 margin-bot5 item-bot-btn"></div>
           <div class="display-flex font-S8 item-bot-btn">
-              <div class="flex1 text-cent border-right item-left" tapmode onclick="openTaskStop(this)" parse="{{value.Id}}">
+              <div class="flex1 text-cent border-right item-left" tapmode onclick="openTaskStop(this)" parse="{{value.id}}">
                   暂停
               </div>
-              <div class="flex1 text-cent item-right" tapmode onclick="completedTask(this)" parse="{{value.Id}}">
+              <div class="flex1 text-cent item-right" tapmode onclick="completedTask(this)" parse="{{value.id}}">
                   完成
               </div>
           </div>
@@ -178,7 +185,7 @@
 <script type="text/template" id='received'>
   <!-- 任务待启动-->
   {{each list value i}}
-  <li class="padding75 bgc-ff border-radius4 relative line-height1 margin-bot5" tapmode onclick="onOpenTaskDetail(this, '{{value.id}}')">
+  <li class="padding75 bgc-ff border-radius4 relative line-height1 margin-bot5" tapmode onclick="onOpenTaskDetail(this)" parse="{{value.id}}">
       {{if value.type == 1 }}
       <img src="../../image/temporary.png" class='task-item-label absolute right75 top0' alt="">
       {{else if value.type == 2}}
@@ -209,10 +216,10 @@
           </div> -->
           <div class="line margin-top75 margin-bot5 item-bot-btn"></div>
           <div class="display-flex font-S8 item-bot-btn">
-              <div class="flex1 text-cent border-right item-left" tapmode onclick="closeTask(this)" taskName="{{value.name}}" parse="{{value.Id}}">
+              <div class="flex1 text-cent border-right item-left" tapmode onclick="closeTask(this)" taskName="{{value.name}}" parse="{{value.id}}">
                   关闭
               </div>
-              <div class="flex1 text-cent item-right" tapmode onclick="startUpTask(this)" parse="{{value.Id}}">
+              <div class="flex1 text-cent item-right" tapmode onclick="startUpTask(this)" parse="{{value.id}}">
                   启动
               </div>
           </div>
@@ -246,10 +253,10 @@
           </div>
           <div class="line margin-top75 margin-bot5 item-bot-btn"></div>
           <div class="display-flex font-S8 item-bot-btn">
-              <div class="flex1 text-cent border-right item-left" tapmode onclick="closeTask(this)" taskName="{{value.name}}" parse="{{value.Id}}">
+              <div class="flex1 text-cent border-right item-left" tapmode onclick="closeTask(this)" taskName="{{value.name}}" parse="{{value.id}}">
                   关闭
               </div>
-              <div class="flex1 text-cent item-right" tapmode onclick="reStartTask(this)" parse="{{value.Id}}">
+              <div class="flex1 text-cent item-right" tapmode onclick="reStartTask(this)" parse="{{value.id}}">
                   重启
               </div>
           </div>
@@ -261,7 +268,7 @@
 <script type="text/template" id='completed'>
   <!-- 任务已完成 -->
   {{each list value i}}
-  <li class="padding75 bgc-ff border-radius4 relative line-height1 margin-bot5" tapmode onclick="onOpenTaskDetail(this, '{{value.id}}')">
+  <li class="padding75 bgc-ff border-radius4 relative line-height1 margin-bot5" tapmode onclick="onOpenTaskDetail(this)" parse="{{value.id}}">
       {{if value.type == 1 }}
       <img src="../../image/temporary.png" class='task-item-label absolute right75 top0' alt="">
       {{else if value.type == 2}}
