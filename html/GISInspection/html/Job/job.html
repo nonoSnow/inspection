@@ -38,35 +38,6 @@
         </div>
       </div>
 
-      <!-- <div class="flex-con flex-content height100 bgc-f3">
-        <ul class="aui-content-padded">
-          <li class="padding75 bgc-ff border-radius4 line-height1" tapmode onclick="onOpenJobDetail()">
-              <div class="aui-list-item-inner block font-S9">
-                <div class="display-flex">
-                  <img src="../../image/job-icon.png" class='task-icon' alt="">
-                  <span class="margin-left3 font-w4">工单类型：施工维修</span>
-                </div>
-                <div class="margin-top10 font-S75 color-666 charge">负责人：张三</div>
-                <div class="margin-top6 font-S75 color-666 start-time">
-                  开始时间：2020-09-22 18:00
-                </div>
-                <div class="margin-top6 font-S75 color-666 end-time aui-hide">
-                  完成时间：2020-09-22 18:00
-                </div>
-                <div class="line margin-top75 margin-bot5"></div>
-                <div class="display-flex font-S8 item-footer">
-                  <div class="flex1 text-cent border-right">
-                    暂停
-                  </div>
-                  <div class="flex1 text-cent">
-                    完成
-                  </div>
-                </div>
-              </div>
-          </li>
-        </ul>
-      </div> -->
-
       <div class="flex-con flex-content height100 bgc-f3">
         <ul class="aui-content-padded" id="dataList">
         </ul>
@@ -88,21 +59,22 @@
 
   <script type="text/javascript" src="../../script/job/job.js"></script>
   <script type="text/template" id='onGoing'>
-    <!-- 工单进行中 -->
     {{each list value i}}
-    <li class="padding75 bgc-ff border-radius4 line-height1 margin-bot5" tapmode onclick="onOpenJobDetail(this)" param="{{value.Id}}">
+    <li class="padding75 bgc-ff border-radius4 line-height1 margin-bot5" tapmode>
         <div class="aui-list-item-inner block font-S9">
-          <div class="display-flex">
-            <img src="../../image/job-icon.png" class='task-icon' alt="">
-            <span class="margin-left3 font-w4">工单类型：{{value.typeStr}}</span>
+          <div onclick="onOpenJobDetail(this)" param="{{value.Id}}">
+            <div class="display-flex">
+              <img src="../../image/job-icon.png" class='task-icon' alt="">
+              <span class="margin-left3 font-w4">工单类型：{{value.typeStr}}</span>
+            </div>
+            <div class="margin-top10 font-S75 color-666 charge">负责人：{{value.headName}}</div>
           </div>
-          <div class="margin-top10 font-S75 color-666 charge">负责人：张三</div>
           <div class="margin-top6 font-S75 color-666 end-time">
-            预计完成时间：{{value.completeTime}}
+            预计完成时间：{{value.planCompleteTime}}
           </div>
           <div class="line margin-top75 margin-bot5"></div>
           <div class="display-flex font-S8 item-footer">
-            <div class="flex1 text-cent border-right">
+            <div class="flex1 text-cent border-right" onclick="onCloseJob(this)" param="{{value.id}}">
               关闭
             </div>
             <div class="flex1 text-cent">
@@ -115,23 +87,24 @@
   </script>
 
   <script type="text/template" id='received'>
-    <!-- 工单待接收-->
     {{each list value i}}
-    <li class="padding75 bgc-ff border-radius4 line-height1 margin-bot5" tapmode  onclick="onOpenJobDetail(this)" param="{{value.Id}}">
+    <li class="padding75 bgc-ff border-radius4 line-height1 margin-bot5" tapmode >
         <div class="aui-list-item-inner block font-S9">
-          <div class="display-flex">
-            <img src="../../image/job-icon.png" class='task-icon' alt="">
-            <span class="margin-left3 font-w4">工单类型：{{value.typeStr}}</span>
-          </div>
-          <div class="margin-top6 font-S75 color-666 end-time">
-            预计完成时间：{{value.completeTime}}
+          <div onclick="onOpenJobDetail(this)" param="{{value.id}}">
+            <div class="display-flex">
+              <img src="../../image/job-icon.png" class='task-icon' alt="">
+              <span class="margin-left3 font-w4">工单类型：{{value.typeStr}}</span>
+            </div>
+            <div class="margin-top6 font-S75 color-666 end-time">
+              预计完成时间：{{value.planCompleteTime}}
+            </div>
           </div>
           <div class="line margin-top75 margin-bot5"></div>
           <div class="display-flex font-S8 item-footer">
-            <div class="flex1 text-cent border-right">
+            <div class="flex1 text-cent border-right" onclick="onCloseJob(this)" param="{{value.id}}">
               关闭
             </div>
-            <div class="flex1 text-cent">
+            <div class="flex1 text-cent" onclick="onReceived(this)" param="{{value.id}}">
               接收
             </div>
           </div>
@@ -141,7 +114,6 @@
   </script>
 
   <script type="text/template" id='completed'>
-    <!-- 工单已完成-->
     {{each list value i}}
     <li class="padding75 bgc-ff border-radius4 line-height1 margin-bot5" tapmode onclick="onOpenJobDetail(this)" param="{{value.Id}}">
         <div class="aui-list-item-inner block font-S9">
@@ -149,7 +121,7 @@
             <img src="../../image/job-icon.png" class='task-icon' alt="">
             <span class="margin-left3 font-w4">工单类型：{{value.typeStr}}</span>
           </div>
-          <div class="margin-top10 font-S75 color-666 charge">负责人：张三</div>
+          <div class="margin-top10 font-S75 color-666 charge">负责人：{{value.headName}}</div>
           <div class="margin-top6 font-S75 color-666 start-time">
             开始时间：{{value.creationTime}}
           </div>

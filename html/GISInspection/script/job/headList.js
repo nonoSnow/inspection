@@ -24,7 +24,8 @@ function search(){
   });
   console.log($("#search-input").val());
   var scrollVal = $("#search-input").val();
-  getUserList("api/services/app/Information/GetSelectPersonnelAsync?key="+scrollVal,"",showRet,showErr);
+  // getUserList("api/services/app/Information/GetSelectPersonnelAsync?key="+scrollVal,"",showRet,showErr);
+  jobGetMethod("api/services/app/Information/GetSelectPersonnelAsync?key="+scrollVal,"",showRet,showErr);
   function showRet(ret){
     api.hideProgress();
     $('.head-list').html('');
@@ -57,7 +58,7 @@ function onGetData() {
         modal: false
     });
 
-    getUserList("api/services/app/Information/GetOrganizationAndPersonnel","",showRet,showErr);
+    jobGetMethod("api/services/app/Information/GetOrganizationAndPersonnel","",showRet,showErr);
     function showRet(ret){
       api.hideProgress();
       $('.head-list').html('');

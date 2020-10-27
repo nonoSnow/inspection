@@ -45,7 +45,7 @@ function showData(id,jobStatus){
   var data = {
     Id:id
   }
-  getJobDeatil("api/services/Inspection/WorkOrderService/GetWorkOrderDetails",data,showRet,showErr);
+  jobPostMethod("api/services/Inspection/WorkOrderService/GetWorkOrderDetails",data,showRet,showErr);
   function showRet(ret){
     // console.log("****************************"+id);
     // console.log(JSON.stringify(ret));

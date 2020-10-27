@@ -1,41 +1,50 @@
 
 var jobType = 0;
-
+var headName;
 apiready = function() {
   var header = $api.byId('header');
   $api.fixStatusBar(header);
   initOngoing();
+  // 获取负责人
+  var userLoginInformation = $api.getStorage('userLoginInformation');
+  console.log(JSON.stringify(userLoginInformation));
+  headName=userLoginInformation.currentUserInfo.userInfo.orgName
 }
 
 // 获取待接收、进行中、已完成的工单 接口调用
 function showData(data,status){
-  getJobDataSingle("api/services/Inspection/WorkOrderService/GetWorkOrderListApp",data,showRet,showErr);
+  api.showProgress({
+      style: 'default',
+      animationType: 'fade',
+      title: '加载中...',
+      modal: false
+  });
+  jobPostMethod("api/services/Inspection/WorkOrderService/GetWorkOrderListApp",data,showRet,showErr);
   // console.log(JSON.stringify($api.getStorage('loginData')));
   function showRet(ret){
-    // console.log("--------------------------"+status);
+    api.hideProgress();
+
+    console.log("--------------------------"+status);
     // console.log(JSON.stringify(ret));
-    $('#dataList').html('');
-    var data = {
-        list: [{
-          Id:"1",
-          typeStr:status,
-          creationTime:"2020-09-22 18:00",
-          completeTime:"2020-09-22 18:00"
-        },
-        {
-          Id:"2",
-          typeStr:"施工2",
-          creationTime:"2020-09-22 18:00",
-          completeTime:"2020-09-22 18:00"
-        }
-        ]
-    };
-    var str = template(status, data);
-    $('#dataList').append(str);
+    if(ret.success){
+      $('#dataList').html('');
+      var data = transT(ret.result.items);
+      console.log(JSON.stringify(data));
+      if(data.length){
+        var list = {list:data};
+        var str = template(status, list);
+        $('#dataList').append(str);
+      }else{
+        var str="<div style='text-align:center;margin:20px;'>暂无数据</div>"
+        $('#dataList').append(str);
+      }
+    }
   }
 
   function showErr(err){
-    // console.log(JSON.stringify(err));
+    api.hideProgress();
+
+    console.log(JSON.stringify(err));
     if(err.body.error.message){
       alert(err.body.error.message)
     }else {
@@ -51,7 +60,7 @@ function showData(data,status){
 // 初始化进行中的工单列表
 function initOngoing(){
   var data = {
-    status:1,
+    status:2,
     pageIndex:1,
     MaxResultCount:10
   }
@@ -60,7 +69,7 @@ function initOngoing(){
 // 待接收的工单
 function initReceived(){
   var data = {
-    status:2,
+    status:1,
     pageIndex:1,
     MaxResultCount:10
   }
@@ -71,7 +80,7 @@ function initReceived(){
 // 已完成的工单
 function initCompleted(){
   var data = {
-    status:2,
+    status:4,
     pageIndex:1,
     MaxResultCount:10
   }
@@ -95,43 +104,6 @@ function onMenu(index, el) {
   });
 }
 
-// function onMenu(index, el) {
-//   jobType = index;
-//   if (index == 0) {
-//     $('.charge').removeClass('aui-hide');
-//     $('.start-time').removeClass('aui-hide');
-//     $('.start-time').addClass('margin-top6');
-//     $('.start-time').removeClass('margin-top10');
-//
-//     $('.end-time').addClass('aui-hide');
-//
-//     $('.line').removeClass('aui-hide');
-//     $('.item-footer').removeClass('aui-hide');
-//   } else if (index == 1) {
-//     $('.start-time').removeClass('aui-hide');
-//     $('.start-time').removeClass('margin-top6');
-//     $('.start-time').addClass('margin-top10');
-//
-//     $('.charge').addClass('aui-hide');
-//     $('.end-time').addClass('aui-hide');
-//
-//     $('.line').removeClass('aui-hide');
-//     $('.item-footer').removeClass('aui-hide');
-//   } else if (index == 2) {
-//     $('.charge').removeClass('aui-hide');
-//     $('.start-time').removeClass('aui-hide');
-//     $('.end-time').removeClass('aui-hide');
-//     $('.start-time').addClass('margin-top6');
-//     $('.start-time').removeClass('margin-top10');
-//
-//     $('.line').addClass('aui-hide');
-//     $('.item-footer').addClass('aui-hide');
-//   }
-//   onCheckMenu(el, function(){
-//     console.log(123);
-//   });
-// }
-
 // 任务详情
 function onOpenJobDetail(el) {
   // console.log($(el).attr('param'));
@@ -144,4 +116,67 @@ function onOpenJobDetail(el) {
       }
   });
 
+}
+
+// 待接收工单点击接收
+function onReceived(el){
+  var Id=$(el).attr('param'); //工单ID
+  var data = {
+    Id:parseInt(Id),
+    status:2
+  }
+  api.showProgress({
+      style: 'default',
+      animationType: 'fade',
+      title: '接收中...',
+      modal: false
+  });
+  jobPostMethod("api/services/Inspection/WorkOrderService/ReceiveWorkOrder",data,showRet,showErr);
+  function showRet(ret){
+    api.hideProgress();
+    if(ret.success){
+      console.log(JSON.stringify(data));
+      api.toast({
+          msg: '接收成功',
+          duration: 2000,
+          location: 'bottom'
+      });
+      initReceived()
+    }
+  }
+
+  function showErr(err){
+    api.hideProgress();
+
+    console.log(JSON.stringify(err));
+    if(err.body.error.message){
+      alert(err.body.error.message)
+    }else {
+      alert("接收失败")
+    }
+  }
+}
+
+// 关闭工单
+function onCloseJob(el){
+  var Id=$(el).attr('param'); //工单ID
+  console.log(Id);
+  // 跳转到关闭工单页面
+  api.openWin({
+      name: 'jobClose',
+      url: './jobClose.html',
+      pageParam: {
+          Id:Id
+      }
+  });
+}
+
+// 接口时间返回来的T 转换为空格 并把负责人加进去
+function transT(data){
+  for (var i = 0; i < data.length; i++) {
+    data[i].planCompleteTime=data[i].planCompleteTime.replace("T"," ");
+    data[i].creationTime=data[i].creationTime.replace("T"," ");
+    data[i].headName = headName;
+  }
+  return data
 }
