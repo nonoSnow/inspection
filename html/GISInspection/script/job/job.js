@@ -58,16 +58,19 @@ function showData(data,status){
     api.hideProgress();
 
     // console.log(JSON.stringify(err));
-    if(err.body.error.message){
-      alert(err.body.error.message)
+    if(err.body){
+      if(err.body.error){
+        if(err.body.error.message){
+          alert(err.body.error.message)
+        }else {
+          alert("加载失败")
+        }
+      }else {
+        alert("加载失败")
+      }
     }else {
-      alert("加载失败")
+      alert("加载失败");
     }
-    // if(err.body){
-    //   alert(err.msg);
-    // }else {
-    //   alert("加载失败");
-    // }
   }
 }
 // 初始化进行中的工单列表
@@ -190,6 +193,9 @@ function transT(data){
   for (var i = 0; i < data.length; i++) {
     data[i].planCompleteTime=data[i].planCompleteTime.replace("T"," ");
     data[i].creationTime=data[i].creationTime.replace("T"," ");
+    data[i].completeTime=data[i].completeTime==""||data[i].completeTime==null?data[i].completeTime:data[i].completeTime.replace("T"," ");
+    console.log(data[i].completeTime);
+
     data[i].headName = headName;
   }
   return data
