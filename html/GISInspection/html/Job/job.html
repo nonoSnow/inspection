@@ -62,7 +62,7 @@
     {{each list value i}}
     <li class="padding75 bgc-ff border-radius4 line-height1 margin-bot5" tapmode>
         <div class="aui-list-item-inner block font-S9">
-          <div onclick="onOpenJobDetail(this)" param="{{value.Id}}">
+          <div onclick="onOpenJobDetail(this)" param="{{value.id}}">
             <div class="display-flex">
               <img src="../../image/job-icon.png" class='task-icon' alt="">
               <span class="margin-left3 font-w4">工单类型：{{value.typeStr}}</span>
@@ -77,7 +77,7 @@
             <div class="flex1 text-cent border-right" onclick="onCloseJob(this)" param="{{value.id}}">
               关闭
             </div>
-            <div class="flex1 text-cent">
+            <div class="flex1 text-cent" onclick="onWrite(this)" param="{{value.id}}">
               填写
             </div>
           </div>
@@ -115,7 +115,7 @@
 
   <script type="text/template" id='completed'>
     {{each list value i}}
-    <li class="padding75 bgc-ff border-radius4 line-height1 margin-bot5" tapmode onclick="onOpenJobDetail(this)" param="{{value.Id}}">
+    <li class="padding75 bgc-ff border-radius4 line-height1 margin-bot5" tapmode onclick="onOpenJobDetail(this)" param="{{value.id}}">
         <div class="aui-list-item-inner block font-S9">
           <div class="display-flex">
             <img src="../../image/job-icon.png" class='task-icon' alt="">
