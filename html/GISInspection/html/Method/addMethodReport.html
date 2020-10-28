@@ -59,7 +59,7 @@
               <textarea name="name" class='width100 height100' placeholder="请填写巡检内容"></textarea>
             </div>
             <div class="margin-top12 color-666">上传附件</div>
-            <div class="margin-top6 file-div">
+            <div class="margin-top6 file-div" onclick="uploadPhoto()">
               <img src="../../image/camera.png" class="margin-top75 margin-bot3 file-img" alt="">
               <div class="file-text">上传照片</div>
             </div>
@@ -104,10 +104,10 @@
         </div>
         <div class="abnormal-type-item">
           <div class="flex1">
-            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 管道损坏</label>
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox" value="1"> 管道损坏</label>
           </div>
           <div class="flex1">
-            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 偷盗水事件</label>
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox" value="2"> 偷盗水事件</label>
           </div>
           <div class="flex1"></div>
         </div>
@@ -118,13 +118,13 @@
         </div>
         <div class="abnormal-type-item">
           <div class="flex1">
-            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 参数异常</label>
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox" value="1"> 参数异常</label>
           </div>
           <div class="flex1">
-            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 设备损坏</label>
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox" value="2"> 设备损坏</label>
           </div>
           <div class="flex1">
-            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 异常事件</label>
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox" value="3"> 异常事件</label>
           </div>
         </div>
 
@@ -134,24 +134,24 @@
         </div>
         <div class="abnormal-type-item">
           <div class="flex1">
-            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 管道损坏</label>
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox" value="1"> 管道破损</label>
           </div>
           <div class="flex1">
-            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 偷盗水事件</label>
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox" value="2"> 阀门损坏</label>
           </div>
           <div class="flex1">
-            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 异常事件</label>
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox" value="3"> 消防栓损坏</label>
           </div>
         </div>
         <div class="abnormal-type-item">
           <div class="flex1">
-            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 管道损坏</label>
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox" value="1"> 管道漏损</label>
           </div>
           <div class="flex1">
-            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 偷盗水事件</label>
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox" value="2"> 设备异常</label>
           </div>
           <div class="flex1">
-            <label><input class="aui-checkbox" type="checkbox" name="checkbox"> 异常事件</label>
+            <label><input class="aui-checkbox" type="checkbox" name="checkbox" value="3"> 其他异常</label>
           </div>
         </div>
       </ul>
@@ -169,16 +169,5 @@
   <script type="text/javascript" src="../../ajax/methodAjax.js"></script>
 
   <script type="text/javascript" src="../../script/method/addMethod.js"></script>
-  <script type="text/javascript">
-  // function saveCheck() {
-  //     var arry = new Array();
-  //     //循环所有选中的值
-  //     $('input[name="checkbox"]:checked').each(function(index, element) {
-  //         //追加到数组中
-  //         arry.push($(this).val());
-  //     });
-  //     //输出到控制台
-  //     alert("选中值："+ arry);
-  // }
-  </script>
+
 </html>

@@ -26,14 +26,14 @@ function getEventDetail(path,data,showRet,showErr){
       showRet(ret)
     },
     error:function(err){
-      // console.log(JSON.stringify(err));
+      console.log(JSON.stringify(err));
       showErr(err)
     }
   }
   ajaxMethod(options)
 }
 // 获取添加事件
-function getInsertEvent(path,data,showRet,showErr){
+function getEventInsert(path,data,showRet,showErr){
   console.log(baseUrl+path);
   var options = {
     url:baseUrl+path,

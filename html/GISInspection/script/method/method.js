@@ -6,11 +6,11 @@ apiready = function() {
   initOnPending();
 }
 
-// 获取事件列表
+// 获取待接收、转工单、已关闭事件列表
 function getListData(data,status){
   getEventList("api/services/Inspection/EventService/GetEventList",data,showRet,showErr);
   function showRet(ret){
-    // console.log(JSON.stringify(ret));
+    console.log(JSON.stringify(ret));
     $('#dataList').html('');
     var data = {
         list: [
@@ -31,6 +31,30 @@ function getListData(data,status){
     };
     var str = template(status, data);
     $('#dataList').append(str);
+    // api.showProgress({
+    //     style: 'default',
+    //     animationType: 'fade',
+    //     title: '加载中...',
+    //     modal: false
+    // });
+    // getEventList("api/services/Inspection/EventService/GetEventList",data,showRet,showErr);
+    // function showRet(ret) {
+    //   api.hideProgress();
+    //   console.log("--------------------------"+status);
+    //   if(ret.success){
+    //     $('#dataList').html('');
+    //     // var data = transT(ret.result.items);
+    //     // console.log(JSON.stringify(data));
+    //     if(data.length){
+    //       var list = {list:data};
+    //       var str = template(status, list);
+    //       $('#dataList').append(str);
+    //     }else{
+    //       var str="<div style='text-align:center;margin:20px;'>暂无数据</div>"
+    //       $('#dataList').append(str);
+    //     }
+    //   }
+    // }
   }
 
   function showErr(err){
@@ -90,11 +114,22 @@ function onMenu(index, el) {
 }
 // 获取事件详情
 function onOpenMethodDetail(el) {
+  console.log(el);
   api.openWin({
       name: 'methodDetail',
       url: './methodDetail.html',
       pageParam: {
-        Id: $(el).attr('param')
+        Id: el
       }
+  });
+}
+// 跳转到上报事件页面
+function onOpenReportEvent() {
+  api.openWin({
+    name: 'addMethodReport',
+    url: './addMethodReport.html',
+    pageParam: {
+      name: 'test'
+    }
   });
 }

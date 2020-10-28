@@ -18,16 +18,29 @@ apiready = function() {
       $(this).click(function() {
           // alert($(this).text())
           $('#abnormalType').val($(this).text());
-          onHideAbnormalTypPopup();
+
+          var chk_value = [];
+
+          $('input[name="checkbox"]:checked').each(function(){ //遍历，将所有选中的值放到数组中
+              var res = $(this).val();
+              chk_value.push(res)
+              console.log(res)
+
+          });
+
+          alert(chk_value.length==0 ?'你还没有选择任何内容！':chk_value);
+
+
       });
     });
+
     onSubmit();
 }
 var popup = new auiPopup();
-
-// function saveCheck (){
-//   onHideAbnormalTypPopup();
-// }
+// 点击确定关闭弹窗
+function saveCheck (){
+  onHideAbnormalTypPopup();
+}
 // 关闭事件类型弹窗
 function onHidePopup(){
     popup.hide(document.getElementById("methodTypePop"));
@@ -48,7 +61,7 @@ function onSubmit(){
     content:'',
     resourceInfoList:[]
   }
-  getInsertEvent("api/services/Inspection/EventService/InsertEvent",data,showRet,showErr);
+  getEventInsert("api/services/Inspection/EventService/InsertEvent",data,showRet,showErr);
   function showRet(ret){
     alert(JSON.stringify(ret));
   }
@@ -72,4 +85,49 @@ function onOpenArea(type) {
       }
   });
 
+}
+// 点击拍照弹出选择框，拍照或相册选择
+function uploadPhoto() {
+  api.actionSheet({
+      buttons: ['拍照', '相册选择']
+  }, function(ret, err) {
+    console.log(JSON.stringify(ret));
+    console.log(JSON.stringify(err));
+    if (ret.buttonIndex == 1) {
+      // 选择了拍照
+      var type = 'camera';
+      getPicture(type, showRet, showErr);
+
+      function showRet(ret) {
+        console.log(JSON.stringify(ret));
+        imgList.push(ret);
+        showImg(imgList);
+      }
+
+      function showErr(err) {
+        console.log(JSON.stringify(err));
+        // showImg(imgList);
+      }
+
+      // showImg(imgList);
+    } else if (ret.buttonIndex == 2) {
+      // 选择了从相册选择
+      var type = 'album';
+      getPicture(type, showRet, showErr);
+
+      function showRet(ret) {
+        console.log(JSON.stringify(ret));
+        imgList.push(ret[0]);
+        console.log(JSON.stringify(imgList));
+        showImg(imgList);
+      }
+
+      function showErr(err) {
+        console.log(JSON.stringify(err));
+        // showImg(imgList);
+      }
+
+
+    }
+  })
 }
