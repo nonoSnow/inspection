@@ -26,7 +26,8 @@ function subJobClose(){
   }
   var data={
     Id:Id,
-    closeReason:$("#closeReason").val()
+    closeReason:$("#closeReason").val(),
+    resourceInfoList:imgList
   }
   console.log(JSON.stringify(data));
   api.showProgress({
@@ -47,6 +48,8 @@ function subJobClose(){
       });
       // 清空数据
       clearData();
+      api.closeWin();
+
     }else {
       alert("关闭工单失败")
     }

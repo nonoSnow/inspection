@@ -125,9 +125,11 @@
           <div class="margin-top6 font-S75 color-666 start-time">
             开始时间：{{value.creationTime}}
           </div>
+          {{if value.completeTime}}
           <div class="margin-top6 font-S75 color-666 end-time">
             完成时间：{{value.completeTime}}
           </div>
+          {{/if}}
         </div>
     </li>
     {{/each}}
