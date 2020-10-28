@@ -141,12 +141,12 @@
 <script type="text/template" id='onPending'>
   <!-- 事件待处理 -->
   {{each list value i}}
-  <li class="method-item padding75 bgc-ff border-radius4 display-flex" tapmode onclick="onOpenMethodDetail({{value.Id}})">
+  <li class="method-item padding75 bgc-ff border-radius4 display-flex" tapmode onclick="onOpenMethodDetail(this)" param="{{value.id}}">
       <div class="item-img">
           <img src="../../image/method-item.png" class='method-item-img' alt="">
       </div>
       <div class="item-text height100 display-flex flex-column line-height15 font-S8">
-          <div class="flex1-auto color-333">事件类型：{{value.type}}</div>
+          <div class="flex1-auto color-333">事件类型：{{value.typeStr}}</div>
           <div class="flex1-auto color-666">异常类型：{{value.errorType}}</div>
           <div class="flex1-auto color-666">提交时间：{{value.creationTime}}</div>
       </div>
@@ -156,12 +156,12 @@
 <script type="text/template" id='workOrder'>
   <!-- 事件转工单 -->
   {{each list value i}}
-  <li class="method-item padding75 bgc-ff border-radius4 display-flex" tapmode onclick="onOpenMethodDetail({{value.Id}})">
+  <li class="method-item padding75 bgc-ff border-radius4 display-flex" tapmode onclick="onOpenMethodDetail(this)" param="{{value.id}}">
       <div class="item-img">
           <img src="../../image/method-item.png" class='method-item-img' alt="">
       </div>
       <div class="item-text height100 display-flex flex-column line-height15 font-S8">
-          <div class="flex1-auto color-333">事件类型：{{value.type}}</div>
+          <div class="flex1-auto color-333">事件类型：{{value.typeStr}}</div>
           <div class="flex1-auto color-666">异常类型：{{value.errorType}}</div>
           <div class="flex1-auto color-666">提交时间：{{value.creationTime}}</div>
       </div>
@@ -171,12 +171,12 @@
 <script type="text/template" id='closed'>
   <!-- 事件已关闭 -->
   {{each list value i}}
-  <li class="method-item padding75 bgc-ff border-radius4 display-flex" tapmode onclick="onOpenMethodDetail({{value.Id}})">
+  <li class="method-item padding75 bgc-ff border-radius4 display-flex" tapmode onclick="onOpenMethodDetail(this)" param="{{value.id}}">
       <div class="item-img">
           <img src="../../image/method-item.png" class='method-item-img' alt="">
       </div>
       <div class="item-text height100 display-flex flex-column line-height15 font-S8">
-          <div class="flex1-auto color-333">事件类型：{{value.type}}</div>
+          <div class="flex1-auto color-333">事件类型：{{value.typeStr}}</div>
           <div class="flex1-auto color-666">异常类型：{{value.errorType}}</div>
           <div class="flex1-auto color-666">提交时间：{{value.creationTime}}</div>
       </div>

@@ -1,64 +1,66 @@
-var type = 0;
+var methodType = 0;
 
 apiready = function() {
   var header = $api.byId('header');
   $api.fixStatusBar(header);
   initOnPending();
+  onMenu(methodType)
 }
 
 // 获取待接收、转工单、已关闭事件列表
 function getListData(data,status){
   getEventList("api/services/Inspection/EventService/GetEventList",data,showRet,showErr);
   function showRet(ret){
-    console.log(JSON.stringify(ret));
-    $('#dataList').html('');
-    var data = {
-        list: [
-          {
-          Id:"1",
-          type:"巡检异常1",
-          errorType:"外观损坏",
-          creationTime:"2020-09-22 18:00",
-        },
-        {
-          Id:"2",
-          type:"巡检异常2",
-          errorType:"外观损坏",
-          creationTime:"2020-09-22 18:00",
-
-        }
-        ]
-    };
-    var str = template(status, data);
-    $('#dataList').append(str);
-    // api.showProgress({
-    //     style: 'default',
-    //     animationType: 'fade',
-    //     title: '加载中...',
-    //     modal: false
-    // });
-    // getEventList("api/services/Inspection/EventService/GetEventList",data,showRet,showErr);
-    // function showRet(ret) {
-    //   api.hideProgress();
-    //   console.log("--------------------------"+status);
-    //   if(ret.success){
-    //     $('#dataList').html('');
-    //     // var data = transT(ret.result.items);
-    //     // console.log(JSON.stringify(data));
-    //     if(data.length){
-    //       var list = {list:data};
-    //       var str = template(status, list);
-    //       $('#dataList').append(str);
-    //     }else{
-    //       var str="<div style='text-align:center;margin:20px;'>暂无数据</div>"
-    //       $('#dataList').append(str);
+    // console.log(JSON.stringify(ret));
+    // $('#dataList').html('');
+    // var data = {
+    //     list: [
+    //       {
+    //       Id:"1",
+    //       type:"巡检异常1",
+    //       errorType:"外观损坏",
+    //       creationTime:"2020-09-22 18:00",
+    //     },
+    //     {
+    //       Id:"2",
+    //       type:"巡检异常2",
+    //       errorType:"外观损坏",
+    //       creationTime:"2020-09-22 18:00",
+    //
     //     }
-    //   }
-    // }
+    //     ]
+    // };
+    // var str = template(status, data);
+    // $('#dataList').append(str);
+    api.showProgress({
+        style: 'default',
+        animationType: 'fade',
+        title: '加载中...',
+        modal: false
+    });
+    getEventList("api/services/Inspection/EventService/GetEventList",data,showRet,showErr);
+    function showRet(ret) {
+      api.hideProgress();
+      console.log("--------------------------"+status);
+      if(ret.success){
+        $('#dataList').html('');
+        var data = ret.result.items;
+        console.log(JSON.stringify(data));
+        if(data.length){
+          var list = {list:data};
+          var str = template(status, list);
+          $('#dataList').append(str);
+        }else{
+          var str="<div style='text-align:center;margin:20px;'>暂无数据</div>"
+          $('#dataList').append(str);
+        }
+      }
+    }
   }
 
   function showErr(err){
     // console.log(JSON.stringify(err));
+    api.hideProgress();
     if(err.body.error.message){
       alert(err.body.error.message)
     }else {
@@ -71,7 +73,7 @@ function initOnPending(){
   var data = {
     status:1,
     pageIndex:1,
-    MaxResultCount:10
+    maxResultCount:10
   }
   getListData(data,'onPending');
 }
@@ -80,7 +82,7 @@ function initWorkOrder(){
   var data = {
     status:2,
     pageIndex:1,
-    MaxResultCount:10
+    maxResultCount:10
   }
   getListData(data,'workOrder');
 
@@ -91,13 +93,13 @@ function initClosed(){
   var data = {
     status:3,
     pageIndex:1,
-    MaxResultCount:10
+    maxResultCount:10
   }
   getListData(data,'closed');
 }
 
 function onMenu(index, el) {
-  type = index;
+  methodType = index;
   if (index == 0) {
     // 待处理事件
     initOnPending()
@@ -109,17 +111,18 @@ function onMenu(index, el) {
     initClosed()
   }
   onCheckMenu(el, function(){
-
+    // console.log(el)
   });
 }
-// 获取事件详情
+// 跳转到事件详情页面
 function onOpenMethodDetail(el) {
   console.log(el);
   api.openWin({
       name: 'methodDetail',
       url: './methodDetail.html',
       pageParam: {
-        Id: el
+        type: methodType,
+        Id: $(el).attr('param')
       }
   });
 }

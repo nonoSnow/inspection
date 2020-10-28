@@ -107,8 +107,11 @@
       <div class="margin-top75">
         状态：
         <span class='inline-block task-status-circular bgc-gre margin-right3'></span>
-        {{status}}
+        {{statusStr}}
       </div>
+      <div class="margin-top75">巡检人：{{creationName}}</div>
+      <div class="margin-top75">联系电话：{{phone}}</div>
+      <div class="margin-top75">巡检时间：{{creationTime}}</div>
       <div class="margin-top75">地址：{{address}}</div>
     </li>
     <li class="padding75 bgc-ff border-radius4 margin-top75">
@@ -117,7 +120,7 @@
       <div class="margin-top75">
         设备点状态：
         <span class='inline-block task-status-circular bgc-dan margin-right3'></span>
-        {{deviceStatus}}
+        {{deviceStatusStr}}
       </div>
       <div class="margin-top75">异常类型：{{errorType}}</div>
       <div class="margin-top75">事件类型：{{typeStr}}</div>
@@ -127,8 +130,12 @@
         <textarea name="name" class='width100 height100'>{{content}}</textarea>
       </div>
       <div class="margin-top75">附件信息：</div>
-      <div class="margin-top6 file-div">
-        <img src="../../image/camera.png" class="margin-top75 margin-bot3 file-img" alt="">
+      <div class="file-list">
+        {{each resourcelist value i}}
+        <div class="margin-top6 file-div">
+          <img src="{{url}}{{value.url}}" class="margin-top75 margin-bot3 file-img" alt="">
+        </div>
+        {{/each}}
       </div>
     </li>
 

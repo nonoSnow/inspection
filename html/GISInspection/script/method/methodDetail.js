@@ -1,27 +1,41 @@
-var id;
+var methodType;
+var Id;
 apiready = function() {
   var header = $api.byId('header');
   // 实现沉浸式状态栏效果
   $api.fixStatusBar(header);
   console.log('你已进入了设备详情页面');
-  id = api.pageParam.Id;
-  // console.log(id);
-  showDetailsData(id);
+  methodType = api.pageParam.type;
+  console.log(api.pageParam.Id);
+  Id=api.pageParam.Id;
+  showDetailsData(api.pageParam.Id)
+  // showDetailsData(id);
 }
 
 
 // 获取事件设备详情
 function showDetailsData(id){
   var data = {
-    id: id
+  Id:id
   }
+  api.showProgress({
+      style: 'default',
+      animationType: 'fade',
+      title: '加载中...',
+      modal: false
+  });
   getEventDetail("api/services/Inspection/EventService/GetEventDetails",data,showRet,showErr);
   function showRet(ret){
     console.log(JSON.stringify(ret));
-    $('#detailList').html('');
-    var str = template("methodList", data);
-    $('#detailList').append(str);
-    console.log(JSON.stringify($('#detailList').html()));
+    api.hideProgress();
+    console.log("----------------------------"+id);
+      if(ret.success){
+        $('#detailList').html('');
+        var data = ret.result;
+        var str = template("methodList", data);
+        $('#detailList').append(str);
+        // console.log(JSON.stringify($('#detailList').html()));
+      }
   }
 
   function showErr(err){
