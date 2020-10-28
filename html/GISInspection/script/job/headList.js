@@ -129,10 +129,10 @@ function onCheck(){
           checkHeadObj
       }
   });
-  api.openWin({
-      name: 'addJob',
-      url: './addJob.html'
-  });
-
+  // api.openWin({
+  //     name: 'addJob',
+  //     url: './addJob.html'
+  // });
+  api.closeWin();
   // alert($(el).attr('param'))
 }

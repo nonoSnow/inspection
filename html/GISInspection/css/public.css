@@ -912,6 +912,10 @@ body {
   overflow: hidden;
 }
 
+.overflowScroll {
+  overflow-y: auto;
+}
+
 .del-icon {
   width: 0.7rem;
   height: 0.7rem;
