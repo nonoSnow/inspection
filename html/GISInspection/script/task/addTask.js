@@ -1,8 +1,19 @@
+// 负责人
+var headList = {};
+
 apiready = function() {
   var header = $api.byId('header');
   $api.fixStatusBar(header);
 
-  console.log('已经初始化新增任务了！！！！！！！！');
+  // 监听负责人的选择
+  api.addEventListener({
+      name: 'headList'
+  }, function(ret, err) {
+      // api.closeWin({name:'headList'})
+      // 获取选中的负责人信息
+      headList = JSON.parse(ret.value.checkHeadObj);
+      $('#person').val(headList.name);
+  });
 
 }
 
@@ -10,7 +21,7 @@ apiready = function() {
 function onOpenHead() {
     api.openWin({
         name: 'headList',
-        url: './headList.html'
+        url: '../Job/headList.html'
     });
 }
 
@@ -47,4 +58,27 @@ function openEndDate() {
 // 提交
 function subTask() {
   console.log('点击了提交');
+
+  var taskName = $('#').val();
+  console.log(taskName);
+  if (taskName == '') {
+    // 提示没有输入任务名称
+  }
+
+  console.log(headList.name);
+  if (headList.name == undefined) {
+    // 提示没有选择负责人
+  }
+
+  var planStartTime = $('#planStartTime').val();
+  console.log(planStartTime);
+
+  if (planStartTime == '') {
+    // 提示输入开始时间
+  } else {
+    // 比较时间大小，开始时间必须从第二天开始
+  }
+
+  var planEndTime = $('#planEndTime').val();
+  console.log(planEndTime);
 }

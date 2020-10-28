@@ -3,44 +3,44 @@ var jobType; // 工单类型
 var source=2; // 来源：1：PC端；2：APP；3：第三方（管网）
 var imgList = []; //图片列表
 apiready = function() {
-        var header = $api.byId('header');
-        // 实现沉浸式状态栏效果
-        $api.fixStatusBar(header);
+    var header = $api.byId('header');
+    // 实现沉浸式状态栏效果
+    $api.fixStatusBar(header);
 
-        // 工单类型
-        $(".custom-popup-list li").each(function() {
-            $(this).click(function() {
-                $('#jobType').val($(this).text());
-                jobType = parseInt($(this).attr("value"));
-                $('.custom-popup-item').removeClass('color-598');
-                $(this).addClass('color-598');
-                onHidePopup();
-            });
+    // 工单类型
+    $(".custom-popup-list li").each(function() {
+        $(this).click(function() {
+            $('#jobType').val($(this).text());
+            jobType = parseInt($(this).attr("value"));
+            $('.custom-popup-item').removeClass('color-598');
+            $(this).addClass('color-598');
+            onHidePopup();
         });
+    });
 
-        // 监听负责人的选择
-        api.addEventListener({
-            name: 'headList'
-        }, function(ret, err) {
-            // api.closeWin({name:'headList'})
-            // 获取选中的负责人信息
-            headList = JSON.parse(ret.value.checkHeadObj);
-            $('#person').val(headList.name);
-        });
+    // 监听负责人的选择
+    api.addEventListener({
+        name: 'headList'
+    }, function(ret, err) {
+        // api.closeWin({name:'headList'})
+        // 获取选中的负责人信息
+        headList = JSON.parse(ret.value.checkHeadObj);
+        $('#person').val(headList.name);
+    });
 
-        // 初始化图片列表
-        showImg(imgList);
-    }
+    // 初始化图片列表
+    showImg(imgList);
+}
     // 初始化日期
 var rd = new Rolldate({
-        el: '#planCompleteTime',
-        format: 'YYYY-MM-DD hh',
-        beginYear: 2000,
-        endYear: 2100,
-        lang: {
-            title: '请选择日期'
-        }
-    })
+    el: '#planCompleteTime',
+    format: 'YYYY-MM-DD hh',
+    beginYear: 2000,
+    endYear: 2100,
+    lang: {
+        title: '请选择日期'
+    }
+})
     // 打开日期选择
 function openDate() {
     rd.show();
@@ -117,7 +117,7 @@ function subJob(){
     return false;
   }
   // 判断巡检区域是否填写
-  console.log(JSON.stringify(imgList));
+  // console.log(JSON.stringify(imgList));
   var data = {
     content:$("#content").val(),  //工单内容
     type:jobType,     //工单类型（1：查漏；2：查漏延伸；3：维修管道；4：维修管道延伸；5：违章罚款；6：贫水区改造）
@@ -142,7 +142,7 @@ function subJob(){
 
 // 上传数据
 function uploadData(data){
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   api.showProgress({
       style: 'default',
       animationType: 'fade',
@@ -152,7 +152,7 @@ function uploadData(data){
   jobPostMethod("api/services/Inspection/WorkOrderService/InsertWorkOrder",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
-    console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(ret));
     if(ret.success){
       api.toast({
           msg: '新增工单成功',
@@ -168,7 +168,7 @@ function uploadData(data){
 
   function showErr(err){
     api.hideProgress();
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(err));
     if(err.body){
       if(err.body.error){
         api.alert({
@@ -202,15 +202,15 @@ function action() {
   api.actionSheet({
       buttons: ['拍照', '相册选择']
   }, function(ret, err) {
-    console.log(JSON.stringify(ret));
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(err));
     if (ret.buttonIndex == 1) {
       // 选择了拍照
       var type = 'camera';
       getPicture(type, showRet, showErr);
 
       function showRet(ret) {
-        console.log(JSON.stringify(ret));
+        // console.log(JSON.stringify(ret));
         if(ret.length>0){
           imgList.push(ret[0]);
           showImg(imgList);
@@ -218,7 +218,7 @@ function action() {
       }
 
       function showErr(err) {
-        console.log(JSON.stringify(err));
+        // console.log(JSON.stringify(err));
       }
     } else if (ret.buttonIndex == 2) {
       // 选择了从相册选择
@@ -236,21 +236,21 @@ function action() {
       }
 
       function showErr(err) {
-        console.log(JSON.stringify(err));
+        // console.log(JSON.stringify(err));
       }
     }
   })
 }
 // 显示图片
 function showImg(data) {
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   var param = {
     list: data,
     url: baseUrl
   }
   $('#imgBox').html('');
   var str = template('imgData', param);
-  console.log(str);
+  // console.log(str);
   $('#imgBox').append(str);
   // $('#imgBox').prepend(str);
 }
@@ -258,9 +258,9 @@ function showImg(data) {
 function deleteImg(that) {
   if (that != null) {
     var imgIndex = $(that).attr('parse');
-    console.log(imgIndex);
+    // console.log(imgIndex);
     imgList = deleteArray(imgList, imgIndex);
-    console.log(JSON.stringify(imgList));
+    // console.log(JSON.stringify(imgList));
     showImg(imgList);
   }
 }

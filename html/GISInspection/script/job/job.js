@@ -122,7 +122,7 @@ function onMenu(index, el) {
 
 // 任务详情
 function onOpenJobDetail(el) {
-  console.log($(el).attr('param'));
+  // console.log($(el).attr('param'));
   api.openWin({
       name: 'jobDetail',
       url: './jobDetail.html',
@@ -194,7 +194,7 @@ function transT(data){
     data[i].planCompleteTime=data[i].planCompleteTime.replace("T"," ");
     data[i].creationTime=data[i].creationTime.replace("T"," ");
     data[i].completeTime=data[i].completeTime==""||data[i].completeTime==null?data[i].completeTime:data[i].completeTime.replace("T"," ");
-    console.log(data[i].completeTime);
+    // console.log(data[i].completeTime);
 
     data[i].headName = headName;
   }

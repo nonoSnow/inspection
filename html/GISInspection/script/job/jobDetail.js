@@ -8,7 +8,7 @@ apiready = function() {
   jobType = api.pageParam.type;
   console.log(api.pageParam.Id);
   Id=api.pageParam.Id;
-  showData(api.pageParam.Id)
+  showData(api.pageParam.Id);
 }
 
 // 渲染页面
@@ -109,7 +109,7 @@ function onOpenCloseTurn(type) {
         name: 'jobCloseTurn',
         url: './jobCloseTurn.html',
         pageParam: {
-            type: type
+            Id: Id
         }
     });
   }

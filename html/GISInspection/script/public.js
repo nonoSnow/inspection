@@ -164,3 +164,87 @@ function deleteArray(data, startIndex, length) {
   data.splice(startIndex, len);
   return data;
 }
+
+/**
+* 判断结束时间是否大于等于开始时间
+* @param {String} startTime 开始时间
+* @param {String} endTime 结束时间
+* @param {Num} period 间隔周期（小时）,结束时间是否大于等于开始时间多少小时
+**/
+function judgeTime(startTime, endTime, period) {
+  // 开始的时间
+  let startDate = new Date(startTime);
+  let start = startDate.valueOf();
+  // 结束时间
+  let endDate = new Date(endTime);
+  let end = endDate.valueOf();
+
+  if (period == undefined) {
+    if (end >= start) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    let intervalTime = period * 60 * 60 * 1000;
+    start = start + intervalTime;
+    if (end >= start) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
+
+/**
+* Parse the time to string时间日期格式转换
+* @param {(Object|string|number)} time
+* @param {string} cFormat
+* @returns {string | null}
+**/
+function parseTime(time, cFormat) {
+  if (arguments.length === 0 || !time) {
+    return null;
+  }
+  const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}';
+  let date;
+  if (typeof time === 'object') {
+    date = time;
+  } else {
+    if (typeof time === 'string') {
+      if (/^[0-9]+$/.test(time)) {
+        // support "1548221490638"
+        time = parseInt(time);
+      } else if (!time.includes('T')) {
+        // 判断传入进来的时间字符串是否包含 T 字符，这是时间格式，可以直接使用new Date转换，不需要操作字符串，例：1.2020-01-13T16:00:00  2.2020-01-13T16:00:00.000Z
+        // support safari
+        // https://stackoverflow.com/questions/4310953/invalid-date-in-safari
+        time = time.replace(new RegExp(/-/gm), '/');
+      }
+    }
+
+    if (typeof time === 'number' && time.toString().length === 10) {
+      time = time * 1000;
+    }
+    date = new Date(time);
+  }
+  const formatObj = {
+    y: date.getFullYear(),
+    m: date.getMonth() + 1,
+    d: date.getDate(),
+    h: date.getHours(),
+    i: date.getMinutes(),
+    s: date.getSeconds(),
+    a: date.getDay()
+  };
+  const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
+    const value = formatObj[key];
+    // Note: getDay() returns 0 on Sunday
+    if (key === 'a') {
+      return ['日', '一', '二', '三', '四', '五', '六'][value];
+    }
+    return value.toString().padStart(2, '0');
+  });
+  return time_str;
+}

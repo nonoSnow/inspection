@@ -336,7 +336,7 @@ function showData(data, status) {
   function showErr(err) {
     console.log(JSON.stringify(err));
     api.hideProgress();
-    if (err.body.error != undefind) {
+    if (err.body.error != undefined) {
       api.toast({
           msg: err.body.error.message,
           duration: 2000,
