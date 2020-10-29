@@ -154,6 +154,10 @@
             <!-- <div style='width: 100%; height: 6rem; text-align: center; line-height: 6rem; background-color: #CCC;'>地图图片</div>
           </li> -->
         </ul>
+        <div id="haveNothing" class="text-cent aui-hide">
+          <img class="margin-top200" src="../../image/nothing.png" alt="">
+          <div class="text-cent color-666 line-height25">暂无巡检点</div>
+        </div>
 
 
         <!-- <ul class="aui-content-padded task-list line-height1 font-S75 color-333 aui-hide">
@@ -184,7 +188,7 @@
         </ul> -->
       </div>
 
-      <footer class="aui-bar aui-bar-tab display-flex footer">
+      <footer id="footer" class="aui-bar aui-bar-tab display-flex footer">
         <div class="flex1">
           <div class='footer-btn btn-border task-stop' tapmode onclick="clickFirst()">
             暂停
@@ -247,7 +251,14 @@
       </div>
       <div class="display-flex margin-top145">
         <div class='inline-block info-list-title'>任务参与人：</div>
-        <div class='inline-block text-right info-list-cont'>{{participant}}</div>
+        <div class='inline-block text-right info-list-cont'>
+          {{each participant value i}}
+          {{if participant.length != 0 && i != 0}}
+          、
+          {{/if}}
+          {{value}}
+          {{/each}}
+        </div>
       </div>
       <div class="display-flex margin-top145">
         <div class='inline-block info-list-title'>预计开始时间：</div>
@@ -290,12 +301,12 @@
         名称：{{value.name}}
         {{if value.status == 2}}
         <div class='item-btn default'>
-          正常
+          <!-- 正常 -->
           {{value.statusStr}}
         </div>
         {{else if value.status == 3}}
         <div class='item-btn danger'>
-          异常
+          <!-- 异常 -->
           {{value.statusStr}}
         </div>
         {{/if}}

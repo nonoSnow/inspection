@@ -23,7 +23,6 @@ apiready = function() {
     isAbnormal = true;
   }
 
-  initDevBasicInfo();
   initDevInfo();
   showImg(imgList);
   onPageInit();
@@ -74,20 +73,76 @@ function showImg(data) {
 }
 
 // 初始化基础信息
-function initDevBasicInfo() {
+function initDevInfo() {
   $('#devInfo').html('');
 
-  var str = template('devBasicInfo', details);
-  $('#devInfo').append(str);
+  var data = {
+    deviceId: details.id,
+    taskId: details.taskId,
+    status: details.status,
+    inspectionStatus: details.inspectionStatus
+  }
+
+  console.log(JSON.stringify(data));
+
+  GetPointDetails('api/services/Inspection/InspectionTaskService/GetPointDetails', data, showRet, showErr);;
+
+  function showRet(ret) {
+    console.log(JSON.stringify(ret));
+
+    if (ret.result != null) {
+      $('#devInfo').removeClass('aui-hide');
+      $('#devInfoBox').removeClass('aui-hide');
+      $('#haveNothing').addClass('aui-hide');
+
+      // 基础信息
+      var str = template('devBasicInfo', ret.result);
+      $('#devInfo').append(str);
+
+      // 巡检信息
+      var str1 = template('devceInfo', ret.result);
+      $('#devInfoBox').append(str1);
+    } else {
+      $('#devInfo').addClass('aui-hide');
+      $('#devInfoBox').addClass('aui-hide');
+      $('#haveNothing').removeClass('aui-hide');
+      api.toast({
+          msg: '查询内容为空',
+          duration: 2000,
+          location: 'middle'
+      });
+    }
+  }
+
+  function showErr(err) {
+    if(err.body.error != undefined){
+      // alert(err.body.error.message);
+      api.toast({
+          msg: err.body.error.message,
+          duration: 2000,
+          location: 'middle'
+      });
+
+    }else{
+      api.toast({
+          msg: err.msg,
+          duration: 2000,
+          location: 'middle'
+      });
+    }
+  }
+
+  // var str = template('devBasicInfo', details);
+  // $('#devInfo').append(str);
 }
 
 // 初始化设备信息
-function initDevInfo() {
-  $('#devInfoBox').html('');
-
-  var str = template('devceInfo', details);
-  $('#devInfoBox').append(str);
-}
+// function initDevInfo() {
+//   $('#devInfoBox').html('');
+//
+//   var str = template('devceInfo', details);
+//   $('#devInfoBox').append(str);
+// }
 
 // 巡检记录
 function onOpenInspectionRecord() {
