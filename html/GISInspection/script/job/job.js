@@ -9,7 +9,7 @@ apiready = function() {
   var userLoginInformation = $api.getStorage('userLoginInformation');
   // console.log(JSON.stringify(userLoginInformation));
   headName=userLoginInformation.currentUserInfo.userInfo.orgName;
-  onMenu(jobType)
+  // onMenu(jobType)
   // 监听事件 刷新页面
   api.addEventListener({
       name: 'initJob'
@@ -206,35 +206,57 @@ function transT(data){
 
 // 填写工单
 function onWrite(el){
-  var Id=$(el).attr('param'); //工单ID
-  // console.log(Id);
-  // 跳转到关闭工单页面
-  api.openWin({
-      name: 'jobHandle',
-      url: './jobHandle.html',
-      pageParam: {
-          Id:Id
-      }
-  });
+  var param=JSON.parse($(el).attr('param')); //工单
+  console.log(JSON.stringify(param));
+  // 工单类型（1：查漏；2：查漏延伸；3：维修管道；4：维修管道延伸；5：违章罚款；6：贫水区改造）
+  if(param.type==1 || param.type==2){
+    // 1：查漏；2：查漏延伸；
+    // 跳转到关闭工单页面
+    api.openWin({
+        name: 'jobHandleLeak',
+        url: './jobHandleLeak.html',
+        pageParam: {
+            Id:param.id
+        }
+    });
+  }else if (param.type==5) {
+    // 5：违章罚款；
+    api.openWin({
+        name: 'jobHandlePenalty',
+        url: './jobHandlePenalty.html',
+        pageParam: {
+            Id:param.id
+        }
+    });
+  }else{
+    // 3：维修管道；4：维修管道延伸；6：贫水区改造
+    api.openWin({
+        name: 'jobHandleRepair',
+        url: './jobHandleRepair.html',
+        pageParam: {
+            Id:param.id
+        }
+    });
+  }
 }
 
 // 下拉刷新 上拉加载
 function refreshData(){
   // 下拉刷新
-  api.setRefreshHeaderInfo({
-      visible: true,
-      bgColor: '#F0F0F0',
-      textColor: '#999999',
-      textDown: '下拉刷新...',
-      textUp: '松开刷新...',
-      showTime: true
-  }, function(ret, err) {
-      setTimeout(function() {
-        console.log(jobType);
-          api.refreshHeaderLoadDone();
-          onMenu(jobType)
-      }, 500);
-  });
+  // api.setRefreshHeaderInfo({
+  //     visible: true,
+  //     bgColor: '#F0F0F0',
+  //     textColor: '#999999',
+  //     textDown: '下拉刷新...',
+  //     textUp: '松开刷新...',
+  //     showTime: true
+  // }, function(ret, err) {
+  //     setTimeout(function() {
+  //       console.log(jobType);
+  //         api.refreshHeaderLoadDone();
+  //         onMenu(jobType)
+  //     }, 500);
+  // });
 
   // 上拉加载
   // api.addEventListener({
