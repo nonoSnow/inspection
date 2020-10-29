@@ -26,14 +26,11 @@ function showData() {
 
   function showRet(ret) {
     api.hideProgress();
-
+    $(".reson").removeClass("aui-hide")
     console.log(JSON.stringify(ret));
-    if(ret.length>0){
-      imgList.push(ret[0]);
-      $("#transferReason").val(ret[0].transferReason);
-      imgList=ret[0].resourcelist;
-      showImg(imgList);
-    }
+    $("#transferReason").val(ret.result.transferReason);
+    imgList=ret.result.resourcelist;
+    showImg(imgList);
   }
 
   function showErr(err){
