@@ -22,10 +22,13 @@ apiready = function() {
       }
   });
 
+  // 监听下拉刷新，上拉加载
+  refreshData()
 }
 
 // 获取待接收、进行中、已完成的工单 接口调用
 function showData(data,status){
+  $('#dataList').html('');
   api.showProgress({
       style: 'default',
       animationType: 'fade',
@@ -40,7 +43,7 @@ function showData(data,status){
     // console.log("--------------------------"+status);
     // console.log(JSON.stringify(ret));
     if(ret.success){
-      $('#dataList').html('');
+      // $('#dataList').html('');
       var data = transT(ret.result.items);
       // console.log(JSON.stringify(data));
       if(data.length){
@@ -213,4 +216,33 @@ function onWrite(el){
           Id:Id
       }
   });
+}
+
+// 下拉刷新 上拉加载
+function refreshData(){
+  // 下拉刷新
+  api.setRefreshHeaderInfo({
+      visible: true,
+      bgColor: '#F0F0F0',
+      textColor: '#999999',
+      textDown: '下拉刷新...',
+      textUp: '松开刷新...',
+      showTime: true
+  }, function(ret, err) {
+      setTimeout(function() {
+        console.log(jobType);
+          api.refreshHeaderLoadDone();
+          onMenu(jobType)
+      }, 500);
+  });
+
+  // 上拉加载
+  // api.addEventListener({
+  //   name:'scrolltobottom',
+  //   extra:{
+  //       threshold:0            //设置距离底部多少距离时触发，默认值为0，数字类型
+  //   }
+  // }, function(ret, err){
+  //     alert('已滚动到底部');
+  // });
 }
