@@ -517,6 +517,10 @@ body {
 	padding-top: 5rem!important;
 }
 
+.padding-top05 {
+  padding-top: 0.5rem
+}
+
 .heightauto {
   height: auto;
 }

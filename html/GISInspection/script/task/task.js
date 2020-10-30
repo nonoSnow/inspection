@@ -1,6 +1,8 @@
 var taskTypeIndex = 0;
 var daiXunTotal = 0;
 
+var taskPageSize = 4;
+
 // 是否是领导
 var isLeader = true;
 
@@ -44,7 +46,7 @@ apiready = function() {
 
   var footer = $api.byId('footer');
   var footerH = $api.offset(footer).h;
-  console.log(footerH);
+  // console.log(footerH);
   // $("#list-box").css("height", );
 
 
@@ -66,7 +68,7 @@ apiready = function() {
     if (h + Math.ceil(st) >= sh) {
       switch (taskTypeIndex) {
         case 0:
-          console.log('这是进行中的任务');
+          // console.log('这是进行中的任务');
           if (goingHasNext) {
             // 如果有下一页，则页码++
             goingPageIndex++;
@@ -74,7 +76,7 @@ apiready = function() {
           }
           break;
         case 1:
-          console.log('这是待启动的任务');
+          // console.log('这是待启动的任务');
           if (receiveHasNext) {
             // 如果有下一页，则页码++
             receivePageIndex++;
@@ -89,7 +91,7 @@ apiready = function() {
           }
           break;
         case 2:
-          console.log('这是已暂停的任务');
+          // console.log('这是已暂停的任务');
           if (suspendHasNext) {
             // 如果有下一页，则页码++
             suspendPageIndex++;
@@ -104,7 +106,7 @@ apiready = function() {
           }
           break;
         case 3:
-          console.log('这是已完成的任务');
+          // console.log('这是已完成的任务');
           if (completedHasNext) {
             // 如果有下一页，则页码++
             completedPageIndex++;
@@ -128,7 +130,6 @@ apiready = function() {
 
   // $('#list-box').css('height', (mainBoxH - headerH - tabBoxH));
   initOngoing();
-
 }
 
 // 初始化进行中的任务列表
@@ -136,7 +137,7 @@ function initOngoing(){
   var data = {
     status: 2,
     pageIndex: goingPageIndex,
-    MaxResultCount: 10
+    MaxResultCount: taskPageSize
   }
   showData(data,'onGoing');
 }
@@ -146,7 +147,7 @@ function initReceived(){
   var data = {
     status: 1,
     pageIndex: receivePageIndex,
-    MaxResultCount: 10
+    MaxResultCount: taskPageSize
   }
   // console.log(JSON.stringify(data));
   showData(data,'received');
@@ -157,7 +158,7 @@ function initSuspended(){
   var data = {
     status: 3,
     pageIndex: suspendPageIndex,
-    MaxResultCount: 10
+    MaxResultCount: taskPageSize
   }
   showData(data,'suspended');
 }
@@ -167,175 +168,155 @@ function initCompleted(){
   var data = {
     status: 4,
     pageIndex: completedPageIndex,
-    MaxResultCount: 10
+    MaxResultCount: taskPageSize
   }
   showData(data,'completed');
 }
 
 function showData(data, status) {
-  console.log(JSON.stringify(data));
-  console.log(data);
+  // console.log(JSON.stringify(data));
+  // console.log(data);
   api.showProgress({
     title: '加载中...',
     text: '请稍后',
   });
-  $('#taskList').html('');
   getTaskDataSingle("api/services/Inspection/InspectionTaskService/AppGetTaskList",data,showRet,showErr);
 
   function showRet(ret) {
-    console.log('1111111111111111111111111111111111111');
-    console.log(JSON.stringify(ret));
+    // console.log('1111111111111111111111111111111111111');
+    // console.log(JSON.stringify(ret));
     // $('#taskList').html('');
     // console.log(JSON.stringify($('#taskList').html()));
 
+    var data;
     var str;
-    switch (status) {
-      case 'onGoing':
-        goingHasNext = ret.result.hasNextPage;
-        if (ret.result.items.length != 0) {
-          for (var i = 0; i < ret.result.items.length; i++) {
-            goingData.push(ret.result.items[i]);
+
+    if (ret.result.items.length != 0) {
+      $('#haveNothing').addClass('aui-hide');
+      $('#list-box').removeClass('bgc-ff');
+      switch (status) {
+        case 'onGoing':
+          goingHasNext = ret.result.hasNextPage;
+          // if (ret.result.items.length != 0) {
+            ret.result.items.forEach(function (item, i) {
+              if (item.planStartTime != null || item.planStartTime != '') {
+                item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+              }
+
+              if (item.startTime != null || item.startTime != '') {
+                item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+              }
+
+              if (item.endTime != null || item.endTime != '') {
+                item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+              }
+
+              if (item.planEndTime != null || item.planEndTime != '') {
+                item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+              }
+            })
+          // }
+          data = {
+            list: ret.result.items
           }
-        }
-        str = template(status, goingData);
-        break;
-      case 'received':
-        receiveHasNext = ret.result.hasNextPage;
-        if (ret.result.items.length != 0) {
-          for (var i = 0; i < ret.result.items.length; i++) {
-            receiveData.push(ret.result.items[i]);
+          str = template(status, data);
+          break;
+        case 'received':
+          receiveHasNext = ret.result.hasNextPage;
+          // if (ret.result.items.length != 0) {
+            ret.result.items.forEach(function (item, i) {
+              if (item.planStartTime != null || item.planStartTime != '') {
+                item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+              }
+
+              if (item.startTime != null || item.startTime != '') {
+                item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+              }
+
+              if (item.endTime != null || item.endTime != '') {
+                item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+              }
+
+              if (item.planEndTime != null || item.planEndTime != '') {
+                item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+              }
+            })
+          // }
+          data = {
+            list: ret.result.items
           }
-        }
-        str = template(status, receiveData);
-        break;
-      case 'suspended':
-        suspendHasNext = ret.result.hasNextPage;
-        if (ret.result.items.length != 0) {
-          for (var i = 0; i < ret.result.items.length; i++) {
-            suspendData.push(ret.result.items[i]);
+
+          str = template(status, data);
+          break;
+        case 'suspended':
+          suspendHasNext = ret.result.hasNextPage;
+          // if (ret.result.items.length != 0) {
+            ret.result.items.forEach(function (item, i) {
+              if (item.planStartTime != null || item.planStartTime != '') {
+                item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+              }
+
+              if (item.startTime != null || item.startTime != '') {
+                item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+              }
+
+              if (item.endTime != null || item.endTime != '') {
+                item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+              }
+
+              if (item.planEndTime != null || item.planEndTime != '') {
+                item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+              }
+            })
+          // }
+          data = {
+            list: ret.result.items
           }
-        }
-        str = template(status, suspendData);
-        break;
-      case 'completed':
-        completedHasNext = ret.result.hasNextPage;
-        if (ret.result.items.length != 0) {
-          for (var i = 0; i < ret.result.items.length; i++) {
-            completeData.push(ret.result.items[i]);
+          str = template(status, data);
+          break;
+        case 'completed':
+          completedHasNext = ret.result.hasNextPage;
+          // if (ret.result.items.length != 0) {
+            ret.result.items.forEach(function (item, i) {
+              if (item.planStartTime != null || item.planStartTime != '') {
+                item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+              }
+
+              if (item.startTime != null || item.startTime != '') {
+                item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+              }
+
+              if (item.endTime != null || item.endTime != '') {
+                item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+              }
+
+              if (item.planEndTime != null || item.planEndTime != '') {
+                item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+              }
+            })
+          // }
+          data = {
+            list: ret.result.items
           }
-        }
-        str = template(status, completeData);
-        break;
+          str = template(status, data);
+          break;
+      }
+
+      // console.log(str);
+      $('#taskList').append(str);
+
+    } else {
+      $('#list-box').addClass('bgc-ff');
+      $('#haveNothing').removeClass('aui-hide');
     }
 
-    $('#taskList').append(str);
-
     api.hideProgress();
-
-    var data = {
-      list: [
-        {
-          id: "1",
-          name: '测试任务1',
-          type: 1,
-          typeStr: '临时任务',
-          endTime: null,
-          orgId: null,
-          status: 2,
-          statusStr: '进行中',
-          planTime: '',
-          planEndTime: '2020-09-23 19:00',
-          endTime: '2020-09-23 18:00',
-          stopTime: '2020-09-21 14:00',
-          startTime: '2020-09-20 9:00',
-          OverdueTime: null,
-          SuspendTime: '',
-          finishTime: '320h'
-        },
-        {
-          id: "2",
-          name: '测试任务2',
-          type: 2,
-          typeStr: '计划任务',
-          endTime: null,
-          orgId: null,
-          status: 2,
-          statusStr: '进行中',
-          planTime: '',
-          planEndTime: '2020-09-28 19:00',
-          endTime: '2020-09-27 18:00',
-          stopTime: '2020-09-26 14:00',
-          startTime: '2020-09-25 9:00',
-          OverdueTime: '',
-          SuspendTime: '',
-          finishTime: '320h'
-        },
-        {
-          id: "3",
-          name: '测试任务3',
-          type: 2,
-          typeStr: '计划任务',
-          endTime: null,
-          orgId: null,
-          status: 2,
-          statusStr: '进行中',
-          planTime: '',
-          planEndTime: '2020-09-28 19:00',
-          endTime: '2020-09-27 18:00',
-          stopTime: '2020-09-26 14:00',
-          startTime: '2020-09-25 9:00',
-          OverdueTime: '',
-          SuspendTime: '',
-          finishTime: '320h'
-        },
-        {
-          id: "4",
-          name: '测试任务4',
-          type: 2,
-          typeStr: '计划任务',
-          endTime: null,
-          orgId: null,
-          status: 2,
-          statusStr: '进行中',
-          planTime: '',
-          planEndTime: '2020-09-28 19:00',
-          endTime: '2020-09-27 18:00',
-          stopTime: '2020-09-26 14:00',
-          startTime: '2020-09-25 9:00',
-          OverdueTime: '',
-          SuspendTime: '',
-          finishTime: '320h'
-        },
-        {
-          id: "5",
-          name: '测试任务5',
-          type: 2,
-          typeStr: '计划任务',
-          endTime: null,
-          orgId: null,
-          status: 2,
-          statusStr: '进行中',
-          planTime: '',
-          planEndTime: '2020-09-28 19:00',
-          endTime: '2020-09-27 18:00',
-          stopTime: '2020-09-26 14:00',
-          startTime: '2020-09-25 9:00',
-          OverdueTime: '',
-          SuspendTime: '',
-          finishTime: '320h'
-        }
-      ]
-    };
-    // console.log(JSON.stringify(data));
-    var str = template(status, data);
-    // console.log(JSON.stringify(str));
-    $('#taskList').append(str);
-
   }
 
   function showErr(err) {
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(err));
     api.hideProgress();
+    $('#haveNothing').removeClass('aui-hide');
     if (err.body.error != undefined) {
       api.toast({
           msg: err.body.error.message,
@@ -357,6 +338,7 @@ function showData(data, status) {
 
 function onMenu(index, el) {
   taskTypeIndex = index;
+  $('#taskList').html('');
   if (index == 0) {
     // 任务进行中
     goingPageIndex = 1;
@@ -388,7 +370,7 @@ function onOpenTaskDetail(that) {
     // console.log(JSON.stringify($(that)));
     // console.log(id);
     var id = JSON.parse($(that).attr("parse"));
-    console.log(JSON.stringify(id));
+    // console.log(JSON.stringify(id));
     // var id = 2;
     api.openWin({
         name: 'homeTaskInfo',
@@ -461,7 +443,7 @@ function completedTask(that) {
   var e = e || window.event;
   e.stopPropagation();
   var taskId = $(that).attr('parse');
-  console.log(taskId);
+  // console.log(taskId);
   var data = {
     taskId: taskId,
     status: 1,
@@ -478,6 +460,7 @@ function closeTask(that) {
   var taskId = $(that).attr('parse');
   var taskName = $(that).attr('taskName');
   var message = '您确定要关闭' + taskName + '吗？'
+  console.log(taskId);
   api.confirm({
       msg: message,
       buttons: ['确定', '取消']
@@ -690,7 +673,7 @@ function getDaiXunDev(data) {
         });
       }
     } else {
-      if (err.body.error) {
+      if (err.body.error != undefined) {
         api.toast({
             msg: err.body.error.message,
             duration: 2000,
@@ -710,7 +693,7 @@ function getDaiXunDev(data) {
 // 打开新增任务页面
 function openAddTask() {
   api.openWin({
-      name: 'taskStop',
+      name: 'addTask',
       url: './addTask.html'
   });
 }

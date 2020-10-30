@@ -81,6 +81,7 @@ function onGetSearchVal() {
   }
 }
 
+
 function onOpenAreaDetail() {
   api.openWin({
       name: 'areaDetail',
@@ -100,5 +101,4 @@ function onOpenAdd() {
           name: 'test'
       }
   });
-
 }

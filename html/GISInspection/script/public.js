@@ -102,8 +102,8 @@ function getPicture(type, showRet, showErr) {
     targetHeight: 750,
     saveToPhotoAlbum: false
   }, function(ret, err) {
-    console.log(JSON.stringify(ret));
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(err));
       if (ret) {
           if (ret.data != '') {
             uploadPic(ret.data, success, error);
@@ -133,7 +133,7 @@ function getPicture(type, showRet, showErr) {
 * @param {path} 图片路径，单图片上传
 **/
 function uploadPic(path, success, error) {
-  console.log(path);
+  // console.log(path);
   var data = {
     files: path
   }
@@ -158,9 +158,9 @@ function uploadPic(path, success, error) {
 **/
 function deleteArray(data, startIndex, length) {
   var len = length || 1;
-  console.log(len);
-  console.log(JSON.stringify(data));
-  console.log(startIndex);
+  // console.log(len);
+  // console.log(JSON.stringify(data));
+  // console.log(startIndex);
   data.splice(startIndex, len);
   return data;
 }
@@ -247,4 +247,41 @@ function parseTime(time, cFormat) {
     return value.toString().padStart(2, '0');
   });
   return time_str;
+}
+
+/**
+* 获取当前时间第二天零点的时间
+**/
+function getSecondDate() {
+  // 获取今天的日期
+  var curentDate = parseTime(new Date(), '{y}-{m}-{d}');
+  // 将今天的日期转变为今天的零点
+  curentDate = new Date(parseTime(curentDate, '{y}-{m}-{d} {h}:{i}:{s}'));
+
+  // 后一天
+  var nextDate =  new Date(curentDate.getTime() + 24*60*60*1000);
+  return nextDate;
+}
+
+
+/**
+* 验证输入内容是否包含特殊字符
+* @param {data} 字符串
+**/
+function hasSpecialCharts(data) {
+  var reg = /[\'\"\\<>;&=#]/;
+  return reg.test(data);
+}
+
+/**
+* 上传人员当前定位
+**/
+var timer = null;
+function uploadLocation() {
+
+
+  // timer = setInterval(function(){
+  //   console.log('----------------------------------');
+  //   console.log("不管跳转到哪个页面,我一直在");
+  // }, 5000);
 }
