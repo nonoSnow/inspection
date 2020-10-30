@@ -49,11 +49,6 @@ function onAddItem() {
             "</div>" +
             "<div class='item-input margin-top6 relative'>" +
               "<input id='bRuleName"+ bRuleIndex +"' type='text' placeholder='请输入违章单位名称'>" +
-              "<span class='font-S9 color-999'>m</span>" +
-            "</div>" +
-            "<div class='item-input margin-top6 relative'>" +
-              "<input id='bRuleAddress"+ bRuleIndex +"' type='text' placeholder='请输入违章地点'>" +
-              "<span class='font-S9 color-999'>m</span>" +
             "</div>" +
           "</div>";
   $(".item-one").append(item);
@@ -66,7 +61,7 @@ function onDelecteItem(Obj) {
 // 日期显示
 // 初始化日期
 var rd = new Rolldate({
-  el: '#planCompleteTime',
+  el: '#time',
   format: 'YYYY-MM-DD',
   beginYear: 2000,
   endYear: 2100,
@@ -85,37 +80,32 @@ function subHandle(){
   var workback=[]; // 数据
   var isHasData=false; // 有值的标志
   // 违章单位
-  for (var i = 0; i <= caliberIndex; i++) {
-    if( $("#bRuleName"+i).val() && $("#bRuleAddress"+i).val() ){
-      var obj={
-        type:"违章单位",
-        company:$("#bRuleName"+i).val(),
-        address:$("#bRuleAddress"+i).val()
-      }
-      isHasData=true;
-      workback.push(obj);
-    }else if(!$("#bRuleName"+i).val() && !$("#bRuleAddress"+i).val()){
-      continue;
-    }else {
-      // 弹出提示
-      api.toast({
-          msg: '违章单位请填写完整',
-          duration: 2000,
-          location: 'middle'
-      });
-      return false
+  for (var i = 0; i <= bRuleIndex; i++) {
+    var obj={
+      type:"违章单位",
+      company:$("#bRuleName"+i).val()
     }
+    if($("#bRuleName"+i).val()){
+      isHasData=true;
+    }
+    workback.push(obj);
   }
 
   // 查漏延伸
 
 
   // 判断至少有一个要填写
-  if($("#predictWaterLoss").val() || isHasData){
+  if($("#caliber").val() || $("#violationAddress").val() ||$("#time").val() ||$("#projectCost").val() ||$("#waterCost").val() ||$("#violationReason").val() ||$("#remark").val() || isHasData){
     // 进入提交接口
     var data={
       id:Id,
-      predictWaterLoss:$("#predictWaterLoss").val(),
+      caliber:$("#caliber").val(),
+      violationAddress:$("#violationAddress").val(),
+      time:$("#time").val(),
+      projectCost:$("#projectCost").val(),
+      waterCost:$("#waterCost").val(),
+      violationReason:$("#violationReason").val(),
+      remark:$("#remark").val(),
       workback:workback
     }
     subComplete(data)
@@ -130,7 +120,7 @@ function subHandle(){
 }
 
 function subComplete(data){
-  // console.log(JSON.stringify(data));
+  console.log(JSON.stringify(data));
   api.showProgress({
       style: 'default',
       animationType: 'fade',

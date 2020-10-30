@@ -183,6 +183,11 @@ function dataProcess(obj){
 
   // 对工单反馈的数据进行处理
   var workArr=[];
+  if(obj.predictWaterLoss){
+    var str="预估漏损："+obj.predictWaterLoss+"m³";
+    workArr.push(str);
+  }
+
   addWork("查漏",obj.workOrderBacks.leak);
   addWork("查漏延伸",obj.workOrderBacks.leakExtension);
   addWork("维修",obj.workOrderBacks.repair);
@@ -191,7 +196,7 @@ function dataProcess(obj){
   addWork("消防栓",obj.workOrderBacks.fireHydrant);
   addWork("违章单位",obj.workOrderBacks.company);
   if(obj.type==3 || obj.type==4 || obj.type==6){
-    addWork("贫水区改造地点",obj.workOrderBacks.address);
+    addWork("改造地点",obj.workOrderBacks.address);
   }else if(obj.type==1 || obj.type==1){
     addWork("查漏地点",obj.workOrderBacks.address);
   }
@@ -200,17 +205,45 @@ function dataProcess(obj){
     if(workObj.length>0){
       var str=name+"：";
       for (var i = 0; i < workObj.length; i++) {
+        workObj[i].caliber = workObj[i].caliber==null?"":workObj[i].caliber+"，";
+        workObj[i].value = workObj[i].value==null?"":workObj[i].value;
         if(i==workObj.length-1){
-          str=str+workObj[i].caliber+"，"+workObj[i].value
+          str=str+workObj[i].caliber+workObj[i].value
         }else{
-          str=str+workObj[i].caliber+"，"+workObj[i].value+"；"
+          str=str+workObj[i].caliber+workObj[i].value+"；"
         }
       }
       workArr.push(str);
     }
   }
-  if(obj.predictWaterLoss){
-    var str="预估漏损："+obj.predictWaterLoss;
+
+  if(obj.violationAddress){
+    var str="违章地点："+obj.violationAddress;
+    workArr.push(str);
+  }
+  if(obj.caliber){
+    var str="管径/口径："+obj.caliber;
+    workArr.push(str);
+  }
+  if(obj.time){
+    var str="日期："+obj.time.replace("T00:00:00"," ");
+    workArr.push(str);
+  }
+
+  if(obj.projectCost){
+    var str="工程费："+obj.projectCost+"元";
+    workArr.push(str);
+  }
+  if(obj.waterCost){
+    var str="水费："+obj.waterCost+"元";
+    workArr.push(str);
+  }
+  if(obj.violationReason){
+    var str="原因："+obj.violationReason;
+    workArr.push(str);
+  }
+  if(obj.remark){
+    var str="备注："+obj.remark;
     workArr.push(str);
   }
   console.log(JSON.stringify(workArr));

@@ -79,6 +79,27 @@
           <div class="margin-top75">预估漏损：135m³</div> -->
           <div class="margin-top75">{{value}}</div>
           {{/each}}
+
+          {{if violationReason }}
+          <div class="margin-top75">
+            <div class="item-title">
+              <span class="item-title-text">原因：</span>
+            </div>
+            <div class="margin-top6 bgc-f3 border-radius2 padding75 height6">
+              <textarea class='width100 height100' readonly>{{violationReason}}</textarea>
+            </div>
+          </div>
+          {{/if}}
+          {{if remark }}
+          <div class="margin-top75">
+            <div class="item-title">
+              <span class="item-title-text">备注：</span>
+            </div>
+            <div class="margin-top6 bgc-f3 border-radius2 padding75 height6">
+              <textarea class='width100 height100' readonly>{{remark}}</textarea>
+            </div>
+          </div>
+          {{/if}}
         {{/if}}
       </li>
 
