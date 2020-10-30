@@ -3,13 +3,14 @@ var caliberIndex = nowCaliberIndex = 0;    // 查漏总数
 var caliberExtendIndex = nowCaliberExtendIndex = 0; //查漏延伸总数
 var addressIndex = 0;  //地址总数
 var Id; //工单ID
+var from;  //来源哪个页面
 
 apiready = function() {
   var header = $api.byId('header');
   $api.fixStatusBar(header);
   //获取工单ID
   Id = parseInt(api.pageParam.Id);
-
+  from = api.pageParam.from;
   $(".custom-popup-list li").each(function() {
     $(this).click(function() {
       $('#caliberType' + nowCaliberIndex).val($(this).text());
@@ -130,7 +131,7 @@ function subHandle(){
       var obj={
         type:"查漏",
         caliber:$("#caliberType"+i).val(),
-        value:$("#caliber"+i).val(),
+        value:$("#caliber"+i).val()+'m'
       }
       isHasData=true;
       workback.push(obj);
@@ -153,7 +154,7 @@ function subHandle(){
        var obj={
          type:"查漏延伸",
          caliber:$("#caliberExtendType"+i).val(),
-         value:$("#caliberExtend"+i).val(),
+         value:$("#caliberExtend"+i).val()+'m'
        }
        isHasData=true;
        workback.push(obj);
@@ -201,7 +202,7 @@ function subHandle(){
 }
 
 function subComplete(data){
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   api.showProgress({
       style: 'default',
       animationType: 'fade',
@@ -212,7 +213,7 @@ function subComplete(data){
   // console.log(JSON.stringify($api.getStorage('loginData')));
   function showRet(ret){
     api.hideProgress();
-    console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(ret));
     if(ret.success){
       api.alert({
           title: '提示',
@@ -224,6 +225,11 @@ function subComplete(data){
                 funcName: 0,
             }
         });
+        if(from=="jobDetail"){
+          api.closeWin({
+              name: 'jobDetail'
+          });
+        }
         api.closeWin()
       });
 
@@ -238,7 +244,7 @@ function subComplete(data){
   function showErr(err){
     api.hideProgress();
 
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(err));
     if(err.body){
       if(err.body.error){
         if(err.body.error.message){

@@ -62,7 +62,7 @@
     {{each list value i}}
     <li class="padding75 bgc-ff border-radius4 line-height1 margin-bot5" tapmode>
         <div class="aui-list-item-inner block font-S9">
-          <div onclick="onOpenJobDetail(this)" param="{{value.id}}">
+          <div onclick="onOpenJobDetail(this)" param="{{value}}">
             <div class="display-flex">
               <img src="../../image/job-icon.png" class='task-icon' alt="">
               <span class="margin-left3 font-w4">工单类型：{{value.typeStr}}</span>
@@ -90,7 +90,7 @@
     {{each list value i}}
     <li class="padding75 bgc-ff border-radius4 line-height1 margin-bot5" tapmode >
         <div class="aui-list-item-inner block font-S9">
-          <div onclick="onOpenJobDetail(this)" param="{{value.id}}">
+          <div onclick="onOpenJobDetail(this)" param="{{value}}">
             <div class="display-flex">
               <img src="../../image/job-icon.png" class='task-icon' alt="">
               <span class="margin-left3 font-w4">工单类型：{{value.typeStr}}</span>
@@ -115,7 +115,7 @@
 
   <script type="text/template" id='completed'>
     {{each list value i}}
-    <li class="padding75 bgc-ff border-radius4 line-height1 margin-bot5" tapmode onclick="onOpenJobDetail(this)" param="{{value.id}}">
+    <li class="padding75 bgc-ff border-radius4 line-height1 margin-bot5" tapmode onclick="onOpenJobDetail(this)" param="{{value}}">
         <div class="aui-list-item-inner block font-S9">
           <div class="display-flex">
             <img src="../../image/job-icon.png" class='task-icon' alt="">
