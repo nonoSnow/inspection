@@ -180,36 +180,44 @@ function subTask() {
   }
 
   // console.log(JSON.stringify(param));
-  addTask('api/services/Inspection/InspectionTaskService/InsertTask', param, showRet, showErr);
-
-  function showRet(ret) {
-    // 新增成功
-    // openTask();
-    api.closeWin({
-        name: 'addTask'
-    });
-
-  }
-
-  function showErr(err) {
-    // 失败
-    if(err.body.error != undefined){
-      // alert(err.body.error.message);
-      api.toast({
-          msg: err.body.error.message,
-          duration: 2000,
-          location: 'middle'
-      });
-
-    }else{
-      // alert(err.msg);
-      api.toast({
-          msg: err.msg,
-          duration: 2000,
-          location: 'middle'
+  addTask({
+    data: param,
+    success: function(ret) {
+      api.closeWin({
+          name: 'addTask'
       });
     }
-  }
+  })
+  // addTask('api/services/Inspection/InspectionTaskService/InsertTask', param, showRet, showErr);
+  //
+  // function showRet(ret) {
+  //   // 新增成功
+  //   // openTask();
+  //   api.closeWin({
+  //       name: 'addTask'
+  //   });
+  //
+  // }
+  //
+  // function showErr(err) {
+  //   // 失败
+  //   if(err.body.error != undefined){
+  //     // alert(err.body.error.message);
+  //     api.toast({
+  //         msg: err.body.error.message,
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //
+  //   }else{
+  //     // alert(err.msg);
+  //     api.toast({
+  //         msg: err.msg,
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //   }
+  // }
 }
 
 // 跳转回任务模块
