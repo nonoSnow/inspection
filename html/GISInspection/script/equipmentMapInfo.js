@@ -51,23 +51,26 @@ function initBtn() {
 
 function onOpenReport() {
   if (isOper) {
-    if (hasOperate) {
+    // if (hasOperate) {
+      var data = inspectParam;
+      data.taskId = taskId;
+      console.log(JSON.stringify(data));
       api.openWin({
           name: 'addMethodReport',
           url: '../Method/addMethodReport.html',
           pageParam: {
               name: 'test',
-              data: inspectParam
+              data: data
           }
       });
-    } else {
-      api.toast({
-          msg: '无设备信息，无法上报事件',
-          duration: 2000,
-          location: 'middle'
-      });
-
-    }
+    // } else {
+    //   api.toast({
+    //       msg: '无设备信息，无法上报事件',
+    //       duration: 2000,
+    //       location: 'middle'
+    //   });
+    //
+    // }
   }
 
 }

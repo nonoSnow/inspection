@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>选择设备点-设备-管道</title>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/public.css">
+    <link rel="stylesheet" type="text/css" href="../../css/common.css">
+  </head>
+  <body>
+    <div class="flex-wrap flex-vertical height100">
+      <header class="aui-bar aui-bar-nav aui-bar-light bgi-none" id="header">
+          <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
+              <span class='aui-iconfont aui-icon-left'></span>
+          </div>
+          <div class="aui-title">设备点</div>
+          <div class="aui-pull-right aui-btn aui-hide snt-blue" id="sure" tapmode onclick="onCheck()">确定</div>
+      </header>
+
+      <div class="header-type display-flex text-cent line-height25 color-666">
+        <div class="flex1 header-type-item color-598" tapmode onclick="onMenu(0, this)">
+            <span class="line-height1">
+              设备
+              <div class="type-line bgc-blue margin-top3 width100"></div>
+            </span>
+        </div>
+        <div class="flex1 header-type-item" tapmode onclick="onMenu(1, this)">
+            <span class="line-height1">
+              管道
+              <div class="type-line margin-top3 width100"></div>
+            </span>
+        </div>
+      </div>
+
+      <div class="flex-con flex-content height100 bgc-f3">
+        <div class='aui-content-padded border-radius4'>
+          <div class="aui-searchbar aui-searchbar-square" id="search">
+              <div class="aui-searchbar-input border-radius4 bgc-ff">
+                  <i class="aui-iconfont aui-icon-search color-333"></i>
+                  <div class="width75 relative">
+                    <input class="width100" type="search" placeholder="请输入设备名称" id="search-input">
+                    <div class="aui-searchbar-clear-btn margin-top3 right75">
+                        <i class="aui-iconfont aui-icon-close"></i>
+                    </div>
+                  </div>
+                  <div class="search-btn color-598 text-cent aui-hide">
+                    搜索
+                  </div>
+              </div>
+          </div>
+        </div>
+        <ul class="aui-content-padded margin-075 padding-top05" id="areaList">
+          <!-- <li class="padding75 bgc-ff border-radius4">
+            <div class="relative ">
+              名称：蝶阀
+              <input class="aui-radio absolute right0" style="" type="checkbox" name="demo1">
+            </div>
+            <div class="margin-top6">编号：JS808029</div>
+            <div class="relative margin-top6">
+              地址：南京市溧水区交通路阳光小区98号
+              <span class="aui-iconfont aui-icon-location absolute right0"></span>
+            </div>
+          </li> -->
+        </ul>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../../public/script/api.js"></script>
+  <script type="text/javascript" src="../../../public/script/common.js"></script>
+  <script type="text/javascript" src="../../../public/script/remote.js"></script>
+  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+  <script type="text/javascript" src="../../../public/script/template.js"></script>
+
+  <script type="text/javascript" src="../../script/public.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
+  <script type="text/javascript" src="../../ajax/methodAjax.js"></script>
+
+  <script type="text/javascript" src="../../script/method/pointCoordinates.js"></script>
+  <script type="text/template" id='onDevice'>
+    <!-- 设备-->
+    {{each list value i}}
+    <li class="padding75 bgc-ff border-radius4 line-height1 list-item margin-bot5">
+      <div class="relative ">
+        名称：{{value.name}}
+        <input class="aui-radio absolute right0" type="radio" onclick="checkArea(this)" parse="{{value}}" name="radioArea">
+        <!-- <input class="aui-radio absolute right0" type="checkbox" name="demo1"> -->
+      </div>
+      <div class="margin-top6">编号：{{value.Code}}</div>
+      <div class="relative margin-top6">
+        地址：{{value.Address}}
+        <span class="aui-iconfont aui-icon-location absolute right0"></span>
+      </div>
+    </li>
+    {{/each}}
+  </script>
+  <script type="text/template" id='onPipeline'>
+    <!-- 管道-->
+    {{each list value i}}
+    <li class="padding75 bgc-ff border-radius4 line-height1 list-item margin-bot5">
+      <div class="relative ">
+        名称：{{value.name}}
+        <input class="aui-radio absolute right0" type="radio" onclick="checkArea(this)" parse="{{value}}" name="radioArea">
+      </div>
+      <div class="margin-top6">编号：{{value.Code}}</div>
+      <div class="relative margin-top6">
+        地址：{{value.Address}}
+        <span class="aui-iconfont aui-icon-location absolute right0"></span>
+      </div>
+    </li>
+    {{/each}}
+  </script>
+</html>
