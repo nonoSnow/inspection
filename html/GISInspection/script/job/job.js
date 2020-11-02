@@ -280,14 +280,14 @@ function refreshData(){
     var sh = $(this)[0].scrollHeight;   //滚动的高度，$(this)指代jQuery对象，而$(this)[0]指代的是dom节点 (839)
     var st = $(this)[0].scrollTop;  //滚动条的高度，即滚动条的当前位置到div顶部的距离
 
-    console.log(h);
-    console.log(Math.ceil(st));
+    // console.log(h);
+    // console.log(Math.ceil(st));
     if(Math.ceil(st)==0){
       //页面点击menu
       return false;
     }
-    console.log(sh);
-    console.log(JSON.stringify($(this)[0]));
+    // console.log(sh);
+    // console.log(JSON.stringify($(this)[0]));
     if (h + Math.ceil(st)+1 >= sh) {
       // 进行中
       if(jobType==0){
