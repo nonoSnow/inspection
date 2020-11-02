@@ -94,7 +94,6 @@ var rd = new Rolldate({
     // 打开日期选择
 function openDate() {
     rd.show();
->>>>>>> 2d7b25483c700a84f892e813aefdfc2e07e371bf
 }
 
 // 工单类型
