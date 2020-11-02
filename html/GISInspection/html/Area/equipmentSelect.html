@@ -94,9 +94,9 @@
          <div class="relative ">
            名称：{{item.deviceName}}
            {{if item.isCheck == true}}
-           <input class="aui-radio absolute right0 equipmentItem" checked=true item="{{item}}" style="" type="radio" name="demo">
+           <input class="aui-radio absolute right0 equipmentItem" checked=true item="{{item}}" style="" onchange='onCheck(this)' type="radio" name="demo">
            {{else}}
-           <input class="aui-radio absolute right0 equipmentItem" item="{{item}}" style="" type="radio" name="demo">
+           <input class="aui-radio absolute right0 equipmentItem" item="{{item}}" style="" onchange='onCheck(this)' type="radio" name="demo">
            {{/if}}
            </div>
            <div class="margin-top6">编号：{{item.deviceCode}}</div>
