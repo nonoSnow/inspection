@@ -413,7 +413,9 @@ function addData(data,status){
 function addJob(){
   api.openWin({
       name: 'addJob',
-      url: './addJob.html'
+      url: './addJob.html',
+      pageParam:{
+        eventId:""
+      }
   });
-
 }
