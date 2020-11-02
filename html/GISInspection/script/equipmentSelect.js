@@ -1,6 +1,7 @@
 
 // 片区Id
 var areaId = '';
+var areaInfo = {};
 
 // 设备点集合 - 管道设备集合
 var deviceList = pipelineList = [];
@@ -13,7 +14,8 @@ apiready = function() {
   // 实现沉浸式状态栏效果
   $api.fixStatusBar(header);
 
-  areaId = api.pageParam.areaId;
+  areaInfo = api.pageParam.areaInfo;
+  areaId = areaInfo.id;
   checkEquipment = api.pageParam.checkEquipment;
 
   onGetData(areaId);
@@ -110,19 +112,12 @@ function onShowHtml(type) {
   $('#equipmentList').append(str);
 }
 
+function onCheck(el) {
+  checkEquipment = JSON.parse($(el).attr('item'));
+}
+
 function onSave() {
-  for (var i = 0; i < deviceList.length; i++) {
-    if (deviceList[i].isCheck == true) {
-      checkEquipment = deviceList[i];
-      break;
-    }
-  }
-  for (var i = 0; i < pipelineList.length; i++) {
-    if (pipelineList[i].isCheck == true) {
-      checkEquipment = pipelineList[i];
-      break;
-    }
-  }
+
   if (JSON.stringify(checkEquipment) == '{}') {
     var dialog = new auiDialog({});
     dialog.alert({
@@ -136,8 +131,12 @@ function onSave() {
   api.sendEvent({
       name: 'addMethodEquipment',
       extra: {
-          checkEquipment: checkEquipment
+          areaInfo: areaInfo,
+          equipment: checkEquipment
       }
   });
-  api.closeWin({});
+  api.closeToWin({
+      name: 'addMethodReport'
+  });
+
 }

@@ -100,6 +100,7 @@ function onOpenSelect(type) {
   if (JSON.stringify(areaInfo) == '{}') {
     return false;
   }
+  console.log(JSON.stringify(checkEquipment));
   api.openWin({
       name: 'equipmentSelect_new',
       url: './equipmentSelect_new.html',
