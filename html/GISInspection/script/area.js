@@ -105,16 +105,27 @@ function onGetSearchVal() {
 
 function onOpenAreaDetail(item) {
   onCheckedArea(item);
-  api.openWin({
-      name: 'areaDetail',
-      url: './areaDetail.html',
-      pageParam: {
-          areaInfo: item,
-          checkAreaInfo: checkAreaInfo,
-          checkEquipment: checkEquipment
-      }
-  });
-
+  console.log(JSON.stringify(checkEquipment));
+  if (pageType == 1) {
+    api.openWin({
+        name: 'areaDetail',
+        url: './areaDetail.html',
+        pageParam: {
+            areaInfo: item,
+            checkAreaInfo: checkAreaInfo,
+            checkEquipment: checkEquipment
+        }
+    });
+  } else if (pageType == 2) {
+    api.openWin({
+        name: 'equipmentSelect',
+        url: './equipmentSelect.html',
+        pageParam: {
+          areaInfo:  item,
+          checkEquipment:  checkEquipment[0]
+        }
+    });
+  }
 }
 
 function onOpenAdd() {

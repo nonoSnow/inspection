@@ -1,5 +1,6 @@
 var methodType;
 var Id;
+var deviceId = '';
 apiready = function() {
   var header = $api.byId('header');
   // 实现沉浸式状态栏效果
@@ -26,7 +27,6 @@ function showDetailsData(id){
   });
   getEventDetail("api/services/Inspection/EventService/GetEventDetails",data,showRet,showErr);
   function showRet(ret){
-    console.log(JSON.stringify(ret));
     api.hideProgress();
     console.log("----------------------------"+id);
       if(ret.success){
@@ -34,7 +34,8 @@ function showDetailsData(id){
         var data = ret.result;
         var str = template("methodList", data);
         $('#detailList').append(str);
-        // console.log(JSON.stringify($('#detailList').html()));
+
+        deviceId = ret.result.deviceId
       }
   }
 
@@ -56,4 +57,17 @@ function onOpenInspectionRecord() {
           name: 'test'
       }
   });
+}
+
+// 转工单
+function onOpenTransfWorkOrder() {
+    alert(deviceId + ',' + Id)
+    api.openWin({
+        name: 'addJob',
+        url: '../Job/addJob.html',
+        pageParam: {
+            deviceId: deviceId,
+            eventId: Id
+        }
+    });
 }

@@ -6,6 +6,9 @@ var deviceId; //设备id
 var content; //内容
 var imgList=[]; //图片列表
 
+var areaInfo = {};  // 巡检区域相关信息
+var equipment = {}; // 设备相关信息
+
 apiready = function() {
     var header = $api.byId('header');
     // 实现沉浸式状态栏效果
@@ -34,6 +37,15 @@ apiready = function() {
           $(this).addClass('color-598');
       });
     });
+
+    api.addEventListener({
+        name: 'addMethodEquipment'
+    }, function(ret, err){
+        areaInfo = ret.value.areaInfo;
+        equipment = ret.value.equipment;
+    });
+
+
     // 初始化图片列表
     showImg(imgList);
 }
@@ -182,7 +194,9 @@ function onOpenArea(type) {
       name: 'area',
       url: '../Area/area.html',
       pageParam: {
-          type: type
+          type: type,
+          areaInfo: areaInfo,
+          equipment: [equipment]
       }
   });
 
