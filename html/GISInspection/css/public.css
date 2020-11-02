@@ -885,7 +885,6 @@ body {
   vertical-align: top;
 }
 
-<<<<<<< HEAD
 .no-data {
   height: 6rem;
   color: #333;
@@ -900,7 +899,7 @@ body {
 .over-hide {
   overflow: hidden;
 }
-=======
+
 /*拍照后显示列表*/
 .img-list {
   width: 100%;

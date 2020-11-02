@@ -28,20 +28,7 @@ apiready = function() {
 
   funIniGroup();
 
-<<<<<<< HEAD
   WinSize(['footer-gis']);
-=======
-  // isOnline = $api.getStorage('isOnline');
-  console.log(isOnline);
-  // if (isOnline) {
-  //   // 在线则每五分钟上传定位
-  //   uploadLocation()
-  // } else {
-  //   clearInterval(timer);
-  //   console.log('清除了定时器');
-  // }
-  // uploadLocation();
->>>>>>> 2d7b25483c700a84f892e813aefdfc2e07e371bf
 }
 
 function funIniGroup() {

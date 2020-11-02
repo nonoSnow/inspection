@@ -211,11 +211,7 @@
             var geometry = feature.getGeometry();
             var length = geometry.getLength();
             var stpes=40;
-<<<<<<< HEAD
-            var geo_steps=stpes*res;
-=======
             var geo_steps=stpes * res;
->>>>>>> 2d7b25483c700a84f892e813aefdfc2e07e371bf
             var arrowsNum=parseInt(length/geo_steps);
             var styles = [
               // linestring
@@ -285,7 +281,6 @@
                     })
                 }));
             }
-<<<<<<< HEAD
             // geometry.forEachSegment(function(start, end) {
             //    var dx = end[0] - start[0];
             //    var dy = end[1] - start[1];
@@ -313,8 +308,6 @@
             //             }),
             //         })
             // }
-=======
->>>>>>> 2d7b25483c700a84f892e813aefdfc2e07e371bf
             return styles;
         },
         // 计算象限 返回象限 比如1为第一象限

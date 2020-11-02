@@ -103,13 +103,8 @@ function onGetSearchVal() {
   }
 }
 
-<<<<<<< HEAD
 function onOpenAreaDetail(item) {
   onCheckedArea(item);
-=======
-
-function onOpenAreaDetail() {
->>>>>>> 2d7b25483c700a84f892e813aefdfc2e07e371bf
   api.openWin({
       name: 'areaDetail',
       url: './areaDetail.html',

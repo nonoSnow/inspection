@@ -1,15 +1,13 @@
 var headList; // 负责人信息
 var jobType; // 工单类型
-<<<<<<< HEAD
 
 var indexMap = {};
 var areaInfo = {};  // 巡检区域相关信息
 var equipment = {}; // 设备相关信息
 
-=======
 var source=2; // 来源：1：PC端；2：APP；3：第三方（管网）
 var imgList = []; //图片列表
->>>>>>> 2d7b25483c700a84f892e813aefdfc2e07e371bf
+
 apiready = function() {
     var header = $api.byId('header');
     // 实现沉浸式状态栏效果
@@ -35,7 +33,7 @@ apiready = function() {
         headList = JSON.parse(ret.value.checkHeadObj);
         $('#person').val(headList.name);
     });
-<<<<<<< HEAD
+
     // 创建日期
     new Rolldate({
 				el: '#date-group1-3',
@@ -79,8 +77,6 @@ apiready = function() {
         console.log(JSON.stringify(equipment));
         console.log(typeof equipment);
     });
-
-=======
 
     // 初始化图片列表
     showImg(imgList);
