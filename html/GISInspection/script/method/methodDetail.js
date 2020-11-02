@@ -5,12 +5,14 @@ apiready = function() {
   var header = $api.byId('header');
   // 实现沉浸式状态栏效果
   $api.fixStatusBar(header);
-  console.log('你已进入了设备详情页面');
   methodType = api.pageParam.type;
-  console.log(api.pageParam.Id);
   Id=api.pageParam.Id;
   showDetailsData(api.pageParam.Id)
   // showDetailsData(id);
+
+  if(methodType == 1) {
+      $(".footer").removeClass('aui-hide')
+  }
 }
 
 
@@ -28,10 +30,12 @@ function showDetailsData(id){
   getEventDetail("api/services/Inspection/EventService/GetEventDetails",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
-    console.log("----------------------------"+id);
       if(ret.success){
+          console.log(baseUrl)
+      ret.result.url = baseUrl;
         $('#detailList').html('');
         var data = ret.result;
+        alert(JSON.stringify(data))
         var str = template("methodList", data);
         $('#detailList').append(str);
 
@@ -70,4 +74,64 @@ function onOpenTransfWorkOrder() {
             eventId: Id
         }
     });
+}
+
+// 关闭事件
+function onOpenClose() {
+    api.confirm({
+        msg: '您确定要关闭该任务吗？',
+        buttons: ['确定', '取消']
+    }, function(ret, err){
+        if( ret ){
+            console.log(ret.buttonIndex)
+             if(ret.buttonIndex == 1) {
+                 closeEvent()
+
+             }
+        }else{
+             alert( JSON.stringify( err ) );
+        }
+    });
+}
+
+// 关闭事件事件操作
+function closeEvent() {
+    changeEventStatus({
+        data: {
+            id: Id,
+            status: 3
+        },
+        success: function(ret) {
+            console.log(JSON.stringify(ret))
+
+
+            if(ret.success) {
+                // api.toast({
+                //     msg: '关闭成功',
+                //     duration: 2000,
+                //     location: 'middle'
+                // });
+
+                // setTimeout(function(){
+                // console.log(methodType)
+                    console.log('fjfjfjfjfjfjfjfjfj')
+                    api.sendEvent({
+                        name: 'aaa',
+                        // extra: {
+                        //     type: methodType
+                        // }
+                    })
+                    api.closeWin({});
+
+                // }, 2000)
+            } else {
+                api.toast({
+                    msg: ret.message,
+                    duration: 2000,
+                    location: 'middle'
+                });
+            }
+
+        }
+    })
 }
