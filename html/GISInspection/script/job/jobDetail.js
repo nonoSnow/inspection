@@ -13,6 +13,7 @@ apiready = function() {
 
 // 渲染页面
 function showPage(){
+  $(".footer").removeClass('aui-hide');
   if (jobType == 0) {
     $('.turn-btn').addClass('aui-hide');
     $('.receive-btn').addClass('aui-hide');
@@ -94,7 +95,7 @@ function showData(id){
 }
 
 function onOpenCloseTurn(type) {
-  // console.log(type);
+  console.log(type);
   if(type=='1'){
     api.openWin({
         name: 'jobClose',
@@ -109,11 +110,22 @@ function onOpenCloseTurn(type) {
         name: 'jobCloseTurn',
         url: './jobCloseTurn.html',
         pageParam: {
-            Id: Id
+            Id: Id,
         }
     });
   }
+}
 
+// 查看转派原因
+function onOpenTurnRes(el){
+  console.log($(el).attr('param'));
+  api.openWin({
+      name: 'jobTurnRes',
+      url: './jobTurnRes.html',
+      pageParam: {
+          Id: $(el).attr('param'),
+      }
+  });
 }
 
 function onOpenHandle() {

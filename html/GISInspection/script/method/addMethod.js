@@ -10,6 +10,11 @@ apiready = function() {
     var header = $api.byId('header');
     // 实现沉浸式状态栏效果
     $api.fixStatusBar(header);
+    // 获取设备id
+    deviceId = parseInt(api.pageParam.data)
+    // 获取任务id
+    taskId = parseInt(api.pageParam.taskId)
+    console.log(deviceId)
     // 点击选择事件类型
     $(".custom-popup-list li").each(function() {
       $(this).click(function() {
@@ -33,11 +38,10 @@ apiready = function() {
     showImg(imgList);
 }
 var popup = new auiPopup();
-
-// 点击确定按钮保存异常类型的值存到input框里并关闭弹窗
+// 点击确定保存异常类型的值并
 function saveCheck (){
   var chk_value = [];
-  $('input[name="checkbox"]:checked').each(function(){ //遍历，将所有选中的值追加到数组中
+  $('input[name="checkbox"]:checked').each(function(){ //遍历，将所有选中的值放到数组中
       var res = $(this).val();
       chk_value.push(res)
   });
@@ -75,14 +79,14 @@ function onSubmit(){
     return false;
   }
   // 判断预估损失水量是否填写
-  if(!$("#waterLoss").val()){
-    api.toast({
-        msg: '请输入预估损失水量!',
-        duration: 2000,
-        location: 'middle'
-    });
-    return false;
-  }
+  // if(!$("#waterLoss").val()){
+  //   api.toast({
+  //       msg: '请输入预估损失水量!',
+  //       duration: 2000,
+  //       location: 'middle'
+  //   });
+  //   return false;
+  // }
   // 判断设备点坐标是否填写
   // if(!$("#point").val()){
   //   api.toast({
@@ -102,20 +106,20 @@ function onSubmit(){
   //   return false;
   // }
   // 判断巡检内容是否填写
-  if(!$("#content").val()){
-    api.toast({
-        msg: '请输入巡检内容!',
-        duration: 2000,
-        location: 'middle'
-    });
-    return false;
-  }
+  // if(!$("#content").val()){
+  //   api.toast({
+  //       msg: '请输入巡检内容!',
+  //       duration: 2000,
+  //       location: 'middle'
+  //   });
+  //   return false;
+  // }
 
   var data = {
     type:$("#methodType").val(),
     errorType:$("#abnormalType").val(),
-    taskId:1,
-    deviceId:1,
+    taskId:taskId,
+    deviceId:deviceId,
     waterLoss:$("#waterLoss").val(),
     content:$("#content").val(),
     resourceInfoList:imgList
@@ -170,11 +174,13 @@ function clearData(){
   showImg(imgList);
 }
 
-// 点击坐标跳转到片区列表页面
+// 点击坐标跳转到设备点列表选择页面
 function onOpenArea(type) {
   api.openWin({
+      // name: 'pointCoordinates',
+      // url: './pointCoordinates.html',
       name: 'area',
-      url: '../area/area.html',
+      url: '../Area/area.html',
       pageParam: {
           type: type
       }
@@ -228,7 +234,7 @@ function showImg(data) {
   }
   $('#uploadPhotos').html('');
   var str = template('imgData', param);
-  // console.log(str);
+  console.log(str);
   $('#uploadPhotos').append(str);
 }
 // 删除图片

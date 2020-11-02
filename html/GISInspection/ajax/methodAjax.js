@@ -49,3 +49,20 @@ function getEventInsert(path,data,showRet,showErr){
   }
   ajaxMethod(options)
 }
+// APP根据名称模糊查询区域（也可以查询所有区域）
+function getAreaListData(path,data,showRet,showErr){
+  // console.log(baseUrl+path);
+  var options = {
+    url:baseUrl+path,
+    data:data,
+    success:function(ret){
+      // console.log(JSON.stringify(ret));
+      showRet(ret)
+    },
+    error:function(err){
+      // console.log(JSON.stringify(err));
+      showErr(err)
+    }
+  }
+  ajaxMethod(options)
+}

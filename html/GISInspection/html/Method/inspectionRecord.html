@@ -20,10 +20,16 @@
           <div class="aui-title">巡检记录</div>
       </header>
 
-      <div class="flex-con flex-content height100 bgc-f3 margin-bot250">
+    <div class="flex-con flex-content height100 bgc-f3 margin-bot250">
         <ul class="aui-content-padded line-height1 font-S75" id="detailList">
           <li class="padding75 bgc-ff border-radius4">
             <div class="inline-block color-666">基础信息</div>
+
+      <div class="flex-con flex-content height100 bgc-f3">
+        <ul class="aui-content-padded line-height1 font-S75">
+          <li class="padding75 bgc-ff border-radius4" id="basicInfo">
+            <!-- <div class="inline-block color-666">基础信息</div>
+>>>>>>> 382295ae88a28bc3bc1b1f6d3852f892e8a11de5
             <div class="line margin-top6 margin-bot6"></div>
             <div>名称：阀门</div>
             <div class="margin-top75">编号：2089882848575756</div>
@@ -33,17 +39,17 @@
               <span class='inline-block task-status-circular bgc-gre margin-right3'></span>
               正常
             </div>
-            <div class="margin-top75">地址：南京市溧水区交通路阳光小区98号</div>
+            <div class="margin-top75">地址：南京市溧水区交通路阳光小区98号</div> -->
           </li>
 
           <li class="padding75 bgc-ff border-radius4 margin-top75">
             <div class="width100 color-666">
               <span>设备信息</span>
-              <span class="float-rig"><i class="aui-iconfont aui-icon-calendar"></i> 2020-02</span>
+              <span class="float-rig" onclick="startDate()"><i class="aui-iconfont aui-icon-calendar"></i> <span id="timeDate">2020-02</span></span>
             </div>
             <div class="line margin-top6 margin-bot6"></div>
-            <div class="inspection-record-item">
-              <div class="record-item-line relative">
+            <div class="overflowScroll" id="xunjianBox">
+              <!-- <div class="record-item-line relative">
                 <span class="record-line-spot" style="margin-top: 1.35rem;"></span>
                 <span class="record-line absolute"></span>
               </div>
@@ -59,7 +65,7 @@
                   <div class="margin-top6">事件类型：漏损事件</div>
                   <div class="margin-top6">异常类型：管道损坏、偷盗水时间</div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </li>
 
@@ -74,12 +80,68 @@
   <script type="text/javascript" src="../../../public/script/remote.js"></script>
   <script type="text/javascript" src="../../../public/script/zepto.js"></script>
   <script type="text/javascript" src="../../../public/script/aui-popup.js"></script>
-  <script type="text/javascript" src="../../../public/script/template.js"></script>
+
+
+  <script type="text/javascript" src="../../script/date/rolldate.min.js"></script>
+
 
   <script type="text/javascript" src="../../script/public.js"></script>
   <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
   <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
 
+
   <script type="text/javascript" src="../../script/inspectionRecord.js"></script>
+
+
+  <script type="text/javascript" src="../../ajax/taskAjax.js"></script>
+  <script type="text/javascript" src="../../script/inspectionRecord.js"></script>
+
+  <script type="text/template" id="basic-box">
+    <div class="inline-block color-666">基础信息</div>
+    <div class="line margin-top6 margin-bot6"></div>
+    <div>名称：{{name}}</div>
+    <div class="margin-top75">编号：{{code}}</div>
+    <div class="margin-top75">坐标：{{point}}</div>
+    <div class="margin-top75">
+      状态：
+      {{if status == 2}}
+      <span class='inline-block task-status-circular bgc-gre margin-right3'></span>
+      正常
+      {{else if status == 3}}
+      <span class='inline-block task-status-circular bgc-dan margin-right3'></span>
+      异常
+      {{/if}}
+    </div>
+    <div class="margin-top75">地址：{{address}}</div>
+  </script>
+
+  <script type="text/template" id="xun-box">
+    {{each list value i}}
+    <div class="inspection-record-item">
+      <div class="record-item-line relative">
+        <span class="record-line-spot" style="margin-top: 1.35rem;"></span>
+        <span class="record-line absolute"></span>
+      </div>
+      <div class="record-item-cont">
+        <div class="record-tiem">{{value.time}}</div>
+        <div class="record-info padding75">
+          <div>巡检人：{{value.person}}</div>
+          <div class="margin-top6">
+            状态：
+            {{if status == 2}}
+            <span class='inline-block task-status-circular bgc-gre margin-right3'></span>
+            正常
+            {{else if status == 3}}
+            <span class='inline-block task-status-circular bgc-dan margin-right3'></span>
+            异常
+            {{/if}}
+          </div>
+          <div class="margin-top6">事件类型：漏损事件</div>
+          <div class="margin-top6">异常类型：管道损坏、偷盗水时间</div>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+  </script>
 
 </html>

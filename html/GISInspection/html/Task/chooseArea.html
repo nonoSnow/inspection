@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>选择区域</title>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../../css/public.css">
+  </head>
+  <body>
+    <div class="flex-wrap flex-vertical height100">
+      <header class="aui-bar aui-bar-nav aui-bar-light bgi-none header-box-shadow" id="header">
+          <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
+              <span class='aui-iconfont aui-icon-left'></span>
+          </div>
+          <div class="aui-title">选择区域</div>
+          <div class="aui-pull-right aui-btn aui-hide snt-blue" id="sure" tapmode onclick="onCheck()">确定</div>
+      </header>
+      <div class="flex-con flex-content height100 bgc-f3 margin-bot250">
+        <ul class="aui-content-padded margin-075 padding-top05" id="areaList">
+          <!-- <li class="padding75 bgc-ff margin-bot5 border-radius4 line-height1 list-item">
+            <div class="aui-list-item-inner block font-S9">
+              <div class="font-w4 color-333">片区名称：阳光小区巡检路线</div>
+              <div class="margin-top6 color-666 relative">
+                管道长度：6.83 km
+                <input class="aui-radio absolute right0" type="radio" onclick="checkArea(this)" param="" name="radioArea">
+              </div>
+              <div class="margin-top3 color-666">设备数量：41 个</div>
+            </div>
+          </li>
+          <li class="padding75 bgc-ff border-radius4 line-height1 list-item">
+            <div class="aui-list-item-inner block font-S9">
+              <div class="font-w4 color-333">片区名称：阳光小区巡检路线2</div>
+              <div class="margin-top6 color-666 relative">
+                管道长度：6.83 km
+                <input class="aui-radio absolute right0" type="radio" onclick="checkArea(this)" param="" name="radioArea">
+              </div>
+              <div class="margin-top3 color-666">设备数量：41 个</div>
+            </div>
+          </li> -->
+        </ul>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../../public/script/api.js"></script>
+  <script type="text/javascript" src="../../../public/script/common.js"></script>
+  <script type="text/javascript" src="../../../public/script/remote.js"></script>
+  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+  <script type="text/javascript" src="../../../public/script/aui-popup.js"></script>
+  <script type="text/javascript" src="../../../public/script/template.js"></script>
+
+  <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
+  <script type="text/javascript" src="../../ajax/publicAjax.js"></script>
+  <script type="text/javascript" src="../../script/public.js"></script>
+  <script type="text/javascript" src="../../ajax/taskajax.js"></script>
+  <script type="text/javascript" src="../../script/task/chooseArea.js"></script>
+
+  <script type="text/template" id="areaItems">
+    <!-- 区域列表 -->
+    {{each list value i}}
+    <li class="padding75 bgc-ff border-radius4 line-height1 list-item margin-bot5">
+      <div class="aui-list-item-inner block font-S9">
+        <div class="font-w4 color-333">片区名称：{{value.name}}</div>
+        <div class="margin-top6 color-666 relative">
+          管道长度：{{value.pipelineLength}} km
+          <input class="aui-radio absolute right0" type="radio" onclick="checkArea(this)" parse="{{value}}" name="radioArea">
+        </div>
+        <div class="margin-top3 color-666">设备数量：{{value.pointCount}} 个</div>
+      </div>
+    </li>
+    {{/each}}
+  </script>
+</html>

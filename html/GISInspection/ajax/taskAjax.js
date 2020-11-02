@@ -88,3 +88,55 @@ function changeTaskStatus(path,data,showRet,showErr) {
   }
   ajaxMethod(options)
 }
+
+// 新增任务
+function addTask(path,data,showRet,showErr) {
+  var options = {
+    url: baseUrl+path,
+    data: data,
+    success:function(ret){
+      // console.log(JSON.stringify(ret));
+      showRet(ret)
+    },
+    error:function(err){
+      // console.log(JSON.stringify(err));
+      showErr(err)
+    }
+  }
+  ajaxMethod(options)
+}
+
+
+// 获取巡检记录
+function getXunList(path,data,showRet,showErr) {
+  var options = {
+    url: baseUrl+path,
+    data: data,
+    success:function(ret){
+      // console.log(JSON.stringify(ret));
+      showRet(ret)
+    },
+    error:function(err){
+      // console.log(JSON.stringify(err));
+      showErr(err)
+    }
+  }
+  ajaxMethod(options)
+}
+
+// 获取巡检点详情
+function GetPointDetails(path,data,showRet,showErr) {
+  var options = {
+    url: baseUrl+path,
+    data: data,
+    success:function(ret){
+      // console.log(JSON.stringify(ret));
+      showRet(ret)
+    },
+    error:function(err){
+      // console.log(JSON.stringify(err));
+      showErr(err)
+    }
+  }
+  ajaxMethod(options)
+}

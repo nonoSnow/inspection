@@ -36,7 +36,7 @@ function onMenu(index, el) {
     $('.complete').removeClass('aui-hide');
   }
   onCheckMenu(el, function(){
-    console.log(123);
+    // console.log(123);
   });
 }
 
@@ -54,11 +54,11 @@ function onOpenTaskDetail() {
 function onItemLeft() {
   var e = e || window.event;
   e.stopPropagation();
-  console.log('click left');
+  // console.log('click left');
 }
 
 function onItemRight() {
   var e = e || window.event;
   e.stopPropagation();
-  console.log('click right');
+  // console.log('click right');
 }

@@ -25,7 +25,7 @@
         </ul>
       </div>
 
-      <footer class="aui-bar aui-bar-tab display-flex footer">
+      <footer class="aui-bar aui-bar-tab display-flex footer aui-hide">
         <div class="flex1">
           <div class='footer-btn btn-border' tapmode onclick="onOpenCloseTurn('1')">
             关闭工单
@@ -82,13 +82,23 @@
         <div class="color-666">工单信息</div>
         <div class="line margin-top6 margin-bot6"></div>
         <div>工单类型：{{typeStr}}</div>
-        {{if workTranfer.workPerson}}
-        <div class="margin-top75 relative job-receive">
-          <span class="transfer-text">负责人：{{workTranfer.workPerson}}</span>
-          <img src="../../image/transfer.png" class="transfer" alt="">
-          <span class="transfer-text">{{workTranfer.transferPerson}}</span>
-          <span class="transfer-text color-598 absolute right0" tapmode onclick="onOpenCloseTurn('0')">转派原因 <span class="aui-iconfont aui-icon-right"></span></span>
-        </div>
+        {{if workTranfer.length>0 }}
+          {{each workTranfer value i}}
+            {{if i==0 }}
+            <div class="margin-top75 relative job-receive">
+              <span class="transfer-text">负责人：{{value.workPerson}}</span>
+              <img src="../../image/transfer1.png" onclick="onOpenTurnRes(this)" param="{{value.id}}" class="transfer" alt="">
+              <span class="transfer-text">{{value.transferPerson}}</span>
+              <!-- <span class="transfer-text color-598 absolute right0" tapmode onclick="onOpenCloseTurn('0')">转派原因<span class="aui-iconfont aui-icon-right"></span></span> -->
+            </div>
+            {{else if i>0}}
+            <div class="margin-top75 relative job-receive">
+              <span class="transfer-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{value.workPerson}}</span>
+              <img src="../../image/transfer1.png" onclick="onOpenTurnRes(this)" param="{{value.id}}" class="transfer" alt="">
+              <span class="transfer-text">{{value.transferPerson}}</span>
+            </div>
+            {{/if}}
+          {{/each}}
         {{/if}}
         <div class="margin-top75 handle-head">负责人：{{person}}</div>
         <div class="margin-top75">

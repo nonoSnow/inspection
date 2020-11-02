@@ -42,6 +42,13 @@ apiready = function() {
     memberStatus = $api.getStorage('isOnline');
     memberStatus = memberStatus ? memberStatus : 0;
     $(".member-status").addClass(memberStatus ? 'on' : '');
+    console.log(memberStatus);
+    api.sendEvent({
+        name: 'isOnline',
+        extra: {
+            memberStatus
+        }
+    });
 
     // 获取当前用户的位置 并向地图中添加
     setCurrentMapLocation();
@@ -183,7 +190,15 @@ function setOnlineStatus(status) {
         success: function(ret) {
             memberStatus = status ? 0 : 1;
             $api.setStorage('isOnline', memberStatus);
+            api.sendEvent({
+                name: 'isOnline',
+                extra: {
+                    memberStatus
+                }
+            });
+
             if(memberStatus) {
+              console.log(memberStatus);
                 $(".member-status").addClass('on');
             } else {
                 $(".member-status").removeClass('on');
