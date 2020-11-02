@@ -69,7 +69,7 @@
 	        	self.hide(el);
 	        })
             el.addEventListener("touchmove", function(event){
-                event.preventDefault();
+                // event.preventDefault();
             },false)
         },
         hide: function(el){

@@ -18,7 +18,7 @@
               <span class='aui-iconfont aui-icon-left'></span>
           </div>
           <div class="aui-title">设备点</div>
-          <a class='aui-pull-right color-598'>
+          <a class='aui-pull-right color-598' tapmode onclick="onSave()">
               <span>确定</span>
           </a>
       </header>
@@ -38,25 +38,26 @@
         </div>
       </div>
 
-      <div class="flex-con flex-content height100 bgc-f3">
-        <div class='aui-content-padded border-radius4'>
-          <div class="aui-searchbar aui-searchbar-square" id="search">
-              <div class="aui-searchbar-input border-radius4 bgc-ff">
-                  <i class="aui-iconfont aui-icon-search color-333"></i>
-                  <div class="width75 relative">
-                    <input class="width100" type="search" placeholder="请输入设备名称" id="search-input">
-                    <div class="aui-searchbar-clear-btn margin-top3 right75">
-                        <i class="aui-iconfont aui-icon-close"></i>
-                    </div>
+      <div class='padding75 bgc-f3'>
+        <div class="aui-searchbar aui-searchbar-square" id="search">
+            <div class="aui-searchbar-input border-radius4 bgc-ff">
+                <i class="aui-iconfont aui-icon-search color-333"></i>
+                <div class="width75 relative">
+                  <input class="width100" type="search" placeholder="请输入设备名称" id="search-input">
+                  <div class="aui-searchbar-clear-btn margin-top3 right75">
+                      <i class="aui-iconfont aui-icon-close"></i>
                   </div>
-                  <div class="search-btn color-598 text-cent aui-hide">
-                    搜索
-                  </div>
-              </div>
-          </div>
+                </div>
+                <div class="search-btn color-598 text-cent aui-hide">
+                  搜索
+                </div>
+            </div>
         </div>
-        <ul class="aui-content-padded font-S75">
-          <li class="padding75 bgc-ff border-radius4">
+      </div>
+
+      <div class="flex-con flex-content height100 bgc-f3">
+        <ul id='equipmentList' class="aui-content-padded font-S75 margin-top0">
+          <!-- <li class="padding75 bgc-ff border-radius4">
             <div class="relative ">
               名称：蝶阀
               <input class="aui-radio absolute right0" style="" type="checkbox" name="demo1">
@@ -66,7 +67,7 @@
               地址：南京市溧水区交通路阳光小区98号
               <span class="aui-iconfont aui-icon-location absolute right0"></span>
             </div>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
@@ -75,7 +76,38 @@
   <script type="text/javascript" src="../../../public/script/common.js"></script>
   <script type="text/javascript" src="../../../public/script/remote.js"></script>
   <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+  <script type="text/javascript" src="../../../public/script/template.js"></script>
+  <script type="text/javascript" src="../../../public/script/aui-dialog.js"></script>
 
+  <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
   <script type="text/javascript" src="../../script/public.js"></script>
   <script type="text/javascript" src="../../script/equipmentSelect.js"></script>
+  <script type="text/template" id="equipmentItem">
+    {{if datas.length > 0}}
+       {{each datas item i}}
+       {{if i == 0}}
+       <li class="padding75 bgc-ff border-radius4">
+       {{else}}
+       <li class="padding75 bgc-ff border-radius4 margin-top75">
+       {{/if}}
+         <div class="relative ">
+           名称：{{item.deviceName}}
+           {{if item.isCheck == true}}
+           <input class="aui-radio absolute right0 equipmentItem" checked=true item="{{item}}" style="" onchange='onCheck(this)' type="radio" name="demo">
+           {{else}}
+           <input class="aui-radio absolute right0 equipmentItem" item="{{item}}" style="" onchange='onCheck(this)' type="radio" name="demo">
+           {{/if}}
+           </div>
+           <div class="margin-top6">编号：{{item.deviceCode}}</div>
+           <div class="relative margin-top6">
+             地址：{{item.address}}
+           <span class="aui-iconfont aui-icon-location absolute right0"></span>
+         </div>
+       </li>
+       {{/each}}
+   {{else}}
+     <div class="no-data font-S8">暂无数据!</div>
+   {{/if}}
+  </script>
 </html>

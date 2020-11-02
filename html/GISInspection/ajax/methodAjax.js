@@ -66,3 +66,22 @@ function getAreaListData(path,data,showRet,showErr){
   }
   ajaxMethod(options)
 }
+
+/**
+* @method {Function} changeEventStatus 修改事件状态
+* @param {options} 请求需要的参数及回调函数
+* data 请求需要的数据
+*/
+function changeEventStatus(options) {
+    var data = options.data;
+    var options = Object.assign({}, {
+        url: requestUrl + 'EventService/UpdateEventById',
+        data: {
+            body: JSON.stringify(data)
+        },
+        error: function(err) {
+            if(options.fail) options.fail(err);
+        }
+    }, options)
+    ajaxMethod(options);
+}

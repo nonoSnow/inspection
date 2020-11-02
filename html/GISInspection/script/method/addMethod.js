@@ -6,15 +6,25 @@ var deviceId; //设备id
 var content; //内容
 var imgList=[]; //图片列表
 
+var areaInfo = {};  // 巡检区域相关信息
+var equipment = {}; // 设备相关信息
+var pageParam = {};
+
 apiready = function() {
     var header = $api.byId('header');
     // 实现沉浸式状态栏效果
     $api.fixStatusBar(header);
-    // 获取设备id
-    deviceId = parseInt(api.pageParam.data.id)
-    // 获取任务id
-    taskId = parseInt(api.pageParam.data.id)
-    console.log(deviceId)
+
+    pageParam = api.pageParam.data;
+
+    if(pageParam) {
+        alert(JSON.stringify(pageParam))
+        $(".aui-icon-location").addClass('aui-hide');
+
+        $("input[name=location]").val("106.123456, 39.123456")
+        $("input[name=address]").val(pageParam.address)
+    }
+
     // 点击选择事件类型
     $(".custom-popup-list li").each(function() {
       $(this).click(function() {
@@ -34,6 +44,15 @@ apiready = function() {
           $(this).addClass('color-598');
       });
     });
+
+    api.addEventListener({
+        name: 'addMethodEquipment'
+    }, function(ret, err){
+        areaInfo = ret.value.areaInfo;
+        equipment = ret.value.equipment;
+    });
+
+
     // 初始化图片列表
     showImg(imgList);
 }
@@ -116,10 +135,10 @@ function onSubmit(){
   }
 
   var data = {
-    type:$("#methodType").val(),
+    type: 1,
     errorType:$("#abnormalType").val(),
-    taskId:taskId,
-    deviceId:deviceId,
+    taskId: pageParam.taskId,
+    deviceId: pageParam.id,
     waterLoss:$("#waterLoss").val(),
     content:$("#content").val(),
     resourceInfoList:imgList
@@ -140,7 +159,6 @@ function savaData(data) {
   getEventInsert("api/services/Inspection/EventService/InsertEvent",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
-    console.log(JSON.stringify(ret));
     if(ret.success){
       api.toast({
           msg: '添加事件成功',
@@ -149,6 +167,13 @@ function savaData(data) {
       });
       // 清空数据
       clearData();
+      setTimeout(function() {
+          api.openWin({
+              name: 'method',
+              url: '../Method/method.html'
+          });
+
+      }, 2000)
     }else {
       alert("添加事件失败")
     }
@@ -182,7 +207,9 @@ function onOpenArea(type) {
       name: 'area',
       url: '../Area/area.html',
       pageParam: {
-          type: type
+          type: type,
+          areaInfo: areaInfo,
+          equipment: [equipment]
       }
   });
 
@@ -192,37 +219,50 @@ function uploadPhoto() {
   api.actionSheet({
       buttons: ['拍照', '相册选择']
   }, function(ret, err) {
-    if (ret.buttonIndex == 1) {
-      // 选择了拍照
       var type = 'camera';
-      getPicture(type, showRet, showErr);
-
-      function showRet(ret) {
-        // console.log(JSON.stringify(ret));
-        imgList.push(ret);
-        showImg(imgList);
+      if(ret.buttonIndex == 2) {
+          type = 'album';
       }
-
-      function showErr(err) {
-        console.log(JSON.stringify(err));
-      }
-
-      // showImg(imgList);
-    } else if (ret.buttonIndex == 2) {
-      // 选择了从相册选择
-      var type = 'album';
-      getPicture(type, showRet, showErr);
+       getPicture(type, showRet, showErr);
       function showRet(ret) {
         // console.log(JSON.stringify(ret));
         imgList.push(ret[0]);
-        console.log(JSON.stringify(imgList));
         showImg(imgList);
       }
-
       function showErr(err) {
         console.log(JSON.stringify(err));
       }
-    }
+    // if (ret.buttonIndex == 1) {
+    //   // 选择了拍照
+    //   var type = 'camera';
+    //   getPicture(type, showRet, showErr);
+    //
+    //   function showRet(ret) {
+    //     // console.log(JSON.stringify(ret));
+    //     imgList.push(ret);
+    //     showImg(imgList);
+    //   }
+    //
+    //   function showErr(err) {
+    //     console.log(JSON.stringify(err));
+    //   }
+    //
+    //   // showImg(imgList);
+    // } else if (ret.buttonIndex == 2) {
+    //   // 选择了从相册选择
+    //   var type = 'album';
+    //   getPicture(type, showRet, showErr);
+    //   function showRet(ret) {
+    //     // console.log(JSON.stringify(ret));
+    //     imgList.push(ret[0]);
+    //     console.log(JSON.stringify(imgList));
+    //     showImg(imgList);
+    //   }
+    //
+    //   function showErr(err) {
+    //     console.log(JSON.stringify(err));
+    //   }
+    // }
   })
 }
 // 显示图片

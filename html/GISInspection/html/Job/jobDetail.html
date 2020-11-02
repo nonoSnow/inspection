@@ -176,21 +176,16 @@
         <div class="margin-top12">巡检内容:</div>
         <div class="width100 height6 bgc-f5f6 border-radius4 margin-top75 padding75 line-height15">{{eventDetails.content}}</div>
 
+        {{if eventDetails.resourcelist}}
         <div class="margin-top12">工单附件</div>
         <div class="file-list">
+          {{each eventDetails.resourcelist value i}}
           <div class="file-div">
-
+            <img src="{{url}}{{value.url}}" class="width100 height100" alt="">
           </div>
-          <div class="file-div">
-
-          </div>
-          <div class="file-div">
-
-          </div>
-          <div class="file-div margin-right0">
-
-          </div>
+          {{/each}}
         </div>
+        {{/if}}
       </li>
       {{/if}}
   </script>
