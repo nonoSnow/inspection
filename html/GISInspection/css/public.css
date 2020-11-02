@@ -928,3 +928,8 @@ body {
   background: red;
   color: green;
 }
+
+.aui-popup-scroll{
+  height:300px;
+  overflow:hidden;
+}
