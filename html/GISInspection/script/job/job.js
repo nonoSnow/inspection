@@ -426,7 +426,6 @@ function addJob(){
 function getCaliber(){
   var userLoginInformation = $api.getStorage('userLoginInformation');
   console.log(JSON.stringify(userLoginInformation));
-  console.log();
   var data={
     cateCode:"Caliber",
     orgId:userLoginInformation.currentUserInfo.userInfo.orgId
@@ -436,12 +435,12 @@ function getCaliber(){
     console.log("***********************************************************************************************");
     console.log(JSON.stringify(ret));
     if(ret.success){
-      // $('#dataList').html('');
-      var data = transT(ret.result.items);
-      // console.log(JSON.stringify(data));
-      if(data.length){
-      }else{
-      }
+      api.sendEvent({
+          name: 'caliberList',
+          extra: {
+              caliberList:ret.result
+          }
+      });
     }
   }
 
