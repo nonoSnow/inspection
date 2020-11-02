@@ -9,6 +9,10 @@ apiready = function() {
   console.log(api.pageParam.Id);
   Id=api.pageParam.Id;
   showDetailsData(api.pageParam.Id)
+
+  if(methodType == 1) {
+      $(".footer").removeClass('aui-hide')
+  }
   // showDetailsData(id);
 }
 
@@ -28,7 +32,6 @@ function showDetailsData(id){
   function showRet(ret){
     console.log(JSON.stringify(ret));
     api.hideProgress();
-    console.log("----------------------------"+id);
       if(ret.success){
         $('#detailList').html('');
         var data = ret.result;

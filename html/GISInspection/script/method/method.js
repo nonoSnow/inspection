@@ -116,7 +116,6 @@ function onMenu(index, el) {
 }
 // 跳转到事件详情页面
 function onOpenMethodDetail(el) {
-  console.log(el);
   api.openWin({
       name: 'methodDetail',
       url: './methodDetail.html',
