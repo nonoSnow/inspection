@@ -57,7 +57,7 @@ apiready = function() {
           indexMap.initDeviceLayer('addArea');
         }
         indexMap.mapClearSource({name: 'addArea'});
-        console.log(JSON.stringify(ret));
+        // console.log(JSON.stringify(ret));
         areaInfo = ret.value.areaInfo;
         indexMap.drawAreaSelect(areaInfo.areaPoint, {name: 'addArea'});
 
@@ -73,8 +73,8 @@ apiready = function() {
             lineList: lineList,
             pointList: pointList
         }, {name: 'addArea'});
-        console.log(JSON.stringify(equipment));
-        console.log(typeof equipment);
+        // console.log(JSON.stringify(equipment));
+        // console.log(typeof equipment);
     });
 
     // 初始化图片列表
@@ -166,7 +166,7 @@ function subJob(){
     return false;
   }
   // 判断巡检区域是否填写
-  console.log(JSON.stringify(areaInfo));
+  // console.log(JSON.stringify(areaInfo));
   if(!areaInfo.id){
     api.toast({
         msg: '请选择巡检区域!',
@@ -201,7 +201,7 @@ function subJob(){
 
 // 上传数据
 function uploadData(data){
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   api.showProgress({
       style: 'default',
       animationType: 'fade',

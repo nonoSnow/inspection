@@ -38,6 +38,9 @@ apiready = function() {
 
   // 监听下拉刷新，上拉加载
   refreshData();
+
+  getCaliber()
+
 }
 
 // 获取待接收、进行中、已完成的工单 接口调用
@@ -418,4 +421,46 @@ function addJob(){
         eventId:""
       }
   });
+}
+// 获取口径列表
+function getCaliber(){
+  var userLoginInformation = $api.getStorage('userLoginInformation');
+  console.log(JSON.stringify(userLoginInformation));
+  console.log();
+  var data={
+    cateCode:"Caliber",
+    orgId:userLoginInformation.currentUserInfo.userInfo.orgId
+  }
+  jobGetMethod("api/services/app/Dictionary/GetDictionaryByCateCode",data,showRet,showErr);
+  function showRet(ret){
+    console.log("***********************************************************************************************");
+    console.log(JSON.stringify(ret));
+    if(ret.success){
+      // $('#dataList').html('');
+      var data = transT(ret.result.items);
+      // console.log(JSON.stringify(data));
+      if(data.length){
+      }else{
+      }
+    }
+  }
+
+  function showErr(err){
+    api.hideProgress();
+
+    // console.log(JSON.stringify(err));
+    if(err.body){
+      if(err.body.error){
+        if(err.body.error.message){
+          alert(err.body.error.message)
+        }else {
+          alert("加载失败")
+        }
+      }else {
+        alert("加载失败")
+      }
+    }else {
+      alert("加载失败");
+    }
+  }
 }
