@@ -16,9 +16,6 @@
         right:0.5rem;
         color: #333;
       }
-      .footer.aui-hide ~ .flex-con {
-            margin-bottom: 0;
-      }
 
     </style>
   </head>
@@ -33,6 +30,10 @@
             <span>巡检记录</span>
           </a>
       </header>
+
+      <div class="flex-con flex-content height100 bgc-f3 margin-bot250">
+        <ul class="aui-content-padded line-height1 font-S75" id="detailList"></ul>
+      </div>
 
       <footer class="aui-bar aui-bar-tab display-flex footer aui-hide">
         <div class="flex1">
@@ -52,12 +53,6 @@
         </div>
 
       </footer>
-
-      <div class="flex-con flex-content height100 bgc-f3 margin-bot250">
-        <ul class="aui-content-padded line-height1 font-S75" id="detailList"></ul>
-      </div>
-
-
     </div>
   </body>
   <script type="text/javascript" src="../../../public/script/api.js"></script>

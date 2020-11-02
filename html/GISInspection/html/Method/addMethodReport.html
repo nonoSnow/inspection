@@ -43,21 +43,21 @@
             </div>
             <div class="color-666 margin-top12">预估损失水量</div>
             <div class="item-input margin-top6 relative" >
-              <input id="waterLoss" type="number" placeholder="请输入预估损失水量">
+              <input id="waterLoss" type="text" placeholder="请输入预估损失水量">
               <span class="color-656">m³</span>
             </div>
           </li>
 
           <li class="padding75 bgc-ff border-radius4 margin-top75">
             <div class="color-666">设备点坐标</div>
-            <div class="item-input margin-top6 relative">
-              <input id="point" name="location" type="text" readonly placeholder="请选择设备坐标点">
-              <span class="aui-iconfont aui-icon-location font-S9 icon-open-area" tapmode onclick="onOpenArea(1)"></span>
+            <div class="item-input margin-top6 relative" tapmode onclick="onOpenArea(1)">
+              <input id="point" type="text" readonly placeholder="请选择设备坐标点">
+              <span class="aui-iconfont aui-icon-location font-S9"></span>
             </div>
             <div class="color-666 margin-top12">地址</div>
-            <div class="item-input margin-top6 relative">
-              <input id="address" name="address" type="text" readonly placeholder="请选择设备地址">
-              <span class="aui-iconfont aui-icon-location font-S9 icon-open-area" tapmode onclick="onOpenArea(2)"></span>
+            <div class="item-input margin-top6 relative" tapmode onclick="onOpenArea(2)">
+              <input id="address" type="text" readonly placeholder="请选择设备地址">
+              <span class="aui-iconfont aui-icon-location font-S9"></span>
             </div>
           </li>
 
@@ -90,10 +90,10 @@
         请选择事件类型
       </div>
       <ul class="aui-content-padded color-333 margin-bot0 margin-top0 custom-popup-list">
-        <li class="custom-popup-item" value="1">漏损事件</li>
-        <li class="custom-popup-item" value="2">爆管事件</li>
-        <li class="custom-popup-item" value="3">违章事件</li>
-        <li class="custom-popup-item border-none" value="4">其他事件</li>
+        <li class="custom-popup-item">漏损事件</li>
+        <li class="custom-popup-item">爆管事件</li>
+        <li class="custom-popup-item">违章事件</li>
+        <li class="custom-popup-item border-none">其他事件</li>
       </ul>
       <div class="custom-popup-interval"></div>
       <div class="custom-popup-item border-none color-666" tapmode onclick="onHidePopup()">

@@ -945,8 +945,3 @@ body {
 .borra {
   border-radius: 0.2rem;
 }
-
-.aui-popup-scroll{
-  height:300px;
-  overflow:hidden;
-}
