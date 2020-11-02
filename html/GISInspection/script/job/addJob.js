@@ -28,7 +28,6 @@ apiready = function() {
     api.addEventListener({
         name: 'headList'
     }, function(ret, err) {
-        // api.closeWin({name:'headList'})
         // 获取选中的负责人信息
         headList = JSON.parse(ret.value.checkHeadObj);
         $('#person').val(headList.name);
