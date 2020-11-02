@@ -408,3 +408,29 @@ function addData(data,status){
     }
   }
 }
+
+// 请求口径接口，并广播
+function getCaliberList(){
+  // jobPostMethod()
+  function showRet(ret){
+    if(ret.success){
+
+    }
+  }
+
+  function showErr(err){
+    if(err.body){
+      if(err.body.error){
+        if(err.body.error.message){
+          alert(err.body.error.message)
+        }else {
+          alert("加载失败")
+        }
+      }else {
+        alert("加载失败")
+      }
+    }else {
+      alert("加载失败");
+    }
+  }
+}

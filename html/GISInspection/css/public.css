@@ -948,5 +948,5 @@ body {
 
 .aui-popup-scroll{
   height:300px;
-  overflow:hidden;
+  overflow:auto;
 }
