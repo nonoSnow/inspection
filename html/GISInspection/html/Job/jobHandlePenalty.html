@@ -27,52 +27,78 @@
           <li class="padding75 bgc-ff border-radius4">
             <div class="item-one">
               <div class="item-title">
-                <span class="item-title-text">查漏</span>
-                <img src="../../image/add1.png" class="item-img" tapmode onclick="onAddItem('0')" alt="">
+                <span class="item-title-text">违章单位</span>
+                <img src="../../image/add1.png" class="item-img" tapmode onclick="onAddItem()" alt="">
               </div>
               <div class="item-input margin-top6 relative" >
-                <input id="caliberType0" type="text" placeholder="请选择管径类型" readonly>
-                <span class="aui-iconfont aui-icon-down font-S9" itemIndex="0" onclick='onShowPop(this)'></span>
-              </div>
-              <div class="item-input margin-top6 relative" >
-                <input id="caliber" type="text" placeholder="请输入口径长度">
-                <span class="font-S9 color-999">m</span>
-              </div>
-
-            </div>
-
-            <div class="margin-top12 item-two">
-              <div class="item-title">
-                <span class="item-title-text">查漏延伸</span>
-                <img src="../../image/add1.png" tapmode onclick="onAddItem('1')" class="item-img" alt="">
-              </div>
-              <div class="item-input margin-top6 relative" >
-                <input id="caliberExtendType0" type="text" placeholder="请选择管径类型" readonly>
-                <span class="aui-iconfont aui-icon-down font-S9" itemIndex="0" onclick='onShowExtendPop(this)'></span>
-              </div>
-              <div class="item-input margin-top6 relative" >
-                <input id="caliberExtend" type="text" placeholder="请输入口径长度">
-                <span class="font-S9 color-999">m</span>
+                <input id="bRuleName0" type="text" placeholder="请输入违章单位名称">
               </div>
             </div>
 
             <div class="margin-top12">
               <div class="item-title">
-                <span class="item-title-text">预估漏损</span>
+                <span class="item-title-text">违章地点</span>
               </div>
               <div class="item-input margin-top6 relative" >
-                <input id="methodType" type="text" placeholder="请输入预估漏损量">
-                <span class="font-S9 color-999">m³</span>
+                <input id="violationAddress" type="text" placeholder="请输入违章地点">
               </div>
             </div>
 
-            <div class="margin-top12 item-three">
+            <div class="margin-top12">
               <div class="item-title">
-                <span class="item-title-text">查漏地点</span>
-                <img src="../../image/add1.png" tapmode onclick="onAddItem('2')" class="item-img" alt="">
+                <span class="item-title-text">管径/口径 (DN)</span>
               </div>
               <div class="item-input margin-top6 relative" >
-                <input id="address0" type="text" placeholder="请输入查漏地址">
+                <input id="caliber" type="text" placeholder="请选择管径/口径" readonly>
+                <span class="aui-iconfont aui-icon-down font-S9" onclick='onShowExtendPop(this)'></span>
+              </div>
+            </div>
+
+            <div class="margin-top12">
+              <div class="item-title">
+                <span class="item-title-text">日期</span>
+              </div>
+              <div class="item-input margin-top6 relative" >
+                <input readonly class="form-control" type="text" id="time" placeholder="请选择时间">
+                <span class="aui-iconfont aui-icon-down font-S9" onclick="openDate()"></span>
+              </div>
+            </div>
+
+            <div class="margin-top12">
+              <div class="item-title">
+                <span class="item-title-text">工程费</span>
+              </div>
+              <div class="item-input margin-top6 relative" >
+                <input id="projectCost" type="text" placeholder="请输入工程费">
+                <span class="font-S9 color-999">元</span>
+              </div>
+            </div>
+
+            <div class="margin-top12">
+              <div class="item-title">
+                <span class="item-title-text">水费</span>
+              </div>
+              <div class="item-input margin-top6 relative" >
+                <input id="waterCost" type="text" placeholder="请输入水费">
+                <span class="font-S9 color-999">元</span>
+              </div>
+            </div>
+
+            <div class="margin-top12">
+              <div class="item-title">
+                <span class="item-title-text">原因</span>
+              </div>
+              <div class="margin-top6 bgc-f3 border-radius2 padding75 height6">
+                <textarea id="violationReason" class='width100 height100' placeholder="请输入原因"></textarea>
+              </div>
+            </div>
+
+            <div class="margin-top12">
+              <div class="item-title">
+                <span class="item-title-text">备注</span>
+              </div>
+              <div class="margin-top6 bgc-f3 border-radius2 padding75 height6">
+                <textarea id="remark" class='width100 height100' placeholder="请输入备注"></textarea>
               </div>
             </div>
 
@@ -82,28 +108,11 @@
 
       <footer class="aui-bar aui-bar-tab display-flex footer">
         <div class="flex1">
-          <div class='footer-btn bgc-blue color-fff btn-disabled'>
+          <div class='footer-btn bgc-blue color-fff' onclick="subHandle()">
             提交
           </div>
         </div>
       </footer>
-    </div>
-
-    <!-- 管径类型弹框 -->
-    <div class="aui-popup custom-popup font-S8 text-cent" id="caliberTypePop">
-      <div class="custom-popup-item border-radius-top3 color-999 margin-center">
-        请选择管径类型
-      </div>
-      <ul class="aui-content-padded color-333 margin-bot0 margin-top0 custom-popup-list">
-        <li class="custom-popup-item">D15</li>
-        <li class="custom-popup-item">D25</li>
-        <li class="custom-popup-item">D35</li>
-        <li class="custom-popup-item border-none">D45</li>
-      </ul>
-      <div class="custom-popup-interval"></div>
-      <div class="custom-popup-item border-none color-666" tapmode onclick="onHidePopup()">
-          取消
-      </div>
     </div>
 
     <!-- 延伸管径类型弹窗 -->
@@ -128,7 +137,12 @@
   <script type="text/javascript" src="../../../public/script/remote.js"></script>
   <script type="text/javascript" src="../../../public/script/zepto.js"></script>
   <script type="text/javascript" src="../../../public/script/aui-popup.js"></script>
+  <script type="text/javascript" src="../../script/date/rolldate.min.js"></script>
 
   <script type="text/javascript" src="../../script/public.js"></script>
-  <script type="text/javascript" src="../../script/jobHandle.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
+  <script type="text/javascript" src="../../ajax/jobAjax.js"></script>
+
+  <script type="text/javascript" src="../../script/job/jobHandlePenalty.js"></script>
 </html>

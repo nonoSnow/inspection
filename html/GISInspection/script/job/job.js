@@ -123,18 +123,19 @@ function onMenu(index, el) {
   });
 }
 
-// 任务详情
+// 工单详情
 function onOpenJobDetail(el) {
-  // console.log($(el).attr('param'));
+  var param = JSON.parse($(el).attr('param'));
+  // console.log(JSON.stringify(param));
   api.openWin({
       name: 'jobDetail',
       url: './jobDetail.html',
       pageParam: {
-          type: jobType,
-          Id: $(el).attr('param')
+          type: jobType,  //状态（1：待接收；0：进行中；2：已完成）
+          Id: param.id,   //工单ID
+          type7:param.type  //工单类型（1：查漏；2：查漏延伸；3：维修管道；4：维修管道延伸；5：违章罚款；6：贫水区改造）
       }
   });
-
 }
 
 // 待接收工单点击接收
@@ -216,7 +217,8 @@ function onWrite(el){
         name: 'jobHandleLeak',
         url: './jobHandleLeak.html',
         pageParam: {
-            Id:param.id
+            Id:param.id,
+            from:"job"
         }
     });
   }else if (param.type==5) {
@@ -225,7 +227,8 @@ function onWrite(el){
         name: 'jobHandlePenalty',
         url: './jobHandlePenalty.html',
         pageParam: {
-            Id:param.id
+            Id:param.id,
+            from:"job"
         }
     });
   }else{
@@ -234,7 +237,8 @@ function onWrite(el){
         name: 'jobHandleRepair',
         url: './jobHandleRepair.html',
         pageParam: {
-            Id:param.id
+            Id:param.id,
+            from:"job"
         }
     });
   }

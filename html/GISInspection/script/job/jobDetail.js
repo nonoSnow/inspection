@@ -129,14 +129,41 @@ function onOpenTurnRes(el){
 }
 
 function onOpenHandle() {
-  api.openWin({
-      name: 'jobHandle',
-      url: './jobHandle.html',
-      pageParam: {
-          name: 'test'
-      }
-  });
-
+  var type=parseInt(api.pageParam.type7);    //工单类型 7种
+  console.log(type);
+  // 工单类型（1：查漏；2：查漏延伸；3：维修管道；4：维修管道延伸；5：违章罚款；6：贫水区改造）
+  if(type==1 || type==2){
+    // 1：查漏；2：查漏延伸；
+    // 跳转到关闭工单页面
+    api.openWin({
+        name: 'jobHandleLeak',
+        url: './jobHandleLeak.html',
+        pageParam: {
+            Id:Id,
+            from:"jobDetail"
+        }
+    });
+  }else if (type==5) {
+    // 5：违章罚款；
+    api.openWin({
+        name: 'jobHandlePenalty',
+        url: './jobHandlePenalty.html',
+        pageParam: {
+            Id:Id,
+            from:"jobDetail"
+        }
+    });
+  }else{
+    // 3：维修管道；4：维修管道延伸；6：贫水区改造
+    api.openWin({
+        name: 'jobHandleRepair',
+        url: './jobHandleRepair.html',
+        pageParam: {
+            Id:Id,
+            from:"jobDetail"
+        }
+    });
+  }
 }
 // 对数据进行处理 对于已完成的工单的工单反馈表进行处理，以及时间进行处理
 function dataProcess(obj){
@@ -153,6 +180,74 @@ function dataProcess(obj){
   }
   // 为图片添加url 前缀
   obj.url = baseUrl;
+
+  // 对工单反馈的数据进行处理
+  var workArr=[];
+  if(obj.predictWaterLoss){
+    var str="预估漏损："+obj.predictWaterLoss+"m³";
+    workArr.push(str);
+  }
+
+  addWork("查漏",obj.workOrderBacks.leak);
+  addWork("查漏延伸",obj.workOrderBacks.leakExtension);
+  addWork("维修",obj.workOrderBacks.repair);
+  addWork("改管",obj.workOrderBacks.change);
+  addWork("阀门",obj.workOrderBacks.valve);
+  addWork("消防栓",obj.workOrderBacks.fireHydrant);
+  addWork("违章单位",obj.workOrderBacks.company);
+  if(obj.type==3 || obj.type==4 || obj.type==6){
+    addWork("改造地点",obj.workOrderBacks.address);
+  }else if(obj.type==1 || obj.type==1){
+    addWork("查漏地点",obj.workOrderBacks.address);
+  }
+
+  function addWork(name,workObj){
+    if(workObj.length>0){
+      var str=name+"：";
+      for (var i = 0; i < workObj.length; i++) {
+        workObj[i].caliber = workObj[i].caliber==null?"":workObj[i].caliber+"，";
+        workObj[i].value = workObj[i].value==null?"":workObj[i].value;
+        if(i==workObj.length-1){
+          str=str+workObj[i].caliber+workObj[i].value
+        }else{
+          str=str+workObj[i].caliber+workObj[i].value+"；"
+        }
+      }
+      workArr.push(str);
+    }
+  }
+
+  if(obj.violationAddress){
+    var str="违章地点："+obj.violationAddress;
+    workArr.push(str);
+  }
+  if(obj.caliber){
+    var str="管径/口径："+obj.caliber;
+    workArr.push(str);
+  }
+  if(obj.time){
+    var str="日期："+obj.time.replace("T00:00:00"," ");
+    workArr.push(str);
+  }
+
+  if(obj.projectCost){
+    var str="工程费："+obj.projectCost+"元";
+    workArr.push(str);
+  }
+  if(obj.waterCost){
+    var str="水费："+obj.waterCost+"元";
+    workArr.push(str);
+  }
+  if(obj.violationReason){
+    var str="原因："+obj.violationReason;
+    workArr.push(str);
+  }
+  if(obj.remark){
+    var str="备注："+obj.remark;
+    workArr.push(str);
+  }
+  console.log(JSON.stringify(workArr));
+  obj.workArr=workArr;
   return obj
 }
 

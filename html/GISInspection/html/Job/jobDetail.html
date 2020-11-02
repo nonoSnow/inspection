@@ -72,10 +72,35 @@
       <li class="padding75 bgc-ff border-radius4 margin-bot75 job-ok aui-hide">
         <div class="color-666">工单反馈</div>
         <div class="line margin-top6 margin-bot6"></div>
-        <div>查漏：D15，12m</div>
-        <div class="margin-top75">查漏延伸：D25，13m；D25，13m</div>
-        <div class="margin-top75">预估漏损：135m³</div>
-        <div class="margin-top75">漏损地点：南京市溧水区交通路阳光小区98号</div>
+        {{if workArr.length>0 }}
+          {{each workArr value i}}
+          <!-- <div>查漏：D15，12m</div>
+          <div class="margin-top75">查漏延伸：D25，13m；D25，13m</div>
+          <div class="margin-top75">预估漏损：135m³</div> -->
+          <div class="margin-top75">{{value}}</div>
+          {{/each}}
+
+          {{if violationReason }}
+          <div class="margin-top75">
+            <div class="item-title">
+              <span class="item-title-text">原因：</span>
+            </div>
+            <div class="margin-top6 bgc-f3 border-radius2 padding75 height6">
+              <textarea class='width100 height100' readonly>{{violationReason}}</textarea>
+            </div>
+          </div>
+          {{/if}}
+          {{if remark }}
+          <div class="margin-top75">
+            <div class="item-title">
+              <span class="item-title-text">备注：</span>
+            </div>
+            <div class="margin-top6 bgc-f3 border-radius2 padding75 height6">
+              <textarea class='width100 height100' readonly>{{remark}}</textarea>
+            </div>
+          </div>
+          {{/if}}
+        {{/if}}
       </li>
 
       <li class="padding75 bgc-ff border-radius4">

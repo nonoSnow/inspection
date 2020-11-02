@@ -285,3 +285,26 @@ function uploadLocation() {
   //   console.log("不管跳转到哪个页面,我一直在");
   // }, 5000);
 }
+
+/**
+* 图片预览
+* @param {data} Array 图片路径 ['imgSrc1', 'imgsrc2']
+**/
+function previewImage(data) {
+  var photoBrowser = api.require('photoBrowser');
+  photoBrowser.open({
+      images: data,
+      // placeholderImg: 'widget://res/img/apicloud.png',
+      bgColor: '#000'
+  }, function(ret, err) {
+      if (ret) {
+          console.log(JSON.stringify(ret));
+          if (ret.eventType == 'click') {
+            // 点击，关闭预览
+            photoBrowser.close();
+          }
+      } else {
+          console.log(JSON.stringify(err));
+      }
+  });
+}

@@ -11,9 +11,9 @@ apiready = function() {
     // 实现沉浸式状态栏效果
     $api.fixStatusBar(header);
     // 获取设备id
-    deviceId = parseInt(api.pageParam.data)
+    deviceId = parseInt(api.pageParam.data.id)
     // 获取任务id
-    taskId = parseInt(api.pageParam.taskId)
+    taskId = parseInt(api.pageParam.data.id)
     console.log(deviceId)
     // 点击选择事件类型
     $(".custom-popup-list li").each(function() {
@@ -38,7 +38,7 @@ apiready = function() {
     showImg(imgList);
 }
 var popup = new auiPopup();
-// 点击确定保存异常类型的值并
+// 点击确定保存异常类型的值
 function saveCheck (){
   var chk_value = [];
   $('input[name="checkbox"]:checked').each(function(){ //遍历，将所有选中的值放到数组中
@@ -79,14 +79,14 @@ function onSubmit(){
     return false;
   }
   // 判断预估损失水量是否填写
-  // if(!$("#waterLoss").val()){
-  //   api.toast({
-  //       msg: '请输入预估损失水量!',
-  //       duration: 2000,
-  //       location: 'middle'
-  //   });
-  //   return false;
-  // }
+  if(!$("#waterLoss").val()){
+    api.toast({
+        msg: '请输入预估损失水量!',
+        duration: 2000,
+        location: 'middle'
+    });
+    return false;
+  }
   // 判断设备点坐标是否填写
   // if(!$("#point").val()){
   //   api.toast({
@@ -106,14 +106,14 @@ function onSubmit(){
   //   return false;
   // }
   // 判断巡检内容是否填写
-  // if(!$("#content").val()){
-  //   api.toast({
-  //       msg: '请输入巡检内容!',
-  //       duration: 2000,
-  //       location: 'middle'
-  //   });
-  //   return false;
-  // }
+  if(!$("#content").val()){
+    api.toast({
+        msg: '请输入巡检内容!',
+        duration: 2000,
+        location: 'middle'
+    });
+    return false;
+  }
 
   var data = {
     type:$("#methodType").val(),
@@ -177,10 +177,10 @@ function clearData(){
 // 点击坐标跳转到设备点列表选择页面
 function onOpenArea(type) {
   api.openWin({
-      // name: 'pointCoordinates',
-      // url: './pointCoordinates.html',
-      name: 'area',
-      url: '../Area/area.html',
+      name: 'pointCoordinates',
+      url: './pointCoordinates.html',
+      // name: 'area',
+      // url: '../Area/area.html',
       pageParam: {
           type: type
       }

@@ -12,7 +12,7 @@ apiready = function() {
   console.log(JSON.stringify(api.pageParam.data));
   details = api.pageParam.data;
   details.type = api.pageParam.type;
-
+  console.log(JSON.stringify(details));
   // alert(typeof(details));
   // alert(details);
   // alert(details.status);
@@ -24,8 +24,8 @@ apiready = function() {
   }
 
   initDevInfo();
-  showImg(imgList);
-  onPageInit();
+  // showImg(imgList);
+  // onPageInit();
 }
 
 // 初始化页面
@@ -100,8 +100,11 @@ function initDevInfo() {
       $('#devInfo').append(str);
 
       // 巡检信息
+      ret.result.type = details.type;
       var str1 = template('devceInfo', ret.result);
       $('#devInfoBox').append(str1);
+
+      showImg(imgList)
     } else {
       $('#devInfo').addClass('aui-hide');
       $('#devInfoBox').addClass('aui-hide');
@@ -112,6 +115,8 @@ function initDevInfo() {
           location: 'middle'
       });
     }
+
+    onPageInit();
   }
 
   function showErr(err) {
@@ -254,11 +259,72 @@ function action() {
 
 // 删除图片
 function deleteImg(that) {
+  var e = e || window.event;
+  e.stopPropagation();
   if (that != null) {
     var imgIndex = $(that).attr('parse');
     console.log(imgIndex);
     imgList = deleteArray(imgList, imgIndex);
     console.log(JSON.stringify(imgList));
     showImg(imgList);
+  }
+}
+
+// 预览
+function previewImg(that) {
+  if (that != null) {
+    var imgSrc = $(that).attr('parse');
+    console.log(imgSrc);
+    var data = [];
+    data.push(imgSrc);
+    previewImage(data);
+  }
+}
+
+// 点击提交,新增设备巡检情况
+function submit() {
+  var content = $('#content').val();
+
+  if (content == '') {
+    api.toast({
+        msg: '请输入巡检内容',
+        duration: 2000,
+        location: 'middle'
+    });
+    return false;
+  }
+
+  var data = {
+    deviceId: details.id,
+    taskId: details.taskId,
+    content: content,
+    personId: '',
+    person: '',
+    resourceInfoList: imgList
+  }
+
+  AppInsertDeviceInspection('api/services/Inspection/DeviceService/AppInsertDeviceInspection' , data, showRet, showErr);
+
+  function showRet(ret) {
+    // 提交成功，返回任务详情列表
+  }
+
+  function showErr(err) {
+    if(err.body.error != undefined){
+      // alert(err.body.error.message);
+      api.toast({
+          msg: err.body.error.message,
+          duration: 2000,
+          location: 'middle'
+      });
+
+    }else{
+      // alert(err.msg);
+      api.toast({
+          msg: err.msg,
+          duration: 2000,
+          location: 'middle'
+      });
+    }
   }
 }

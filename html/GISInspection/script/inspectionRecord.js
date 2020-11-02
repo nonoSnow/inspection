@@ -1,7 +1,7 @@
 var devInfo;
 var hasNextPage = false;
 var pageIndex = 1;
-var xunData = [];
+// var xunData = [];
 // 初始化事件为当前月
 var date = parseTime(new Date(), '{y}-{m}');
 var initDate = date;
@@ -47,68 +47,76 @@ function initBasic() {
 
 // 获取巡检记录
 function getXunData() {
-  // var param = {
-  //   deviceId: devInfo.id,
-  //   time: date,
-  //   pageIndex: pageIndex,
-  //   maxResultCount: 10
-  // }
-  //
-  // getXunList('api/services/Inspection/InspectionTask/AppGetInspectionRecordList', param, showRet, showErr);
-  //
-  // function showRet(ret) {
-  //    hasNextPage = ret.result.hasNextPage;
-  //    if (ret.result.items.length != 0) {
-  //      ret.result.items.forEach(function (item, index) {
-  //        xunData.push(item);
-  //      })
-  //    }
-  // }
-  //
-  // function showErr(err) {
-  //   if (err.body.error != undefined) {
-  //     api.toast({
-  //         msg: err.body.error.message,
-  //         duration: 2000,
-  //         location: 'middle'
-  //     });
-  //   } else {
-  //     api.toast({
-  //         msg: err.msg,
-  //         duration: 2000,
-  //         location: 'middle'
-  //     });
-  //   }
-  // }
-
-  var data = {
-    list: [
-      {
-        name: '阀门',
-        person: '张三',
-        time: '2020-06-02 14:00',
-        status: 3,
-        statusStr: '异常'
-      },
-      {
-        name: '阀门',
-        person: '李四',
-        time: '2020-06-02 14:00',
-        status: 2,
-        statusStr: '正常'
-      },
-      {
-        name: '阀门',
-        person: '王五',
-        time: '2020-06-02 14:00',
-        status: 3,
-        statusStr: '异常'
-      }
-    ]
+  var param = {
+    deviceId: devInfo.id,
+    time: date,
+    pageIndex: pageIndex,
+    maxResultCount: 10
   }
 
-  var str = template('xun-box', data);
-  $('#xunjianBox').append(str);
+  getXunList('api/services/Inspection/InspectionTask/AppGetInspectionRecordList', param, showRet, showErr);
+
+  function showRet(ret) {
+    hasNextPage = ret.result.hasNextPage;
+    if (ret.result.items.length != 0) {
+      ret.result.items.forEach(function (item, index) {
+        if (item.time != null || item.time != '') {
+          item.time = parseTime(item.time, '{y}-{m}-{d} {h}:{i}');
+        }
+      })
+
+      var data = {
+        list: ret.result.items
+      }
+      var str = template('xun-box', data);
+      $('#xunjianBox').append(str);
+    }
+  }
+
+  function showErr(err) {
+    if (err.body.error != undefined) {
+      api.toast({
+          msg: err.body.error.message,
+          duration: 2000,
+          location: 'middle'
+      });
+    } else {
+      api.toast({
+          msg: err.msg,
+          duration: 2000,
+          location: 'middle'
+      });
+    }
+  }
+
+  // var data = {
+  //   list: [
+  //     {
+  //       name: '阀门',
+  //       person: '张三',
+  //       time: '2020-06-02 14:00',
+  //       status: 3,
+  //       statusStr: '异常'
+  //     },
+  //     {
+  //       name: '阀门',
+  //       person: '李四',
+  //       time: '2020-06-02 14:00',
+  //       status: 2,
+  //       statusStr: '正常'
+  //     },
+  //     {
+  //       name: '阀门',
+  //       person: '王五',
+  //       time: '2020-06-02 14:00',
+  //       status: 3,
+  //       statusStr: '异常'
+  //     }
+  //   ]
+  // }
+  //
+  // var str = template('xun-box', data);
+  // $('#xunjianBox').append(str);
 }
 
 // 初始化
@@ -122,11 +130,12 @@ var rdS = new Rolldate({
     },
     value: initDate,
     confirm: function(val) {
-      console.log('点击了确定');
+      // console.log('点击了确定');
       date = val;
-      console.log(date);
+      // console.log(date);
       pageIndex = 1;
-      xunData = [];
+      // xunData = [];
+      $('#xunjianBox').html('');
       getXunData();
     }
 })

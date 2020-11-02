@@ -921,10 +921,12 @@ body {
 }
 
 .del-icon {
-  width: 0.7rem;
-  height: 0.7rem;
+  width: 1rem;
+  height: 1rem;
   right: -0.25rem;
   top: -0.25rem;
-  background: red;
-  color: green;
+}
+
+.borra {
+  border-radius: 0.2rem;
 }

@@ -140,3 +140,20 @@ function GetPointDetails(path,data,showRet,showErr) {
   }
   ajaxMethod(options)
 }
+
+// 新增设备巡检情况
+function AppInsertDeviceInspection() {
+  var options = {
+    url: baseUrl+path,
+    data: data,
+    success:function(ret){
+      // console.log(JSON.stringify(ret));
+      showRet(ret)
+    },
+    error:function(err){
+      // console.log(JSON.stringify(err));
+      showErr(err)
+    }
+  }
+  ajaxMethod(options)
+}
