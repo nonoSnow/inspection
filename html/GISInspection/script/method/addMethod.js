@@ -177,10 +177,10 @@ function clearData(){
 // 点击坐标跳转到设备点列表选择页面
 function onOpenArea(type) {
   api.openWin({
-      name: 'pointCoordinates',
-      url: './pointCoordinates.html',
-      // name: 'area',
-      // url: '../Area/area.html',
+      // name: 'pointCoordinates',
+      // url: './pointCoordinates.html',
+      name: 'area',
+      url: '../Area/area.html',
       pageParam: {
           type: type
       }
