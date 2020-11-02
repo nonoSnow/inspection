@@ -195,20 +195,27 @@
             var orbitLayer = new window.ol.layer.Vector({
                 source: orbitSource,
                 updateWhileInteracting: true,
-                style: _this.orbitStyle
+                style: _this.orbitStyle,
+                zoom: _this.zo
             });
             this[layername] = orbitLayer;
             this.map.addLayer(orbitLayer);
         },
         /*
+            样式方法回调  返回路径样式及 路径上箭头 及 箭头样式和旋转角度
             feature: 地图上的要素对象，既有属性，也有坐标图形。
             res：当前地图分辨率参数。
         */
         orbitStyle: function(feature, res) {
+            let _this = this;
             var geometry = feature.getGeometry();
             var length = geometry.getLength();
             var stpes=40;
+<<<<<<< HEAD
             var geo_steps=stpes*res;
+=======
+            var geo_steps=stpes * res;
+>>>>>>> 2d7b25483c700a84f892e813aefdfc2e07e371bf
             var arrowsNum=parseInt(length/geo_steps);
             var styles = [
               // linestring
@@ -223,6 +230,7 @@
             geometry.forEachSegment(function(start, end) {
                 var dx = end[0] - start[0];
                 var dy = end[1] - start[1];
+
                 //计算每个segment的方向，即箭头旋转方向
                 var rotation = Math.atan2(dy, dx);
                 var geom=new ol.geom.LineString([start,end]);
@@ -233,13 +241,13 @@
                   maxX: extent[2],
                   maxY: extent[3],
                   geom: geom,
-                  rotation:rotation
+                  rotation: rotation
                 };
                 tree.insert(item);
             });
             for(var i = 1; i < arrowsNum; i++ ){
                 var arraw_coor = geometry.getCoordinateAt( i * 1.0 / arrowsNum );
-                var tol=10;//查询设置的点的容差，测试地图单位是米。如果是4326坐标系单位为度的话，改成0.0001.
+                var tol=0.0001;//查询设置的点的容差，测试地图单位是米。如果是4326坐标系单位为度的话，改成0.0001.
                 var arraw_coor_buffer = [arraw_coor[0]-tol, arraw_coor[1]-tol, arraw_coor[0]+tol, arraw_coor[1]+tol];
                 //进行btree查询
                 var treeSearch = tree.search({
@@ -260,7 +268,7 @@
                       //   return true;
 
                       //换一种方案，设置一个稍小的容差，消除精度问题
-                        var _tol=1;//消除精度误差的容差
+                        var _tol=0.00001;//消除精度误差的容差
                         if(item.geom.intersectsExtent([arraw_coor[0]-_tol,arraw_coor[1]-_tol,arraw_coor[0]+_tol,arraw_coor[1]+_tol]))
                             return true;
                     })
@@ -270,13 +278,14 @@
                 styles.push(new ol.style.Style({
                     geometry: new ol.geom.Point(arraw_coor),
                     image: new ol.style.Icon({
-                      src: '../../image/icon-arrow3.png',
-                    //   anchor: [0.75, 0.5],
+                      src: '../../image/icon-arrow.png',
+                      anchor: [0.75, 0.5],
                       rotateWithView: true,
-                      rotation: arrow_rotation
+                      rotation: -arrow_rotation
                     })
                 }));
             }
+<<<<<<< HEAD
             // geometry.forEachSegment(function(start, end) {
             //    var dx = end[0] - start[0];
             //    var dy = end[1] - start[1];
@@ -304,16 +313,33 @@
             //             }),
             //         })
             // }
+=======
+>>>>>>> 2d7b25483c700a84f892e813aefdfc2e07e371bf
             return styles;
         },
-
+        // 计算象限 返回象限 比如1为第一象限
+        calculateQuad: function(dx, dy) {
+            var quad = 1;
+            if(dx > 0 && dy > 0) {
+                return 1;
+            } else if(dx < 0 && dy > 0) {
+                return 2;
+            } else if(dx < 0 && dy < 0) {
+                return 3;
+            } else if(dx > 0 && dy < 0) {
+                return 4
+            }
+        },
         // 开启地图点击事件 选中区域 并执行其他操作
-        initMapClick: function() {
-            this.map.on('singleclick', this.mapClickEvent, this);
+        initMapClick: function(callback) {
+            var _this = this
+            this.map.on('singleclick', function(e) {
+                _this.mapClickEvent(e, callback)
+            });
         },
 
         // 点击地图执行的事件  改变点所在的区域的样式 并将其他的样式重置会初始样式
-        mapClickEvent: function(e) {
+        mapClickEvent: function(e, callback) {
             var pixel = this.map.getEventPixel(e.originalEvent);
             var featureInfo = this.map.forEachFeatureAtPixel(pixel, function(feature, layer) {
                 return {feature:feature,layer:layer};
@@ -362,6 +388,8 @@
                 selectAreaPoint += flats[0] + "," + flats[1] + ";";
                 this.selectAreaPoint = selectAreaPoint;
                 this.selectFeature = feature
+
+                if(callback) callback();
             }
         },
 

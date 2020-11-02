@@ -1,39 +1,22 @@
 
-var Id;         //工单ID
-var headList;   //负责人
-var imgList=[]; //图片列表
+var imgList = []; //图片列表
+var Id; //工单ID
+var jobType; //工单传过来的值
 apiready = function() {
   var header = $api.byId('header');
   $api.fixStatusBar(header);
-
-  Id = api.pageParam.Id;
-  // 监听负责人的选择
-  api.addEventListener({
-      name: 'headList'
-  }, function(ret, err) {
-      // api.closeWin({name:'headList'})
-      // 获取选中的负责人信息
-      headList = JSON.parse(ret.value.checkHeadObj);
-      $('#transferPerson').val(headList.name);
-  });
-
+  //获取工单ID
+  Id = parseInt(api.pageParam.Id);
+  jobType=api.pageParam.jobType;
+  console.log(Id);
   // 初始化图片列表
   showImg(imgList);
 }
 
-// 选择负责人
-function onOpenHead() {
-  api.openWin({
-      name: 'headList',
-      url: './headList.html'
-  });
-}
-
-// 提交转派
-function subTurn(){
-  // 先判断条件
-  // 说明原因必填
-  if(!$("#transferReason").val()){
+// 提交关闭工单
+function subJobClose(){
+  // 判断关闭原因
+  if(!$("#closeReason").val()){
     api.toast({
         msg: '请填写说明原因!',
         duration: 2000,
@@ -41,22 +24,10 @@ function subTurn(){
     });
     return false;
   }
-  // 判断负责人是否填写
-  if(!$("#transferPerson").val()){
-    api.toast({
-        msg: '请选择负责人!',
-        duration: 2000,
-        location: 'middle'
-    });
-    return false;
-  }
-  // 开始上传数据
-  var data = {
-    Id:Id,                                //工单ID
-    transferPersonId:headList.userId,             //转派后的负责人ID
-    transferPerson:$("#transferPerson").val(),       //转派后的负责人
-    transferReason:$("#transferReason").val(),    //转派原因
-    resourceInfoList:imgList                    //附件
+  var data={
+    Id:Id,
+    closeReason:$("#closeReason").val(),
+    resourceInfoList:imgList
   }
   console.log(JSON.stringify(data));
   api.showProgress({
@@ -65,43 +36,22 @@ function subTurn(){
       title: '提交中...',
       modal: false
   });
-  jobPostMethod("api/services/Inspection/WorkOrderService/WorkOrderTransfer",data,showRet,showErr);
+  jobPostMethod("api/services/Inspection/WorkOrderService/CloseWorkOrder",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
     console.log(JSON.stringify(ret));
     if(ret.success){
-      // api.toast({
-      //     msg: '转派工单成功',
-      //     duration: 2000,
-      //     location: 'middle'
-      // });
-      api.alert({
-          title: '提示',
-          msg: '转派工单成功',
-      }, function(ret, err) {
-          api.sendEvent({
-              name: 'initJob',
-              extra: {
-                  funcName: 1,
-              }
-          });
-          api.closeWin({
-              name: 'jobDetail'
-          });
-          api.closeWin();
-          // api.closeToWin({
-          //     name: 'job'
-          // });
-          // api.openWin({
-          //     name: 'job',
-          //     url: './job.html'
-          // });
-
+      api.toast({
+          msg: '关闭工单成功',
+          duration: 2000,
+          location: 'middle'
       });
       // 清空数据
       clearData();
+      api.closeWin();
+
     }else {
-      alert("转派工单失败")
+      alert("关闭工单失败")
     }
   }
 
@@ -125,12 +75,23 @@ function subTurn(){
 
 // 清空数据
 function clearData(){
-  $("#transferReason").val("");
-  headList={};
+  $("#closeReason").val();
   imgList=[];
   showImg(imgList);
+  // api.openWin({
+  //     name: 'job',
+  //     url: './job.html',
+  //     reload:true
+  // });
+  api.sendEvent({
+      name: 'initJob',
+      extra: {
+          funcName: jobType,
+      }
+  });
+  // onBack();
+  api.openWin()
 }
-
 // 上传附件 图片
 // 点击拍照div弹出底部选择框，选择相册或者拍照
 function action() {

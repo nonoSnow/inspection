@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>新增任务</title>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../../css/public.css">
+  </head>
+  <body>
+    <div class="flex-wrap flex-vertical height100">
+      <header class="aui-bar aui-bar-nav aui-bar-light bgi-none header-box-shadow" id="header">
+          <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
+              <span class='aui-iconfont aui-icon-left'></span>
+          </div>
+          <div class="aui-title">新增任务</div>
+      </header>
+
+      <div class="flex-con flex-content height100 bgc-f3 margin-bot250">
+        <ul class="aui-content-padded line-height1 font-S75">
+          <li class="padding75 bgc-ff border-radius4">
+            <div class="color-666"><span class="required"></span>任务名称</div>
+            <div class="item-input margin-top6 relative" >
+              <input id="task-name" type="text" placeholder="请输入任务名称">
+            </div>
+            <div class="color-666 margin-top12"><span class="required"></span>任务类型</div>
+            <div class="item-input margin-top6 relative" >
+              临时任务
+            </div>
+            <div class="color-666 margin-top12"><span class="required"></span>负责人</div>
+            <div class="item-input margin-top6 relative" >
+              <input type="text" placeholder="请选择负责人" id="person" readonly>
+              <span class="aui-iconfont aui-icon-plus font-S9" tapmode onclick="onOpenHead()"></span>
+            </div>
+            <div class="color-666 margin-top12"><span class="required"></span>开始时间</div>
+            <div class="item-input margin-top6 relative" >
+              <input readonly class="form-control" type="text" id="planStartTime" placeholder="请选择时间">
+              <span class="aui-iconfont aui-icon-calendar font-S9" onclick="openStartDate()"></span>
+            </div>
+            <div class="color-666 margin-top12"><span class="required"></span>结束时间</div>
+            <div class="item-input margin-top6 relative" >
+              <input readonly class="form-control" type="text" id="planEndTime" placeholder="请选择时间">
+              <span class="aui-iconfont aui-icon-calendar font-S9" onclick="openEndDate()"></span>
+            </div>
+          </li>
+          <li class="padding75 bgc-ff border-radius4 margin-top75">
+            <div class="color-666"><span class="required"></span>巡检区域</div>
+            <div class="margin-top6 bgc-f3 border-radius2 padding75 height6 relative">
+              <div id="tishiBox" class="color-666 relative">
+                请添加巡检区域
+                <span class="aui-iconfont aui-icon-plus font-S9 absolute right0" onclick="openChoseArea()"></span>
+              </div>
+              <div id="mapBox" class="aui-hide width100 height100 absolute top0 left0" style="background: red!important;">
+                地图
+              </div>
+            </div>
+          </li>
+          <li class="padding75 bgc-ff border-radius4 margin-top75">
+            <div class="color-666"><span class="required"></span>任务备注</div>
+            <div class="margin-top6 bgc-f3 border-radius2 padding75 height6">
+              <textarea id="content" class='width100 height100' placeholder="请输入巡检内容"></textarea>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <footer class="aui-bar aui-bar-tab display-flex footer">
+        <div class="flex1">
+          <div class='footer-btn bgc-blue color-fff' onclick="subTask()">
+            提交
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../../public/script/api.js"></script>
+  <script type="text/javascript" src="../../../public/script/common.js"></script>
+  <script type="text/javascript" src="../../../public/script/remote.js"></script>
+  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+  <script type="text/javascript" src="../../../public/script/template.js"></script>
+  <script type="text/javascript" src="../../script/date/rolldate.min.js"></script>
+
+  <script type="text/javascript" src="../../script/public.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
+  <script type="text/javascript" src="../../ajax/taskAjax.js"></script>
+
+  <script type="text/javascript" src="../../script/task/addTask.js"></script>
+</html>

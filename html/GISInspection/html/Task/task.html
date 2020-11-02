@@ -15,12 +15,12 @@
 </head>
 
 <body>
-    <div class="flex-wrap flex-vertical height100">
+    <div id="flex-box" class="flex-wrap flex-vertical height100">
         <header class="aui-bar aui-bar-nav aui-bar-light bgi-none" id="header">
             <div class="aui-title">任务</div>
         </header>
 
-        <div class="header-type display-flex text-cent line-height25 color-666">
+        <div id="flex-vertical" class="header-type display-flex text-cent line-height25 color-666">
             <div class="flex1 header-type-item color-598" tapmode onclick="onMenu(0, this)">
                 <span class="line-height1">
               进行中
@@ -47,8 +47,10 @@
             </div>
         </div>
 
-        <div class="flex-con flex-content height100 bgc-f3">
-            <ul class="aui-content-padded">
+        <div id="list-box" class="flex-con flex-content bgc-f3 overflowScroll">
+          <ul class="aui-content-padded" id="taskList">
+          </ul>
+            <!-- <ul class="aui-content-padded">
                 <li class="padding75 bgc-ff border-radius4 relative line-height1" tapmode onclick="onOpenTaskDetail()">
                     <img src="../../image/plan.png" class='task-item-label absolute right75 top0' alt="">
                     <div class="aui-list-item-inner block font-S9">
@@ -109,8 +111,19 @@
                         </div>
                     </div>
                 </li>
-            </ul>
+            </ul> -->
+            <div id="haveNothing" class="text-cent aui-hide">
+              <img class="margin-top200" src="../../image/nothing.png" alt="">
+              <div class="text-cent color-666 line-height25">暂无任务</div>
+            </div>
         </div>
+        <footer id="footer" class="aui-bar aui-bar-tab display-flex footer">
+          <div class="flex1">
+            <div class='footer-btn bgc-blue color-fff' tapmode onclick="openAddTask()">
+              新增任务
+            </div>
+          </div>
+        </footer>
     </div>
 
 </body>
@@ -118,8 +131,190 @@
 <script type="text/javascript" src="../../../public/script/common.js"></script>
 <script type="text/javascript" src="../../../public/script/remote.js"></script>
 <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+<script type="text/javascript" src="../../../public/script/template.js"></script>
 
 <script type="text/javascript" src="../../script/public.js"></script>
-<script type="text/javascript" src="../../script/task.js"></script>
+<script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+<script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
+<script type="text/javascript" src="../../ajax/taskAjax.js"></script>
+<!-- <script type="text/javascript" src="../../script/task.js"></script> -->
+
+<script type="text/javascript" src="../../script/task/task.js"></script>
+<script type="text/template" id='onGoing'>
+  <!-- 任务进行中 -->
+  {{each list value i}}
+  <li class="padding75 bgc-ff border-radius4 relative line-height1 margin-bot5" tapmode onclick="onOpenTaskDetail(this)" parse="{{value.id}}">
+      {{if value.type == 1 }}
+      <img src="../../image/temporary.png" class='task-item-label absolute right75 top0' alt="">
+      {{else if value.type == 2}}
+      <img src="../../image/plan.png" class='task-item-label absolute right75 top0' alt="">
+      {{/if}}
+      <div class="aui-list-item-inner block font-S9">
+          <div class="display-flex">
+              <img src="../../image/task-icon.png" class='task-icon' alt="">
+              <span class="margin-left3 font-w4">{{value.name}}</span>
+          </div>
+          <div class="margin-top10 font-S75 color-666">实际开始：{{value.startTime}}</div>
+          <div class="margin-top6 font-S75 color-666 relative">
+              预计完成：{{value.planEndTime}}
+              {{if value.OverdueTime != null && value.OverdueTime != ''}}
+              <div class="absolute bottom0 right0 task-item-overdue handle-overdue">
+                  超期 {{value.OverdueTime}}
+              </div>
+              {{/if}}
+          </div>
+          <!-- <div class="margin-top75 font-S75 color-666 relative complete">
+              时长：{{value.finishTime}}
+              <div class="absolute bottom0 right350 task-item-overdue">
+                  超期 8.3h
+              </div>
+              <div class="absolute bottom0 right0 task-item-overdue">
+                  已关闭
+              </div>
+          </div> -->
+          <div class="line margin-top75 margin-bot5 item-bot-btn"></div>
+          <div class="display-flex font-S8 item-bot-btn">
+              <div class="flex1 text-cent border-right item-left" tapmode onclick="openTaskStop(this)" parse="{{value}}">
+                  暂停
+              </div>
+              <div class="flex1 text-cent item-right" tapmode onclick="completedTask(this)" parse="{{value.id}}">
+                  完成
+              </div>
+          </div>
+      </div>
+  </li>
+  {{/each}}
+</script>
+
+<script type="text/template" id='received'>
+  <!-- 任务待启动-->
+  {{each list value i}}
+  <li class="padding75 bgc-ff border-radius4 relative line-height1 margin-bot5" tapmode onclick="onOpenTaskDetail(this)" parse="{{value.id}}">
+      {{if value.type == 1 }}
+      <img src="../../image/temporary.png" class='task-item-label absolute right75 top0' alt="">
+      {{else if value.type == 2}}
+      <img src="../../image/plan.png" class='task-item-label absolute right75 top0' alt="">
+      {{/if}}
+      <div class="aui-list-item-inner block font-S9">
+          <div class="display-flex">
+              <img src="../../image/task-icon.png" class='task-icon' alt="">
+              <span class="margin-left3 font-w4">{{value.name}}</span>
+          </div>
+          <div class="margin-top10 font-S75 color-666">预计开始：{{value.planTime}}</div>
+          <div class="margin-top6 font-S75 color-666 relative">
+              预计完成：{{value.planEndTime}}
+              {{if value.OverdueTime != null && value.OverdueTime != ''}}
+              <div class="absolute bottom0 right0 task-item-overdue handle-overdue">
+                  超期 {{value.OverdueTime}}
+              </div>
+              {{/if}}
+          </div>
+          <!-- <div class="margin-top75 font-S75 color-666 relative complete">
+              时长：{{value.finishTime}}
+              <div class="absolute bottom0 right350 task-item-overdue">
+                  超期 8.3h
+              </div>
+              <div class="absolute bottom0 right0 task-item-overdue">
+                  已关闭
+              </div>
+          </div> -->
+          <div class="line margin-top75 margin-bot5 item-bot-btn"></div>
+          <div class="display-flex font-S8 item-bot-btn">
+              <div class="flex1 text-cent border-right item-left" tapmode onclick="closeTask(this)" taskName="{{value.name}}" parse="{{value.id}}" parseType="received">
+                  关闭
+              </div>
+              <div class="flex1 text-cent item-right" tapmode onclick="startUpTask(this)" parse="{{value.id}}">
+                  启动
+              </div>
+          </div>
+      </div>
+  </li>
+  {{/each}}
+</script>
+
+<script type="text/template" id='suspended'>
+  <!-- 任务已暂停 -->
+  {{each list value i}}
+  <li class="padding75 bgc-ff border-radius4 relative line-height1 margin-bot5" tapmode onclick="onOpenTaskDetail(this)" parse="{{value.id}}">
+      {{if value.type == 1 }}
+      <img src="../../image/temporary.png" class='task-item-label absolute right75 top0' alt="">
+      {{else if value.type == 2}}
+      <img src="../../image/plan.png" class='task-item-label absolute right75 top0' alt="">
+      {{/if}}
+      <div class="aui-list-item-inner block font-S9">
+          <div class="display-flex">
+              <img src="../../image/task-icon.png" class='task-icon' alt="">
+              <span class="margin-left3 font-w4">{{value.name}}</span>
+          </div>
+          <div class="margin-top10 font-S75 color-666">暂停时间：{{value.stopTime}}</div>
+          <div class="margin-top6 font-S75 color-666 relative">
+              暂停时长：{{value.SuspendTime}}
+              <!-- {{if value.OverdueTime != null || value.OverdueTime != ''}}
+              <div class="absolute bottom0 right0 task-item-overdue handle-overdue">
+                  超期 {{value.OverdueTime}}
+              </div>
+              {{/if}} -->
+          </div>
+          <div class="line margin-top75 margin-bot5 item-bot-btn"></div>
+          <div class="display-flex font-S8 item-bot-btn">
+              <div class="flex1 text-cent border-right item-left" tapmode onclick="closeTask(this)" taskName="{{value.name}}" parse="{{value.id}}"  parseType="suspended">
+                  关闭
+              </div>
+              <div class="flex1 text-cent item-right" tapmode onclick="reStartTask(this)" parse="{{value.id}}">
+                  重启
+              </div>
+          </div>
+      </div>
+  </li>
+  {{/each}}
+</script>
+
+<script type="text/template" id='completed'>
+  <!-- 任务已完成 -->
+  {{each list value i}}
+  <li class="padding75 bgc-ff border-radius4 relative line-height1 margin-bot5" tapmode onclick="onOpenTaskDetail(this)" parse="{{value.id}}">
+      {{if value.type == 1 }}
+      <img src="../../image/temporary.png" class='task-item-label absolute right75 top0' alt="">
+      {{else if value.type == 2}}
+      <img src="../../image/plan.png" class='task-item-label absolute right75 top0' alt="">
+      {{/if}}
+      <div class="aui-list-item-inner block font-S9">
+          <div class="display-flex">
+              <img src="../../image/task-icon.png" class='task-icon' alt="">
+              <span class="margin-left3 font-w4">{{value.name}}</span>
+          </div>
+          <div class="margin-top10 font-S75 color-666">实际开始：{{value.startTime}}</div>
+          <div class="margin-top6 font-S75 color-666 relative">
+              完成时间：{{value.endTime}}
+              <!-- {{if value.OverdueTime != null || value.OverdueTime != ''}}
+              <div class="absolute bottom0 right0 task-item-overdue handle-overdue">
+                  超期 {{value.OverdueTime}}
+              </div>
+              {{/if}} -->
+          </div>
+          <div class="margin-top75 font-S75 color-666 relative complete">
+              时长：{{value.finishTime}}
+              {{if value.OverdueTime != null && value.OverdueTime != ''}}
+              <div class="absolute bottom0 right350 task-item-overdue">
+                  超期 {{value.OverdueTime}}
+              </div>
+              {{/if}}
+              <div class="absolute bottom0 right0 task-item-overdue">
+                  已关闭
+              </div>
+          </div>
+          <!-- <div class="line margin-top75 margin-bot5 item-bot-btn"></div>
+          <div class="display-flex font-S8 item-bot-btn">
+              <div class="flex1 text-cent border-right item-left" tapmode onclick="onItemLeft()">
+                  暂停
+              </div>
+              <div class="flex1 text-cent item-right" tapmode onclick="onItemRight()">
+                  完成
+              </div>
+          </div> -->
+      </div>
+  </li>
+  {{/each}}
+</script>
 
 </html>

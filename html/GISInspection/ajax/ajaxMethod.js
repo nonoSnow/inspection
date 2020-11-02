@@ -11,7 +11,7 @@
 * error 失败回调函数
 */
 function ajaxMethod(options) {
-    console.log(JSON.stringify(options))
+    // console.log(JSON.stringify(options))
     if(!options.url) return false;
     var data = {}, url = options.url, headers = options.headers || {};
     headers['Authorization'] = headers['Authorization'] || $api.getStorage('loginInfo')
@@ -39,6 +39,15 @@ function ajaxMethod(options) {
         if(urlStr)
             url += '?' + urlStr;
     }
+    // console.log(JSON.stringify({
+    //     url: url,
+    //     method: options.type || 'post',
+    //     timeout: options.timeout || 10,
+    //     dataType: 'json',
+    //     headers: headers,
+    //     data: data,
+    //     timeout: options.timeout || 20
+    // }))
     var requestOption = {
         url: url,
         method: options.type,
@@ -68,6 +77,10 @@ function ajaxMethod(options) {
     //     // data: options.data
     // })
     api.ajax(requestOption, function (ret, err) {
+      // console.log(JSON.stringify(requestOption));
+      // console.log(url);
+      console.log(JSON.stringify(ret));
+      console.log(JSON.stringify(err));
         if(err) {
             if(options.error) options.error(err);
             return false;

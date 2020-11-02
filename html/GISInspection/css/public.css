@@ -517,6 +517,10 @@ body {
 	padding-top: 5rem!important;
 }
 
+.padding-top05 {
+  padding-top: 0.5rem
+}
+
 .heightauto {
   height: auto;
 }
@@ -881,6 +885,7 @@ body {
   vertical-align: top;
 }
 
+<<<<<<< HEAD
 .no-data {
   height: 6rem;
   color: #333;
@@ -895,3 +900,50 @@ body {
 .over-hide {
   overflow: hidden;
 }
+=======
+/*拍照后显示列表*/
+.img-list {
+  width: 100%;
+  height: auto;
+  display: inline-table;
+}
+
+.top06 {
+  top: 0.6rem;
+}
+
+.top21 {
+  top: 2.1rem;
+}
+
+.left15 {
+  left: 33%;
+}
+
+.left0 {
+  left: 0;
+}
+
+.camera-img {
+  width: 100%;
+}
+
+.overflow {
+  overflow: hidden;
+}
+
+.overflowScroll {
+  overflow-y: auto;
+}
+
+.del-icon {
+  width: 1rem;
+  height: 1rem;
+  right: -0.25rem;
+  top: -0.25rem;
+}
+
+.borra {
+  border-radius: 0.2rem;
+}
+>>>>>>> 2d7b25483c700a84f892e813aefdfc2e07e371bf

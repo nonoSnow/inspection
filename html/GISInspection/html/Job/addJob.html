@@ -30,20 +30,20 @@
             </div>
             <div class="color-666 margin-top12"><span class="required"></span>负责人</div>
             <div class="item-input margin-top6 relative" >
-              <input type="text" placeholder="请选择负责人" readonly>
+              <input type="text" placeholder="请选择负责人" id="person" readonly>
               <span class="aui-iconfont aui-icon-plus font-S9" tapmode onclick="onOpenHead()"></span>
             </div>
             <div class="color-666 margin-top12"><span class="required"></span>预计完成时间</div>
             <div class="item-input margin-top6 relative" >
               <!-- <input type="text" placeholder="请选择时间" readonly> -->
-              <input readonly class="form-control" type="text" id="date-group1-3" placeholder="请选择时间">
-              <span class="aui-iconfont aui-icon-calendar font-S9"></span>
+              <input readonly class="form-control" type="text" id="planCompleteTime" placeholder="请选择时间">
+              <span class="aui-iconfont aui-icon-calendar font-S9" onclick="openDate()"></span>
             </div>
           </li>
           <li class="padding75 bgc-ff border-radius4 margin-top75">
             <div class="color-666"><span class="required"></span>工单内容</div>
             <div class="margin-top6 bgc-f3 border-radius2 padding75 height6">
-              <textarea name="name" class='width100 height100' placeholder="请输入巡检内容"></textarea>
+              <textarea id="content" class='width100 height100' placeholder="请输入巡检内容"></textarea>
             </div>
           </li>
           <li class="padding75 bgc-ff border-radius4 margin-top75">
@@ -59,10 +59,18 @@
             </div>
           </li>
           <li class="padding75 bgc-ff border-radius4 margin-top75">
-            <div class="color-666">上传附件</div>
-            <div class="margin-top6 file-div">
-              <img src="../../image/camera.png" class="margin-top75 margin-bot3 file-img" alt="">
-              <span class="file-text">上传照片</span>
+            <!-- <div style="inline-block">
+              <div class="color-666">上传附件</div>
+              <div class="margin-top6 file-div" onclick="openCamera()">
+                <img src="../../image/camera.png" class="margin-top75 margin-bot3 file-img" alt="">
+                <span class="file-text">上传照片</span>
+              </div>
+            </div> -->
+            <!-- 放置拍了照片的图片 -->
+            <!-- <div id="picBox" style="display:flex;background:#fff;">
+            </div> -->
+            <div class="margin-top12 color-666">上传附件</div>
+            <div id="imgBox" class="img-list">
             </div>
           </li>
         </ul>
@@ -70,7 +78,7 @@
 
       <footer class="aui-bar aui-bar-tab display-flex footer">
         <div class="flex1">
-          <div class='footer-btn bgc-blue color-fff btn-disabled'>
+          <div class='footer-btn bgc-blue color-fff' onclick="subJob()">
             提交
           </div>
         </div>
@@ -101,6 +109,7 @@
   <script type="text/javascript" src="../../../public/script/remote.js"></script>
   <script type="text/javascript" src="../../../public/script/zepto.js"></script>
   <script type="text/javascript" src="../../../public/script/aui-popup.js"></script>
+  <script type="text/javascript" src="../../../public/script/template.js"></script>
 
   <script type="text/javascript" src="../../script/sntgis/sntgis.js"></script>
   <script type="text/javascript" src="../../script/sntgis/sntgis_extend.js"></script>
@@ -113,4 +122,25 @@
   <script type="text/javascript" src="../../script/date/rolldate.min.js"></script>
   <script type="text/javascript" src="../../script/job/addJob.js"></script>
   <script type="text/javascript" src="../../script/public.js"></script>
+
+  <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
+  <script type="text/javascript" src="../../ajax/publicAjax.js"></script>
+  <script type="text/javascript" src="../../ajax/jobAjax.js"></script>
+  <script type="text/template" id='imgData'>
+    {{each list value i}}
+    <div class="margin-top75 file-div relative">
+      <img src="{{url}}{{value.url}}" class="width100 height100" alt="">
+      <div class="absolute top0 right0 del-icon" tapmode onclick="deleteImg(this)" parse="{{i}}">x</div>
+    </div>
+    {{/each}}
+    <div class="margin-top75 file-div relative" tapmode onclick="action()">
+      <div class="file-img absolute top06 left15">
+        <img src="../../image/camera.png" class="camera-img" alt="">
+      </div>
+      <div class="absolute top21 text-cent file-text width100">
+        上传照片
+      </div>
+    </div>
+  </script>
 </html>

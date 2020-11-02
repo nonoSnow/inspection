@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
     <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
-    <title>填写工单界面</title>
+    <title>填写工单-查漏和查漏延伸出</title>
     <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
     <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
 
@@ -35,7 +35,7 @@
                 <span class="aui-iconfont aui-icon-down font-S9" itemIndex="0" onclick='onShowPop(this)'></span>
               </div>
               <div class="item-input margin-top6 relative" >
-                <input id="caliber" type="text" placeholder="请输入口径长度">
+                <input id="caliber0" type="text" placeholder="请输入口径长度">
                 <span class="font-S9 color-999">m</span>
               </div>
 
@@ -51,7 +51,7 @@
                 <span class="aui-iconfont aui-icon-down font-S9" itemIndex="0" onclick='onShowExtendPop(this)'></span>
               </div>
               <div class="item-input margin-top6 relative" >
-                <input id="caliberExtend" type="text" placeholder="请输入口径长度">
+                <input id="caliberExtend0" type="text" placeholder="请输入口径长度">
                 <span class="font-S9 color-999">m</span>
               </div>
             </div>
@@ -61,7 +61,7 @@
                 <span class="item-title-text">预估漏损</span>
               </div>
               <div class="item-input margin-top6 relative" >
-                <input id="methodType" type="text" placeholder="请输入预估漏损量">
+                <input id="predictWaterLoss" type="text" placeholder="请输入预估漏损量">
                 <span class="font-S9 color-999">m³</span>
               </div>
             </div>
@@ -82,7 +82,7 @@
 
       <footer class="aui-bar aui-bar-tab display-flex footer">
         <div class="flex1">
-          <div class='footer-btn bgc-blue color-fff btn-disabled'>
+          <div class='footer-btn bgc-blue color-fff' onclick="subHandle()">
             提交
           </div>
         </div>
@@ -130,5 +130,9 @@
   <script type="text/javascript" src="../../../public/script/aui-popup.js"></script>
 
   <script type="text/javascript" src="../../script/public.js"></script>
-  <script type="text/javascript" src="../../script/jobHandle.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
+  <script type="text/javascript" src="../../ajax/jobAjax.js"></script>
+  
+  <script type="text/javascript" src="../../script/job/jobHandleLeak.js"></script>
 </html>
