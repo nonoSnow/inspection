@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>车辆选择Frame</title>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/public.css">
+    <link rel="stylesheet" type="text/css" href="../../css/selectCar_Frame.css">
+  </head>
+  <body>
+    <div class="flex-wrap flex-vertical height100">
+      <header class="aui-bar aui-bar-nav aui-bar-light bgi-none text-left color-333 padding-left75 border-bottom-dashed width75-right" id="header">
+        车辆总数：3
+      </header>
+
+      <div class="flex-con flex-content bgc-ff height100 margin-bot250 width75-right">
+        <ul id="nameList" class="aui-content-padded font-S75">
+          <!-- <li class="car-name-item float-let relative">
+            苏A65081
+            <img src="../../image/right_checked.png" class="checked" alt="">
+          </li>
+          <li class="car-name-item float-rig">
+            苏A65081
+          </li>
+          <li class="car-name-item float-let margin-top75">
+            苏A65081
+          </li> -->
+        </ul>
+      </div>
+
+      <footer class="aui-bar aui-bar-tab display-flex footer width75-right">
+          <div class="flex1">
+              <div class='footer-btn btn-border' tapmode onclick="onCloseFrame()">
+                  取消
+              </div>
+          </div>
+          <div class="flex1">
+              <div class='footer-btn bgc-blue color-fff' tapmode onclick="onOk()">
+                  确定
+              </div>
+          </div>
+      </footer>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../../public/script/api.js"></script>
+  <script type="text/javascript" src="../../../public/script/common.js"></script>
+  <script type="text/javascript" src="../../../public/script/remote.js"></script>
+  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+  <script type="text/javascript" src="../../../public/script/template.js"></script>
+  <script type="text/javascript" src="../../../public/script/aui-dialog.js"></script>
+
+  <script type="text/javascript" src="../../script/public.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
+  <script type="text/javascript" src="../../script/carManagement/selectCar_Frame.js"></script>
+  <script type="text/template" id="carNameList">
+    {{if datas.length > 0}}
+      {{each datas item i}}
+      {{if (i+1)%2 != 0}}
+        {{if i > 1}}
+        <li class="car-name-item margin-top75 float-let relative" item="{{item}}">
+        {{else}}
+        <li class="car-name-item float-let relative" item="{{item}}">
+        {{/if}}
+      {{else}}
+        {{if i > 1}}
+        <li class="car-name-item margin-top75 float-rig relative" item="{{item}}">
+        {{else}}
+        <li class="car-name-item float-rig relative" item="{{item}}">
+        {{/if}}
+      {{/if}}
+        {{item.carName}}
+        <img src="../../image/right_checked.png" class="checked" alt="" item="{{item}}">
+      </li>
+      {{/each}}
+    {{/if}}
+  </script>
+</html>

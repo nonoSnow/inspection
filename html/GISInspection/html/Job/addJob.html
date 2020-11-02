@@ -48,10 +48,13 @@
           </li>
           <li class="padding75 bgc-ff border-radius4 margin-top75">
             <div class="color-666"><span class="required"></span>巡检区域</div>
-            <div class="margin-top6 bgc-f3 border-radius2 padding75 height6">
-              <div class="color-666 relative">
+            <div id='areaMapDiv' class="over-hide margin-top6 bgc-f3 border-radius2 padding75 height6" tapmode onclick="onOpenArea()">
+              <div id='areaDefault' class="color-666 relative">
                 请添加巡检区域
                 <span class="aui-iconfont aui-icon-plus font-S9 absolute right0"></span>
+              </div>
+              <div id="areaMap" class="map aui-hide">
+
               </div>
             </div>
           </li>
@@ -99,6 +102,14 @@
   <script type="text/javascript" src="../../../public/script/zepto.js"></script>
   <script type="text/javascript" src="../../../public/script/aui-popup.js"></script>
 
+  <script type="text/javascript" src="../../script/sntgis/sntgis.js"></script>
+  <script type="text/javascript" src="../../script/sntgis/sntgis_extend.js"></script>
+  <script type="text/javascript" src="../../script/sntgis/rbush.min.js"></script>
+  <script type="text/javascript" src="../../script/common/common.js"></script>
+  <script type="text/javascript" src="../../script/common/gis.js"></script>
+
+  <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
   <script type="text/javascript" src="../../script/date/rolldate.min.js"></script>
   <script type="text/javascript" src="../../script/job/addJob.js"></script>
   <script type="text/javascript" src="../../script/public.js"></script>

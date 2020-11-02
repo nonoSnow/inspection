@@ -209,9 +209,6 @@
             var length = geometry.getLength();
             var stpes=40;
             var geo_steps=stpes*res;
-            console.log(length)
-            console.log(geometry)
-            console.log(res)
             var arrowsNum=parseInt(length/geo_steps);
             var styles = [
               // linestring
@@ -270,7 +267,6 @@
                     if(results.length > 0)
                         arrow_rotation=results[0].rotation;
                 }
-                console.log(arrow_rotation)
                 styles.push(new ol.style.Style({
                     geometry: new ol.geom.Point(arraw_coor),
                     image: new ol.style.Icon({
@@ -281,7 +277,6 @@
                     })
                 }));
             }
-            // console.log(tree)
             // geometry.forEachSegment(function(start, end) {
             //    var dx = end[0] - start[0];
             //    var dy = end[1] - start[1];
@@ -413,21 +408,26 @@
 
         // 根据区域 获取 区域内的管点管线  并选中管点管线
         // 根据区域得出与区域相交的元素
-        getCommonEle: function(deviceInfo, name) {
+        // type 有type表示绘制区域选中设备
+        getCommonEle: function(deviceInfo, name, type) {
             var selectFeature = this.selectFeature;
             var polygon = selectFeature.getGeometry();
             var _this = this;
             // 获取选中的图层边界点
             var areaExtent = deviceInfo.areaPoint.split(';').join(' ');
             areaExtent = areaExtent.substring(0, areaExtent.length - 1);
-            console.log(areaExtent)
+            console.log(areaExtent);
             this.getDeviceList({
                 data: {
                     coords: areaExtent
                 },
                 success: function(ret) {
+                  if(type) {
+
+                  } else {
                     _this.getLineListInArea(ret.result.line, deviceInfo.lineList, name)
                     _this.getPointListInArea(ret.result.point, deviceInfo.pointList, name)
+                  }
                 }
             })
         },
@@ -470,7 +470,6 @@
                     }
                 }
             }
-            console.log(JSON.stringify(lineList))
             this.drawLineSelect(lineList, name);
         },
 
@@ -492,7 +491,6 @@
                     }
                 }
             }
-            console.log(pointList)
             this.drawPointSelect(pointList, name);
         },
         // 选中管线
@@ -510,7 +508,6 @@
         drawPointSelect: function(selectPointList, name) {
             var pointsource = name ? name + 'PointSource' : 'selectPointSource'
             for(let i = 0; i< selectPointList.length; i++) {
-                console.log(selectPointList[i].deviceLoaction)
                 let pointFeatype = new window.ol.Feature({
                     geometry: new window.ol.geom.Circle([Number(selectPointList[i].deviceLoaction[0]), Number(selectPointList[i].deviceLoaction[1])], 0.00005)
                 })
@@ -524,7 +521,6 @@
             var feature = new ol.Feature({
                 geometry: new ol.geom.LineString(pointList)
             })
-            console.log(feature)
 
             this[sourcename].addFeature(feature);
 
@@ -537,7 +533,6 @@
             //     var point = pointList[i].Location.split(',')
             //     coordinates.push([Number(point[0]), Number(point[1])])
             // }
-            // console.log(coordinates)
         },
 
         // 改变地图的缩放  isScale 表示放大还是缩小  0表示缩小  1表示放大
@@ -552,7 +547,240 @@
             zoom = zoom >= 5 ? zoom : 5;
             this.zoomMap = zoom;
             this.map.getView().setZoom(zoom);
+        },
+
+        // 点击地图区域返回区域信息  2020-10-28  -zlx
+        mapClickArea: function(callback) {
+            // 点击区域的定点坐标
+            var coordinates = [];
+            this.map.on('singleclick', function(e) {
+              var pixel = this.map.getEventPixel(e.originalEvent);
+              var featureInfo = this.map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+                  var geometry = feature.getGeometry();
+                  coordinates = geometry.getCoordinates();
+                  return {feature:feature,layer:layer};
+              });
+              this.mapHighlight(featureInfo.feature);
+              callback(coordinates);
+            }, this);
+        },
+
+        // 地图设置高亮显示  2020-10-28  -zlx
+        mapHighlight: function(feature) {
+          if(feature) {
+              // 将当前feature的样式改为选中样式
+              feature.setStyle(function() {
+                  return new window.ol.style.Style({
+                      fill: new window.ol.style.Fill({
+                          color: 'rgba(11, 120, 230, 0.1)'
+                      }),
+                      stroke: new window.ol.style.Stroke({
+                          lineDash:[2,4],
+                          lineCap: 'square',
+                          color: 'rgba(11, 120, 230, 1)',
+                          width: 2
+                      })
+                  });
+              })
+              // 将当前选中的样式
+              if(this.selectFeature && this.selectFeature.ol_uid != feature.ol_uid) {
+                  this.selectFeature.setStyle(function() {
+                      return new window.ol.style.Style({
+                          fill: new window.ol.style.Fill({
+                              color: 'rgba(153, 153, 153, 0.1)'
+                          }),
+                          stroke: new window.ol.style.Stroke({
+                              lineDash:[2,4],
+                              lineCap: 'square',
+                              color: 'rgba(153, 153, 153, 1)',
+                              width: 2
+                          })
+                      });
+                  })
+              }
+
+              var selectAreaPoint = ''
+              var flats = feature.values_.geometry.flatCoordinates;
+
+              for (var i = 0; i < flats.length; i = i + 2) {
+                  selectAreaPoint += flats[i] + ",";
+                  selectAreaPoint += flats[i + 1] + ";";
+              }
+              selectAreaPoint += flats[0] + "," + flats[1] + ";";
+              this.selectAreaPoint = selectAreaPoint;
+              this.selectFeature = feature
+          }
+        },
+
+        // 高亮显示选择  2020-10-28  -zlx
+        // areaPoint 片区坐标 ['104.15243983268738','30.024197101593018']
+        mapCheckedArea: function(areaPoint, areainfo) {
+          var name = areainfo.name || 'area'
+          var sourceName = name + 'source';
+          (JSON.stringify(areaPoint));
+          var feature = this[sourceName]['source'].getClosestFeatureToCoordinate(areaPoint);
+          this.mapHighlight(feature);
+
+          var geometry = feature.getGeometry();
+          var coordinates = geometry.getCoordinates();
+          var areaPointsArr = coordinates[0];
+          var pointsArray = new Array();
+          let xArray = new Array();
+          let yArray = new Array();
+          for (let i = 0; i < areaPointsArr.length - 1; i++) {
+              pointsArray.push(areaPointsArr[i]);
+              xArray.push(areaPointsArr[i][0]);
+              yArray.push(areaPointsArr[i][1]);
+          }
+          var xmax = Math.max.apply(null, xArray);
+          var xmin = Math.min.apply(null, xArray);
+          var ymax = Math.max.apply(null, yArray);
+          var ymin = Math.min.apply(null, yArray);
+          this.map.getView().fit([xmin, ymin, xmax, ymax]);
+        },
+
+        // 清空地图上区域  2020-10-29  -zlx
+        mapClearSource: function(areainfo) {
+          var name = areainfo.name || 'area'
+          var sourceName = name + 'source';
+          this[sourceName]['source'].clear();
+
+          var pointsource = areainfo.name ? areainfo.name + 'PointSource' : 'selectPointSource';
+          var linesource = areainfo.name ? areainfo.name + 'LineSource' : 'selectLineSource';
+          this[pointsource].clear();
+          this[linesource].clear();
+          this.map.removeLayer(pointsource);
+          this.map.removeLayer(linesource);
+        },
+
+        // 地图显示管线  设备点 2020-10-29  -zlx
+        mapConduitEquipment: function(deviceInfo, areainfo) {
+            var name = areainfo.name || 'area'
+            var sourceName = name + 'source';
+            var areaPointArr = deviceInfo.areaPoint.split(';');
+            var areaPoint = areaPointArr[0].split(',');
+            var feature = this[sourceName]['source'].getClosestFeatureToCoordinate(areaPoint);
+            var polygon = feature.getGeometry();
+            var _this = this;
+            // 获取选中的图层边界点
+            var areaExtent = deviceInfo.areaPoint.split(';').join(' ');
+            areaExtent = areaExtent.substring(0, areaExtent.length - 1);
+            this.getDeviceList({
+                data: {
+                    coords: areaExtent
+                },
+                success: function(ret) {
+                  _this.getLineListInArea(ret.result.line, deviceInfo.lineList, name)
+                  _this.getPointListInArea(ret.result.point, deviceInfo.pointList, name)
+                }
+            })
+        },
+
+        mapToLine: function(isClick, isSave, addareaPoint, callback){
+          if (!isClick) {
+            callback({measureDraw: '', isSave: false});
+            this.map.removeInteraction(measureDraw); //取消绘制
+            return false;
+          }
+          // 绘图的颜色
+          var drawStyle = new ol.style.Style({
+              stroke: new ol.style.Stroke({
+                  color: '#00F5B4',
+                  width: 3,
+              }),
+              fill: new ol.style.Fill({
+                  color: 'rgba(113, 128, 248, 0.5)'
+              })
+          });
+          if (addareaPoint.length > 0) {
+            var polygonFeature = new ol.Feature(
+                new ol.geom.Polygon(addareaPoint)
+            );
+            var linesource = new ol.source.Vector({
+                features: [
+                    polygonFeature
+                ]
+            });
+          } else {
+            var linesource = new ol.source.Vector;
+          }
+          var measureLayer = new ol.layer.Vector({
+              source: linesource,
+              style: drawStyle
+          });
+          this['measureLayer'] = {
+              source : linesource,
+              layer : measureLayer
+          };
+          measureLayer.set('name', 'measureLayer');
+          this.map.addLayer(measureLayer);
+          var measureDraw = new ol.interaction.Draw({
+            type: 'Polygon',
+            source: measureLayer.getSource(), // 注意设置source，这样绘制好的线，就会添加到这个source里
+            style: new ol.style.Style({ // 设置绘制时的样式
+              stroke: new ol.style.Stroke({
+                color: '#00F5B4',
+                width: 3,
+              })
+            }),
+            minPoints: 3
+          });
+          var _this = this;
+          var coordinates = [];
+          measureDraw.on('drawstart', function(event) {
+              isSave = true;
+              console.log(isSave);
+              callback({measureDraw: measureDraw, isSave: isSave});
+          });
+
+         if (addareaPoint.length > 0) {
+           this.map.removeInteraction(measureDraw);
+         } else {
+           this.map.addInteraction(measureDraw);
+         }
+
+         callback({measureDraw: measureDraw, isSave: isSave});
+       },
+
+       mapRemoveInteraction: function(measureDraw, addareaPoint, callback) {
+        if (addareaPoint.length > 0) {
+          this['measureLayer']['source'].clear();
+        } else {
+          measureDraw.abortDrawing_();
         }
+        this.mapToLine(true, false, [], function(ret) {
+          callback(ret);
+        });
+       },
+
+       mapSaveArea: function(measureDraw, callback) {
+         var _this = this;
+         var coordinates = [];
+         measureDraw.on('drawend', function(event) {
+            coordinates = JSON.parse(JSON.stringify(event.feature.getGeometry().getCoordinates()));
+            if (coordinates[0].length > 2) {
+              _this.map.removeInteraction(measureDraw); //取消绘制
+            }
+         });
+         measureDraw.finishDrawing();
+         callback({coordinates: coordinates, measureDraw: measureDraw});
+       },
+
+       getTypeList: function() {
+           reqOptions = {
+               url: gisUrl + 'GisStyleIconService/GetStyleIcon',
+               type: 'get',
+               timeout: 30,
+               error: function(err) {
+                   console.log(JSON.stringify(err));
+               },
+               success: function(ret) {
+                   console.log(JSON.stringify(ret));
+               }
+           };
+           ajaxMethod(reqOptions);
+       },
+
     }
     window.Map = Map;
 })(window);

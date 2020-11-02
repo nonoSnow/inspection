@@ -442,48 +442,63 @@
 
         <van-popup class="popup" v-model="showPicker" position="bottom" @closed="hideAllSelect">
             <div class="flex-wrap flex-vertical">
+                <!-- 任务类型弹窗 -->
                 <div class="flex-con pickerMain" v-if="showUnusualTypeSelect">
-                    <div class="picker" v-for="(item,index) in unusualTypes" :key="index" :class="{active:unusualType.Id == item.Id}" v-if='item.Id==13 ||item.Id==3 || item.Id==15 || item.Id==18' @click="changeUnusualType(item)">
+                    <div class="picker" v-for="(item,index) in unusualTypes" :key="index" :class="{active:unusualType.Id == item.Id}" v-if='item.Id==13 ||item.Id==3 || item.Id==15 || item.Id==19' @click="changeUnusualType(item)">
                         {{item.Name}}
                     </div>
                 </div>
+                <!-- 反映区域弹窗 -->
                 <div class="flex-con pickerMain" v-if="showAreaSelect">
                     <div class="picker" v-for="(item,index) in AreaData" :key="index" v-if='item.Name!=""' :class="{active:SubmitData.Areas == item.id}" @click="AreaName=item.Name;SubmitData.Areas=item.Id;showPicker=false">
                         {{item.Name}}
                     </div>
                 </div>
+                <!-- 数据来源弹窗 -->
                 <div class="flex-con pickerMain" v-if="showSourceSelect">
                     <div class="picker" v-for="(item,index) in SourceData" :key="index" :class="{active:SubmitData.SourceId==item.Id}" @click="SourceName=item.Name;SubmitData.SourceId=item.Id;showPicker=false">
                         {{item.Name}}
                     </div>
                 </div>
+                <!-- 紧急情况弹窗 -->
                 <div class="flex-con pickerMain" v-if="showEmergencySelect">
                     <div class="picker" v-for="(item,index) in EmergencyData" :key="index" :class="{active:SubmitData.Emergency==item.Id}" @click="EmergencyName=item.Name;SubmitData.Emergency=item.Id;showPicker=false">
                         {{item.Name}}
                     </div>
                 </div>
+                <!-- 工单类型弹窗 -->
                 <div class="flex-con pickerMain" v-if="showOrderTypeSelect">
                     <div class="picker" v-for="(item,index) in orderTypeData" :key="index" :class="{active:SubmitData.orderTypeId==item.Id}" @click="orderTypeName=item.Name;SubmitData.orderTypeId=item.Id;orderTypeSelectId=item.Id;showPicker=false">
                         {{item.Name}}
                     </div>
                 </div>
+                <!-- 换表原因弹窗 -->
                 <div class="flex-con pickerMain" v-if="showReasonSelect">
                     <div class="picker" v-for="(item,index) in ReasonData" :key="index" :class="{active:SubmitData.MeterRemark==item.Id}" @click="MeterRemarkName=item.Name;SubmitData.MeterRemark=item.Id;showPicker=false">
                         {{item.Name}}
                     </div>
                 </div>
+                <!-- 类型细分弹窗 -->
                 <div class="flex-con pickerMain" v-if="showTypeSubdivision">
                     <div class="picker" v-for="(item,index) in typeSubdivisionData" :key="index" :class="{active:SubmitData.SubTypeId==item.Id}" @click="TypeSubdivisionName=item.Name;SubmitData.SubTypeId=item.Id;showPicker=false">
                         {{item.Name}}
                     </div>
                 </div>
+                <!-- 照片来源弹窗 -->
                 <div class="flex-con pickerMain" v-if="showGetPicture">
                     <div class="picker" v-for="(item,index) in PictureData" :key="index" :class="{active:pictureSelectId==item.Id}" @click="getPicture(item)">
                         {{item.Name}}
                     </div>
                 </div>
-                <div class="flex-con pickerMain" v-if="showWXReasonData">
-                    <div class="picker" v-for="(item,index) in WXReasonData" :key="index" :class="{active:SubmitData.MeterRemark==item.Id}" @click="MeterRemarkName=item.Name;SubmitData.MeterRemark=item.Id;showPicker=false">
+                <!-- 经办人选择弹窗 -->
+                <div class="flex-con pickerMain" v-if="showOperatorReasonData">
+                    <div class="picker" v-for="(item,index) in OperatorReasonData" :key="index" :class="{active:TrusteesId==item.UserId}" @click="Trustees=item.UserName;TrusteesId=item.UserId;showPicker=false">
+                        {{item.UserName}}
+                    </div>
+                </div>
+                <!-- 移改提的问题原因弹窗 -->
+                <div class="flex-con pickerMain" v-if="showYGTXReasonData">
+                    <div class="picker" v-for="(item,index) in YGTXReasonData" :key="index" :class="{active:SubmitData.MeterRemark==item.Id}" @click="MeterRemarkName=item.Name;SubmitData.MeterRemark=item.Id;showPicker=false">
                         {{item.Name}}
                     </div>
                 </div>
@@ -513,13 +528,15 @@
                     <van-field class="formField" :border="false" label="用水性质" :value="customerInfo.NatureName" readonly></van-field>
                     <van-field class="formField" :border="false" label="口径" :value="customerInfo.Caliber" readonly></van-field>
                     <van-field v-show="unusualType.Id == '13' || unusualType.Id == '3'" class="formField" :border="false" label="止度" :value="customerInfo.LastScale" readonly></van-field>
+
+                    <van-field v-show="unusualType.Id == '19'" class="formField" :border="false" label="用户类型" :value="customerInfo.userType" readonly></van-field>
                 </div>
                 <!-- 移改提修 -->
                 <van-form v-if="unusualType.Id == '13' && showCustomerInfo">
                     <div class="border"></div>
-                    <van-field class="formField" :border="false" label="经办人" readonly name="Reason" v-model="Trustees" placeholder="请选择" right-icon="../image/MeterManage/xiala.png"></van-field>
+                    <van-field class="formField" :border="false" label="经办人" readonly name="Reason" v-model="Trustees" placeholder="请选择" right-icon="../image/MeterManage/xiala.png" @click="showPicker = true;showOperatorReasonData=true"></van-field>
 
-                    <van-field class="formField" :border="false" label="问题原因" readonly name="Reason" v-model="MeterRemarkName" placeholder="请选择" right-icon="../image/MeterManage/xiala.png"></van-field>
+                    <van-field class="formField" :border="false" label="问题原因" readonly name="Reason" v-model="MeterRemarkName" placeholder="请选择" right-icon="../image/MeterManage/xiala.png" @click="showPicker = true;showYGTXReasonData=true"></van-field>
 
                     <div class="textAreaLabel">
                         <span class="textLabel">原因描述</span>
@@ -532,9 +549,9 @@
                 <van-form v-if="unusualType.Id == '3' && showCustomerInfo">
                     <div class="border"></div>
 
-                    <van-field class="formField" :border="false" label="经办人" readonly name="Reason" v-model="Trustees" placeholder="请选择" right-icon="../image/MeterManage/xiala.png"></van-field>
+                    <van-field class="formField" :border="false" label="经办人" readonly name="Reason" v-model="Trustees" placeholder="请选择" right-icon="../image/MeterManage/xiala.png" @click="showPicker = true;showOperatorReasonData=true"></van-field>
 
-                    <van-field class="formField" :border="false" label="换表原因" readonly name="Reason" v-model="MeterRemarkName" placeholder="请选择" right-icon="../image/MeterManage/xiala.png"></van-field>
+                    <van-field class="formField" :border="false" label="换表原因" readonly name="Reason" v-model="MeterRemarkName" placeholder="请选择" right-icon="../image/MeterManage/xiala.png" @click="showPicker = true;showReasonSelect=true"></van-field>
 
                     <div v-show="SubmitData.MeterRemark == '-1'">
                         <div class="textAreaLabel">
@@ -552,15 +569,15 @@
                 <!-- 三来 -->
                 <van-form v-if="unusualType.Id == '15' && showCustomerInfo || unusualType.Id == '17'&& showCustomerInfo">
                     <div class="border"></div>
-                    <van-field class="formField" :border="false" label="经办人"  readonly name="Reason" v-model="Trustees" placeholder="请选择" right-icon="../image/MeterManage/xiala.png"></van-field>
+                    <van-field class="formField" :border="false" label="经办人"  readonly name="Reason" v-model="Trustees" placeholder="请选择" right-icon="../image/MeterManage/xiala.png" @click="showPicker = true;showOperatorReasonData=true"></van-field>
 
                     <van-field class="formField" :border="false" label="反映区名" readonly clickable name="AreaName" v-model="AreaName" placeholder="请选择" @click="showPicker = true;showAreaSelect=true" right-icon="../image/MeterManage/xiala.png"></van-field>
 
                     <van-field class="formField" :border="false" label="客户电话" name="Tel" v-model="SubmitData.Mobile"></van-field>
 
-                    <van-field class="formField" :border="false" label="工单类型" readonly clickable name="orderTypeName" v-model="orderTypeName" placeholder="请选择" @click="showPicker = true;showOrderTypeSelect=true" right-icon="../image/MeterManage/xiala.png"></van-field>
+                    <van-field class="formField" :border="false" label="工单主题" readonly clickable name="orderTypeName" v-model="orderTypeName" placeholder="请选择" @click="showPicker = true;showOrderTypeSelect=true" right-icon="../image/MeterManage/xiala.png"></van-field>
 
-                    <van-field class="formField" :border="false" label="工单主题" readonly name="Reason" v-model="MeterRemarkName" placeholder="请选择" @click="changeReason" right-icon="../image/MeterManage/xiala.png"></van-field>
+                    <!-- <van-field class="formField" :border="false" label="工单主题" readonly name="Reason" v-model="MeterRemarkName" placeholder="请选择" @click="changeReason" right-icon="../image/MeterManage/xiala.png"></van-field> -->
 
                     <van-field class="formField" :border="false" label="信息来源" readonly clickable name="Source" v-model="SourceName" placeholder="请选择" @click="showPicker = true;showSourceSelect=true" right-icon="../image/MeterManage/xiala.png"></van-field>
 
@@ -574,51 +591,38 @@
                     <van-field class="formField textareaField" type="textarea" name="Description" :border="false" maxlength="200" show-word-limit v-model="SubmitData.Description" rows="2" autosize></van-field>
 
                 </van-form>
-                <!-- 维修工单 -->
-                <van-form v-if="unusualType.Id == '16' && showCustomerInfo">
-                    <div class="border"></div>
-                    <van-field class="formField" :border="false" label="完成时限" type="number" clickable name="Level" v-model="SubmitData.ProcessingLevelId" placeholder="/天"></van-field>
-                    <van-field class="formField" :border="false" label="问题原因" readonly clickable name="WXReason" v-model="MeterRemarkName" placeholder="请选择" @click="showPicker = true;showWXReasonData=true" right-icon="../image/MeterManage/xiala.png"></van-field>
-                    <div class="textAreaLabel">
-                        <span class="textLabel">备注</span>
-                    </div>
-                    <van-field class="formField textareaField" type="textarea" name="Description" :border="false" maxlength="200" show-word-limit v-model="SubmitData.Description" rows="2" autosize></van-field>
-
-                </van-form>
 
                 <!-- 消防栓启用 -->
-                <van-form v-if="unusualType.Id == '18' && showCustomerInfo">
-                    <van-field class="formField userType" name="radio" label="用户类型" :border="false">
+                <van-form v-if="unusualType.Id == '19' && showCustomerInfo">
+                    <!-- <van-field class="formField userType" name="radio" label="用户类型" :border="false">
                         <template #input>
                           <van-radio-group v-model="SubmitData.userType" direction="horizontal">
                             <van-radio name="1">单位</van-radio>
                             <van-radio name="2">个人</van-radio>
                           </van-radio-group>
                         </template>
-                    </van-field>
+                    </van-field> -->
 
                     <van-field class="formField" :border="false" label="联系电话" name="Tel" v-model="SubmitData.Telephone"></van-field>
 
                     <van-field class="formField" :border="false" label="用水地点" name="Tel" v-model="SubmitData.UseWaterLocation"></van-field>
 
-                    <van-field class="formField" :border="false" label="用水性质" name="Tel" v-model="SubmitData.NatureName"></van-field>
-
                     <van-field class="formField" :border="false" readonly="readonly" @click='isApplyTime = true' label="申请时间" name="Tel" v-model="SubmitData.ApplyTimeText"></van-field>
 
                     <van-field class="formField" :border="false" readonly="readonly" @click='isUseTime = true' label="用水时间" name="Tel" v-model="SubmitData.UseTimeText"></van-field>
 
-                    <van-field class="formField userType" name="radio" label="书面申请" :border="false">
+                    <!-- <van-field class="formField userType" name="radio" label="书面申请" :border="false">
                         <template #input>
                           <van-radio-group v-model="SubmitData.bookApply" direction="horizontal">
                             <van-radio name="1">有</van-radio>
                             <van-radio name="0">无</van-radio>
                           </van-radio-group>
                         </template>
-                    </van-field>
+                    </van-field> -->
 
                     <van-field class="formField" :border="false" label="初始底数" name="Tel" v-model="SubmitData.InitBase"></van-field>
 
-                    <van-field class="formField" :border="false" label="审核人" name="Tel" v-model="SubmitData.Reviewer"></van-field>
+                    <van-field class="formField" :border="false" label="审核人"  readonly name="Reason" v-model="Trustees" placeholder="请选择" right-icon="../image/MeterManage/xiala.png" @click="showPicker = true;showOperatorReasonData=true"></van-field>
 
                     <div class="textAreaLabel">
                         <span class="textLabel">备注</span>
@@ -735,8 +739,14 @@
                 showOrderTypeSelect: false,
                 showReasonSelect: false,
                 chooseOtherReason: false,
-                showWXReasonData: false, //维修工单原因显示
                 WXReasonData: [], //维修工单原因数组
+
+                showYGTXReasonData: false, // 移改提修问题原因显示
+                YGTXReasonData: [], // 移改提修问题原因
+
+                showOperatorReasonData: false, // 经办人显示
+                OperatorReasonData: [], // 经办人数据
+
                 unusualType: {
                     Name: "",
                     Id: 0
@@ -796,7 +806,6 @@
                     UseTimeText: '',
                     bookApply: '1',  //书面申请  有-1  无-0
                     InitBase: '',  //初始底数
-                    Reviewer: '',  //审核人
                 },
                 AreaName: "",
                 SourceName: "",
@@ -806,6 +815,10 @@
                 orderTypeName: "",
                 searchUserInfo: false,
                 showGetPicture: false, //是否显示照片选择
+
+                Trustees: '', // 经办人
+                TrusteesId: '', // 经办人Id
+
                 PictureData: [{
                     Id: 1,
                     Name: '拍照'
@@ -865,7 +878,9 @@
                     this.showOrderTypeSelect = false;
                     this.showTypeSubdivision = false;
                     this.showGetPicture = false;
-                    this.showWXReasonData = false;
+
+                    this.showYGTXReasonData = false;
+                    this.showOperatorReasonData = false;
                 },
                 resetForm() {
                     this.SubmitData.CustomerCode = "";
@@ -882,7 +897,7 @@
                     this.MeterRemarkName = "";
                     this.SubmitData.Remark = "";
                     this.SubmitData.OrderTypeId = "",
-                        this.AreaName = "";
+                    this.AreaName = "";
                     this.SourceName = "";
                     this.EmergencyName = "";
                     this.LevelName = "";
@@ -898,6 +913,8 @@
                         return
                     }
 
+                    this.onOperatorData(this.unusualTypeId);
+
                     var body = {
                         BookId: '',
                         ReaderId: '',
@@ -909,6 +926,7 @@
                     }
                     fnPost('OSM002', body, 'application/json', false, false, (ret, err) => {
                         console.log(JSON.stringify(ret));
+                        console.log(JSON.stringify(err));
                         api.hideProgress();
                         if (ret && ret.Status == 0) {
                             this.showCustomerInfo = true;
@@ -918,6 +936,7 @@
                             var result = JSON.parse(JSON.stringify(data[0]));
                             this.SubmitData.CustomerCode = result.CustomerCode;
                             this.customerInfo.CustomerName = result.CustomerName;
+                            this.customerInfo.userType = result.UserTypeName;
                             this.customerInfo.Address = result.Address;
                             this.customerInfo.Location = result.Location;
                             this.customerInfo.NatureName = result.NatureName;
@@ -956,7 +975,8 @@
                         Longitude,
                         Latitude,
                         unusualType,
-                        MeterRemarkName
+                        MeterRemarkName,
+                        TrusteesId
                     } = this;
 
                     var _that = this;
@@ -970,27 +990,31 @@
                                 if (Location != "定位失败" && Location != "正在定位中...") {
                                     SubmitData.Address = Location;
                                 }
+
                                 var Parameter = {
                                     TypeId: unusualType.Id,
+                                    SurveySetId: TrusteesId, // 工单负责人Id
                                     CustomerCode: SubmitData.CustomerCode,
                                     Mobile: SubmitData.Mobile,
-                                    SourceId: SubmitData.SourceId,
                                     MeterRemark: MeterRemarkName,
                                     Areas: SubmitData.Areas,
                                     Emergency: SubmitData.Emergency,
                                     ProcessingLevelId: SubmitData.ProcessingLevelId,
-                                    OrderNo: SubmitData.OrderCode, //工单编号
-                                    OrderTypeId: _that.unusualType.Id == 15 ? "" : SubmitData.OrderTypeId, //OrderTypeId 三来工单，工单类型穿空
+                                    OrderNo: SubmitData.OrderCode,
                                     Remark: SubmitData.Description,
-                                    Longitude: Longitude,
                                     Latitude: Latitude,
-                                    Address: SubmitData.Address,
+                                    Longitude: Longitude,
                                     ClientId: api.deviceModel,
                                     ClientName: api.deviceName,
-                                    SubTypeId: "",
-                                    IsScrap: unusualType.Id == '3' ? _that.isOldMeter ? 1 : 0 : ''
-                                };
+                                    Scale: '',  // 初始起度
+                                    BeginTime: '', // 用水开始时间
+                                    EndTime: '', // 用水预计结束时间
+                                    YsAddress: '', // 用水地址
+                                }
+
                                 bwfnPostNew('MMS101', Parameter, 'application/json', true, false, (ret, err) => {
+                                    console.log(JSON.stringify(ret));
+                                    console.log(JSON.stringify(err));
                                     api.hideProgress();
                                     if (ret) {
                                         if (ret.Status == 0) {
@@ -1155,6 +1179,7 @@
                     };
                     fnPost('MMS103', sourceBody, 'application/json', false, false, (ret, err) => {
                         api.hideProgress();
+                        console.log(JSON.stringify(ret));
                         if (ret && ret.Status == 0) {
                             var data = JSON.parse(ret.Data);
                             this.SourceData = data;
@@ -1166,6 +1191,7 @@
                     };
                     fnPost('MMS103', hbBody, 'application/json', false, false, (ret, err) => {
                         api.hideProgress();
+                        console.log(JSON.stringify(ret));
                         if (ret && ret.Status == 0) {
                             var data = JSON.parse(ret.Data);
                             this.hbReasonData = data;
@@ -1178,6 +1204,7 @@
                     };
                     fnPost('MMS103', taskBody, 'application/json', false, false, (ret, err) => {
                         api.hideProgress();
+                        console.log(JSON.stringify(ret));
                         if (ret && ret.Status == 0) {
                             var data = JSON.parse(ret.Data);
                             this.unusualTypes = data;
@@ -1185,10 +1212,11 @@
                     });
                     // 工单类型
                     var orderTypeBody = {
-                        TypeId: 'SLGDLX'
+                        TypeId: 'SLGDWTLB'
                     };
                     fnPost('MMS103', orderTypeBody, 'application/json', false, false, (ret, err) => {
                         api.hideProgress();
+                        console.log(JSON.stringify(ret));
                         if (ret && ret.Status == 0) {
                             var data = JSON.parse(ret.Data);
                             this.orderTypeData = data;
@@ -1218,6 +1246,19 @@
                         }
                     });
 
+                    // 移改提修的问题原因
+                    var ygtxBody = {
+                        TypeId: 'YGTSQYY'
+                    };
+                    fnPost('MMS103', ygtxBody, 'application/json', false, false, (ret, err) => {
+                        console.log(JSON.stringify(ret));
+                        api.hideProgress();
+                        if (ret && ret.Status == 0) {
+                            var data = JSON.parse(ret.Data);
+                            this.YGTXReasonData = data;
+                        }
+                    });
+
                 },
                 orderMain: function(type = "") {
                     // 工单主题
@@ -1243,13 +1284,13 @@
                     var db = api.require('db');
                     db.selectSql({
                         name: 'Wsdatabase',
-                        sql: 'SELECT * FROM APPLY_TASK_IMAGES_S'
+                        sql: 'SELECT * FROM APPLY_TASK_IMAGES'
                     }, function(ret, err) {
                         if (ret.status) {
                             //本地数据库 有工单申请照片表
                         } else {
                             var Sql =
-                                "CREATE TABLE APPLY_TASK_IMAGES_S(ReqCode varchar(255),userName varchar(255),CustomerCode varchar(255),TaskTypeName varchar(255),FilePath varchar(255),isFail varchar(255),FailRemark varchar(255),ApplayTime varchar(255))";
+                                "CREATE TABLE APPLY_TASK_IMAGES(ReqCode varchar(255),userName varchar(255),CustomerCode varchar(255),TaskTypeName varchar(255),FilePath varchar(255),isFail varchar(255),FailRemark varchar(255),ApplayTime varchar(255))";
                             db.executeSql({
                                 name: 'Wsdatabase',
                                 sql: Sql
@@ -1275,13 +1316,13 @@
                     var db = api.require('db');
                     db.selectSql({
                         name: 'Wsdatabase',
-                        sql: "SELECT * FROM APPLY_TASK_IMAGES_S WHERE ReqCode = '" + _that.ReqCode + "'"
+                        sql: "SELECT * FROM APPLY_TASK_IMAGES WHERE ReqCode = '" + _that.ReqCode + "'"
                     }, function(ret, err) {
                         if (ret.status) {
                             if (ret.data.length > 0) {
-                                applySql = "UPDATE APPLY_TASK_IMAGES_S SET FilePath = '" + JSON.stringify(_that.imageArray) + "', ApplayTime = '" + nowTime + "'";
+                                applySql = "UPDATE APPLY_TASK_IMAGES SET FilePath = '" + JSON.stringify(_that.imageArray) + "', ApplayTime = '" + nowTime + "'";
                             } else {
-                                applySql = "INSERT INTO APPLY_TASK_IMAGES_S VALUES ('" + _that.ReqCode + "','" + $api.getStorage('loginData').userName + "','" + _that.SubmitData.CustomerCode + "','" + _that.unusualType.Name + "','" +
+                                applySql = "INSERT INTO APPLY_TASK_IMAGES VALUES ('" + _that.ReqCode + "','" + $api.getStorage('loginData').userName + "','" + _that.SubmitData.CustomerCode + "','" + _that.unusualType.Name + "','" +
                                     JSON.stringify(_that.imageArray) + "','0','','" + nowTime + "')";
                             }
                             db.executeSql({
@@ -1322,6 +1363,10 @@
                     if (api.connectionType != 'none') {
                         this.showPicker = true;
                         this.showUnusualTypeSelect = true;
+
+                        this.Trustees = '';
+                        this.TrusteesId = '';
+                        this.imageArray = [];
                     } else {
                         vant.Toast('网络无法连接,请检查网络配置');
                     }
@@ -1353,26 +1398,31 @@
                 confirmUseTime() {
                   this.SubmitData.UseTimeText = this.dateFormat('YYYY-mm-dd', this.SubmitData.UseTime);
                   this.isUseTime = false;
+                },
+                // 获取经办人信息
+                onOperatorData(unusualTypeId) {
+                  var operatorBody = {
+                      TypeId: unusualTypeId, // 流程类型
+                      CustomerCode: this.SubmitData.CustomerCode
+                  };
+                  console.log(JSON.stringify(operatorBody));
+                  fnPost('MMS123', operatorBody, 'application/json', false, false, (ret, err) => {
+                    console.log(JSON.stringify(ret));
+                    api.hideProgress();
+                    if (ret && ret.Status == 0) {
+                        var data = JSON.parse(ret.Data);
+                        // this.OperatorReasonData = data;
+                        this.OperatorReasonData.push(data);
+                        console.log(JSON.stringify(this.OperatorReasonData));
+                    }
+                  });
                 }
             },
             mounted: function() {
                 this.getLocation();
-                // this.getDataDictionary();
+                this.getDataDictionary();
                 this.createApplyTab();
 
-                this.unusualTypes = [{
-                    Id: '13',
-                    Name: '移改提修'
-                }, {
-                    Id: '3',
-                    Name: '换表'
-                }, {
-                    Id: '15',
-                    Name: '工单'
-                }, {
-                    Id: '18',
-                    Name: '消防栓启用'
-                }, ]
             },
             watch: { //监听任务类型和工单类型的变化，用于工单主题字段切换
                 orderTypeSelectId: function(value) {

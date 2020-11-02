@@ -474,7 +474,7 @@ body {
     display: inline-block;
     width: 2.75rem;
     height: 3.1rem;
-    opacity: 0
+    opacity: 0;
 }
 
 .map-member-img img {
@@ -879,4 +879,19 @@ body {
 
 .transfer-text {
   vertical-align: top;
+}
+
+.no-data {
+  height: 6rem;
+  color: #333;
+  padding: 0.75rem;
+  border-radius: 0.4rem;
+  background-color: #fff;
+  text-align: center;
+  line-height: 4.5rem;
+
+}
+
+.over-hide {
+  overflow: hidden;
 }

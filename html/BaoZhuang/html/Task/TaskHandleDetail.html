@@ -6,10 +6,10 @@
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
     <title>任务办理详情界面</title>
-    <link rel="stylesheet" type="text/css" href="../../public/css/api.css" />
-    <link rel="stylesheet" type="text/css" href="../../public/css/style.css" />
-    <link rel="stylesheet" type="text/css" href="../../public/css/aui.css" />
-    <link rel="stylesheet" type="text/css" href="../../public/css/vant.css" />
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../../public/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../public/css/vant.css" />
     <style>
         html,
         body {
@@ -306,6 +306,10 @@
         </van-popup>
 
         <div class="flex-con assignList">
+
+          <!-- 申请信息显示 -->
+          <task-item itemtitletext="申请信息显示" :itemstatus="applyInfo" :itemarr="applyInfoArr"></task-item>
+
           <div class="item">
             <div class="item-cont">
               <div class='item-cont-cont'>
@@ -2177,7 +2181,7 @@
             </div>
           </div>
 
-          <div v-if='tasksource == "handle"'>
+          <!-- <div v-if='tasksource == "handle"'>
             <div class="item" v-if="TaskType != '4'">
               <div class="item-cont">
                 <div class="item-cont-cont">
@@ -2212,7 +2216,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
         </div>
 
@@ -2282,16 +2286,18 @@
 
       </div>
 </body>
-<script type="text/javascript" src="../../public/script/api.js"></script>
-<script type="text/javascript" src="../../public/script/common.js"></script>
-<script type="text/javascript" src="../../public/script/remote.js"></script>
-<script type="text/javascript" src="../../public/script/publicMethod.js"></script>
-<script type="text/javascript" src="../../public/script/vue/fastclick.min.js"></script>
-<script type="text/javascript" src="../../public/script/vue/vue.min.js"></script>
-<script type="text/javascript" src="../../public/script/vue/vant.min.js"></script>
-<script type="text/javascript" src="../../public/script/vue/vueTouch.js"></script>
-<script type="text/javascript" src="../../public/script/moment.js"></script>
-<script type="text/javascript" src="../../public/script/diy/public.js"></script>
+<script type="text/javascript" src="../../../public/script/api.js"></script>
+<script type="text/javascript" src="../../../public/script/common.js"></script>
+<script type="text/javascript" src="../../../public/script/remote.js"></script>
+<script type="text/javascript" src="../../../public/script/publicMethod.js"></script>
+<script type="text/javascript" src="../../../public/script/vue/fastclick.min.js"></script>
+<script type="text/javascript" src="../../../public/script/vue/vue.min.js"></script>
+<script type="text/javascript" src="../../../public/script/vue/vant.min.js"></script>
+<script type="text/javascript" src="../../../public/script/vue/vueTouch.js"></script>
+<script type="text/javascript" src="../../../public/script/moment.js"></script>
+<script type="text/javascript" src="../../../public/script/diy/public.js"></script>
+
+<script type="text/javascript" src="../components/TaskItem.js"></script>
 <script type="text/javascript">
     apiready = function() {
         var header = $api.byId('header');
@@ -2335,6 +2341,19 @@
                 registrationTime: '',     //登记日期
                 remark: '',               //情况说明
               },
+
+              applyInfoArr:
+              [
+                {'itemtitle': '营业区域', 'itemcont': ''},
+                {'itemtitle': '报装编号', 'itemcont': ''},
+                {'itemtitle': '业务类别', 'itemcont': ''},
+                {'itemtitle': '联系人', 'itemcont': ''},
+                {'itemtitle': '联系电话', 'itemcont': ''},
+                {'itemtitle': '施工地址', 'itemcont': ''},
+                {'itemtitle': '申请日期', 'itemcont': ''},
+                {'itemtitle': '登记人', 'itemcont': ''},
+                {'itemtitle': '登记日期', 'itemcont': ''},
+              ],
 
               // 查勘信息
               surveyInfoData: {
@@ -2577,10 +2596,10 @@
               },
 
               // 附件上传
-              fileUpload: {
-                fileType: '',             // 附件类型
-                photoList: '',            // 照片
-              },
+              // fileUpload: {
+              //   fileType: '',             // 附件类型
+              //   photoList: '',            // 照片
+              // },
 
               showPicker: false,          // 是否显示popup弹出层
 

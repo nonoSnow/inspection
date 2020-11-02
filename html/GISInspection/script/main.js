@@ -7,6 +7,8 @@ apiready = function() {
   });
 
   funIniGroup();
+
+  WinSize(['footer-gis']);
 }
 
 function funIniGroup() {
