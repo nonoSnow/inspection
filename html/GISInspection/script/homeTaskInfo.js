@@ -1,4 +1,4 @@
-// 当前任务类型（进行中、待启动、已暂停、已完成）
+// 当前任务类型（0：进行中:1：待启动:2：已暂停:3：已完成）
 var nowTaskType;
 
 // 任务id
@@ -17,13 +17,14 @@ var daixunTotal;
 
 var daixunPageIndex = 1;
 var daixunHasNext = false;
-var daixunData = [];
+// var daixunData = [];
 
 var yixunPageIndex = 1;
 var yixunHasNext = false;
-var yixunData = [];
+// var yixunData = [];
 
 var footerH;
+
 apiready = function() {
   var header = $api.byId('header');
   // 实现沉浸式状态栏效果
@@ -36,6 +37,7 @@ apiready = function() {
 
   nowTaskType = api.pageParam.type;
   taskId = api.pageParam.id;
+
   // console.log(api.pageParam.id);
   console.log(taskId);
 
@@ -61,7 +63,7 @@ apiready = function() {
     var sh = $(this)[0].scrollHeight;   //滚动的高度，$(this)指代jQuery对象，而$(this)[0]指代的是dom节点 (839)
     var st = $(this)[0].scrollTop;  //滚动条的高度，即滚动条的当前位置到div顶部的距离
 
-    console.log(h);
+    // console.log(h);
 
     if (h + Math.ceil(st) >= sh) {
       switch (taskDetype) {
@@ -125,7 +127,7 @@ function onMenu(index, el) {
       // $('.inspector').addClass('aui-hide');
       // $('.completion-time').addClass('aui-hide');
       daixunPageIndex = 1;
-      daixunData = [];
+      // daixunData = [];
       $('#taskDetail').html('');
       initToBeInspected();
     } else {
@@ -133,7 +135,7 @@ function onMenu(index, el) {
       // $('.inspector').removeClass('aui-hide');
       // $('.completion-time').removeClass('aui-hide');
       yixunPageIndex = 1;
-      yixunData = [];
+      // yixunData = [];
       $('#taskDetail').html('');
       initInspected();
     }
@@ -164,9 +166,9 @@ function onOpenEquipment(that) {
         name: 'equipmentMapInfo',
         url: './equipmentMapInfo.html',
         pageParam: {
-            name: 'test',
             data: data,
-            taskId: taskId
+            taskId: taskId,
+            taskType: nowTaskType
         }
     });
   }
@@ -234,7 +236,7 @@ function startTask() {
     operate: 3
   }
 
-  changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', param, showRet, showErr);
+  changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', data, showRet, showErr);
 
   function showRet(ret) {
     // 修改状态成功，关闭成功
@@ -275,11 +277,12 @@ function closeTask() {
           operate: 4
         }
 
-        changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', param, showRet, showErr);
+        changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', param, showRet, showErr);
 
         function showRet(ret) {
           // 修改状态成功，关闭成功
-          openTask();
+          api.closeWin();
+
         }
 
         function showErr(err) {
@@ -311,7 +314,7 @@ function reStartTask() {
     operate: 5
   }
 
-  changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', data, showRet, showErr);
+  changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', data, showRet, showErr);
 
   function showRet(ret) {
     openTask();
@@ -361,7 +364,7 @@ function complete() {
             operate: 2
           }
 
-          changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', param, showRet, showErr);
+          changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', param, showRet, showErr);
 
           function showRet(ret) {
             // 修改状态成功，完成成功
@@ -398,7 +401,7 @@ function complete() {
     operate: 2
   }
 
-  changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', data, showRet, showErr);
+  changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', data, showRet, showErr);
 
   function showRet(ret) {
     openTask();

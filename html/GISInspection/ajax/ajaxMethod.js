@@ -79,8 +79,8 @@ function ajaxMethod(options) {
     api.ajax(requestOption, function (ret, err) {
       // console.log(JSON.stringify(requestOption));
       // console.log(url);
-      // console.log(JSON.stringify(ret));
-      // console.log(JSON.stringify(err));
+      console.log(JSON.stringify(ret));
+      console.log(JSON.stringify(err));
         if(err) {
             if(options.error) options.error(err);
             return false;

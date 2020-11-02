@@ -74,7 +74,7 @@
         <!-- 办理界面显示 -->
         <footer id="fotSubmit" class="aui-bar aui-bar-tab display-flex footer">
             <div class="flex1">
-                <div class='footer-btn bgc-blue color-fff'>
+                <div class='footer-btn bgc-blue color-fff' onclick="submit">
                     提交
                 </div>
             </div>
@@ -166,7 +166,7 @@
   <div class="margin-top12 color-666">巡检内容</div>
   <div class="margin-top75 bgc-f3 border-radius2 padding75 height6">
     {{if type == 'handle'}}
-    <textarea name="name" class='width100 height100' placeholder="请填写巡检内容"></textarea>
+    <textarea id="content" name="name" class='width100 height100' placeholder="请填写巡检内容"></textarea>
     {{else}}
     <textarea readonly name="name" class='width100 height100'>{{content}}</textarea>
     {{/if}}
@@ -189,9 +189,11 @@
 <script type="text/template" id='imgData'>
   <!-- 上传附件信息或者展现附件信息 -->
   {{each list value i}}
-  <div class="margin-top75 file-div relative">
+  <div class="margin-top75 file-div relative" onclick="previewImg(this)" parse="{{url}}{{value.url}}">
     <img src="{{url}}{{value.url}}" class="width100 height100" alt="">
-    <div class="absolute top0 right0 del-icon" tapmode onclick="deleteImg(this)" parse="{{i}}">x</div>
+    <div class="absolute top0 right0 del-icon" tapmode onclick="deleteImg(this)" parse="{{i}}">
+      <img class="width100 height100 borra" src="../../image/del.png" alt="">
+    </div>
   </div>
   {{/each}}
   {{if type == 'handle'}}

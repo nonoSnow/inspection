@@ -18,8 +18,8 @@ apiready = function() {
 
   var resonBox = document.getElementById('suspendedResonBox');
   // var el = document.getElementById('customerMessage');
+  $('.footer-btn').addClass('btn-disabled');
   resonBox.addEventListener('input', function () {
-    console.log(this.value);
     remark = this.value;
     // 如果有说明原因，则可提交否则不能提交
     if (this.value.length != 0) {

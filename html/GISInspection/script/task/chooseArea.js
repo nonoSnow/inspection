@@ -29,6 +29,7 @@ function getAreaList() {
   }
 
   function showErr(err) {
+    console.log(JSON.stringify(err));
     api.hideProgress();
 
     if(err.body.error != undefined){

@@ -6,6 +6,14 @@ var taskId;
 // 是否有数据，如果没有数据，无法上报且无法操作
 var hasOperate = false;
 
+// 设备详情
+var inspectDetail;
+
+// 当前任务状态（只有进行中的任务能走上报事件或者正常）
+var type;
+
+// 是否可以操作上报事件和正常
+var isOper = false;
 
 // console.log('---------------------');
 apiready = function() {
@@ -16,41 +24,84 @@ apiready = function() {
   // console.log('进入设备详情页面了');
   inspectParam = api.pageParam.data;
   taskId = api.pageParam.taskId;
+  type = api.pageParam.taskType;
+
+  console.log(type);
+
 
   console.log(JSON.stringify(inspectParam));
   console.log(taskId);
   getInspectDetail();
+  initBtn();
+}
+
+function initBtn() {
+  if (type == 0) {
+    // 进行中的任务，可以上报事件和正常
+    $('#normal').removeClass('btn-disabled');
+    $('#shangbao').removeClass('btn-disabled');
+    isOper = true;
+  } else {
+    // 其他状态不允许上报事件和正常
+    $('#normal').addClass('btn-disabled');
+    $('#shangbao').addClass('btn-disabled');
+    isOper = false;
+  }
 }
 
 function onOpenReport() {
-  if (hasOperate) {
-    api.openWin({
-        name: 'addMethodReport',
-        url: '../Method/addMethodReport.html',
-        pageParam: {
-            name: 'test',
-            data: inspectParam
-        }
-    });
-  } else {
-    api.toast({
-        msg: '无设备信息，无法上报事件',
-        duration: 2000,
-        location: 'middle'
-    });
+  if (isOper) {
+    if (hasOperate) {
+      api.openWin({
+          name: 'addMethodReport',
+          url: '../Method/addMethodReport.html',
+          pageParam: {
+              name: 'test',
+              data: inspectParam
+          }
+      });
+    } else {
+      api.toast({
+          msg: '无设备信息，无法上报事件',
+          duration: 2000,
+          location: 'middle'
+      });
 
+    }
   }
 
 }
 
 function onOpenSubmit() {
+  if (isOper) {
+    if (hasOperate) {
+      api.openWin({
+          name: 'taskInfoSubmit',
+          url: './taskInfoSubmit.html',
+          pageParam: {
+              type: 'handle',
+              data: inspectParam
+          }
+      });
+    } else {
+      api.toast({
+          msg: '无设备信息，无法操作',
+          duration: 2000,
+          location: 'middle'
+      });
+    }
+  }
+
+}
+
+function onOpenInspectionRecord() {
   if (hasOperate) {
     api.openWin({
-        name: 'taskInfoSubmit',
-        url: './taskInfoSubmit.html',
+        name: 'inspectionRecord',
+        url: '../Method/inspectionRecord.html',
         pageParam: {
-            type: 'handle',
-            data: inspectParam
+            name: 'test',
+            devInfo: inspectDetail
         }
     });
   } else {
@@ -61,17 +112,6 @@ function onOpenSubmit() {
     });
   }
 
-}
-
-function onOpenInspectionRecord() {
-  api.openWin({
-      name: 'inspectionRecord',
-      url: '../Method/inspectionRecord.html',
-      pageParam: {
-          name: 'test',
-          devInfo: inspectParam
-      }
-  });
 }
 
 function getInspectDetail() {
@@ -105,6 +145,7 @@ function getInspectDetail() {
 
     if (ret.result != null) {
       hasOperate = true;
+      inspectDetail = ret.result;
       var str = template('inspectDetail', ret.result);
       $('#inspectDetailBox').append(str);
     } else {
