@@ -1,10 +1,18 @@
 var methodType = 0;
-
+console.log('------')
 apiready = function() {
-  var header = $api.byId('header');
-  $api.fixStatusBar(header);
-  initOnPending();
-  onMenu(methodType)
+    var header = $api.byId('header');
+    $api.fixStatusBar(header);
+    initOnPending();
+    onMenu(methodType)
+
+    api.addEventListener({
+        name: 'aaa'
+    }, function(ret, err) {
+        JSON.stringify(ret)
+        JSON.stringify(err)
+        // onMenu(1, )
+    });
 }
 
 // 获取待接收、转工单、已关闭事件列表
@@ -116,7 +124,6 @@ function onMenu(index, el) {
 }
 // 跳转到事件详情页面
 function onOpenMethodDetail(el) {
-  console.log(el);
   api.openWin({
       name: 'methodDetail',
       url: './methodDetail.html',

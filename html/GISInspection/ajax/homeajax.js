@@ -10,7 +10,7 @@ function insertPersonStatus(options) {
     //     userId: userLoginInformation.currentUserInfo.userInfo.userId
     // }
     var data = options.data;
-    var options = Object.assign({}, options, {
+    var options = Object.assign({}, {
         url: requestUrl + 'PersonService/InsertPerson',
         data: {
             body: JSON.stringify(data)
@@ -19,7 +19,7 @@ function insertPersonStatus(options) {
             console.log(JSON.stringify(err))
             if(options.fail) options.fail(err);
         }
-    })
+    }, options)
     ajaxMethod(options);
 }
 
