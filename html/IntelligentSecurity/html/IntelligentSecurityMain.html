@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>智能安防管理界面</title>
+    <link rel="stylesheet" type="text/css" href="../../public/css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../public/css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/public.css">
+
+    <link rel="stylesheet" type="text/css" href="../css/IntelligentSecurityMain.css">
+  </head>
+  <body>
+    <div class="flex-wrap flex-vertical height100">
+      <header class="aui-bar aui-bar-nav" id="header">
+          <div class="aui-pull-left aui-btn" tapmode onclick="onBack()">
+              <span class="aui-iconfont aui-icon-left"></span>
+          </div>
+          <div class="aui-title">智能安防</div>
+      </header>
+
+      <div class="flex-con flex-content height100">
+        <div class="card" tapmode onclick="onManagement('user')">
+            <div class="userManagement">
+
+            </div>
+            <div class="title">
+                访客管理
+            </div>
+        </div>
+        <div class="card" tapmode onclick="onManagement('car')">
+            <div class="carManagement">
+
+            </div>
+            <div class="title">
+                车辆定位
+            </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript" src="../../public/script/api.js"></script>
+
+  <script type="text/javascript" src="../script/public.js"></script>
+  <script type="text/javascript" src="../script/IntelligentSecurityMain.js"></script>
+</html>

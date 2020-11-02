@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../../css/public.css">
     <link rel="stylesheet" type="text/css" href="../../css/common.css">
   </head>
-  <body>
+  <body id="body">
     <header class="aui-bar aui-bar-nav map-header fixed" id="header">
       <div class='header-cont'>
         <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
@@ -21,8 +21,12 @@
       </div>
     </header>
 
+    <div class="map-box">
+        <div class="map" id="mapAddArea"></div>
+    </div>
+
     <div class="map-btn-div fixed bottom450 right5">
-        <div class="map-btn-bs border-radius4">
+        <div class="map-btn-bs border-radius4" tapmode onclick="onDivide()">
           <div class="font-S6 text-cent">
             <img src="../../image/divide.png" class='map-btn-img' alt="">
             <span class="margin-bot3">划分</span>
@@ -30,23 +34,23 @@
         </div>
 
         <div class="map-btn-bs border-radius4 margin-top200">
-          <div class="right-item-item">
+          <div class="right-item-item map-scale-btn up" tapmode>
             <img src="../../image/enlarge.png" class='enlarge' alt="">
           </div>
-          <div class="right-item-item">
+          <div class="right-item-item map-scale-btn down" tapmode>
             <img src="../../image/narrow.png" class='narrow' alt="">
           </div>
         </div>
       </div>
 
-      <footer class="aui-bar aui-bar-tab display-flex footer">
+      <footer class="aui-bar aui-bar-tab display-flex footer aui-hide">
         <div class="flex1">
-          <div class='footer-btn btn-border task-stop'>
+          <div class='footer-btn btn-border task-stop' tapmode onclick="onResetArea()">
             重置区域
           </div>
         </div>
         <div class="flex1">
-          <div class='footer-btn bgc-blue color-fff task-complete'>
+          <div class='footer-btn bgc-blue color-fff task-complete' tapmode onclick="onSaveArea()">
             保存区域
           </div>
         </div>
@@ -58,6 +62,14 @@
   <script type="text/javascript" src="../../../public/script/remote.js"></script>
   <script type="text/javascript" src="../../../public/script/zepto.js"></script>
 
+  <script type="text/javascript" src="../../script/sntgis/sntgis.js"></script>
+  <script type="text/javascript" src="../../script/sntgis/sntgis_extend.js"></script>
+  <script type="text/javascript" src="../../script/sntgis/rbush.min.js"></script>
+  <script type="text/javascript" src="../../script/common/common.js"></script>
+  <script type="text/javascript" src="../../script/common/gis.js"></script>
+
+  <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
   <script type="text/javascript" src="../../script/public.js"></script>
   <script type="text/javascript" src="../../script/areaDivide.js"></script>
 </html>

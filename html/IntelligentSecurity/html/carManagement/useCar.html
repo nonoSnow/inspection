@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>用车登记</title>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/public.css">
+  </head>
+  <body>
+    <div class="flex-wrap flex-vertical height100">
+      <header class="aui-bar aui-bar-nav aui-bar-light" id="header">
+          <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
+              <span class='aui-iconfont aui-icon-left color-333'></span>
+          </div>
+          <div class="aui-title color-333">用车登记</div>
+      </header>
+
+      <div class="flex-con flex-content height100 bgc-f3 margin-bot250">
+        <ul class="aui-content-padded line-height1 font-S75">
+          <li class="padding75 bgc-ff border-radius4">
+            <div class="color-666"><span class="required"></span>车辆选择</div>
+            <div class="item-input margin-top6 relative" >
+              <input id="methodType" type="text" placeholder="请选择车辆" readonly>
+              <span class="aui-iconfont aui-icon-plus font-S9" aui-popup-for="userCarPop"></span>
+            </div>
+            <div class="color-666 margin-top12"><span class="required"></span>用车人</div>
+            <div class="item-input margin-top6 relative" >
+              <input type="text" readonly placeholder="请选择用车人">
+              <span class="aui-iconfont aui-icon-plus font-S9" aui-popup-for="abnormalTypePop"></span>
+            </div>
+            <div class="color-666 margin-top12"><span class="required">用车时间段</div>
+            <div class="item-input margin-top6 relative" >
+              <div style="width: 45%; height: 2.2rem; float: left;">
+                <input style="" type="text" placeholder="请选择开始时间">
+              </div>
+              <div style="width: 10%; height: 2.2rem; float: left;" class="relative">
+                <span class="aui-iconfont aui-icon-right" style="left: 30%;"></span>
+              </div>
+              <div style="width: 45%; height: 2.2rem; float: left;">
+                <input style="" type="text" placeholder="请选择结束时间">
+              </div>
+            </div>
+          </li>
+
+          <li class="padding75 bgc-ff border-radius4 margin-top75">
+            <div class="color-666"><span class="required">事由</div>
+            <div class="margin-top6 bgc-f3 border-radius2 padding75 height6">
+              <textarea name="name" class='width100 height100' placeholder="请输入事由"></textarea>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <footer class="aui-bar aui-bar-tab display-flex footer">
+        <div class="flex1">
+          <div class='footer-btn bgc-blue color-fff btn-disabled'>
+            提交
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <div class="aui-popup custom-popup font-S8 text-cent" id="userCarPop">
+      <div class="custom-popup-item border-radius-top3 color-999 margin-center">
+        请选择事件类型
+      </div>
+      <ul class="aui-content-padded color-333 margin-bot0 margin-top0 custom-popup-list">
+        <li class="custom-popup-item">漏损事件</li>
+        <li class="custom-popup-item">爆管事件</li>
+        <li class="custom-popup-item">违章事件</li>
+        <li class="custom-popup-item border-none">其他事件</li>
+      </ul>
+      <div class="custom-popup-interval"></div>
+      <div class="custom-popup-item border-none color-666" tapmode onclick="onHidePopup()">
+          取消
+      </div>
+    </div>
+
+  </body>
+  <script type="text/javascript" src="../../../public/script/api.js"></script>
+  <script type="text/javascript" src="../../../public/script/common.js"></script>
+  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+  <script type="text/javascript" src="../../../public/script/aui-popup.js"></script>
+
+  <script type="text/javascript" src="../../script/public.js"></script>
+  <script type="text/javascript" src="../../script/remote.js"></script>
+  <script type="text/javascript" src="../../script/carManagement/useCar.js"></script>
+</html>

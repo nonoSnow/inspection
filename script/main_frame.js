@@ -216,7 +216,7 @@ function fnInVue() {
                                             key: app[j].thirdPartyPassWord
                                         }
                                         Authorization.push(data2);
-                                        console.log(JSON.stringify(app[j]));
+
                                         if (app[j].coding == 'WaterStarOne-CRM-S8') {
                                             $api.setStorage('kfapipath', app[j].appServerApi + '/Api/');
                                             $api.setStorage('kfUserId', app[j].thirdPartyUserId);
@@ -437,8 +437,6 @@ function fnInVue() {
                 // 获取没有待领取的任务数量（用于判断是否显示一键领取）
                 fnGet('services/app/WorkFlow/GetUnconFirmedTaskCount?Lng=' + CurrentLocation.lon + '&Lat=' + CurrentLocation.lat + '&Account=' + _this.thirdPartyAccount + '&PassWord=' + _this.thirdPartyPassWord + '', {}, false,
                     function(ret, err){
-                        console.log(JSON.stringify(ret));
-                        console.log(JSON.stringify(err));
                         api.hideProgress();
                         if (ret) {
                             if (ret.success) {
@@ -473,8 +471,6 @@ function fnInVue() {
                 var CurrentLocation = $api.getStorage('CurrentLocation');
                 fnGet('services/app/WorkFlow/GetTaskCount?Lng=' + CurrentLocation.lon + '&Lat=' + CurrentLocation.lat + '&Account=' + _this.thirdPartyAccount + '&PassWord=' + _this.thirdPartyPassWord + '', {}, false, function(ret, err){
                     api.hideProgress();
-                    console.log(JSON.stringify(ret));
-                    console.log(JSON.stringify(err));
                     if (ret) {
                         if (ret.success) {
                             var result = ret.result;
@@ -692,6 +688,20 @@ function fnInVue() {
                       name: 'test'
                   }
               });
+              // api.openWin({
+              //     name: 'BaoZhuang',
+              //     url: '../BaoZhuang/home.html',
+              //     pageParam: {
+              //         name: 'test'
+              //     }
+              // });
+              // api.openWin({
+              //     name: 'IntelligentSecurity',
+              //     url: '../IntelligentSecurity/html/IntelligentSecurityMain.html',
+              //     pageParam: {
+              //         name: 'test'
+              //     }
+              // });
 
             }
         },

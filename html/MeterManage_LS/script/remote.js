@@ -87,7 +87,7 @@ function fnPost(Methods, data, contentType, isLogin, isPut, callback, files = "n
                 UserName: $api.getStorage("bwUserName"), //"01012"
                 Password: $api.getStorage("bwPassWord"), // "g6OuZomFp3E="
                 SerialNo: '',
-                KeyCode: '', //营业
+                KeyCode: '', //
                 Parameter: JSON.stringify(data)
             })
         };
@@ -99,7 +99,7 @@ function fnPost(Methods, data, contentType, isLogin, isPut, callback, files = "n
               "Password": $api.getStorage("bwPassWord"), // "g6OuZomFp3E="
               "SerialNo": '',
               "KeyCode": '', //营业
-              "Parameter":data
+              "Parameter": data
             },
             files:files
           }
@@ -126,13 +126,19 @@ function fnPost(Methods, data, contentType, isLogin, isPut, callback, files = "n
         modal: false
     });
     console.log(app.apipath);
+    console.log(JSON.stringify(body));
     console.log($api.getStorage("bwUserName"));
     console.log($api.getStorage("bwPassWord"));
     // vue 测试
     // app.apipath = 'http://' + $api.getStorage('apiUrl')+'/api/'+path;
-    // console.log( app.apipath);
+    var urlPath = '';
+    if (Methods == 'MMS123') {
+      urlPath = app.bwgetmmsapipath;
+    } else {
+      urlPath = app.apipath;
+    }
     api.ajax({
-        url: app.apipath, //app.apipath+path
+        url: urlPath, //app.apipath+path
         method: isPut ? 'put' : 'post',
         // timeout: 15,
         dataType: 'json',
@@ -518,7 +524,7 @@ function bwfnPostNew(Methods, data, contentType, isLogin, isPut, callback, isErr
     api.ajax({
         url: app.bwapipath, //app.apipath+path
         method: isPut ? 'put' : 'post',
-        timeout: 15,
+        // timeout: 15,
         dataType: 'json',
         returnAll: false,
         headers: headers,

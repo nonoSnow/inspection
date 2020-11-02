@@ -96,6 +96,7 @@ function fnPost(path, data, contentType, isLogin, isPut, callback) {
       title: '加载中',
       modal: false
   });
+
   api.ajax({
       url: 'http://' + $api.getStorage('apiUrl')+'/api/' + path,
       method: isPut ? 'put' : 'post',
