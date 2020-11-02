@@ -174,7 +174,7 @@
           </div> -->
           <div class="line margin-top75 margin-bot5 item-bot-btn"></div>
           <div class="display-flex font-S8 item-bot-btn">
-              <div class="flex1 text-cent border-right item-left" tapmode onclick="openTaskStop(this)" parse="{{value.id}}">
+              <div class="flex1 text-cent border-right item-left" tapmode onclick="openTaskStop(this)" parse="{{value}}">
                   暂停
               </div>
               <div class="flex1 text-cent item-right" tapmode onclick="completedTask(this)" parse="{{value.id}}">
@@ -220,7 +220,7 @@
           </div> -->
           <div class="line margin-top75 margin-bot5 item-bot-btn"></div>
           <div class="display-flex font-S8 item-bot-btn">
-              <div class="flex1 text-cent border-right item-left" tapmode onclick="closeTask(this)" taskName="{{value.name}}" parse="{{value.id}}">
+              <div class="flex1 text-cent border-right item-left" tapmode onclick="closeTask(this)" taskName="{{value.name}}" parse="{{value.id}}" parseType="received">
                   关闭
               </div>
               <div class="flex1 text-cent item-right" tapmode onclick="startUpTask(this)" parse="{{value.id}}">
@@ -257,7 +257,7 @@
           </div>
           <div class="line margin-top75 margin-bot5 item-bot-btn"></div>
           <div class="display-flex font-S8 item-bot-btn">
-              <div class="flex1 text-cent border-right item-left" tapmode onclick="closeTask(this)" taskName="{{value.name}}" parse="{{value.id}}">
+              <div class="flex1 text-cent border-right item-left" tapmode onclick="closeTask(this)" taskName="{{value.name}}" parse="{{value.id}}"  parseType="suspended">
                   关闭
               </div>
               <div class="flex1 text-cent item-right" tapmode onclick="reStartTask(this)" parse="{{value.id}}">

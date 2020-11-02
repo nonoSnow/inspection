@@ -4,6 +4,34 @@ function onBack() {
 }
 
 /*
+ *  键盘弹起，底部状态栏被顶起
+ *  elArr -- 底部状态栏 id 数组   ['footer1', 'footer2']
+ */
+
+function WinSize(elArr) {
+  var winHeight = $(window).height(); //获取当前页面高度
+  $(window).resize(function(){
+        //当窗体大小变化时
+        var thisHeight = $(this).height();  //窗体变化后的高度
+        setTimeout(function() {
+          if (winHeight - thisHeight > 50) {
+              $('body').css('height', thisHeight + 'px');
+              for (var i = 0; i < elArr.length; i++) {
+                //修改底部按钮条的位置
+                $("#" + elArr[i]).css("bottom", "-100px");
+              }
+          } else {
+              $('body').css('height', '100%');
+              for (var i = 0; i < elArr.length; i++) {
+                //修改底部按钮条的位置
+                $("#" + elArr[i]).css("bottom", "0px");
+              }
+          }
+        }, 200);
+  });
+}
+
+/*
  *  头部-类型点击公共方法
  */
 function onCheckMenu(el, callback) {
@@ -38,7 +66,7 @@ function onShowList(element, minH, maxH, mapListStatus, bodyHeight,callback) {
     } else if (mapListStatus == 2) {
         $('.' + element).css('height', minH + 'px');
     }
-
+    console.log(maxH);
     mapListStatus++;
     if (mapListStatus > 2) {
         mapListStatus = 0;
@@ -79,7 +107,7 @@ function onShowList(element, minH, maxH, mapListStatus, bodyHeight,callback) {
              $('.' + element).css('height', minH + maxH + 'px');
              mapListStatus = 1;
          }
-
+        console.log(maxH);
          callback(mapListStatus);
        }
    },false);
@@ -284,4 +312,27 @@ function uploadLocation() {
   //   console.log('----------------------------------');
   //   console.log("不管跳转到哪个页面,我一直在");
   // }, 5000);
+}
+
+/**
+* 图片预览
+* @param {data} Array 图片路径 ['imgSrc1', 'imgsrc2']
+**/
+function previewImage(data) {
+  var photoBrowser = api.require('photoBrowser');
+  photoBrowser.open({
+      images: data,
+      // placeholderImg: 'widget://res/img/apicloud.png',
+      bgColor: '#000'
+  }, function(ret, err) {
+      if (ret) {
+          console.log(JSON.stringify(ret));
+          if (ret.eventType == 'click') {
+            // 点击，关闭预览
+            photoBrowser.close();
+          }
+      } else {
+          console.log(JSON.stringify(err));
+      }
+  });
 }

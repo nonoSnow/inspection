@@ -474,7 +474,7 @@ body {
     display: inline-block;
     width: 2.75rem;
     height: 3.1rem;
-    opacity: 0
+    opacity: 0;
 }
 
 .map-member-img img {
@@ -885,6 +885,21 @@ body {
   vertical-align: top;
 }
 
+.no-data {
+  height: 6rem;
+  color: #333;
+  padding: 0.75rem;
+  border-radius: 0.4rem;
+  background-color: #fff;
+  text-align: center;
+  line-height: 4.5rem;
+
+}
+
+.over-hide {
+  overflow: hidden;
+}
+
 /*拍照后显示列表*/
 .img-list {
   width: 100%;
@@ -921,12 +936,14 @@ body {
 }
 
 .del-icon {
-  width: 0.7rem;
-  height: 0.7rem;
+  width: 1rem;
+  height: 1rem;
   right: -0.25rem;
   top: -0.25rem;
-  background: red;
-  color: green;
+}
+
+.borra {
+  border-radius: 0.2rem;
 }
 
 .aui-popup-scroll{

@@ -4,20 +4,22 @@ var bodyHeight;
 var block;
 var oTop = 0;
 
+var indexMap = {};
+var areaList = [];
+
+var userId = '';
+
+var pageType = '';
+
+// 工单  巡检片区选择区域及设备信息
+var checkAreaInfo = checkEquipment = {};
+
 apiready = function() {
     var header = $api.byId('header');
     // 实现沉浸式状态栏效果
     $api.fixStatusBar(header);
 
-    var pageType = api.pageParam.type;
-    console.log(pageType);
-    if (pageType == 1 || pageType == 2) {
-      $('.aui-pull-left').removeClass('aui-hide');
-      $('.aui-title').html('巡检片区');
-    } else {
-      $('.aui-pull-left').addClass('aui-hide');
-      $('.aui-title').html('片区');
-    }
+    userId = $api.getStorage('userLoginInformation').currentUserInfo.userInfo.userId;
 
     if (api.systemType == 'android') {
       bodyHeight = $('body').height() - 25;
@@ -25,17 +27,28 @@ apiready = function() {
       bodyHeight = $('body').height() - 20;
     }
 
-    onMoveShowList(
-      document.getElementById('map-footer'),
-      'map-footer',
-      $('.status1').height() + 0.5 * 20 + $('.status2').height() + 0.75 * 20,
-      $('.list-item').height() + 0.75 * 20,
-      mapListStatus,
-      bodyHeight, function(ret){
-        console.log(ret);
-        mapListStatus = ret;
-        onTransitionStatus(mapListStatus);
-      });
+    // 初始化地图
+    indexMap = new Map({
+        mapid: 'mapArea'
+    });
+    indexMap.initArea('areaList');
+    indexMap.initDeviceLayer('areaList');
+
+    pageType = api.pageParam.type;
+
+    if (pageType == 1 || pageType == 2) {
+      $('.aui-pull-left').removeClass('aui-hide');
+      $('.aui-title').html('巡检片区');
+
+      checkAreaInfo = api.pageParam.areaInfo;
+      checkEquipment = api.pageParam.equipment;
+
+    } else {
+      $('.aui-pull-left').addClass('aui-hide');
+      $('.aui-title').html('片区');
+    }
+
+    onGetListData();
 }
 
 function onShowItem() {
@@ -45,7 +58,6 @@ function onShowItem() {
              mapListStatus,
              bodyHeight,
              function(ret){
-                console.log(ret);
                 mapListStatus = ret;
                 onTransitionStatus(mapListStatus);
              });
@@ -67,10 +79,20 @@ function onTransitionStatus(mapListStatus) {
 
     $(".transition-status2").addClass("aui-hide");
   }
+
+  if (mapListStatus == 2 && isSearch) {
+    $('#areaList').addClass("aui-hide");
+    $('#areaSearcgList').removeClass("aui-hide");
+    $(".area-search-text").text("搜索");
+  } else {
+    isSearch = false;
+    $('#areaList').removeClass("aui-hide");
+    $('#areaSearcgList').addClass("aui-hide");
+    $(".area-search-text").text("片区列表");
+  }
 }
 
 function onGetSearchVal() {
-  console.log($("#search-input").val());
   var searchVal = $("#search-input").val();
   if (searchVal != '' && searchVal != ' ') {
     $('.search-btn').removeClass('aui-hide');
@@ -81,13 +103,15 @@ function onGetSearchVal() {
   }
 }
 
-
-function onOpenAreaDetail() {
+function onOpenAreaDetail(item) {
+  onCheckedArea(item);
   api.openWin({
       name: 'areaDetail',
       url: './areaDetail.html',
       pageParam: {
-          name: 'test'
+          areaInfo: item,
+          checkAreaInfo: checkAreaInfo,
+          checkEquipment: checkEquipment
       }
   });
 
@@ -95,10 +119,272 @@ function onOpenAreaDetail() {
 
 function onOpenAdd() {
   api.openWin({
-      name: 'addArea',
-      url: './addArea.html',
+      name: 'areaLayer',
+      url: './areaLayer.html',
       pageParam: {
           name: 'test'
       }
+  });
+}
+
+function onEmptySearch() {
+  $("#search-input").val('');
+  onGetSearchVal();
+  onGetListData();
+}
+
+// 根据片区名称模糊查询片区信息
+function onSearchVal() {
+  api.showProgress({
+      title: '加载中',
+      text: '',
+      modal: false
+  });
+  var data = {
+    name: $("#search-input").val()
+  };
+  var optionsEmpty = {
+    url: baseUrl + "api/services/Inspection/AreaService/AppGetAreaDetailsByName",
+    data: data,
+    success: function(ret) {
+      api.hideProgress();
+      $('#areaSearcgList').empty();
+      var searchArea = ret.result;
+      var areaPointArr = [];
+      for (var i = 0; i < searchArea.length; i++) {
+        areaPointArr.push({areaPoint: searchArea[i].areaPoint});
+      }
+
+      onMapShow(areaPointArr, searchArea);
+
+      onShowHtml(searchArea);
+    },
+    error: function(err) {
+      api.hideProgress();
+      console.log(JSON.stringify(err));
+    }
+  };
+  ajaxMethod(optionsEmpty);
+
+  isSearch = false;
+  $('#areaList').removeClass("aui-hide");
+  $('#areaSearcgList').addClass("aui-hide");
+  $(".area-search-text").text("片区列表");
+}
+
+function onGetListData() {
+  areaList = [];
+  var data = {
+    name: '',
+    id: userId,
+    pageIndex: 1,
+    maxResultCount: 1000
+  };
+  api.showProgress({
+      title: '加载中',
+      text: '',
+      modal: false
+  });
+  // 获取自己创建的片区列表
+  var optionsMy = {
+    url: baseUrl + "api/services/Inspection/AreaService/GetAreaMyListsAPP",
+    data: data,
+    success: function(ret){
+      var myAreaArr = ret.result.items;
+      // 获取别人创建的片区列表
+      var optionsOther = {
+        url: baseUrl + "api/services/Inspection/AreaService/GetAreaOtherListsAPP",
+        data: data,
+        success: function(ret) {
+          api.hideProgress();
+          var otherAreaArr = ret.result.items;
+          var areaPointArr = [];
+          areaList = myAreaArr.concat(otherAreaArr);
+          for (var i = 1; i < areaList.length; i++) {
+            areaPointArr.push({areaPoint: areaList[i].areaPoint});
+          }
+          onMapShow(areaPointArr, areaList);
+
+          if (checkAreaInfo != undefined && JSON.stringify(checkAreaInfo) != "{}") {
+            onCheckedArea(checkAreaInfo);
+
+            var lineList = pointList = [];
+            if (checkEquipment[0].type == '1') {
+              pointList = checkEquipment;
+            } else {
+              lineList = checkEquipment;
+            }
+            indexMap.mapConduitEquipment({
+                areaPoint: checkAreaInfo.areaPoint,
+                lineList: lineList,
+                pointList: pointList
+            }, {name: 'areaList'});
+          }
+
+          onShowHtml(areaList);
+
+          onMoveShowList(
+            document.getElementById('map-footer'),
+            'map-footer',
+            $('.status1').height() + 0.5 * 20 + $('.status2').height() + 0.75 * 20,
+            $(".list-item").height() + 0.75 * 20,
+            mapListStatus,
+            bodyHeight, function(ret){
+              mapListStatus = ret;
+              onTransitionStatus(mapListStatus);
+            });
+        },
+        error: function(err) {
+          api.hideProgress();
+          console.log(JSON.stringify(err));
+        }
+      };
+      ajaxMethod(optionsOther);
+
+    },
+    error: function(err){
+      api.hideProgress();
+      console.log(JSON.stringify(err));
+    }
+  };
+  ajaxMethod(optionsMy);
+
+}
+
+var isSearch = false;
+function onInuptBlur() {
+  // $('#areaList').removeClass("aui-hide");
+  // $('#areaSearcgList').addClass("aui-hide");
+  // $(".area-search-text").text("片区列表");
+}
+
+function onInuptFocus() {
+  isSearch = true;
+  $('#areaList').addClass("aui-hide");
+  $('#areaSearcgList').removeClass("aui-hide");
+
+  $(".area-search-text").text("搜索");
+  onShowList('map-footer',
+             $('.status1').height() + 0.5 * 20 + $('.status2').height() + 0.75 * 20,
+             $('.list-item').height() + 0.75 * 20,
+             1,
+             bodyHeight,
+             function(ret){
+                mapListStatus = ret;
+                onTransitionStatus(mapListStatus);
+             });
+
+   // 获取搜索历史记录
+   api.showProgress({
+       title: '加载中',
+       text: '',
+       modal: false
+   });
+   var data = {
+     name: '',
+     id: userId,
+     pageIndex: 1,
+     maxResultCount: 10
+   };
+   var optionsHistory = {
+     url: baseUrl + "api/services/Inspection/AreaService/GetAreaHistory",
+     data: data,
+     success: function(ret) {
+       api.hideProgress();
+       var searchArr = ret.result;
+       if (searchArr.length == 0)
+          return false;
+       var datas = {
+         datas: searchArr
+       };
+       var str = template('areaSearch', datas);
+       $('#areaSearcgList').empty();
+       $('#areaSearcgList').append(str);
+       var emptyLi = "<li class='emptyHistory' tapmode onclick='onEmptyHistory()'>清空历史记录</li>";
+       $('#areaSearcgList').append(emptyLi);
+     },
+     error: function(err) {
+       api.hideProgress();
+       console.log(JSON.stringify(err));
+     }
+   };
+   ajaxMethod(optionsHistory);
+}
+
+function onCheckHistory(item) {
+  $("#search-input").val(item);
+}
+
+// 清空搜索历史记录
+function onEmptyHistory() {
+  api.showProgress({
+      title: '加载中',
+      text: '',
+      modal: false
+  });
+  var data = {
+    id: userId
+  };
+  var optionsEmpty = {
+    url: baseUrl + "api/services/Inspection/AreaService/DeleteAreaHistory",
+    data: data,
+    success: function(ret) {
+      api.hideProgress();
+      $('#areaSearcgList').empty();
+    },
+    error: function(err) {
+      api.hideProgress();
+      console.log(JSON.stringify(err));
+    }
+  };
+  ajaxMethod(optionsEmpty);
+}
+
+function onShowHtml(areaList) {
+  var datas = {
+    datas: areaList
+  };
+  if (pageType == 1 || pageType == 2) {
+    var str = template('addArea', datas);
+  } else {
+    var str = template('areaItem', datas);
+  }
+  $('#areaList').empty();
+  $('#areaList').append(str);
+
+}
+
+function onCheckedArea(item) {
+  var areaPoint = item.areaPoint.split(';');
+  var point = areaPoint[0].split(',');
+  indexMap.mapCheckedArea([point[0], point[1]], {name: 'areaList'});
+}
+
+function onMapShow(areaPointArr, areaList) {
+  indexMap.mapClearSource({name: 'areaList'});
+  // 地图渲染区域  添加区域点击事件
+  indexMap.drawAreaSelect(areaPointArr, {name: 'areaList'});
+  indexMap.mapClickArea(function(ret) {
+    if (ret == undefined) {
+      return false;
+    }
+    var areaLineArr = ret[0];
+    var areaLineStr = '';
+
+    for (var i = 0; i < areaLineArr.length; i++) {
+      areaLineStr += areaLineArr[i][0] + "," + areaLineArr[i][1] + ";";
+    }
+    areaLineStr += areaLineArr[0][0] + "," + areaLineArr[0][1] + ";";
+
+    for (var i = 0; i < areaList.length; i++) {
+      if (areaLineStr == areaList[i].areaPoint) {
+        var ecked = areaList[i];
+        areaList.splice(i, 1);
+        areaList.unshift(ecked);
+
+        onShowHtml(areaList);
+        break;
+      }
+    }
   });
 }

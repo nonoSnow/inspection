@@ -110,6 +110,7 @@ $(".home-device").on('click', function() {
     if(!feature) return false;
     if(feature.ol_uid == activeDevice) return false;
     activeDevice = feature.ol_uid;
+    indexMap.getTypeList();
     indexMap.getCommonEle({
         areaPoint: indexMap.selectAreaPoint,
         lineList: [{

@@ -1230,7 +1230,7 @@
         var db = api.require('db');
         var result = db.selectSqlSync({
             name: 'Wsdatabase',
-            sql: 'SELECT * FROM APPLY_TASK_IMAGES_S WHERE isFail = "1" and userName="' + CurentUserName + '"'
+            sql: 'SELECT * FROM APPLY_TASK_IMAGES WHERE isFail = "1" and userName="' + CurentUserName + '"'
         });
         console.log(JSON.stringify(result));
         if (result.status) {
@@ -1496,7 +1496,7 @@
       var db = api.require('db');
       var result = db.selectSqlSync({
           name: 'Wsdatabase',
-          sql: 'SELECT * FROM APPLY_TASK_IMAGES_S WHERE isFail = "1" and userName="' + CurentUserName + '" and ReqCode IN ('+ applyImgsReqCode +')'
+          sql: 'SELECT * FROM APPLY_TASK_IMAGES WHERE isFail = "1" and userName="' + CurentUserName + '" and ReqCode IN ('+ applyImgsReqCode +')'
       });
       console.log(JSON.stringify(result));
       if (result.status) {
@@ -1505,7 +1505,7 @@
           for (let i = 0; i < applyImgs.length; i++) {
             var deleteApplyImgs = db.executeSqlSync({
                 name: 'Wsdatabase',
-                sql: "DELETE FROM APPLY_TASK_IMAGES_S WHERE isFail = '1' and userName = '"+ CurentUserName +"' and ReqCode = '"+ applyImgs[i].ReqCode +"'"
+                sql: "DELETE FROM APPLY_TASK_IMAGES WHERE isFail = '1' and userName = '"+ CurentUserName +"' and ReqCode = '"+ applyImgs[i].ReqCode +"'"
             });
             console.log(JSON.stringify(deleteApplyImgs));
 

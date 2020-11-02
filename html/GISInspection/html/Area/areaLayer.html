@@ -21,7 +21,7 @@
         </div>
         <div class='aui-title'>选择图层</div>
         <a class='aui-pull-right color-598' tapmode onclick='onSave()'>
-            <span>保存</span>
+            <span>下一步</span>
         </a>
       </header>
 
@@ -238,7 +238,50 @@
   <script type="text/javascript" src="../../../public/script/common.js"></script>
   <script type="text/javascript" src="../../../public/script/remote.js"></script>
   <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+  <script type="text/javascript" src="../../../public/script/template.js"></script>
 
+  <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
   <script type="text/javascript" src="../../script/public.js"></script>
   <script type="text/javascript" src="../../script/areaLayer.js"></script>
+  <script type="text/template" id="pointAndLine">
+    {{if datas.length > 0}}
+      {{each datas item i}}
+        {{if i == 0}}
+        <li class="bgc-ff border-radius4">
+        {{else}}
+        <li class="bgc-ff border-radius4 margin-top75">
+        {{/if}}
+          <div class="layer-title padding75 ">
+            <span class="color-666">{{item.label}}</span>
+            <label class="float-rig color-999"><input class="aui-checkbox margin-top0" type="checkbox" name="checkbox"> 全选</label>
+          </div>
+          {{each item.childrenArr children j}}
+            {{if (item.childrenArr.length - 1) == j}}
+            <div class="layer-cont border-bottom-radius4">
+            {{else}}
+            <div class="layer-cont">
+            {{/if}}
+              {{each children.children childrenItem k}}
+              {{if k == 3}}
+              <div class="layer-cont-item relative">
+              {{else}}
+              <div class="layer-cont-item relative border-rig-none">
+              {{/if}}
+                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
+                <div class="item-cont">
+                  <span class="item-cont-img"><img src="{{child.icon}}" class="width100 height100" alt=""></span>
+                  <span class="item-cont-name">{{childrenItem.label}}</span>
+                </div>
+              </div>
+              {{/each}}
+            </div>
+          {{/each}}
+        </li>
+      {{/each}}
+    {{else}}
+      <div class="no-data font-S8">暂无数据!</div>
+    {{/if}}
+  </script>
+
 </html>

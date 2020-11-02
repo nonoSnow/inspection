@@ -601,6 +601,7 @@
                                 lat = CurrentLocation.lat;
                             }
                         }
+                        console.log(password)
                         var loginData = {
                             userName: userName,
                             // password: password,
@@ -611,8 +612,7 @@
                             lng: lon,
                             lat: lat,
                             account: "",
-                            passWord: '123abc!@#'
-                            // passWord: password
+                            passWord: password
                         };
                         var loginDataPc = {
                                 userName: userName,
@@ -821,6 +821,7 @@
 
                                     }
                                 });
+
                             }
                         }
                     });

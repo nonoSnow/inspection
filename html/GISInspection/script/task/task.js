@@ -342,22 +342,22 @@ function onMenu(index, el) {
   if (index == 0) {
     // 任务进行中
     goingPageIndex = 1;
-    goingData = [];
+    // goingData = [];
     initOngoing();
   } else if (index == 1) {
     // 任务待接收
     receivePageIndex = 1;
-    receiveData = [];
+    // receiveData = [];
     initReceived();
   } else if (index == 2) {
     // 任务已暂停
     suspendPageIndex = 1;
-    suspendData = [];
+    // suspendData = [];
     initSuspended();
   } else if (index == 3) {
     // 任务已完成
     completedPageIndex = 1;
-    completeData = [];
+    // completeData = [];
     initCompleted();
   }
   onCheckMenu(el, function(){
@@ -388,61 +388,90 @@ function openTaskStop(that) {
   var e = e || window.event;
   e.stopPropagation();
   // 先获取任务详情，再进入暂停页面
-  // var taskId = JSON.parse($(that).attr("parse"));
-  // var data = {
-  //   id: taskId
-  // }
-  // getTaskBasicInfo("api/services/Inspection/InspectionTaskService/GetTaskDetails",data,showRet,showErr);
-  //
-  // function showRet(ret) {
-  //
-  // }
-
-  // function showErr(err) {
-    // if(err.code == 1){
-    //   alert(err.body.error.message)
-    // }else if(err.code == 0){
-    //   alert(err.msg);
-    // }
-  // }
-
-  var taskDetail = {
-    id: 1,
-    name: '测试任务',
-    type: 1,
-    typeStr: '临时任务',
-    status: 1,
-    statusStr: '进行中',
-    person: '张三',
-    planStartTime: '',
-    areaId: 1,
-    areaName: '片区1',
-    planEndTime: '',
-    participant: '李四、王五',
-    startTime: '',
-    endTime: '',
-    closeReason: '',
-    stopReason: '',
-    remark: '备注内容',
-    pauseTime: '',
-    orgId: ''
-  }
+  var taskInfo = JSON.parse($(that).attr("parse"));
 
   api.openWin({
       name: 'taskStop',
       url: '../Home/taskStop.html',
       pageParam: {
           name: 'test',
-          data: taskDetail
+          data: taskInfo
       }
   });
+
+  // var data = {
+  //   id: taskId
+  // }
+  // getTaskBasicInfo("api/services/Inspection/InspectionTaskService/GetTaskDetails",data,showRet,showErr);
+  //
+  // function showRet(ret) {
+  //   if (ret.result == null) {
+  //     api.toast({
+  //         msg: '获取任务详情为空',
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //   } else {
+  //     var taskDetail = ret.result;
+  //     api.openWin({
+  //         name: 'taskStop',
+  //         url: '../Home/taskStop.html',
+  //         pageParam: {
+  //             name: 'test',
+  //             data: taskDetail
+  //         }
+  //     });
+  //   }
+  // }
+  //
+  // function showErr(err) {
+  //   if (err.body.error != undefined) {
+  //     api.toast({
+  //         msg: err.body.error.message,
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //
+  //     // alert(err.body.error.message)
+  //   } else {
+  //     api.toast({
+  //         msg: err.msg,
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //     // alert(err.msg);
+  //   }
+  // }
+
+  // var taskDetail = {
+  //   id: 1,
+  //   name: '测试任务',
+  //   type: 1,
+  //   typeStr: '临时任务',
+  //   status: 1,
+  //   statusStr: '进行中',
+  //   person: '张三',
+  //   planStartTime: '',
+  //   areaId: 1,
+  //   areaName: '片区1',
+  //   planEndTime: '',
+  //   participant: '李四、王五',
+  //   startTime: '',
+  //   endTime: '',
+  //   closeReason: '',
+  //   stopReason: '',
+  //   remark: '备注内容',
+  //   pauseTime: '',
+  //   orgId: ''
+  // }
+
 }
 
 // 点击完成任务
 function completedTask(that) {
   var e = e || window.event;
   e.stopPropagation();
-  var taskId = $(that).attr('parse');
+  var taskId = Number($(that).attr('parse'));
   // console.log(taskId);
   var data = {
     taskId: taskId,
@@ -457,10 +486,12 @@ function completedTask(that) {
 function closeTask(that) {
   var e = e || window.event;
   e.stopPropagation();
-  var taskId = $(that).attr('parse');
+
+  var taskId = Number($(that).attr('parse'));
   var taskName = $(that).attr('taskName');
+  var type = $(that).attr('parseType');
   var message = '您确定要关闭' + taskName + '吗？'
-  console.log(taskId);
+  // console.log(taskId);
   api.confirm({
       msg: message,
       buttons: ['确定', '取消']
@@ -475,8 +506,18 @@ function closeTask(that) {
         changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', param, showRet, showErr);
 
         function showRet(ret) {
-          // 修改状态成功，完成成功
-          initReceived();
+          // 修改状态成功，完成成功，重新加载
+          $('#taskList').html('');
+          if (type == 'suspended') {
+            // 已暂停
+            suspendPageIndex = 1;
+            initSuspended();
+          } else if (type == 'received') {
+            // 待接收
+            receivePageIndex = 1;
+            initReceived();
+          }
+
         }
 
         function showErr(err) {
@@ -506,16 +547,21 @@ function startUpTask(that) {
   var e = e || window.event;
   e.stopPropagation();
 
-  var taskId = $(that).attr('parse');
+  var taskId = parseInt($(that).attr('parse'));
+  console.log(typeof(Number($(that).attr('parse'))));
+  console.log(typeof(taskId));
   var data = {
     id: taskId,
     operate: 3
   }
-
-  changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', data, showRet, showErr);
+  console.log(JSON.stringify(data));
+  changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', data, showRet, showErr);
 
   function showRet(ret) {
-
+    // 启动成功，重新加载待启动列表
+    $('#taskList').html('');
+    receivePageIndex = 1;
+    initReceived();
   }
 
   function showErr(err) {
@@ -543,7 +589,7 @@ function reStartTask(that) {
   var e = e || window.event;
   e.stopPropagation();
 
-  var taskId = $(that).attr('parse');
+  var taskId = Number($(that).attr('parse'));
 
   var data = {
     id: taskId,
@@ -553,7 +599,10 @@ function reStartTask(that) {
   changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', data, showRet, showErr);
 
   function showRet(ret) {
-
+    // 重启成功，重新加载已暂停列表
+    $('#taskList').html('');
+    receivePageIndex = 1;
+    initSuspended();
   }
 
   function showErr(err) {
@@ -621,7 +670,7 @@ function getDaiXunDev(data) {
   getInspectDataList("api/services/Inspection/InspectionTaskService/AppGetInspectionPointList",data,showRet,showErr);
 
   function showRet(ret) {
-    var daiXunTotal = reet.result.totalCount;
+    var daiXunTotal = ret.result.totalCount;
     var message = '该任务中有' + daiXunTotal + '个待巡点未完成！您确定要完成该任务吗？'
     api.confirm({
         msg: message,
@@ -637,7 +686,9 @@ function getDaiXunDev(data) {
           changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', param, showRet, showErr);
 
           function showRet(ret) {
-            // 修改状态成功，完成成功
+            // 修改状态成功，完成成功, 重新加载
+            goingPageIndex = 1;
+            $('#taskList').html('');
             initOngoing();
           }
 
@@ -664,28 +715,18 @@ function getDaiXunDev(data) {
   }
 
   function showErr(err) {
-    if (err.statusCode == 500) {
-      if (err.body.error) {
-        api.toast({
-            msg: err.body.error.message,
-            duration: 2000,
-            location: 'middle'
-        });
-      }
+    if (err.body.error != undefined) {
+      api.toast({
+          msg: err.body.error.message,
+          duration: 2000,
+          location: 'middle'
+      });
     } else {
-      if (err.body.error != undefined) {
-        api.toast({
-            msg: err.body.error.message,
-            duration: 2000,
-            location: 'middle'
-        });
-      } else {
-        api.toast({
-            msg: err.msg,
-            duration: 2000,
-            location: 'middle'
-        });
-      }
+      api.toast({
+          msg: err.msg,
+          duration: 2000,
+          location: 'middle'
+      });
     }
   }
 }

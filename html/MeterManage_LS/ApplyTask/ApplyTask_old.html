@@ -228,10 +228,6 @@
             border-bottom: none;
         }
 
-        .van-form .userType .van-field__body {
-            border-bottom: none;
-        }
-
         .border {
             width: calc(100% - 1.1rem);
             height: 0.15rem;
@@ -408,7 +404,6 @@
             height: 1.2rem;
             /*font-size: 0.75rem;*/
         }
-
         .flex-con .CustomerInfoDiv .van-cell.formField {
             border: none;
             background-size: 87% 1px;
@@ -419,17 +414,16 @@
             padding: 0.4rem 0.95rem 0rem 1.25rem;
             height: 2.1rem;
         }
-
-        .flex-con .CustomerInfoDiv .van-cell.formField:last-child {
-            border: none;
-            background-image: none;
+        .flex-con .CustomerInfoDiv .van-cell.formField:last-child{
+          border: none;
+          background-image: none;
         }
     </style>
 </head>
 
 <body>
 
-    <div id="wrap" class="flex-wrap flex-vertical">
+    <div id="wrap" class="flex-wrap flex-vertical" v-cloak>
         <header class="aui-bar aui-bar-nav" id="header">
             <div class="aui-pull-left aui-btn" tapmode @click='back'>
                 <span class="aui-iconfont aui-icon-left"></span>
@@ -443,7 +437,7 @@
         <van-popup class="popup" v-model="showPicker" position="bottom" @closed="hideAllSelect">
             <div class="flex-wrap flex-vertical">
                 <div class="flex-con pickerMain" v-if="showUnusualTypeSelect">
-                    <div class="picker" v-for="(item,index) in unusualTypes" :key="index" :class="{active:unusualType.Id == item.Id}" v-if='item.Id==13 ||item.Id==3 || item.Id==15 || item.Id==18' @click="changeUnusualType(item)">
+                    <div class="picker" v-for="(item,index) in unusualTypes" :key="index" :class="{active:unusualType.Id == item.Id}" v-if='item.Id==13 ||item.Id==3 || item.Id==16' @click="changeUnusualType(item)">
                         {{item.Name}}
                     </div>
                 </div>
@@ -507,26 +501,30 @@
                     <!-- <div class="c-search-text">搜索</div> -->
                 </div>
 
-                <div v-if="showCustomerInfo && unusualType.Id != '18'" class='CustomerInfoDiv'>
-                    <van-field class="formField" :border="false" label="户名" :value="customerInfo.CustomerName" readonly></van-field>
-                    <van-field class="formField textareaField readOnly" :border="false" label="用户地址" :value="customerInfo.Address" rows="1" type="textarea" autosize readonly></van-field>
-                    <van-field class="formField textareaField readOnly" type="textarea" autosize :border="false" label="水表位置" rows="1" :value="customerInfo.Location" readonly></van-field>
-                    <van-field class="formField" :border="false" label="用水性质" :value="customerInfo.NatureName" readonly></van-field>
-                    <van-field class="formField" :border="false" label="口径" :value="customerInfo.Caliber" readonly></van-field>
-                    <!-- <van-field v-show="unusualType.Id == 2" class="formField" :border="false" label="表号" :value="customerInfo.StampNo" readonly></van-field> -->
-                    <van-field v-show="unusualType.Id == '13' || unusualType.Id == '3'" class="formField" :border="false" label="止度" :value="customerInfo.LastScale" readonly></van-field>
+                <div v-if="showCustomerInfo" class='CustomerInfoDiv'>
+                    <van-field class="formField" :border="false" label="户名:" :value="customerInfo.CustomerName" readonly></van-field>
+                    <van-field class="formField textareaField readOnly" :border="false" label="用户地址:" :value="customerInfo.Address" rows="1" type="textarea" autosize readonly></van-field>
+                    <van-field class="formField textareaField readOnly" type="textarea" autosize :border="false" label="水表位置:" rows="1" :value="customerInfo.Location" readonly></van-field>
+                    <van-field class="formField" :border="false" label="用水性质:" :value="customerInfo.NatureName" readonly></van-field>
+                    <van-field class="formField" :border="false" label="口径:" :value="customerInfo.Caliber" readonly></van-field>
+                    <van-field v-show="unusualType.Id == 2" class="formField" :border="false" label="表号:" :value="customerInfo.StampNo" readonly></van-field>
+                    <van-field v-show="unusualType.Id == 2" class="formField" :border="false" label="止度:" :value="customerInfo.EndScale" readonly></van-field>
                 </div>
-                <!-- 移改提修 -->
+                <!-- 移改提 -->
                 <van-form v-if="unusualType.Id == '13' && showCustomerInfo">
                     <div class="border"></div>
-                    <van-field class="formField" :border="false" label="经办人" :disabled="chooseOtherReason" :clickable="!chooseOtherReason" readonly name="Reason" v-model="MeterRemarkName" placeholder="请选择" @click="changeReason" right-icon="../image/MeterManage/xiala.png"></van-field>
-
-                    <van-field class="formField" :border="false" label="问题原因" :disabled="chooseOtherReason" :clickable="!chooseOtherReason" readonly name="Reason" v-model="MeterRemarkName" placeholder="请选择" @click="changeReason" right-icon="../image/MeterManage/xiala.png"></van-field>
 
                     <div class="textAreaLabel">
-                        <span class="textLabel">原因描述</span>
+                        <span class="textLabel">原因描述:</span>
                     </div>
                     <van-field class="formField textareaField" type="textarea" name="Description" :border="false" maxlength="200" show-word-limit v-model="SubmitData.Description" rows="2" autosize></van-field>
+
+                    <!-- <div class="locationRow">
+                        <div class="locationArrow"></div>
+                        <div class="locationText">{{Location}}</div>-->
+                    <!-- <van-icon name="replay" @click="getLocation" />
+                        <div class="refresh" @click="getLocation"></div>
+                    </div> -->
 
                 </van-form>
 
@@ -534,64 +532,57 @@
                 <van-form v-if="unusualType.Id == '3' && showCustomerInfo">
                     <div class="border"></div>
 
-                    <van-field class="formField" :border="false" label="经办人" :disabled="chooseOtherReason" :clickable="!chooseOtherReason" readonly name="Reason" v-model="MeterRemarkName" placeholder="请选择" @click="changeReason" right-icon="../image/MeterManage/xiala.png"></van-field>
+                    <van-field class="formField" :border="false" label="换表原因:" :disabled="chooseOtherReason" :clickable="!chooseOtherReason" readonly name="Reason" v-model="MeterRemarkName" placeholder="请选择" @click="changeReason" right-icon="../image/MeterManage/xiala.png"></van-field>
 
-                    <van-field class="formField" :border="false" label="换表原因" :disabled="chooseOtherReason" :clickable="!chooseOtherReason" readonly name="Reason" v-model="MeterRemarkName" placeholder="请选择" @click="changeReason" right-icon="../image/MeterManage/xiala.png"></van-field>
-
-                    <!-- <div class="textAreaLabel">
+                    <div class="textAreaLabel">
                         <label>
-                        <span class="photoText">报废旧表</span>
+                        <span class="photoText">报废旧表:</span>
                         <input id="oldMerter" v-model="isOldMeter" class="aui-checkbox" type="checkbox" name="checkbox">
                       </label>
-                    </div> -->
+                    </div>
 
                     <div v-show="SubmitData.MeterRemark == '-1'">
                         <div class="textAreaLabel">
-                            <span class="textLabel">其它原因</span>
+                            <span class="textLabel">其它原因:</span>
+                            <!-- <van-checkbox v-model="chooseOtherReason">其它原因</van-checkbox> -->
                         </div>
                         <van-field class="formField textareaField" type="textarea" name="OtherReason" :border="false" maxlength="100" show-word-limit v-model="SubmitData.Remark" rows="2" autosize></van-field>
                     </div>
 
                     <div class="textAreaLabel">
-                        <span class="textLabel">原因描述</span>
+                        <span class="textLabel">原因描述:</span>
                     </div>
                     <van-field class="formField textareaField" type="textarea" name="Description" :border="false" maxlength="200" show-word-limit v-model="SubmitData.Description" rows="2" autosize></van-field>
+
+                    <!-- <div class="locationRow">
+                        <div class="locationArrow"></div>
+                        <div class="locationText">{{Location}}</div>-->
+                    <!-- <van-icon name="replay" @click="getLocation" />
+                        <div class="refresh" @click="getLocation"></div>
+                    </div> -->
                 </van-form>
 
                 <!-- 三来 -->
                 <van-form v-if="unusualType.Id == '15' && showCustomerInfo || unusualType.Id == '17'&& showCustomerInfo">
                     <div class="border"></div>
-                    <van-field class="formField" :border="false" label="经办人" :disabled="chooseOtherReason" :clickable="!chooseOtherReason" readonly name="Reason" v-model="MeterRemarkName" placeholder="请选择" @click="changeReason" right-icon="../image/MeterManage/xiala.png"></van-field>
 
-                    <van-field class="formField" :border="false" label="反映区名" readonly clickable name="AreaName" v-model="AreaName" placeholder="请选择" @click="showPicker = true;showAreaSelect=true" right-icon="../image/MeterManage/xiala.png"></van-field>
+                    <!-- <van-field class="formField" :border="false" label="工单编号" name="OrderCode" v-model="SubmitData.OrderCode"></van-field> -->
 
-                    <van-field class="formField" :border="false" label="客户电话" name="Tel" v-model="SubmitData.Mobile"></van-field>
+                    <van-field v-show="unusualType.Id == '17'" class="formField" :border="false" label="工单类型:" readonly clickable name="orderTypeName" v-model="orderTypeName" placeholder="请选择" @click="showPicker = true;showOrderTypeSelect=true" right-icon="../image/MeterManage/xiala.png"></van-field>
 
-                    <van-field class="formField" :border="false" label="工单类型" readonly clickable name="orderTypeName" v-model="orderTypeName" placeholder="请选择" @click="showPicker = true;showOrderTypeSelect=true" right-icon="../image/MeterManage/xiala.png"></van-field>
+                    <van-field class="formField" :border="false" label="问题类别:" :disabled="chooseOtherReason" :clickable="!chooseOtherReason" readonly name="Reason" v-model="MeterRemarkName" placeholder="请选择" @click="changeReason" right-icon="../image/MeterManage/xiala.png"></van-field>
 
-                    <van-field class="formField" :border="false" label="工单主题" :disabled="chooseOtherReason" :clickable="!chooseOtherReason" readonly name="Reason" v-model="MeterRemarkName" placeholder="请选择" @click="changeReason" right-icon="../image/MeterManage/xiala.png"></van-field>
+                    <van-field class="formField" :border="false" label="反映区名:" readonly clickable name="AreaName" v-model="AreaName" placeholder="请选择" @click="showPicker = true;showAreaSelect=true" right-icon="../image/MeterManage/xiala.png"></van-field>
 
-                    <van-field class="formField" :border="false" label="信息来源" readonly clickable name="Source" v-model="SourceName" placeholder="请选择" @click="showPicker = true;showSourceSelect=true" right-icon="../image/MeterManage/xiala.png"></van-field>
+                    <van-field class="formField" :border="false" label="客户电话:" name="Tel" v-model="SubmitData.Mobile"></van-field>
 
-                    <van-field class="formField" :border="false" label="紧急情况" readonly clickable name="Emergency" v-model="EmergencyName" placeholder="请选择" @click="showPicker = true;showEmergencySelect=true" right-icon="../image/MeterManage/xiala.png"></van-field>
+                    <van-field class="formField" :border="false" label="信息来源:" readonly clickable name="Source" v-model="SourceName" placeholder="请选择" @click="showPicker = true;showSourceSelect=true" right-icon="../image/MeterManage/xiala.png"></van-field>
 
-                    <van-field class="formField" :border="false" label="处理级别" type="number" clickable name="Level" v-model="SubmitData.ProcessingLevelId" placeholder="/天"></van-field>
-
-                    <!-- <van-field v-show="unusualType.Id == '17'" class="formField" :border="false" label="工单类型" readonly clickable name="orderTypeName" v-model="orderTypeName" placeholder="请选择" @click="showPicker = true;showOrderTypeSelect=true" right-icon="../image/MeterManage/xiala.png"></van-field>
-
-                    <van-field class="formField" :border="false" label="问题类别" :disabled="chooseOtherReason" :clickable="!chooseOtherReason" readonly name="Reason" v-model="MeterRemarkName" placeholder="请选择" @click="changeReason" right-icon="../image/MeterManage/xiala.png"></van-field>
-
-                    <van-field class="formField" :border="false" label="反映区名" readonly clickable name="AreaName" v-model="AreaName" placeholder="请选择" @click="showPicker = true;showAreaSelect=true" right-icon="../image/MeterManage/xiala.png"></van-field>
-
-                    <van-field class="formField" :border="false" label="客户电话" name="Tel" v-model="SubmitData.Mobile"></van-field>
-
-                    <van-field class="formField" :border="false" label="信息来源" readonly clickable name="Source" v-model="SourceName" placeholder="请选择" @click="showPicker = true;showSourceSelect=true" right-icon="../image/MeterManage/xiala.png"></van-field>
-
-                    <van-field class="formField" :border="false" label="紧急情况" readonly clickable name="Emergency" v-model="EmergencyName" placeholder="请选择" @click="showPicker = true;showEmergencySelect=true" right-icon="../image/MeterManage/xiala.png"></van-field> -->
+                    <van-field class="formField" :border="false" label="紧急情况:" readonly clickable name="Emergency" v-model="EmergencyName" placeholder="请选择" @click="showPicker = true;showEmergencySelect=true" right-icon="../image/MeterManage/xiala.png"></van-field>
 
                     <!-- 类别细分 -->
-                    <!--<van-field v-show="unusualType.Id == '17'" class="formField" :border="false" label="类别细分" readonly clickable name="Emergency" v-model="TypeSubdivisionName" placeholder="请选择" @click="showPicker = true;showTypeSubdivision=true" right-icon="../image/MeterManage/xiala.png"></van-field>
-                    <van-field class="formField" :border="false" label="完成时限" type="number" clickable name="Level" v-model="SubmitData.ProcessingLevelId" placeholder="/天"></van-field> -->
+                    <van-field v-show="unusualType.Id == '17'" class="formField" :border="false" label="类别细分:" readonly clickable name="Emergency" v-model="TypeSubdivisionName" placeholder="请选择" @click="showPicker = true;showTypeSubdivision=true" right-icon="../image/MeterManage/xiala.png"></van-field>
+                    <van-field class="formField" :border="false" label="完成时限:" type="number" clickable name="Level" v-model="SubmitData.ProcessingLevelId" placeholder="/天"></van-field>
 
                     <div class="textAreaLabel">
                         <span class="textLabel">原因描述:</span>
@@ -602,70 +593,18 @@
                 <!-- 维修工单 -->
                 <van-form v-if="unusualType.Id == '16' && showCustomerInfo">
                     <div class="border"></div>
-                    <van-field class="formField" :border="false" label="完成时限" type="number" clickable name="Level" v-model="SubmitData.ProcessingLevelId" placeholder="/天"></van-field>
-                    <van-field class="formField" :border="false" label="问题原因" readonly clickable name="WXReason" v-model="MeterRemarkName" placeholder="请选择" @click="showPicker = true;showWXReasonData=true" right-icon="../image/MeterManage/xiala.png"></van-field>
+                    <van-field class="formField" :border="false" label="完成时限:" type="number" clickable name="Level" v-model="SubmitData.ProcessingLevelId" placeholder="/天"></van-field>
+                    <van-field class="formField" :border="false" label="问题原因:" readonly clickable name="WXReason" v-model="MeterRemarkName" placeholder="请选择" @click="showPicker = true;showWXReasonData=true" right-icon="../image/MeterManage/xiala.png"></van-field>
                     <div class="textAreaLabel">
-                        <span class="textLabel">备注</span>
+                        <span class="textLabel">备注:</span>
                     </div>
                     <van-field class="formField textareaField" type="textarea" name="Description" :border="false" maxlength="200" show-word-limit v-model="SubmitData.Description" rows="2" autosize></van-field>
 
                 </van-form>
 
-                <!-- 消防栓启用 -->
-                <van-form v-if="unusualType.Id == '18' && showCustomerInfo">
-                    <van-field class="formField userType" name="radio" label="用户类型" :border="false">
-                        <template #input>
-                          <van-radio-group v-model="SubmitData.userType" direction="horizontal">
-                            <van-radio name="1">单位</van-radio>
-                            <van-radio name="2">个人</van-radio>
-                          </van-radio-group>
-                        </template>
-                    </van-field>
-
-                    <van-field class="formField" :border="false" label="联系电话" name="Tel" v-model="SubmitData.Telephone"></van-field>
-
-                    <van-field class="formField" :border="false" label="用水地点" name="Tel" v-model="SubmitData.UseWaterLocation"></van-field>
-
-                    <van-field class="formField" :border="false" label="用水性质" name="Tel" v-model="SubmitData.NatureName"></van-field>
-
-                    <van-field class="formField" :border="false" readonly="readonly" @click='isApplyTime = true' label="申请时间" name="Tel" v-model="SubmitData.ApplyTimeText"></van-field>
-
-                    <van-field class="formField" :border="false" readonly="readonly" @click='isUseTime = true' label="用水时间" name="Tel" v-model="SubmitData.UseTimeText"></van-field>
-
-                    <van-field class="formField userType" name="radio" label="书面申请" :border="false">
-                        <template #input>
-                          <van-radio-group v-model="SubmitData.bookApply" direction="horizontal">
-                            <van-radio name="1">有</van-radio>
-                            <van-radio name="0">无</van-radio>
-                          </van-radio-group>
-                        </template>
-                    </van-field>
-
-                    <van-field class="formField" :border="false" label="初始底数" name="Tel" v-model="SubmitData.InitBase"></van-field>
-
-                    <van-field class="formField" :border="false" label="审核人" name="Tel" v-model="SubmitData.Reviewer"></van-field>
-
-                    <div class="textAreaLabel">
-                        <span class="textLabel">备注</span>
-                    </div>
-                    <van-field class="formField textareaField" type="textarea" name="Description" :border="false" maxlength="200" show-word-limit v-model="SubmitData.Description" rows="2" autosize></van-field>
-
+                <div v-if="showCustomerInfo">
                     <div class="photoRow" style="width: 100%;">
-                        <span class="photoText">照片</span>
-                        <div class="photoImg" @click="showPicker = true;showGetPicture = true"></div>
-                    </div>
-
-                    <div class="aui-row c-picture-box">
-                        <div class="aui-col-xs-3" v-for='(item,index) in imageArray' :key='index' @click.stop.prevent='pBrowserPicture(index,imageArray)'> <img :src="item" alt="">
-                            <div class="c-delete-picture" @click.stop.prevent="deletePicture(index)"></div>
-                        </div>
-
-                    </div>
-                </van-form>
-
-                <div v-if="showCustomerInfo && (unusualType.Id == '13' || unusualType.Id == '3')">
-                    <div class="photoRow" style="width: 100%;">
-                        <span class="photoText">照片</span>
+                        <span class="photoText">照片:</span>
                         <div class="photoImg" @click="showPicker = true;showGetPicture = true"></div>
                     </div>
                     <div class="locationRow">
@@ -682,31 +621,6 @@
                 </div>
 
             </div>
-
-            <van-popup v-model="isApplyTime" round :style="{ width: '90%' }">
-              <van-datetime-picker
-                v-model="SubmitData.ApplyTime"
-                type="date"
-                title="选择申请时间"
-                :min-date="minDate"
-                :max-date="maxDate"
-                @confirm='confirmApplyTime'
-                @cancel='isApplyTime = false'
-              />
-            </van-popup>
-
-            <van-popup v-model="isUseTime" round :style="{ width: '90%' }">
-              <van-datetime-picker
-                v-model="SubmitData.UseTime"
-                type="date"
-                title="选择用水时间"
-                :min-date="minDate"
-                :max-date="maxDate"
-                @confirm='confirmUseTime'
-                @cancel='isUseTime = false'
-              />
-            </van-popup>
-
         </div>
         <div class="footer">
 
@@ -741,10 +655,10 @@
         var header = $api.byId('header');
         $api.fixStatusBar(header);
         bMap = api.require("bMap");
-
         fnIntVue();
         Origami.fastclick(document.body) //消除vue的ios端点击延迟
     };
+    // fnIntVue();
 
     function fnIntVue() {
         window.ApplyTaskVue = new Vue({
@@ -789,8 +703,7 @@
                     NatureName: "",
                     Caliber: "",
                     StampNo: "",
-                    EndScale: "",
-                    LastScale: ""
+                    EndScale: ""
                 },
                 Location: "正在定位中...",
                 SubmitData: {
@@ -808,20 +721,7 @@
                     Address: "",
                     OrderCode: "",
                     OrderTypeId: "", //工单类型
-                    SubTypeId: '', //性质细分
-
-                    //消防栓启用
-                    userType: '1',  //单位-1   个人-2
-                    Telephone: '',  //联系电话
-                    Location: '',  //用水地点
-                    NatureName: '',  //用水性质
-                    ApplyTime: new Date(),  //申请时间
-                    ApplyTimeText: '',
-                    UseTime: new Date(),  //用水时间
-                    UseTimeText: '',
-                    bookApply: '1',  //书面申请  有-1  无-0
-                    InitBase: '',  //初始底数
-                    Reviewer: '',  //审核人
+                    SubTypeId: '' //性质细分
                 },
                 AreaName: "",
                 SourceName: "",
@@ -832,12 +732,14 @@
                 searchUserInfo: false,
                 showGetPicture: false, //是否显示照片选择
                 PictureData: [{
-                    Id: 1,
-                    Name: '拍照'
-                }, {
-                    Id: 2,
-                    Name: '相册'
-                }, ],
+                        Id: 1,
+                        Name: '拍照'
+                    },
+                    {
+                        Id: 2,
+                        Name: '相册'
+                    },
+                ],
                 pictureSelectId: 0,
                 imageArray: [],
                 typeSubdivisionData: [], //类型细分
@@ -848,12 +750,8 @@
                 ReqCode: '',
 
                 ImgSubmitBtn: true, //上传图片按钮是否启用
-                showSubmitImg: false, //上传图片按钮是否显示
+                showSubmitImg: false //上传图片按钮是否显示
 
-                minDate: new Date(2020, 0, 1),
-                maxDate: new Date(2030, 10, 1),
-                isApplyTime: false,  //显示申请时间
-                isUseTime: false,  //显示用水时间
             },
             computed: {
 
@@ -933,7 +831,6 @@
                         isWater: '',
                     }
                     fnPost('OSM002', body, 'application/json', false, false, (ret, err) => {
-                        console.log(JSON.stringify(ret));
                         api.hideProgress();
                         if (ret && ret.Status == 0) {
                             this.showCustomerInfo = true;
@@ -949,7 +846,6 @@
                             this.customerInfo.Caliber = result.Caliber;
                             this.customerInfo.StampNo = result.StampNo;
                             this.customerInfo.EndScale = result.EndScale;
-                            this.customerInfo.LastScale = result.LastScale;
                             if (this.unusualType.Id == 15 || this.unusualType.Id == 17) {
                                 this.SubmitData.Mobile = result.Mobile;
                                 this.SubmitData.Areas = result.AreaId;
@@ -1091,21 +987,21 @@
                         api.hideProgress();
                         if (ret && ret.Status == 0) {
                             if ($api.getStorage('meterManageSaveLocation') != 1) {
-                                var fs = api.require("fs");
-                                for (var i = 0; i < _that.imageArray.length; i++) {
-                                    fs.remove({
-                                        path: _that.imageArray[i]
-                                    }, function(ret, err) {
-                                        if (ret.status) {
-                                            console.log(JSON.stringify(ret));
-                                        } else {
-                                            console.log(JSON.stringify(err));
-                                        }
-                                    });
-                                    if (i == (_that.imageArray.length - 1)) {
-                                        _that.imageArray = [];
+                              var fs = api.require("fs");
+                              for (var i = 0; i < _that.imageArray.length; i++) {
+                                fs.remove({
+                                    path: _that.imageArray[i]
+                                }, function(ret, err){
+                                    if( ret.status ){
+                                        console.log( JSON.stringify( ret ) );
+                                    }else{
+                                        console.log( JSON.stringify( err ) );
                                     }
+                                });
+                                if (i == (_that.imageArray.length - 1)) {
+                                  _that.imageArray = [];
                                 }
+                              }
                             }
 
                             _that.resetForm();
@@ -1153,8 +1049,9 @@
                     }
                     if (item.Id == 1) {
                         options.type = "camera";
-                    } else {
-                        options.type = "pic";
+                    }
+                     else {
+                    options.type = "pic";
                     }
                     pGetPicture(options, function(ret, err) {
                         if (ret.status) {
@@ -1351,53 +1248,12 @@
                         vant.Toast('网络无法连接,请检查网络配置');
                     }
 
-                },
-                dateFormat(fmt, date) {
-                  let ret;
-                  const opt = {
-                      "Y+": date.getFullYear().toString(),        // 年
-                      "m+": (date.getMonth() + 1).toString(),     // 月
-                      "d+": date.getDate().toString(),            // 日
-                      "H+": date.getHours().toString(),           // 时
-                      "M+": date.getMinutes().toString(),         // 分
-                      "S+": date.getSeconds().toString()          // 秒
-                      // 有其他格式化字符需求可以继续添加，必须转化成字符串
-                  };
-                  for (let k in opt) {
-                      ret = new RegExp("(" + k + ")").exec(fmt);
-                      if (ret) {
-                          fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
-                      };
-                  };
-                  return fmt;
-                },
-                confirmApplyTime() {
-                  this.SubmitData.ApplyTimeText = this.dateFormat('YYYY-mm-dd', this.SubmitData.ApplyTime);
-                  this.isApplyTime = false;
-                },
-                confirmUseTime() {
-                  this.SubmitData.UseTimeText = this.dateFormat('YYYY-mm-dd', this.SubmitData.UseTime);
-                  this.isUseTime = false;
                 }
             },
             mounted: function() {
                 this.getLocation();
-                // this.getDataDictionary();
+                this.getDataDictionary();
                 this.createApplyTab();
-
-                this.unusualTypes = [{
-                    Id: '13',
-                    Name: '移改提修'
-                }, {
-                    Id: '3',
-                    Name: '换表'
-                }, {
-                    Id: '15',
-                    Name: '工单'
-                }, {
-                    Id: '18',
-                    Name: '消防栓启用'
-                }, ]
             },
             watch: { //监听任务类型和工单类型的变化，用于工单主题字段切换
                 orderTypeSelectId: function(value) {
