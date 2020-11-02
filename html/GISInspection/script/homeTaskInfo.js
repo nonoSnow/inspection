@@ -25,6 +25,8 @@ var yixunHasNext = false;
 
 var footerH;
 
+var indexMap = {};
+
 apiready = function() {
   var header = $api.byId('header');
   // 实现沉浸式状态栏效果
@@ -236,31 +238,37 @@ function startTask() {
     operate: 3
   }
 
-  changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', data, showRet, showErr);
-
-  function showRet(ret) {
-    // 修改状态成功，关闭成功
-    openTask();
-  }
-
-  function showErr(err) {
-    if(err.body.error != undefined){
-      // alert(err.body.error.message);
-      api.toast({
-          msg: err.body.error.message,
-          duration: 2000,
-          location: 'middle'
-      });
-
-    }else{
-      // alert(err.msg);
-      api.toast({
-          msg: err.msg,
-          duration: 2000,
-          location: 'middle'
-      });
+  changeTaskStatus({
+    data: data,
+    success: function(ret) {
+        openTask();
     }
-  }
+  })
+  // changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', data, showRet, showErr);
+  //
+  // function showRet(ret) {
+  //   // 修改状态成功，关闭成功
+  //   openTask();
+  // }
+  //
+  // function showErr(err) {
+  //   if(err.body.error != undefined){
+  //     // alert(err.body.error.message);
+  //     api.toast({
+  //         msg: err.body.error.message,
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //
+  //   }else{
+  //     // alert(err.msg);
+  //     api.toast({
+  //         msg: err.msg,
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //   }
+  // }
 }
 
 // 关闭
@@ -277,32 +285,38 @@ function closeTask() {
           operate: 4
         }
 
-        changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', param, showRet, showErr);
-
-        function showRet(ret) {
-          // 修改状态成功，关闭成功
-          api.closeWin();
-
-        }
-
-        function showErr(err) {
-          if(err.body.error != undefined){
-            // alert(err.body.error.message);
-            api.toast({
-                msg: err.body.error.message,
-                duration: 2000,
-                location: 'middle'
-            });
-
-          }else{
-            // alert(err.msg);
-            api.toast({
-                msg: err.msg,
-                duration: 2000,
-                location: 'middle'
-            });
+        changeTaskStatus({
+          data: param,
+          success: function(ret) {
+              api.closeWin();
           }
-        }
+        })
+        // changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', param, showRet, showErr);
+        //
+        // function showRet(ret) {
+        //   // 修改状态成功，关闭成功
+        //   api.closeWin();
+        //
+        // }
+        //
+        // function showErr(err) {
+        //   if(err.body.error != undefined){
+        //     // alert(err.body.error.message);
+        //     api.toast({
+        //         msg: err.body.error.message,
+        //         duration: 2000,
+        //         location: 'middle'
+        //     });
+        //
+        //   }else{
+        //     // alert(err.msg);
+        //     api.toast({
+        //         msg: err.msg,
+        //         duration: 2000,
+        //         location: 'middle'
+        //     });
+        //   }
+        // }
       }
   });
 }
@@ -314,30 +328,36 @@ function reStartTask() {
     operate: 5
   }
 
-  changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', data, showRet, showErr);
-
-  function showRet(ret) {
-    openTask();
-  }
-
-  function showErr(err) {
-    if(err.body.error != undefined){
-      // alert(err.body.error.message);
-      api.toast({
-          msg: err.body.error.message,
-          duration: 2000,
-          location: 'middle'
-      });
-
-    }else{
-      // alert(err.msg);
-      api.toast({
-          msg: err.msg,
-          duration: 2000,
-          location: 'middle'
-      });
+  changeTaskStatus({
+    data: data,
+    success: function(ret) {
+        openTask();
     }
-  }
+  })
+  // changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', data, showRet, showErr);
+  //
+  // function showRet(ret) {
+  //   openTask();
+  // }
+  //
+  // function showErr(err) {
+  //   if(err.body.error != undefined){
+  //     // alert(err.body.error.message);
+  //     api.toast({
+  //         msg: err.body.error.message,
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //
+  //   }else{
+  //     // alert(err.msg);
+  //     api.toast({
+  //         msg: err.msg,
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //   }
+  // }
 }
 
 // 完成
@@ -348,83 +368,88 @@ function complete() {
     PageIndex: 1,
     MaxResultCount: 10
   }
-  getInspectDataList("api/services/Inspection/InspectionTaskService/AppGetInspectionPointList",data,showRet,showErr);
 
-  function showRet(ret) {
-    daixunTotal = ret.result.totalCount;
-    var message = '该任务中有' + daiXunTotal + '个待巡点未完成！您确定要完成该任务吗？'
-    api.confirm({
-        msg: message,
-        buttons: ['确定', '取消']
-    }, function(ret, err) {
-        if (ret.buttonIndex == 1) {
-          //点击确定，完成任务
-          var param = {
-            id: taskId,
-            operate: 2
-          }
-
-          changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', param, showRet, showErr);
-
-          function showRet(ret) {
-            // 修改状态成功，完成成功
-            initOngoing();
-          }
-
-          function showErr(err) {
-            if(err.body.error != undefined){
-              // alert(err.body.error.message);
-              api.toast({
-                  msg: err.body.error.message,
-                  duration: 2000,
-                  location: 'middle'
-              });
-
-            }else{
-              // alert(err.msg);
-              api.toast({
-                  msg: err.msg,
-                  duration: 2000,
-                  location: 'middle'
-              });
+  getInspectDataList({
+    data: data,
+    success: function(ret) {
+      daixunTotal = ret.result.totalCount;
+      var message = '该任务中有' + daiXunTotal + '个待巡点未完成！您确定要完成该任务吗？'
+      api.confirm({
+          msg: message,
+          buttons: ['确定', '取消']
+      }, function(ret, err) {
+          if (ret.buttonIndex == 1) {
+            //点击确定，完成任务
+            var param = {
+              id: taskId,
+              operate: 2
             }
+
+            changeTaskStatus({
+              data: param,
+              success: function(ret) {
+                  initOngoing();
+              }
+            })
           }
-        }
-    });
-  }
-
-  function showErr(err) {
-
-  }
-  var data = {
-    id: taskId,
-    operate: 2
-  }
-
-  changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', data, showRet, showErr);
-
-  function showRet(ret) {
-    openTask();
-  }
-
-  function showErr(err) {
-    if(err.body.error != undefined){
-      // alert(err.body.error.message);
-      api.toast({
-          msg: err.body.error.message,
-          duration: 2000,
-          location: 'middle'
-      });
-
-    }else{
-      // alert(err.msg);
-      api.toast({
-          msg: err.msg,
-          duration: 2000,
-          location: 'middle'
       });
     }
-  }
+  })
+  // getInspectDataList("api/services/Inspection/InspectionTaskService/AppGetInspectionPointList",data,showRet,showErr);
+  //
+  // function showRet(ret) {
+  //   daixunTotal = ret.result.totalCount;
+  //   var message = '该任务中有' + daiXunTotal + '个待巡点未完成！您确定要完成该任务吗？'
+  //   api.confirm({
+  //       msg: message,
+  //       buttons: ['确定', '取消']
+  //   }, function(ret, err) {
+  //       if (ret.buttonIndex == 1) {
+  //         //点击确定，完成任务
+  //         var param = {
+  //           id: taskId,
+  //           operate: 2
+  //         }
+  //
+  //         changeTaskStatus({
+  //           data: param,
+  //           success: function(ret) {
+  //               initOngoing();
+  //           }
+  //         })
+  //
+  //         // changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', param, showRet, showErr);
+  //         //
+  //         // function showRet(ret) {
+  //         //   // 修改状态成功，完成成功
+  //         //   initOngoing();
+  //         // }
+  //         //
+  //         // function showErr(err) {
+  //         //   if(err.body.error != undefined){
+  //         //     // alert(err.body.error.message);
+  //         //     api.toast({
+  //         //         msg: err.body.error.message,
+  //         //         duration: 2000,
+  //         //         location: 'middle'
+  //         //     });
+  //         //
+  //         //   }else{
+  //         //     // alert(err.msg);
+  //         //     api.toast({
+  //         //         msg: err.msg,
+  //         //         duration: 2000,
+  //         //         location: 'middle'
+  //         //     });
+  //         //   }
+  //         // }
+  //       }
+  //   });
+  // }
+  //
+  // function showErr(err) {
+  //
+  // }
 }
 
 // 打开暂停页面
@@ -503,71 +528,135 @@ function getTaskDetail(param) {
   // $('#taskDetail').append(str);
   // console.log(JSON.stringify($('#taskDetail').html()));
 
-  getTaskBasicInfo("api/services/Inspection/InspectionTaskService/GetTaskDetails",param,showRet,showErr);
-
-  function showRet(ret) {
-    // console.log(JSON.stringify(ret));
-    $('#taskDetail').html('');
-    // var data = {
-    //   Id: 1,
-    //   name: '测试任务',
-    //   type: 1,
-    //   typeStr: '临时任务',
-    //   status: 1,
-    //   statusStr: '进行中',
-    //   person: '张三',
-    //   planStartTime: '',
-    //   areaId: 1,
-    //   areaName: '片区1',
-    //   planEndTime: '',
-    //   participant: '李四、王五',
-    //   startTime: '',
-    //   endTime: '',
-    //   closeReason: '',
-    //   stopReason: '',
-    //   remark: '备注内容',
-    //   pauseTime: '',
-    //   orgId: ''
-    // }
-    if (ret.result.planStartTime != null || ret.result.planStartTime != '') {
-      ret.result.planStartTime = parseTime(ret.result.planStartTime, '{y}-{m}-{d} {h}:{i}');
-    }
-
-    if (ret.result.planEndTime != null || ret.result.planEndTime != '') {
-      ret.result.planEndTime = parseTime(ret.result.planEndTime, '{y}-{m}-{d} {h}:{i}');
-    }
-
-    if (ret.result.startTime != null || ret.result.startTime != '') {
-      ret.result.startTime = parseTime(ret.result.startTime, '{y}-{m}-{d} {h}:{i}');
-    }
-
-    if (ret.result.endTime != null || ret.result.endTime != '') {
-      ret.result.endTime = parseTime(ret.result.endTime, '{y}-{m}-{d} {h}:{i}');
-    }
-
-    var data = ret.result;
-    var str = template('taskBasicInfo', data);
-    $('#taskDetail').append(str);
-  }
-
-  function showErr(err) {
-      if(err.body.error != undefined){
-        // alert(err.body.error.message);
-        api.toast({
-            msg: err.body.error.message,
-            duration: 2000,
-            location: 'middle'
-        });
-
-      }else{
-        // alert(err.msg);
-        api.toast({
-            msg: err.msg,
-            duration: 2000,
-            location: 'middle'
-        });
+  getTaskBasicInfo({
+    data: param,
+    success: function(ret) {
+      $('#taskDetail').html('');
+      if (ret.result.planStartTime != null || ret.result.planStartTime != '') {
+        ret.result.planStartTime = parseTime(ret.result.planStartTime, '{y}-{m}-{d} {h}:{i}');
       }
-  }
+
+      if (ret.result.planEndTime != null || ret.result.planEndTime != '') {
+        ret.result.planEndTime = parseTime(ret.result.planEndTime, '{y}-{m}-{d} {h}:{i}');
+      }
+
+      if (ret.result.startTime != null || ret.result.startTime != '') {
+        ret.result.startTime = parseTime(ret.result.startTime, '{y}-{m}-{d} {h}:{i}');
+      }
+
+      if (ret.result.endTime != null || ret.result.endTime != '') {
+        ret.result.endTime = parseTime(ret.result.endTime, '{y}-{m}-{d} {h}:{i}');
+      }
+
+      var data = ret.result;
+      var str = template('taskBasicInfo', data);
+      console.log(str);
+      $('#taskDetail').append(str);
+
+      var data = {
+        id: ret.result.areaId
+      }
+      getAreaDetails({
+        data: data,
+        success: function(ret1) {
+          // console.log(JSON.stringify(ret1));
+          indexMap = new Map({
+              mapid: 'mapBox'
+          });
+          indexMap.initArea('addArea');
+          var areaInfo = ret1.result;
+          indexMap.drawAreaSelect(areaInfo.areaPoint, {name: 'addArea'});
+        }
+      })
+    }
+  })
+  // getTaskBasicInfo("api/services/Inspection/InspectionTaskService/GetTaskDetails",param,showRet,showErr);
+  //
+  // function showRet(ret) {
+  //   // console.log(JSON.stringify(ret));
+  //   $('#taskDetail').html('');
+  //   // var data = {
+  //   //   Id: 1,
+  //   //   name: '测试任务',
+  //   //   type: 1,
+  //   //   typeStr: '临时任务',
+  //   //   status: 1,
+  //   //   statusStr: '进行中',
+  //   //   person: '张三',
+  //   //   planStartTime: '',
+  //   //   areaId: 1,
+  //   //   areaName: '片区1',
+  //   //   planEndTime: '',
+  //   //   participant: '李四、王五',
+  //   //   startTime: '',
+  //   //   endTime: '',
+  //   //   closeReason: '',
+  //   //   stopReason: '',
+  //   //   remark: '备注内容',
+  //   //   pauseTime: '',
+  //   //   orgId: ''
+  //   // }
+  //   if (ret.result.planStartTime != null || ret.result.planStartTime != '') {
+  //     ret.result.planStartTime = parseTime(ret.result.planStartTime, '{y}-{m}-{d} {h}:{i}');
+  //   }
+  //
+  //   if (ret.result.planEndTime != null || ret.result.planEndTime != '') {
+  //     ret.result.planEndTime = parseTime(ret.result.planEndTime, '{y}-{m}-{d} {h}:{i}');
+  //   }
+  //
+  //   if (ret.result.startTime != null || ret.result.startTime != '') {
+  //     ret.result.startTime = parseTime(ret.result.startTime, '{y}-{m}-{d} {h}:{i}');
+  //   }
+  //
+  //   if (ret.result.endTime != null || ret.result.endTime != '') {
+  //     ret.result.endTime = parseTime(ret.result.endTime, '{y}-{m}-{d} {h}:{i}');
+  //   }
+  //
+  //   var data = ret.result;
+  //   var str = template('taskBasicInfo', data);
+  //   $('#taskDetail').append(str);
+  //
+  //   // 获取地图信息及渲染
+  //   console.log(ret.areaId);
+  //   var data = {
+  //     id: ret.areaId
+  //   }
+  //
+  //   getAreaDetails('api/services/Inspection/AreaService/GetGetAreaDetails' ,data, showRet, showErr)
+  //
+  //   function showRet(ret) {
+  //     // 请求成功，初始化地图
+  //     indexMap = new Map({
+  //         mapid: 'mapBox'
+  //     });
+  //     indexMap.initArea('addArea');
+  //     var areaInfo = ret.result;
+  //     indexMap.drawAreaSelect(areaInfo.areaPoint, {name: 'addArea'});
+  //   }
+  //
+  //   function showErr(err) {
+  //
+  //   }
+  // }
+  //
+  // function showErr(err) {
+  //     if(err.body.error != undefined){
+  //       // alert(err.body.error.message);
+  //       api.toast({
+  //           msg: err.body.error.message,
+  //           duration: 2000,
+  //           location: 'middle'
+  //       });
+  //
+  //     }else{
+  //       // alert(err.msg);
+  //       api.toast({
+  //           msg: err.msg,
+  //           duration: 2000,
+  //           location: 'middle'
+  //       });
+  //     }
+  // }
 }
 
 // 获取巡检点列表
@@ -600,13 +689,11 @@ function getInspecteList(param, status) {
     title: '加载中...',
     text: '请稍后'
   });
-  getInspectDataList("api/services/Inspection/InspectionTaskService/AppGetInspectionPointList",param,showRet,showErr);
 
-  function showRet(ret) {
-    console.log(JSON.stringify(ret));
-
-    var str;
-      // $('#taskDetail').html('');
+  getInspectDataList({
+    data: param,
+    success: function(ret) {
+      var str;
       if (ret.result.items != 0) {
         $('#haveNothing').addClass('aui-hide');
 
@@ -617,11 +704,6 @@ function getInspecteList(param, status) {
             ret.result.items.forEach(function (item, i) {
 
             })
-            // if (ret.result.items.length != 0) {
-            //   for (var i = 0; i < ret.result.items.length; i++) {
-            //     daixunData.push(ret.result.items[i]);
-            //   }
-            // }
             var data = {
               list: ret.result.items
             }
@@ -630,11 +712,6 @@ function getInspecteList(param, status) {
           case 'inspected':
             // 已巡
             yixunHasNext = ret.result.hasNextPage;
-            // if (ret.result.items.length != 0) {
-            //   for (var i = 0; i < ret.result.items.length; i++) {
-            //     yixunData.push(ret.result.items[i]);
-            //   }
-            // }
             var data = {
               list: ret.result.items
             }
@@ -645,50 +722,99 @@ function getInspecteList(param, status) {
         $('#haveNothing').removeClass('aui-hide');
       }
 
-
       api.hideProgress();
-
-      // var data = {
-      //   list: [
-      //     {
-      //       Id: 1,
-      //       name: '蝶阀',
-      //       code: 'code 19886674503',
-      //       address: '渝中区上清寺9号'
-      //     },
-      //     {
-      //       Id: 2,
-      //       name: '阀门',
-      //       code: 'code 19886674503',
-      //       address: '渝中区上清寺9号'
-      //     }
-      //   ]
-      // }
-      //
-      // var str = template(status, data);
       $('#taskDetail').append(str);
-  }
-
-  function showErr(err) {
-    api.hideProgress();
-    $('#haveNothing').removeClass('aui-hide');
-      if(err.body.error != undefined){
-        // alert(err.body.error.message);
-        api.toast({
-            msg: err.body.error.message,
-            duration: 2000,
-            location: 'middle'
-        });
-
-      }else{
-        // alert(err.msg);
-        api.toast({
-            msg: err.msg,
-            duration: 2000,
-            location: 'middle'
-        });
-      }
-  }
+    }
+  })
+  // getInspectDataList("api/services/Inspection/InspectionTaskService/AppGetInspectionPointList",param,showRet,showErr);
+  //
+  // function showRet(ret) {
+  //   console.log(JSON.stringify(ret));
+  //
+  //   var str;
+  //     // $('#taskDetail').html('');
+  //     if (ret.result.items != 0) {
+  //       $('#haveNothing').addClass('aui-hide');
+  //
+  //       switch (status) {
+  //         case 'toBeInspected':
+  //           // 待巡
+  //           daixunHasNext = ret.result.hasNextPage;
+  //           ret.result.items.forEach(function (item, i) {
+  //
+  //           })
+  //           // if (ret.result.items.length != 0) {
+  //           //   for (var i = 0; i < ret.result.items.length; i++) {
+  //           //     daixunData.push(ret.result.items[i]);
+  //           //   }
+  //           // }
+  //           var data = {
+  //             list: ret.result.items
+  //           }
+  //           str = template(status, data);
+  //           break;
+  //         case 'inspected':
+  //           // 已巡
+  //           yixunHasNext = ret.result.hasNextPage;
+  //           // if (ret.result.items.length != 0) {
+  //           //   for (var i = 0; i < ret.result.items.length; i++) {
+  //           //     yixunData.push(ret.result.items[i]);
+  //           //   }
+  //           // }
+  //           var data = {
+  //             list: ret.result.items
+  //           }
+  //           str = template(status, data);
+  //           break;
+  //       }
+  //     } else {
+  //       $('#haveNothing').removeClass('aui-hide');
+  //     }
+  //
+  //
+  //     api.hideProgress();
+  //
+  //     // var data = {
+  //     //   list: [
+  //     //     {
+  //     //       Id: 1,
+  //     //       name: '蝶阀',
+  //     //       code: 'code 19886674503',
+  //     //       address: '渝中区上清寺9号'
+  //     //     },
+  //     //     {
+  //     //       Id: 2,
+  //     //       name: '阀门',
+  //     //       code: 'code 19886674503',
+  //     //       address: '渝中区上清寺9号'
+  //     //     }
+  //     //   ]
+  //     // }
+  //     //
+  //     // var str = template(status, data);
+  //     $('#taskDetail').append(str);
+  // }
+  //
+  // function showErr(err) {
+  //   api.hideProgress();
+  //   $('#haveNothing').removeClass('aui-hide');
+  //     if(err.body.error != undefined){
+  //       // alert(err.body.error.message);
+  //       api.toast({
+  //           msg: err.body.error.message,
+  //           duration: 2000,
+  //           location: 'middle'
+  //       });
+  //
+  //     }else{
+  //       // alert(err.msg);
+  //       api.toast({
+  //           msg: err.msg,
+  //           duration: 2000,
+  //           location: 'middle'
+  //       });
+  //     }
+  // }
 }
 
 function openTask() {
@@ -697,3 +823,14 @@ function openTask() {
       url: '../task/task.html'
   });
 }
+
+// 初始化地图
+// function initMap() {
+//     // 初始化地图
+//     indexMap = new Map({
+//         mapid: 'mapBox'
+//     });
+//     indexMap.initArea('addArea');
+//     areaInfo = ret.value.areaInfo;
+//     indexMap.drawAreaSelect(areaInfo.areaPoint, {name: 'addArea'});
+// }
