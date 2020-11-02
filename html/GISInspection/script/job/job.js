@@ -408,3 +408,12 @@ function addData(data,status){
     }
   }
 }
+
+// 新增工单
+function addJob(){
+  api.openWin({
+      name: 'addJob',
+      url: './addJob.html'
+  });
+
+}
