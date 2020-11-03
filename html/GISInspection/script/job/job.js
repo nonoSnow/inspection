@@ -435,12 +435,14 @@ function getCaliber(){
     console.log("***********************************************************************************************");
     console.log(JSON.stringify(ret));
     if(ret.success){
-      api.sendEvent({
-          name: 'caliberList',
-          extra: {
-              caliberList:ret.result
-          }
-      });
+      $api.setStorage('caliberList', ret.result);
+
+      // api.sendEvent({
+      //     name: 'caliberList',
+      //     extra: {
+      //         caliberList:ret.result
+      //     }
+      // });
     }
   }
 

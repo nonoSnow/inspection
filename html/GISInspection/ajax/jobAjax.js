@@ -113,3 +113,24 @@ function jobPostMethod(path,data,showRet,showErr){
   }
   ajaxMethod(options)
 }
+
+// 监听caliberList
+function getCaliberList(){
+  caliberList=$api.getStorage('caliberList');
+  // if(!caliberList){
+  //   //再次请求接口
+  // }
+  console.log(JSON.stringify(caliberList));
+  var str="";
+  for (var i = 0; i < caliberList.length; i++) {
+    if(i==caliberList.length-1){
+      str=str+'<li class="custom-popup-item border-none">'+caliberList[i].value+'</li>'
+    }else{
+      str=str+'<li class="custom-popup-item">'+caliberList[i].value+'</li>'
+    }
+  }
+  $("#caliberList1").html(str);
+  $("#caliberList2").html(str);
+  $("#caliberList3").html(str);
+  $("#caliberList4").html(str);
+}

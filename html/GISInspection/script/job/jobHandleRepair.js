@@ -6,6 +6,7 @@ var hydrantIndex = nowHydrantIndex = 0; //消防栓总数
 var addressIndex = 0;  //地址总数
 var Id; //工单ID
 var from;  //来源哪个页面
+var caliberList=[];  //口径列表
 
 apiready = function() {
   var header = $api.byId('header');
@@ -13,6 +14,10 @@ apiready = function() {
   //获取工单ID
   Id = parseInt(api.pageParam.Id);
   from = api.pageParam.from;
+
+  // 监听caliberList
+  getCaliberList();
+  
   $(".custom-popup-list li").each(function() {
     $(this).click(function() {
       $('#repairType' + nowRepairIndex).val($(this).text());
@@ -50,6 +55,7 @@ apiready = function() {
       onHideHydrantPopup();
     });
   });
+
 }
 
 var popup = new auiPopup();
