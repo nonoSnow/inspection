@@ -17,20 +17,15 @@ function upLoadPicture(path,data,showRet,showErr){
 }
 
 // 获取片区列表
-function getAreaListData(path, data, showRet, showErr) {
-  var options = {
-    url: baseUrl+path,
-    files: data,
-    success:function(ret){
-      // console.log(JSON.stringify(ret));
-      showRet(ret)
-    },
-    error:function(err){
-      // console.log(JSON.stringify(err));
-      showErr(err)
-    }
-  }
-  ajaxMethod(options)
+function getAreaListData(options) {
+  var options = Object.assign({}, options, {
+      url: requestUrl + 'AreaService/AppGetAreaDetailsByName',
+      data: options.data,
+      error: function(err) {
+          if(options.fail) options.fail(err);
+      }
+  })
+  ajaxMethod(options);
 }
 
 // 上传定位

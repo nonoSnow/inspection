@@ -29,40 +29,6 @@ apiready = function() {
   funIniGroup();
 
   WinSize(['footer-gis']);
-  // alert(JSON.stringify($api.getStorage('userLoginInformation')))
-  // alert(JSON.stringify($api.getStorage('userLoginInformation').loginSuccessData.userId));
-}
-
-// 获取当前用户角色
-function getRoles () {
-  var userId = $api.getStorage('userLoginInformation').loginSuccessData.userId;
-  var data = {
-    userId: userId
-  }
-  getUserRoles({
-    data: data,
-    success: function(ret) {
-      // alert(JSON.stringify(ret));
-      if (ret.result.length != 0) {
-        ret.result.forEach(function(item) {
-          if (item.roleName == '领导') {
-            // 当前用户角色为领导
-            $api.setStorage('isLeader', true);
-
-            return false;
-          } else if(item.roleName == '员工') {
-            $api.setStorage('isLeader', false);
-
-            return false;
-          } else {
-            // 既没有领导角色也没有员工角色，则默认为员工角色
-            $api.setStorage('isLeader', false);
-          }
-        })
-        console.log($api.getStorage('isLeader'));
-      }
-    }
-  })
 }
 
 function funIniGroup() {

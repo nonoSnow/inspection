@@ -27,6 +27,8 @@ var footerH;
 
 var indexMap = {};
 
+var mapInfo;
+
 apiready = function() {
   var header = $api.byId('header');
   // 实现沉浸式状态栏效果
@@ -568,6 +570,8 @@ function getTaskDetail(param) {
         data: data,
         success: function(ret1) {
           // console.log(JSON.stringify(ret1));
+          mapInfo = ret1.result;
+          // console.log(JSON.stringify(mapInfo));
           indexMap = new Map({
               mapid: 'mapBox'
           });
@@ -634,12 +638,6 @@ function getTaskDetail(param) {
   //
   //   function showRet(ret) {
   //     // 请求成功，初始化地图
-  //     indexMap = new Map({
-  //         mapid: 'mapBox'
-  //     });
-  //     indexMap.initArea('addArea');
-  //     var areaInfo = ret.result;
-  //     indexMap.drawAreaSelect(areaInfo.areaPoint, {name: 'addArea'});
   //   }
   //
   //   function showErr(err) {
@@ -832,13 +830,14 @@ function openTask() {
   });
 }
 
-// 初始化地图
-// function initMap() {
-//     // 初始化地图
-//     indexMap = new Map({
-//         mapid: 'mapBox'
-//     });
-//     indexMap.initArea('addArea');
-//     areaInfo = ret.value.areaInfo;
-//     indexMap.drawAreaSelect(areaInfo.areaPoint, {name: 'addArea'});
-// }
+// 打开地图页面
+function openViewMap() {
+  api.openWin({
+      name: 'viewMap',
+      url: '../task/viewMap.html',
+      pageParam: {
+        mapInfo: mapInfo
+      }
+  });
+
+}
