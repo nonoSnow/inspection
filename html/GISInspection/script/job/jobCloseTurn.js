@@ -65,7 +65,14 @@ function subTurn(){
       title: '提交中...',
       modal: false
   });
-  jobPostMethod("api/services/Inspection/WorkOrderService/WorkOrderTransfer",data,showRet,showErr);
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxTurnJob(options);
+  // jobPostMethod("api/services/Inspection/WorkOrderService/WorkOrderTransfer",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
     console.log(JSON.stringify(ret));

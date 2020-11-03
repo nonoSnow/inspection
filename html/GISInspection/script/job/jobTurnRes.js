@@ -21,8 +21,15 @@ function showData() {
     id:Id
   }
   console.log(Id);
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxTurnJobDetail(options);
   // 请求数据，渲染页面
-  jobPostMethod("api/services/Inspection/WorkOrderService/AppGetWorkOrderTransferById",data,showRet,showErr);
+  // jobPostMethod("api/services/Inspection/WorkOrderService/AppGetWorkOrderTransferById",data,showRet,showErr);
 
   function showRet(ret) {
     api.hideProgress();

@@ -36,7 +36,14 @@ function subJobClose(){
       title: '提交中...',
       modal: false
   });
-  jobPostMethod("api/services/Inspection/WorkOrderService/CloseWorkOrder",data,showRet,showErr);
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxCloseJob(options);
+  // jobPostMethod("api/services/Inspection/WorkOrderService/CloseWorkOrder",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
     console.log(JSON.stringify(ret));

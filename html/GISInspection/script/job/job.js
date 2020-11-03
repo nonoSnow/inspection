@@ -52,17 +52,21 @@ function showData(data,status){
       title: '加载中...',
       modal: false
   });
-  jobPostMethod("api/services/Inspection/WorkOrderService/GetWorkOrderListApp",data,showRet,showErr);
-  // console.log(JSON.stringify($api.getStorage('loginData')));
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxJobList(options)
+  // jobPostMethod("api/services/Inspection/WorkOrderService/GetWorkOrderListApp",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
-
-    console.log("--------------------------"+status);
-    console.log(JSON.stringify(ret));
+    // console.log("--------------------------"+status);
+    // console.log(JSON.stringify(ret));
     if(ret.success){
       // $('#dataList').html('');
       var data = transT(ret.result.items);
-      // console.log(JSON.stringify(data));
       if(data.length){
         if(status=="onGoing"){
           //进行中的总条数、当前页
@@ -181,7 +185,14 @@ function onReceived(el){
       title: '接收中...',
       modal: false
   });
-  jobPostMethod("api/services/Inspection/WorkOrderService/ReceiveWorkOrder",data,showRet,showErr);
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxJobReceived(options)
+  // jobPostMethod("api/services/Inspection/WorkOrderService/ReceiveWorkOrder",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
     if(ret.success){
@@ -365,13 +376,18 @@ function addData(data,status){
       title: '加载中...',
       modal: false
   });
-  jobPostMethod("api/services/Inspection/WorkOrderService/GetWorkOrderListApp",data,showRet,showErr);
-  // console.log(JSON.stringify($api.getStorage('loginData')));
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxJobList(options)
+  // jobPostMethod("api/services/Inspection/WorkOrderService/GetWorkOrderListApp",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
-
-    console.log("--------------------------"+status);
-    console.log(JSON.stringify(ret));
+    // console.log("--------------------------"+status);
+    // console.log(JSON.stringify(ret));
     if(ret.success){
       // $('#dataList').html('');
       var data = transT(ret.result.items);
@@ -430,25 +446,24 @@ function getCaliber(){
     cateCode:"Caliber",
     orgId:userLoginInformation.currentUserInfo.userInfo.orgId
   }
-  jobGetMethod("api/services/app/Dictionary/GetDictionaryByCateCode",data,showRet,showErr);
+  var options={
+    data:data,
+    type:'get',
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  getAjaxCaliberList(options);
+  // jobGetMethod("api/services/app/Dictionary/GetDictionaryByCateCode",data,showRet,showErr);
   function showRet(ret){
     console.log("***********************************************************************************************");
     console.log(JSON.stringify(ret));
     if(ret.success){
       $api.setStorage('caliberList', ret.result);
-
-      // api.sendEvent({
-      //     name: 'caliberList',
-      //     extra: {
-      //         caliberList:ret.result
-      //     }
-      // });
     }
   }
 
   function showErr(err){
-    api.hideProgress();
-
     // console.log(JSON.stringify(err));
     if(err.body){
       if(err.body.error){

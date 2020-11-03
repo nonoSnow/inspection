@@ -60,7 +60,14 @@ function showData(id){
       title: '加载中...',
       modal: false
   });
-  jobPostMethod("api/services/Inspection/WorkOrderService/GetWorkOrderDetails",data,showRet,showErr);
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxJobDetail(options);
+  // jobPostMethod("api/services/Inspection/WorkOrderService/GetWorkOrderDetails",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
 
@@ -238,15 +245,7 @@ function dataProcess(obj){
     var str="水费："+obj.waterCost+"元";
     workArr.push(str);
   }
-  if(obj.violationReason){
-    var str="原因："+obj.violationReason;
-    workArr.push(str);
-  }
-  if(obj.remark){
-    var str="备注："+obj.remark;
-    workArr.push(str);
-  }
-  console.log(JSON.stringify(workArr));
+  // console.log(JSON.stringify(workArr));
   obj.workArr=workArr;
   return obj
 }
@@ -271,7 +270,14 @@ function onReceived(){
             title: '接收中...',
             modal: false
         });
-        jobPostMethod("api/services/Inspection/WorkOrderService/ReceiveWorkOrder",data,showRet,showErr);
+        var options={
+          data:data,
+          success:showRet,
+          error:showErr,
+        }
+        // 请求接口 获取数据
+        postAjaxJobReceived(options)
+        // jobPostMethod("api/services/Inspection/WorkOrderService/ReceiveWorkOrder",data,showRet,showErr);
       }
   })
 

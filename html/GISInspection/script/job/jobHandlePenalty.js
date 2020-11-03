@@ -129,7 +129,14 @@ function subComplete(data){
       title: '提交中...',
       modal: false
   });
-  jobPostMethod("api/services/Inspection/WorkOrderService/CompleteWorkOrder",data,showRet,showErr);
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxWriteJob(options);
+  // jobPostMethod("api/services/Inspection/WorkOrderService/CompleteWorkOrder",data,showRet,showErr);
   // console.log(JSON.stringify($api.getStorage('loginData')));
   function showRet(ret){
     api.hideProgress();

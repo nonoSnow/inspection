@@ -136,6 +136,7 @@
         <div class="margin-top12">工单内容:</div>
         <div class="width100 height6 bgc-f5f6 border-radius4 margin-top75 padding75 line-height15">{{content}}</div>
 
+        {{if resourcelist.length>0 }}
         <div class="margin-top12">工单附件:</div>
         <div class="file-list">
           {{each resourcelist value i}}
@@ -143,16 +144,8 @@
             <img src="{{url}}{{value.url}}" class="width100 height100" alt="">
           </div>
           {{/each}}
-          <!-- <div class="file-div">
-
-          </div>
-          <div class="file-div">
-
-          </div>
-          <div class="file-div margin-right0">
-
-          </div> -->
         </div>
+        {{/if}}
       </li>
       {{if eventDetails}}
       <li class="padding75 bgc-ff border-radius4 margin-top6">
