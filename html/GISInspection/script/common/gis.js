@@ -697,81 +697,74 @@
             })
         },
 
-        mapToLine: function(isClick, isSave, addareaPoint, callback){
+        // 初始化划分区域图层
+        initDivide: function() {
+            // 区域数据源
+            var areaSoure = new window.ol.source.Vector({});
+            // 绘图的颜色
+            var drawStyle = new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: '#00F5B4',
+                    width: 3,
+                }),
+                fill: new ol.style.Fill({
+                    color: 'rgba(113, 128, 248, 0.5)'
+                })
+            });
+            // 区域图层
+            var areaLayer = new window.ol.layer.Vector({
+                source: areaSoure,
+                updateWhileInteracting: true,
+                style: drawStyle
+            });
+            this['measureLayer'] = {
+                source : areaSoure,
+                layer : areaLayer
+            }
+            this.map.addLayer(areaLayer);
+        },
+
+        mapToLine: function(isClick, isSave, addareaPoint, measureDraw, callback){
           if (!isClick) {
             callback({measureDraw: '', isSave: false});
             this.map.removeInteraction(measureDraw); //取消绘制
             return false;
           }
-          // 绘图的颜色
-          var drawStyle = new ol.style.Style({
-              stroke: new ol.style.Stroke({
+          if (measureDraw == '') {
+            measureDraw = new ol.interaction.Draw({
+              type: 'Polygon',
+              source: this['measureLayer']['source'], // 注意设置source，这样绘制好的线，就会添加到这个source里
+              style: new ol.style.Style({ // 设置绘制时的样式
+                stroke: new ol.style.Stroke({
                   color: '#00F5B4',
                   width: 3,
+                })
               }),
-              fill: new ol.style.Fill({
-                  color: 'rgba(113, 128, 248, 0.5)'
-              })
-          });
-          if (addareaPoint.length > 0) {
-            var polygonFeature = new ol.Feature(
-                new ol.geom.Polygon(addareaPoint)
-            );
-            var linesource = new ol.source.Vector({
-                features: [
-                    polygonFeature
-                ]
+              minPoints: 3
             });
-          } else {
-            var linesource = new ol.source.Vector;
           }
-          var measureLayer = new ol.layer.Vector({
-              source: linesource,
-              style: drawStyle
-          });
-          this['measureLayer'] = {
-              source : linesource,
-              layer : measureLayer
-          };
-          measureLayer.set('name', 'measureLayer');
-          this.map.addLayer(measureLayer);
-          var measureDraw = new ol.interaction.Draw({
-            type: 'Polygon',
-            source: measureLayer.getSource(), // 注意设置source，这样绘制好的线，就会添加到这个source里
-            style: new ol.style.Style({ // 设置绘制时的样式
-              stroke: new ol.style.Stroke({
-                color: '#00F5B4',
-                width: 3,
-              })
-            }),
-            minPoints: 3
-          });
           var _this = this;
           var coordinates = [];
           measureDraw.on('drawstart', function(event) {
               isSave = true;
-              console.log(isSave);
               callback({measureDraw: measureDraw, isSave: isSave});
           });
 
-         if (addareaPoint.length > 0) {
-           this.map.removeInteraction(measureDraw);
-         } else {
-           this.map.addInteraction(measureDraw);
-         }
-
-         callback({measureDraw: measureDraw, isSave: isSave});
+          this.map.addInteraction(measureDraw);
+          callback({measureDraw: measureDraw, isSave: isSave});
        },
 
        mapRemoveInteraction: function(measureDraw, addareaPoint, callback) {
-        if (addareaPoint.length > 0) {
-          this['measureLayer']['source'].clear();
-        } else {
-          measureDraw.abortDrawing_();
-        }
-        this.mapToLine(true, false, [], function(ret) {
-          callback(ret);
-        });
+         if (addareaPoint.length > 0) {
+           this['measureLayer']['source'].clear();
+           this['areaDividePointSource'].clear();
+           this['areaDivideLineSource'].clear();
+         } else {
+           measureDraw.abortDrawing_();
+         }
+         this.mapToLine(true, false, [], measureDraw, function(ret) {
+           callback(ret);
+         });
        },
 
        mapSaveArea: function(measureDraw, callback) {
@@ -787,19 +780,40 @@
          callback({coordinates: coordinates, measureDraw: measureDraw});
        },
 
-       getTypeList: function() {
-           reqOptions = {
-               url: gisUrl + 'GisStyleIconService/GetStyleIcon',
-               type: 'get',
-               timeout: 30,
-               error: function(err) {
-                   console.log(JSON.stringify(err));
-               },
-               success: function(ret) {
-                   console.log(JSON.stringify(ret));
-               }
-           };
-           ajaxMethod(reqOptions);
+       showPointLine: function(pointList, lineList, name) {
+         var pointArr = [];
+         var lineArr = [];
+
+         console.log(JSON.stringify(pointList));
+         for (var i = 0; i < pointList.length; i++) {
+           var coordinates = pointList[i].geom.match(/POINT\((.*)\)/)[1];
+           pointArr.push({
+               deviceCode: pointList[i].pointNumbe,
+               deviceName: pointList[i].pointName,
+               devicePoint: coordinates.split(' ').join(','),
+               address: pointList[i].location,
+               deviceLoaction: coordinates.split(' ')
+           });
+         }
+         this.drawPointSelect(pointArr, name);
+
+         for (var i = 0; i < lineList.length; i++) {
+           var flats = lineList[i].geom.match(/LINESTRING\((.*)\)/)[1].split(',');
+           var coordinates = []
+           for(var k = 0; k < flats.length; k++) {
+               coordinates.push(flats[k].split(' '))
+           }
+           let x = (Number(coordinates[0][0]) + Number(coordinates[1][0])) / 2;
+           let y = (Number(coordinates[0][1]) + Number(coordinates[1][1])) / 2;
+           lineArr.push({
+               deviceCode: lineList[i].lineNumber,
+               deviceName: lineList[i].material,
+               devicePoint: x + ',' + y,
+               address: lineList[i].location,
+               deviceLoaction: coordinates,
+           });
+         }
+         this.drawLineSelect(lineArr, name);
        },
 
     }

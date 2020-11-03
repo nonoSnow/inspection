@@ -21,7 +21,7 @@
         </div>
         <div class='aui-title'>选择图层</div>
         <a class='aui-pull-right color-598' tapmode onclick='onSave()'>
-            <span>下一步</span>
+            <span>划分区域</span>
         </a>
       </header>
 
@@ -40,196 +40,12 @@
           </div>
       </div>
 
-      <div class='flex-con flex-content height100 bgc-f3'>
-        <ul class="aui-content-padded task-info line-height1 font-S75 color-333">
-          <li class="bgc-ff border-radius4">
-            <div class="layer-title padding75 ">
-              <span class="color-666">阀门</span>
-              <label class="float-rig color-999"><input class="aui-checkbox margin-top0" type="checkbox" name="checkbox"> 全选</label>
-            </div>
-            <div class="layer-cont">
-              <div class="layer-cont-item relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">蝶阀</span>
-                </div>
-              </div>
-              <div class="layer-cont-item relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">蝶阀</span>
-                </div>
-              </div>
-              <div class="layer-cont-item relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">蝶阀</span>
-                </div>
-              </div>
-              <div class="layer-cont-item border-rig-none relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">蝶阀</span>
-                </div>
-              </div>
-            </div>
-            <div class="layer-cont border-bottom-radius4">
-              <div class="layer-cont-item relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">蝶阀</span>
-                </div>
-              </div>
-              <div class="layer-cont-item relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">蝶阀</span>
-                </div>
-              </div>
-              <div class="layer-cont-item relative">
+      <div id='contBox' class='flex-con flex-content height100 bgc-f3'>
+        <ul id='layerList' class="aui-content-padded task-info line-height1 font-S75 color-333">
 
-              </div>
-              <div class="layer-cont-item border-rig-none relative">
+        </ul>
+        <ul id='layerList1' class="aui-content-padded task-info line-height1 font-S75 color-333 aui-hide">
 
-              </div>
-            </div>
-          </li>
-
-          <li class="bgc-ff border-radius4 margin-top75">
-            <div class="layer-title padding75 ">
-              <span class="color-666">井</span>
-              <label class="float-rig color-999"><input class="aui-checkbox margin-top0" type="checkbox" name="checkbox"> 全选</label>
-            </div>
-            <div class="layer-cont">
-              <div class="layer-cont-item relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">阀门井</span>
-                </div>
-              </div>
-              <div class="layer-cont-item relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">检修井</span>
-                </div>
-              </div>
-              <div class="layer-cont-item relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">水表井</span>
-                </div>
-              </div>
-              <div class="layer-cont-item border-rig-none relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">消防井</span>
-                </div>
-              </div>
-            </div>
-            <div class="layer-cont border-bottom-radius4">
-              <div class="layer-cont-item relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">阀门井</span>
-                </div>
-              </div>
-              <div class="layer-cont-item relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">检修井</span>
-                </div>
-              </div>
-              <div class="layer-cont-item relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">水表井</span>
-                </div>
-              </div>
-              <div class="layer-cont-item border-rig-none relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">消防井</span>
-                </div>
-              </div>
-            </div>
-          </li>
-
-          <li class="bgc-ff border-radius4 margin-top75">
-            <div class="layer-title padding75 ">
-              <span class="color-666">其它设备</span>
-              <label class="float-rig color-999"><input class="aui-checkbox margin-top0" type="checkbox" name="checkbox"> 全选</label>
-            </div>
-            <div class="layer-cont">
-              <div class="layer-cont-item relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">水表</span>
-                </div>
-              </div>
-              <div class="layer-cont-item relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">泵站</span>
-                </div>
-              </div>
-              <div class="layer-cont-item relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">消防栓</span>
-                </div>
-              </div>
-              <div class="layer-cont-item border-rig-none relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">弯头</span>
-                </div>
-              </div>
-            </div>
-            <div class="layer-cont border-bottom-radius4">
-              <div class="layer-cont-item relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">盖堵</span>
-                </div>
-              </div>
-              <div class="layer-cont-item relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">出水口</span>
-                </div>
-              </div>
-              <div class="layer-cont-item relative">
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
-                <div class="item-cont">
-                  <span class="item-cont-img"></span>
-                  <span class="item-cont-name">预留口</span>
-                </div>
-              </div>
-              <div class="layer-cont-item border-rig-none relative">
-
-              </div>
-            </div>
-          </li>
         </ul>
       </div>
     </div>
@@ -239,11 +55,12 @@
   <script type="text/javascript" src="../../../public/script/remote.js"></script>
   <script type="text/javascript" src="../../../public/script/zepto.js"></script>
   <script type="text/javascript" src="../../../public/script/template.js"></script>
+  <script type="text/javascript" src="../../../public/script/aui-dialog.js"></script>
 
   <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
   <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
   <script type="text/javascript" src="../../script/public.js"></script>
-  <script type="text/javascript" src="../../script/areaLayer.js"></script>
+  <script type="text/javascript" src="../../script/area/areaLayer.js"></script>
   <script type="text/template" id="pointAndLine">
     {{if datas.length > 0}}
       {{each datas item i}}
@@ -254,29 +71,27 @@
         {{/if}}
           <div class="layer-title padding75 ">
             <span class="color-666">{{item.label}}</span>
-            <label class="float-rig color-999"><input class="aui-checkbox margin-top0" type="checkbox" name="checkbox"> 全选</label>
+            <label class="float-rig color-999"><input class="aui-checkbox margin-top0" onchange="onCheckArr(this)" type="checkbox" name="{{item.label}}"> 全选</label>
           </div>
-          {{each item.childrenArr children j}}
-            {{if (item.childrenArr.length - 1) == j}}
-            <div class="layer-cont border-bottom-radius4">
+          <div class="layer-cont border-bottom-radius4">
+            {{each item.children childrenItem j}}
+            {{if (j+1)%4 == 0}}
+            <div class="layer-cont-item border-rig-none relative">
             {{else}}
-            <div class="layer-cont">
+            <div class="layer-cont-item relative">
             {{/if}}
-              {{each children.children childrenItem k}}
-              {{if k == 3}}
-              <div class="layer-cont-item relative">
-              {{else}}
-              <div class="layer-cont-item relative border-rig-none">
-              {{/if}}
-                <input class="aui-checkbox margin-top0 absolute right4" type="checkbox" name="checkbox">
+            {{if childrenItem != ''}}
+            <label class="width100 height100 layerItem">
+                <input class="aui-checkbox margin-top0 absolute right4" item="{{childrenItem}}" onchange="onCheckItem(this)" type="checkbox" name="{{item.label}}">
                 <div class="item-cont">
-                  <span class="item-cont-img"><img src="{{child.icon}}" class="width100 height100" alt=""></span>
+                  <span class="item-cont-img"><img class="width100 height100" src="{{item.urlApi + childrenItem.icon}}" alt=""></span>
                   <span class="item-cont-name">{{childrenItem.label}}</span>
                 </div>
-              </div>
-              {{/each}}
+            </label>
+            {{/if}}
             </div>
-          {{/each}}
+            {{/each}}
+          </div>
         </li>
       {{/each}}
     {{else}}
