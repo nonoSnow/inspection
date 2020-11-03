@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>首页</title>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
+
+    <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/home.css"/>
+    <link rel="stylesheet" type="text/css" href="../../js/sntgis/sntgis.css"/>
+  </head>
+  <body>
+    <header class="aui-bar aui-bar-nav map-header snt-bar-fiexd" id="header">
+        <div class='header-cont'>
+          <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
+              <span class='aui-iconfont aui-icon-left'></span>
+          </div>
+          <div class='aui-title'>设备位置</div>
+        </div>
+    </header>
+
+
+    <!-- 地图 -->
+    <div class="map-box">
+        <div class="map" id="device"></div>
+    </div>
+
+    <div class="pop-boxer aui-hide" id="poper-0">
+      <a class="trangle"></a>
+      <div class="pop-container">
+        <p>设备名称：<span class="name"></span></p>
+        <p>坐标:<span class="location"></span></p>
+        <p>地址:<span class="address"></span></p>
+      </div>
+    </div>
+
+  </body>
+  <script type="text/javascript" src="../../../public/script/api.js"></script>
+  <script type="text/javascript" src="../../../public/script/common.js"></script>
+  <!-- <script type="text/javascript" src="../../../public/script/remote.js"></script> -->
+  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+  <script type="text/javascript" src="../../script/sntgis/sntgis.js"></script>
+  <script type="text/javascript" src="../../script/sntgis/sntgis_extend.js"></script>
+  <script type="text/javascript" src="../../script/common/common.js"></script>
+  <script type="text/javascript" src="../../script/public.js"></script>
+  <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+  <script type="text/javascript" src="../../script/common/gis.js"></script>
+  <script type="text/javascript" src="../../script/common/device.js"></script>
+</html>
