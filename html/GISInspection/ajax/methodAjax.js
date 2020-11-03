@@ -85,3 +85,23 @@ function changeEventStatus(options) {
     }, options)
     ajaxMethod(options);
 }
+/**
+* @method {Function} GetDictionaryByCateCode 数据字典
+* @param {options} 请求需要的参数及回调函数
+* data 请求需要的数据
+*/
+function GetDictionaryByCateCode(options) {
+    var userLoginInformation = $api.getStorage('userLoginInformation');
+    var options = Object.assign({}, {
+        type: 'get',
+        data: {
+            cateCode: "EventType",
+            orgId: userLoginInformation.currentUserInfo.userInfo.orgId
+        },
+        url: appUrl + 'Dictionary/GetDictionaryByCateCode',
+        error: function(err) {
+            if(options.fail) options.fail(err);
+        }
+    }, options)
+    ajaxMethod(options);
+}
