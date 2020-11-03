@@ -1,77 +1,156 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
-    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
     <title>领导首页</title>
-    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
-    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css" />
 
-    <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
-    <link rel="stylesheet" type="text/css" href="../../css/common.css"/>
-  </head>
-  <body>
+    <link rel="stylesheet" type="text/css" href="../../css/public.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/home.css" />
+</head>
+
+<body>
     <header class="aui-bar aui-bar-nav map-header snt-bar-fiexd" id="header">
-      <div class='header-cont'>
-        <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
-            <span class='aui-iconfont aui-icon-close'></span>
+        <div class='header-cont'>
+            <div class='aui-pull-left aui-btn' tapmode onclick="api.closeWin();">
+                <span class='aui-iconfont aui-icon-close'></span>
+            </div>
+            <div class='aui-title'>GIS巡检系统</div>
+            <a class='aui-pull-right OpenUserList' tapmode >
+                <span>人员列表</span>
+            </a>
         </div>
-        <div class='aui-title'>GIS巡检系统</div>
-        <a class='aui-pull-right' tapmode onclick="onOpenUserList()">
-            <span>人员列表</span>
-        </a>
-      </div>
     </header>
 
     <!-- 地图 -->
     <div class="map-box">
-        <div class="map" id="map"></div>
+        <div class="map" id="leaderMap"></div>
     </div>
 
     <div class="map-btn-div top435 fixed right5">
         <div class="map-btn-bs border-radius4">
-          <div class="font-S6 text-cent">
-            <img src="../../image/online.png" class='map-btn-img' alt="">
-            <span class="margin-bot3">人员</span>
-          </div>
-          <div class="map-btn-line"></div>
-          <div class="font-S6 text-cent" tapmode onclick="onOpenReport()">
-            <img src="../../image/online.png" class='map-btn-img' alt="">
-            <span class="margin-bot3">上报</span>
-          </div>
+            <div class="font-S6 text-cent PersonsLoction" tapmode>
+                <img src="../../image/online.png" class='map-btn-img' alt="">
+                <span class="margin-bot3">人员</span>
+            </div>
+            <div class="map-btn-line"></div>
+            <div class="font-S6 text-cent OpenReport" tapmode>
+                <img src="../../image/online.png" class='map-btn-img' alt="">
+                <span class="margin-bot3">上报</span>
+            </div>
         </div>
 
-        <div class="map-btn-bs border-radius4 margin-top42">
+        <!-- <div class="map-btn-bs border-radius4 margin-top42">
           <div class="font-S6 text-cent">
             <img src="../../image/equipment.png" class='map-btn-img' alt="">
             <span class="margin-bot3">设备</span>
           </div>
-        </div>
+        </div> -->
 
         <div class="map-btn-bs border-radius4 margin-top6">
-          <div class="right-item-item">
-            <img src="../../image/enlarge.png" class='enlarge' alt="">
-          </div>
-          <div class="right-item-item">
-            <img src="../../image/narrow.png" class='narrow' alt="">
-          </div>
+            <div class="right-item-item" type="add">
+                <img src="../../image/enlarge.png" class='enlarge' alt="">
+            </div>
+            <div class="right-item-item" type='reduce'>
+                <img src="../../image/narrow.png" class='narrow' alt="">
+            </div>
         </div>
-      </div>
+    </div>
 
-      <div class="map-location-div fixed left5 bottom385 map-btn-bs border-radius4">
+    <div class="map-location-div fixed left5 bottom385 map-btn-bs border-radius4">
         <img src="../../image/location1.png" class='location-one' alt="">
-      </div>
+    </div>
+    <div class="map-member-img" id="map-member-img-0">
+        <img src="../../image/location.png" />
+    </div>
+    <div class="map-member-img" id="map-orbit-0">
+        <img src="../../image/icon-oribt.png" />
+    </div>
 
-  </body>
-  <script type="text/javascript" src="../../../public/script/api.js"></script>
-  <script type="text/javascript" src="../../../public/script/common.js"></script>
-  <script type="text/javascript" src="../../../public/script/remote.js"></script>
-  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
-  <script type="text/javascript" src="../../script/sntgis/sntgis.js"></script>
-  <script type="text/javascript" src="../../script/sntgis/sntgis_extend.js"></script>
-  <script type="text/javascript" src="../../script/ajaxApi.js"></script>
-  <script type="text/javascript" src="../../script/ajaxMethod.js"></script>
-  <script type="text/javascript" src="../../script/home/gis.js"></script>
-  <script type="text/javascript" src="../../script/leaderHome.js"></script>
+</body>
+<script type="text/javascript" src="../../../public/script/api.js"></script>
+<script type="text/javascript" src="../../../public/script/common.js"></script>
+<!-- <script type="text/javascript" src="../../../public/script/remote.js"></script> -->
+<script type="text/javascript" src="../../../public/script/zepto.js"></script>
+<script type="text/javascript" src="../../../public/script/moment.js"></script>
+<script type="text/javascript" src="../../../public/script/template.js"></script>
+<script type="text/javascript" src="../../script/sntgis/sntgis.js"></script>
+<script type="text/javascript" src="../../script/sntgis/sntgis_extend.js"></script>
+<script type="text/javascript" src="../../script/sntgis/rbush.min.js"></script>
+<script type="text/javascript" src="../../script/common/common.js"></script>
+<script type="text/javascript" src="../../script/common/gis.js"></script>
+<script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+<script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
+<script type="text/javascript" src="../../script/home/homeCommon.js"></script>
+<script type="text/javascript" src="../../script/home/leaderHome.js"></script>
+<script type="text/html" id="orderAndTaskListTemplate">
+    {{if taskLists.length+workOrderLists.length == 1}}
+    <div class="homePage_order_list_box one">
+        <div class="homePage_order_narrow"></div>
+        {{else}}
+        <div class="homePage_order_list_box">
+            <div class="homePage_order_upper active"></div>
+            {{/if}}
+            <div class="homePage_order_title"><span>进行中</span></div>
+
+            <div class="homePage_order_body">
+                {{if taskLists.length >0}} {{each taskLists value i}}
+                <div class="homePage_order_body_content" value="{{value}}" type='task'>
+                    {{if value.taskType == 1 || value.taskType == '1'}}
+                    <div class="homePage_order_temporary"></div>
+                    {{else}}
+                    <div class="homePage_order_plan"></div>
+                    {{/if}}
+                    <div class="task_title">{{value.taskName}}</div>
+                    <div class="text_content">实际开始:&nbsp;&nbsp;<span>{{value.beginTime}}</span></div>
+                    <div class="text_content">预计完成:&nbsp;&nbsp;<span>{{value.planComplateTime}}</span></div>
+                    {{if value.overdue!=null && value.overdue!="" && value.overdue!='' }}
+                    <div class="task_status_btns">已超期</div>
+                    {{/if}}
+                </div>
+                {{/each}} {{/if}} {{if workOrderLists.length >0}} {{each workOrderLists value i}}
+                <div class="homePage_order_body_content" value="{{value}}" type='order'>
+                    <div class="homePage_order_btns">{{value.typeStr}}</div>
+                    <div class="task_title">{{value.content}}</div>
+                    <div class="text_content">负责人:&nbsp;&nbsp;<span>{{value.person}}</span></div>
+                    <div class="text_content">预计完成时间:&nbsp;&nbsp;<span>{{value.planComplateTime}}</span></div>
+                    {{if value.overdue!=null && value.overdue!="" && value.overdue!='' }}
+                    <div class="task_status_btns">已超期</div>
+                    {{/if}}
+                </div>
+                {{/each}} {{/if}} {{if workOrderLists.length == 0 && taskLists.length ==0}}
+                <div class='homePage_order_list_noData'>暂无数据!</div>
+                {{/if}}
+
+            </div>
+        </div>
+</script>
+<script type="text/html" id="personDetailPopupTemplate">
+    <div class="personDetail_popup" id="personDetail_popup">
+        <div class="personDetail_popup_content">
+            <div>姓名:&nbsp;&nbsp;{{userName}}</div>
+             {{if isOnline}}
+            <div>在线3h</div>
+            {{else}}
+            <div>不在线</div>
+            {{/if}}
+        </div>
+        {{if onlineTime!=null}}
+        <div class="personDetail_popup_content">
+            上线:&nbsp;&nbsp;2020-08-23 12:24:21
+        </div>
+        {{else}}
+        <div class="personDetail_popup_content">
+            上线:
+        </div>
+        {{/if}}
+    </div>
+
+</script>
+
 </html>

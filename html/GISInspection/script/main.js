@@ -26,12 +26,12 @@ apiready = function() {
       }
   });
 
-  funIniGroup();
+    funIniGroup(getCurrentUserRoles());
 
   WinSize(['footer-gis']);
 }
 
-function funIniGroup() {
+function funIniGroup(roles) {
     api.openFrameGroup({
         name: 'group',
         scrollEnabled: false,
@@ -52,7 +52,8 @@ function funIniGroup() {
 
         frames: [{
             name: 'home_frame',
-            url: '../html/Home/home.html',
+            url: roles==0?'../html/Home/home.html':'../html/Home/leaderHome.html',
+            // url:'../html/Home/home.html',
             scrollEnabled: true,
             vScrollBarEnabled: true,
             hScrollBarEnabled: false,

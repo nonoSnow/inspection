@@ -1,6 +1,7 @@
 
 var jobType;
 var Id;
+var areaPoint;//地图需要的区域坐标点
 apiready = function() {
   var header = $api.byId('header');
   $api.fixStatusBar(header);
@@ -73,6 +74,18 @@ function showData(id){
 
     // console.log("****************************"+id);
     // console.log(JSON.stringify(ret));
+    var options1={
+      data:{id:ret.result.areaId},
+      success:function(ret1){
+        // console.log(JSON.stringify(ret1))
+        areaPoint=ret1.result.areaPoint
+      },
+      error:function(err1){
+        // console.log(JSON.stringify(err1))
+      },
+    }
+    //通过区域id去获取区域坐标点
+    postAjaxAreaDetails(options1)
     if(ret.success){
       $('#detailList').html('');
       var data = ret.result;
@@ -312,4 +325,18 @@ function onReceived(){
       alert("接收失败")
     }
   }
+}
+
+// 打开查看地图页面
+function openViewMap() {
+  api.openWin({
+      name: 'viewMap',
+      url: '../task/viewMap.html',
+      pageParam: {
+        mapInfo: {
+          areaPoint:areaPoint
+        }
+      }
+  });
+
 }
