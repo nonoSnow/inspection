@@ -72,8 +72,8 @@ function showData(id){
   function showRet(ret){
     api.hideProgress();
 
-    // console.log("****************************"+id);
-    // console.log(JSON.stringify(ret));
+    console.log("****************************"+id);
+    console.log(JSON.stringify(ret));
     var options1={
       data:{id:ret.result.areaId},
       success:function(ret1){
@@ -122,7 +122,8 @@ function onOpenCloseTurn(type) {
         url: './jobClose.html',
         pageParam: {
             Id:Id,
-            jobType:1
+            jobType:1,
+            from:'jobDetail'
         }
     });
   }else if(type=='2'){
