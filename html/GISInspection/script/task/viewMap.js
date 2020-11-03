@@ -14,7 +14,7 @@ apiready = function() {
 
   console.log('进入地图页面了！！！！！！！！！');
   mapInfo = api.pageParam.mapInfo;
-  // console.log(JSON.stringify(mapInfo));
+  console.log(JSON.stringify(mapInfo));
   if (mapInfo.deviceLists == undefined) {
     pointList = [];
     devFlag = true;

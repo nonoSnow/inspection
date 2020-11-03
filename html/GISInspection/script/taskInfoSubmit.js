@@ -26,6 +26,13 @@ apiready = function() {
   initDevInfo();
   // showImg(imgList);
   // onPageInit();
+
+  // 是否为领导
+  if (getCurrentUserRoles() == 1) {
+    isLeader = true;
+  } else {
+    isLeader = false;
+  }
 }
 
 // 初始化页面
@@ -155,7 +162,8 @@ function onOpenInspectionRecord() {
       name: 'inspectionRecord',
       url: '../Method/inspectionRecord.html',
       pageParam: {
-          name: 'test'
+          name: 'test',
+          devInfo: details
       }
   });
 }
@@ -326,4 +334,65 @@ function submit() {
       });
     }
   }
+}
+
+function onOpenViewMap() {
+  // 打开地图
+  // var mapInfo =
+  getAreaDetails({
+    data: {
+      id: details.areaId
+    },
+    success: function(ret) {
+      // console.log(JSON.stringify(ret));
+      var mapInfo = ret.result;
+      // var map = {
+      //   areaPoint: "104.15384531021118,30.024325847625732;104.15101289749146,30.02067804336548;104.15757894515991,30.01861810684204;104.15766477584839,30.02166509628296;104.15534734725952,30.023467540740967;104.15384531021118,30.024325847625732",
+      //   deviceLists: [
+      //     {
+      //       type:1,
+      //       typeStr: "设备点",
+      //       deviceCode: "2012014",
+      //       deviceName:"设备11",
+      //       devicePoint:"104.15464826,30.02035061",
+      //       address:"上清寺",
+      //       status:3,
+      //       statusStr:"异常",
+      //       id:1
+      //     },
+      //     {
+      //       type:1,
+      //       typeStr:"设备点",
+      //       deviceCode:"2012015",
+      //       deviceName:"设备2",
+      //       devicePoint:"104.15497394,30.01950963",
+      //       address:"上清寺环球大厦",
+      //       status:2,
+      //       statusStr:"正常",
+      //       id:2
+      //     }
+      //   ],
+      //   pipelineLists: [
+      //     {
+      //       type:2,
+      //       typeStr:"管道",
+      //       deviceCode:"2013141",
+      //       deviceName:"蝶阀",
+      //       devicePoint:"104.15172506,30.02112864",
+      //       address:"华美整形",
+      //       status:2,
+      //       statusStr:"正常",
+      //       id:3
+      //     }
+      //   ]
+      // }
+      api.openWin({
+          name: 'viewMap',
+          url: '../task/viewMap.html',
+          pageParam: {
+            mapInfo: mapInfo
+          }
+      });
+    }
+  })
 }
