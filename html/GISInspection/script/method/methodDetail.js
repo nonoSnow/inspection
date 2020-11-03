@@ -54,6 +54,7 @@ function showDetailsData(id){
 }
 // 跳转到巡检记录页面
 function onOpenInspectionRecord() {
+    alert(JSON.stringify(deviceInfo))
   api.openWin({
       name: 'inspectionRecord',
       url: '../Method/inspectionRecord.html',
@@ -82,10 +83,8 @@ function onOpenClose() {
         buttons: ['确定', '取消']
     }, function(ret, err){
         if( ret ){
-            console.log(ret.buttonIndex)
              if(ret.buttonIndex == 1) {
                  closeEvent()
-
              }
         }else{
              alert( JSON.stringify( err ) );
@@ -101,28 +100,22 @@ function closeEvent() {
             status: 3
         },
         success: function(ret) {
-            console.log(JSON.stringify(ret))
-
-
             if(ret.success) {
-                // api.toast({
-                //     msg: '关闭成功',
-                //     duration: 2000,
-                //     location: 'middle'
-                // });
+                api.toast({
+                    msg: '关闭成功',
+                    duration: 2000,
+                    location: 'middle'
+                });
 
-                // setTimeout(function(){
-                // console.log(methodType)
-                    console.log('fjfjfjfjfjfjfjfjfj')
+                setTimeout(function(){
                     api.sendEvent({
-                        name: 'aaa',
-                        // extra: {
-                        //     type: methodType
-                        // }
-                    })
-                    api.closeWin({});
-
-                // }, 2000)
+                        name: 'closeEvent',
+                        extra: {
+                            index: 1
+                        }
+                    });
+                    api.closeWin();
+                }, 500)
             } else {
                 api.toast({
                     msg: ret.message,
@@ -133,4 +126,15 @@ function closeEvent() {
 
         }
     })
+}
+
+// 查看地图
+function checkMap() {
+    api.openWin({
+        name: 'devicemap',
+        url: '../common/device.html',
+        pageParam: {
+            deviceInfo: deviceInfo
+        }
+     });
 }
