@@ -601,23 +601,21 @@
                                 lat = CurrentLocation.lat;
                             }
                         }
-                        console.log(password)
                         var loginData = {
                             userName: userName,
-                            // password: password,
-                            password: '123abc!@#',
+                            password: password,
                             rememberMe: rememberAutoLogin,
-                            tenantCode: "njls",
+                            tenantCode: "",
                             encryptPassword: "",
                             lng: lon,
                             lat: lat,
                             account: "",
                             passWord: password
+                            // passWord: password
                         };
                         var loginDataPc = {
                                 userName: userName,
-                                // password: password,
-                                password: '123abc!@#',
+                                password: password,
                                 rememberMe: rememberAutoLogin,
                                 validCode: "",
                                 tenantCode: "njls", //  njjn
@@ -700,6 +698,7 @@
                                         userId: ret.result.userId,
                                         machineCode: $api.getStorage('registrationId') //手机唯一编码 index中
                                     }
+                                    _this.getUserRolesById(ret.result.userId); //获取用户的所属角色
                                     fnGet('services/app/Home/GetLoginInfo', {}, false, function(ret1, err) {
                                         api.hideProgress();
                                         if (ret1 && ret1.success) {
@@ -821,11 +820,18 @@
 
                                     }
                                 });
-
                             }
                         }
                     });
 
+                },
+                getUserRolesById(userId){
+                  fnGet('services/app/Role/GetUserRolesById?userId='+userId, {}, false, function(ret, err) {
+                      api.hideProgress();
+                      if (ret && ret.success) {
+                       $api.setStorage('currentUserRoles', ret.result);
+                      }
+                  });
                 }
 
             },
