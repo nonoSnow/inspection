@@ -733,22 +733,59 @@ body {
 .file-list {
   width: 100%;
   height: auto;
-  display: inline-table;
   margin-top: 0.75rem;
 }
 
-.file-div {
-  width: 23.5%;
+/*.file-div {
+  width: 4rem;
   height: 3.5rem;
   display: inline-block;
   margin-right: 2%;
   background: #F5F6F7;
   border-radius: 0.2rem;
+  padding: .3rem;
   text-align: center;
+  line-height: 2.9rem;
+  vertical-align: middle;
+  font-size: 0
+}*/
+.file-div {
+    width: 23%;
+    height: 3.5rem;
+  background: #F5F6F7;
+  border-radius: 0.2rem;
+  display: inline-block;
 }
 
+.file-item {
+    width: 4rem;
+    height: 3.5rem;
+    margin-right: 2%;
+    display: inline-flex;
+    vertical-align: top;
+}
 .file-img {
-  width: 1.4rem;
+}
+.file-item .file-div {
+    width: 100%;
+    height: 100%;
+  display: flex;
+  background: #F5F6F7;
+  border-radius: 0.2rem;
+  padding: .3rem;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  align-self: flex-start;
+}
+
+.file-item  .file-img {
+    line-height: 2.9rem;
+    max-width: 3.6rem;
+    max-height: 2.9rem;
+    display: inline-block;
+    width: auto;
+    height: auto;
 }
 
 .file-text {

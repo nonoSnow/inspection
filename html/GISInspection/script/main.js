@@ -26,10 +26,47 @@ apiready = function() {
       }
   });
 
-    funIniGroup(getCurrentUserRoles());
+  api.addEventListener({
+      name: 'closeEvent',
+  }, function(ret, err){
+      if( ret ){
+          api.sendEvent({
+              name: 'eventMethod',
+              extra: {
+                  index: ret.value.index
+              }
+          });
 
-  WinSize(['footer-gis']);
+      }else{
+           alert( JSON.stringify( err ) );
+      }
+  });
+
+
+  api.addEventListener({
+      name: 'returnEvent'
+  }, function(ret, err){
+      if( ret ){
+          api.setFrameGroupIndex({
+            name: 'group',
+            index: 2,
+            reload: true
+        });
+        var el = $("#footer-gis .flex1")[2];
+        $("#footer-gis .flex1").removeClass('color-598');
+        $(el).addClass('color-598');
+
+        $('.type-line').removeClass('bgc-blue');
+        $(el).children().children().addClass('bgc-blue');
+
+      }else{
+           alert( JSON.stringify( err ) );
+      }
+  });
+    funIniGroup(getCurrentUserRoles());
+    WinSize(['footer-gis']);
 }
+
 
 function funIniGroup(roles) {
     api.openFrameGroup({
