@@ -177,5 +177,14 @@ function getLocationGPS(callback) {
 * 每隔5分钟上传一次员工定位
 **/
 function upLocation() {
-  
+
+}
+// 获取当前用户的角色
+function getCurrentUserRoles(){
+  var currentUserRoles = $api.getStorage('currentUserRoles');
+    var Roles = [];
+    Roles = currentUserRoles.filter(function(item){
+    return item.roleName.indexOf('管理员')!=-1;
+  })
+  return Roles.lengt!=0?1:0;
 }
