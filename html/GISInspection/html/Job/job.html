@@ -15,7 +15,7 @@
     <div class="flex-wrap flex-vertical height100">
       <header class="aui-bar aui-bar-nav aui-bar-light bgi-none" id="header">
           <div class="aui-title">工单</div>
-          <a class='aui-pull-right color-333' tapmode onclick="addJob()">
+          <a class='aui-pull-right color-333 aui-hide' tapmode onclick="addJob()">
               <span>新增工单</span>
           </a>
       </header>
@@ -59,6 +59,7 @@
   <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
   <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
   <script type="text/javascript" src="../../ajax/jobAjax.js"></script>
+  <script type="text/javascript" src="../../script/common/common.js"></script>
 
   <script type="text/javascript" src="../../script/job/job.js"></script>
   <script type="text/template" id='onGoing'>
@@ -70,7 +71,7 @@
               <img src="../../image/job-icon.png" class='task-icon' alt="">
               <span class="margin-left3 font-w4">工单类型：{{value.typeStr}}</span>
             </div>
-            <div class="margin-top10 font-S75 color-666 charge">负责人：{{value.headName}}</div>
+            <div class="margin-top10 font-S75 color-666 charge">负责人：{{value.person}}</div>
           </div>
           <div class="margin-top6 font-S75 color-666 end-time">
             预计完成时间：{{value.planCompleteTime}}
@@ -124,7 +125,7 @@
             <img src="../../image/job-icon.png" class='task-icon' alt="">
             <span class="margin-left3 font-w4">工单类型：{{value.typeStr}}</span>
           </div>
-          <div class="margin-top10 font-S75 color-666 charge">负责人：{{value.headName}}</div>
+          <div class="margin-top10 font-S75 color-666 charge">负责人：{{value.person}}</div>
           <div class="margin-top6 font-S75 color-666 start-time">
             开始时间：{{value.creationTime}}
           </div>

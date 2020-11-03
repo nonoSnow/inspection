@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
-    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
     <title>首页</title>
-    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
-    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css" />
 
-    <link rel="stylesheet" type="text/css" href="../../css/public.css"/>
-    <link rel="stylesheet" type="text/css" href="../../css/common.css"/>
-    <link rel="stylesheet" type="text/css" href="../../css/home.css"/>
-    <link rel="stylesheet" type="text/css" href="../../js/sntgis/sntgis.css"/>
-  </head>
-  <body>
+    <link rel="stylesheet" type="text/css" href="../../css/public.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/home.css" />
+    <link rel="stylesheet" type="text/css" href="../../js/sntgis/sntgis.css" />
+</head>
+
+<body>
     <header class="aui-bar aui-bar-nav map-header snt-bar-fiexd" id="header">
-      <div class='header-cont'>
-        <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
-            <span class='aui-iconfont aui-icon-close'></span>
+        <div class='header-cont'>
+            <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
+                <span class='aui-iconfont aui-icon-close'></span>
+            </div>
+            <div class='aui-title'>GIS巡检系统</div>
         </div>
-        <div class='aui-title'>GIS巡检系统</div>
-      </div>
     </header>
 
 
@@ -33,67 +35,125 @@
     <!-- <div class="aui-btn aui-btn-blue" style='top: 5rem; left: 5%;' tapmode onclick="onOpenTaskInfo()">任务详情</div> -->
     <div class="map-btn-div top435 fixed right5">
         <div class="map-btn-bs border-radius4">
-          <div class="font-S6 text-cent member-status">
-            <div class="unline">
-                <img src="../../image/unline.png" class='map-btn-img' alt="">
-                <span class="margin-bot3">离线</span>
+            <div class="font-S6 text-cent member-status">
+                <div class="unline">
+                    <img src="../../image/unline.png" class='map-btn-img' alt="">
+                    <span class="margin-bot3">离线</span>
+                </div>
+                <div class="online">
+                    <img src="../../image/online.png" class='map-btn-img' alt="">
+                    <span class="margin-bot3">在线</span>
+                </div>
             </div>
-            <div class="online">
+            <div class="map-btn-line"></div>
+            <div class="font-S6 text-cent" tapmode onclick="onOpenReport()">
                 <img src="../../image/online.png" class='map-btn-img' alt="">
-                <span class="margin-bot3">在线</span>
+                <span class="margin-bot3">上报</span>
             </div>
-          </div>
-          <div class="map-btn-line"></div>
-          <div class="font-S6 text-cent" tapmode onclick="onOpenReport()">
-            <img src="../../image/online.png" class='map-btn-img' alt="">
-            <span class="margin-bot3">上报</span>
-          </div>
-          <div class="map-btn-line map-line"></div>
-          <div class="font-S6 text-cent map-add">
-            <img src="../../image/add.png" class='map-btn-img' alt="">
-            <span class="margin-bot3">新增</span>
-          </div>
+            <div class="map-btn-line map-line"></div>
+            <div class="font-S6 text-cent map-add" tapmode onclick="onAddArea()">
+                <img src="../../image/add.png" class='map-btn-img' alt="">
+                <span class="margin-bot3">新增</span>
+            </div>
         </div>
 
         <div class="map-btn-bs border-radius4 margin-top42 home-device">
-          <div class="font-S6 text-cent">
-            <img src="../../image/equipment.png" class='map-btn-img' alt="">
-            <span class="margin-bot3">设备</span>
-          </div>
+            <div class="font-S6 text-cent">
+                <img src="../../image/equipment.png" class='map-btn-img' alt="">
+                <span class="margin-bot3">设备</span>
+            </div>
         </div>
 
         <div class="map-btn-bs border-radius4 margin-top6">
-          <div class="right-item-item map-scale-btn up" tapmode>
-            <img src="../../image/enlarge.png" class='enlarge' alt="">
-          </div>
-          <div class="right-item-item map-scale-btn down" tapmode>
-            <img src="../../image/narrow.png" class='narrow' alt="">
-          </div>
+            <div class="right-item-item map-scale-btn up" tapmode>
+                <img src="../../image/enlarge.png" class='enlarge' alt="">
+            </div>
+            <div class="right-item-item map-scale-btn down" tapmode>
+                <img src="../../image/narrow.png" class='narrow' alt="">
+            </div>
         </div>
-      </div>
+    </div>
 
-      <div class="map-location-div fixed left5 bottom385 map-btn-bs border-radius4" tapmode >
+    <div class="map-location-div fixed left5 bottom385 map-btn-bs border-radius4" tapmode>
         <img src="../../image/location1.png" class='location-one' alt="">
-      </div>
+    </div>
 
-      <div class="map-member-img" id="map-member-img-0">
-          <img src="../../image/location.png" />
-      </div>
-      <div class="map-member-img" id="map-orbit-0">
-          <img src="../../image/icon-oribt.png" />
-      </div>
-  </body>
-  <script type="text/javascript" src="../../../public/script/api.js"></script>
-  <script type="text/javascript" src="../../../public/script/common.js"></script>
-  <!-- <script type="text/javascript" src="../../../public/script/remote.js"></script> -->
-  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
-  <script type="text/javascript" src="../../script/sntgis/sntgis.js"></script>
-  <script type="text/javascript" src="../../script/sntgis/sntgis_extend.js"></script>
-  <script type="text/javascript" src="../../script/sntgis/rbush.min.js"></script>
-  <script type="text/javascript" src="../../script/common/common.js"></script>
-  <script type="text/javascript" src="../../script/common/gis.js"></script>
-  <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
-  <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
-  <script type="text/javascript" src="../../ajax/homeajax.js"></script>
-  <script type="text/javascript" src="../../script/home/home.js"></script>
+    <div class="map-member-img" id="map-member-img-0">
+        <img src="../../image/location.png" />
+    </div>
+    <div class="map-member-img" id="map-orbit-0">
+        <img src="../../image/icon-oribt.png" />
+    </div>
+
+
+
+</body>
+<script type="text/javascript" src="../../../public/script/api.js"></script>
+<script type="text/javascript" src="../../../public/script/common.js"></script>
+<!-- <script type="text/javascript" src="../../../public/script/remote.js"></script> -->
+<script type="text/javascript" src="../../../public/script/zepto.js"></script>
+<script type="text/javascript" src="../../script/sntgis/sntgis.js"></script>
+<script type="text/javascript" src="../../script/sntgis/sntgis_extend.js"></script>
+<script type="text/javascript" src="../../script/sntgis/rbush.min.js"></script>
+<script type="text/javascript" src="../../script/common/common.js"></script>
+<script type="text/javascript" src="../../script/common/gis.js"></script>
+<script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+<script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
+<script type="text/javascript" src="../../ajax/homeajax.js"></script>
+<script type="text/javascript" src="../../script/home/homeCommon.js"></script>
+<script type="text/javascript" src="../../script/home/home.js"></script>
+<script type="text/javascript" src="../../script/home/homeMap.js"></script>
+<script type="text/javascript" src="../../../public/script/moment.js"></script>
+<script type="text/javascript" src="../../../public/script/template.js"></script>
+<script type="text/html" id="orderAndTaskListTemplate">
+      {{if taskLists.length+workOrderLists.length == 1}}
+      <div class="homePage_order_list_box one">
+        <div class="homePage_order_narrow"></div>
+        {{else}}
+        <div class="homePage_order_list_box">
+          <div class="homePage_order_upper active"></div>
+        {{/if}}
+        <div class="homePage_order_title"><span>进行中</span></div>
+
+        <div class="homePage_order_body">
+            {{if taskLists.length >0}}
+            {{each taskLists value i}}
+            <div class="homePage_order_body_content" value="{{value}}" type='task'>
+                {{if value.type == 1 || value.type == '1'}}
+                <div class="homePage_order_temporary"></div>
+                {{else}}
+                <div class="homePage_order_plan"></div>
+                {{/if}}
+                <div class="task_title">{{value.name}}</div>
+                <div class="text_content">实际开始:&nbsp;&nbsp;<span>{{value.beginTime}}</span></div>
+                <div class="text_content">预计完成:&nbsp;&nbsp;<span>{{value.planComplateTime}}</span></div>
+                {{if value.overdue!=null && value.overdue!="" && value.overdue!='' }}
+                <div class="task_status_btns">已超期</div>
+                {{/if}}
+            </div>
+            {{/each}}
+            {{/if}}
+
+            {{if workOrderLists.length >0}}
+            {{each workOrderLists value i}}
+            <div class="homePage_order_body_content" value="{{value}}" type='order'>
+                <div class="homePage_order_btns">{{value.typeStr}}</div>
+                <div class="task_title">{{value.content}}</div>
+                <div class="text_content">负责人:&nbsp;&nbsp;<span>{{value.person}}</span></div>
+                <div class="text_content">预计完成时间:&nbsp;&nbsp;<span>{{value.planComplateTime}}</span></div>
+                {{if value.overdue!=null && value.overdue!="" && value.overdue!='' }}
+                <div class="task_status_btns">已超期</div>
+                {{/if}}
+            </div>
+            {{/each}}
+            {{/if}}
+
+             {{if workOrderLists.length == 0 && taskLists.length ==0}}
+             <div class='homePage_order_list_noData'>暂无数据!</div>
+             {{/if}}
+
+        </div>
+    </div>
+</script>
+
 </html>

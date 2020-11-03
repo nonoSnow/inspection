@@ -13,7 +13,7 @@ var xunPageSize = 5;
 // 任务详情
 var taskDetail;
 // 待巡总数（点击完成时提示需要）
-var daixunTotal;
+// var daixunTotal;
 
 var daixunPageIndex = 1;
 var daixunHasNext = false;
@@ -26,6 +26,8 @@ var yixunHasNext = false;
 var footerH;
 
 var indexMap = {};
+
+var mapInfo;
 
 apiready = function() {
   var header = $api.byId('header');
@@ -41,8 +43,6 @@ apiready = function() {
   taskId = api.pageParam.id;
 
   // console.log(api.pageParam.id);
-  console.log(taskId);
-
   if (nowTaskType == '0') {
     $('.task-stop').html('暂停');
     $('.task-complete').html('完成');
@@ -53,7 +53,7 @@ apiready = function() {
     $('.task-stop').html('关闭');
     $('.task-complete').html('重启');
   } else if (nowTaskType == '3') {
-    $('.footer').addClass('aui-hide');
+    $('#footer').addClass('aui-hide');
     $('.flex-con').removeClass('margin-bot250');
   }
 
@@ -112,7 +112,9 @@ function onMenu(index, el) {
   taskDetype = index;
   if (index == 0) {
     // $(".task-info").removeClass('aui-hide');
-    $(".footer").removeClass('aui-hide');
+    if (nowTaskType != 3) {
+      $(".footer").removeClass('aui-hide');
+    }
 
     // $(".task-list").addClass('aui-hide');
     // $(".flex-con").addClass('margin-bot250');
@@ -122,7 +124,7 @@ function onMenu(index, el) {
     $(".footer").addClass('aui-hide');
 
     // $(".task-list").removeClass('aui-hide');
-    // $(".flex-con").removeClass('margin-bot250');
+    $(".flex-con").removeClass('margin-bot250');
 
     if (index == 1) {
       // $('.item-btn').addClass('aui-hide');
@@ -372,8 +374,11 @@ function complete() {
   getInspectDataList({
     data: data,
     success: function(ret) {
-      daixunTotal = ret.result.totalCount;
-      var message = '该任务中有' + daiXunTotal + '个待巡点未完成！您确定要完成该任务吗？'
+      console.log(JSON.stringify(ret));
+      var daixunTotal = ret.result.totalCount;
+      // console.log(daixunTotal);
+      var message = '该任务中有' + daixunTotal + '个待巡点未完成！您确定要完成该任务吗？';
+      // console.log(message);
       api.confirm({
           msg: message,
           buttons: ['确定', '取消']
@@ -388,7 +393,9 @@ function complete() {
             changeTaskStatus({
               data: param,
               success: function(ret) {
-                  initOngoing();
+                  // initOngoing();
+                  api.closeWin({});
+
               }
             })
           }
@@ -550,7 +557,7 @@ function getTaskDetail(param) {
 
       var data = ret.result;
       var str = template('taskBasicInfo', data);
-      console.log(str);
+      // console.log(str);
       $('#taskDetail').append(str);
 
       var data = {
@@ -560,12 +567,29 @@ function getTaskDetail(param) {
         data: data,
         success: function(ret1) {
           // console.log(JSON.stringify(ret1));
+          mapInfo = ret1.result;
+          // console.log(JSON.stringify(mapInfo));
           indexMap = new Map({
               mapid: 'mapBox'
           });
           indexMap.initArea('addArea');
-          var areaInfo = ret1.result;
-          indexMap.drawAreaSelect(areaInfo.areaPoint, {name: 'addArea'});
+          indexMap.initDeviceLayer('addArea');
+          // var areaPoint = ret1.areaPoint;
+          console.log(JSON.stringify(mapInfo));
+          console.log(typeof(mapInfo.areaPoint));
+          console.log(mapInfo.areaPoint);
+          indexMap.drawAreaSelect(mapInfo, {
+            name: 'addArea',
+            areaId: mapInfo.id
+          });
+          // indexMap.mapConduitEquipment({
+          //     areaPoint: mapInfo.areaPoint,
+          //     lineList: mapInfo.pipelineLists,
+          //     pointList: mapInfo.deviceLists
+          // }, {
+          //   name: 'addArea',
+          //   areaId: mapInfo.id
+          // });
         }
       })
     }
@@ -626,12 +650,6 @@ function getTaskDetail(param) {
   //
   //   function showRet(ret) {
   //     // 请求成功，初始化地图
-  //     indexMap = new Map({
-  //         mapid: 'mapBox'
-  //     });
-  //     indexMap.initArea('addArea');
-  //     var areaInfo = ret.result;
-  //     indexMap.drawAreaSelect(areaInfo.areaPoint, {name: 'addArea'});
   //   }
   //
   //   function showErr(err) {
@@ -824,13 +842,14 @@ function openTask() {
   });
 }
 
-// 初始化地图
-// function initMap() {
-//     // 初始化地图
-//     indexMap = new Map({
-//         mapid: 'mapBox'
-//     });
-//     indexMap.initArea('addArea');
-//     areaInfo = ret.value.areaInfo;
-//     indexMap.drawAreaSelect(areaInfo.areaPoint, {name: 'addArea'});
-// }
+// 打开地图页面
+function openViewMap() {
+  api.openWin({
+      name: 'viewMap',
+      url: '../task/viewMap.html',
+      pageParam: {
+        mapInfo: mapInfo
+      }
+  });
+
+}

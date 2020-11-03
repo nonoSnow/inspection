@@ -83,37 +83,74 @@
         }
         return quit
     }
-    // function initServiceAddress(){
-    //     $api.rmStorage('addressHistory');
-    //     console.log($api.getStorage('addressHistory'));
-    //    if($api.getStorage('addressHistory') == undefined){
-    //       var addressHistory = {
-    //         intranetObj:{
-    //             url: "",
-    //             isCheck: false,
-    //             checkFalse: false,
-    //             checkTrue: false,
-    //             buttonActive: false, //检测按钮选中背景色
-    //             type:'intranetAddress'
-    //         },
-    //         extranetObj:{
-    //             url: "",
-    //             isCheck: false,
-    //             checkFalse: false,
-    //             checkTrue: false,
-    //             buttonActive: false, //检测按钮选中背景色
-    //             type:'extranetAddress'
-    //         },
-    //       };
-    //       $api.setStorage('addressHistory', addressHistory);
-    //
-    //    }
-    // }
+    // 实时更新当前人员定位
+function InsertPersonLocation() {
+    var nativeTimer = api.require('nativeTimer');
+    var params = {
+        interval: 10,
+        cycle: true,
+        delay: 0,
+    }
+    nativeTimer.acquireCpu();
+    nativeTimer.start(params, function(ret) {
+        var ids = [];
+        ids.push(ret.id);
+        if ($api.getStorage('isOnline') == "1") {
+            sendInspectionLocation();
+        } else {
+            nativeTimer.stop({
+                ids: ids
+            })
+            nativeTimer.releaseCpu();
+        }
+    });
+}
+
+// 实时更新当前人员定位
+function sendInspectionLocation() {
+  var userLoginInformation = $api.getStorage('userLoginInformation');
+  aMapLBS.singleLocation({
+      timeout: 10
+  }, function(ret, err) {
+      if (ret.status) {
+        var data = {
+            personId: userLoginInformation.currentUserInfo.userInfo.userId,
+            person:userLoginInformation.currentUserInfo.userInfo.userName,
+            location:ret.lon+','+ ret.lat
+        };
+        fnPost('services/Inspection/PersonService/InsertLocation', {
+            body: JSON.stringify(data)
+        }, 'application/json', true, false, function(ret, err) {
+
+        })
+
+      }
+      // alert(JSON.stringify(ret))
+
+  });
+}
 
     apiready = function() {
             onCreateFS();//创建数据库 zxf 2020-04-10
             getCurrentLocation(); //获取当前定位 zxf 2020-04-17
-            // initServiceAddress();
+
+            //  溧水巡检，定时上传定位信息
+            api.addEventListener({
+                    name: 'sendPersonLocation'
+                }, function(ret, err) {
+                    if (ret) {
+                        var timer = setInterval(function() {
+                            if ($api.getStorage('isOnline') == "1") {
+                                InsertPersonLocation();
+                            } else {
+                                clearInterval(timer);
+                            }
+                        }, 300000);
+                    }
+                });
+
+
+
         api.addEventListener({
             name: 'changedFontSize'
         }, function(ret, err) {

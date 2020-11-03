@@ -1,12 +1,17 @@
 
 var jobType;
 var Id;
+var mapInfo={
+  areaPoint:"",       //区域坐标点（区域详情里有这个，必须有）
+  deviceLists:[],    // 设备点集合（有则传，没有不传）
+  pipelineLists:[] // 管道集合（有则传，没有不传）
+};
 apiready = function() {
   var header = $api.byId('header');
   $api.fixStatusBar(header);
 
   jobType = api.pageParam.type;
-  console.log(api.pageParam.Id);
+  // console.log(api.pageParam.Id);
   Id=api.pageParam.Id;
   showData(api.pageParam.Id);
 }
@@ -71,8 +76,22 @@ function showData(id){
   function showRet(ret){
     api.hideProgress();
 
-    console.log("****************************"+id);
-    console.log(JSON.stringify(ret));
+    // console.log("****************************"+id);
+    // console.log(JSON.stringify(ret));
+    var options1={
+      data:{id:ret.result.areaId},
+      success:function(ret1){
+        // console.log(JSON.stringify(ret1))
+        mapInfo.areaPoint=ret1.result.areaPoint;
+        mapInfo.deviceLists=ret1.result.deviceLists;
+        mapInfo.pipelineLists=ret1.result.pipelineLists;
+      },
+      error:function(err1){
+        // console.log(JSON.stringify(err1))
+      },
+    }
+    //通过区域id去获取区域坐标点
+    postAjaxAreaDetails(options1)
     if(ret.success){
       $('#detailList').html('');
       var data = ret.result;
@@ -102,14 +121,15 @@ function showData(id){
 }
 
 function onOpenCloseTurn(type) {
-  console.log(type);
+  // console.log(type);
   if(type=='1'){
     api.openWin({
         name: 'jobClose',
         url: './jobClose.html',
         pageParam: {
             Id:Id,
-            jobType:1
+            jobType:1,
+            from:'jobDetail'
         }
     });
   }else if(type=='2'){
@@ -125,7 +145,7 @@ function onOpenCloseTurn(type) {
 
 // 查看转派原因
 function onOpenTurnRes(el){
-  console.log($(el).attr('param'));
+  // console.log($(el).attr('param'));
   api.openWin({
       name: 'jobTurnRes',
       url: './jobTurnRes.html',
@@ -137,7 +157,7 @@ function onOpenTurnRes(el){
 
 function onOpenHandle() {
   var type=parseInt(api.pageParam.type7);    //工单类型 7种
-  console.log(type);
+  // console.log(type);
   // 工单类型（1：查漏；2：查漏延伸；3：维修管道；4：维修管道延伸；5：违章罚款；6：贫水区改造）
   if(type==1 || type==2){
     // 1：查漏；2：查漏延伸；
@@ -262,7 +282,7 @@ function onReceived(){
       title:"接收后将会跳转到工单页面",
       buttons:['取消','确定']
   },function(ret){
-      console.log(JSON.stringify(ret));
+      // console.log(JSON.stringify(ret));
       if (ret.buttonIndex == '2') {
         api.showProgress({
             style: 'default',
@@ -312,4 +332,17 @@ function onReceived(){
       alert("接收失败")
     }
   }
+}
+
+// 打开查看地图页面
+function openViewMap() {
+  // console.log(JSON.stringify(mapInfo));
+  api.openWin({
+      name: 'viewMap',
+      url: '../task/viewMap.html',
+      pageParam: {
+        mapInfo: mapInfo
+      }
+  });
+
 }

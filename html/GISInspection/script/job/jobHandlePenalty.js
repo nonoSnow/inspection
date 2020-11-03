@@ -83,14 +83,14 @@ function subHandle(){
   var isHasData=false; // 有值的标志
   // 违章单位
   for (var i = 0; i <= bRuleIndex; i++) {
-    var obj={
-      type:"违章单位",
-      company:$("#bRuleName"+i).val()
-    }
     if($("#bRuleName"+i).val()){
+      var obj={
+        type:"违章单位",
+        company:$("#bRuleName"+i).val()
+      }
       isHasData=true;
+      workback.push(obj);
     }
-    workback.push(obj);
   }
 
   // 查漏延伸
@@ -99,6 +99,8 @@ function subHandle(){
   // 判断至少有一个要填写
   if($("#caliber").val() || $("#violationAddress").val() ||$("#time").val() ||$("#projectCost").val() ||$("#waterCost").val() ||$("#violationReason").val() ||$("#remark").val() || isHasData){
     // 进入提交接口
+    // console.log(JSON.stringify(workback));
+    // return false;
     var data={
       id:Id,
       caliber:$("#caliber").val(),
@@ -122,7 +124,7 @@ function subHandle(){
 }
 
 function subComplete(data){
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   api.showProgress({
       style: 'default',
       animationType: 'fade',

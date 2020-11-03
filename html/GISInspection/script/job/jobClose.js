@@ -8,7 +8,7 @@ apiready = function() {
   //获取工单ID
   Id = parseInt(api.pageParam.Id);
   jobType=api.pageParam.jobType;
-  console.log(Id);
+  // console.log(Id);
   // 初始化图片列表
   showImg(imgList);
 }
@@ -29,7 +29,7 @@ function subJobClose(){
     closeReason:$("#closeReason").val(),
     resourceInfoList:imgList
   }
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   api.showProgress({
       style: 'default',
       animationType: 'fade',
@@ -46,7 +46,7 @@ function subJobClose(){
   // jobPostMethod("api/services/Inspection/WorkOrderService/CloseWorkOrder",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
-    console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(ret));
     if(ret.success){
       api.toast({
           msg: '关闭工单成功',
@@ -55,6 +55,12 @@ function subJobClose(){
       });
       // 清空数据
       clearData();
+      if(api.pageParam.from=="jobDetail"){
+        api.closeWin({
+            name: 'jobDetail'
+        });
+
+      }
       api.closeWin();
 
     }else {
@@ -64,7 +70,7 @@ function subJobClose(){
 
   function showErr(err){
     api.hideProgress();
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(err));
     if(err.body){
       if(err.body.error){
         api.alert({
@@ -105,15 +111,15 @@ function action() {
   api.actionSheet({
       buttons: ['拍照', '相册选择']
   }, function(ret, err) {
-    console.log(JSON.stringify(ret));
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(err));
     if (ret.buttonIndex == 1) {
       // 选择了拍照
       var type = 'camera';
       getPicture(type, showRet, showErr);
 
       function showRet(ret) {
-        console.log(JSON.stringify(ret));
+        // console.log(JSON.stringify(ret));
         if(ret.length>0){
           imgList.push(ret[0]);
           showImg(imgList);
@@ -121,7 +127,7 @@ function action() {
       }
 
       function showErr(err) {
-        console.log(JSON.stringify(err));
+        // console.log(JSON.stringify(err));
       }
     } else if (ret.buttonIndex == 2) {
       // 选择了从相册选择
@@ -139,21 +145,21 @@ function action() {
       }
 
       function showErr(err) {
-        console.log(JSON.stringify(err));
+        // console.log(JSON.stringify(err));
       }
     }
   })
 }
 // 显示图片
 function showImg(data) {
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   var param = {
     list: data,
     url: baseUrl
   }
   $('#imgBox').html('');
   var str = template('imgData', param);
-  console.log(str);
+  // console.log(str);
   $('#imgBox').append(str);
   // $('#imgBox').prepend(str);
 }
@@ -161,9 +167,9 @@ function showImg(data) {
 function deleteImg(that) {
   if (that != null) {
     var imgIndex = $(that).attr('parse');
-    console.log(imgIndex);
+    // console.log(imgIndex);
     imgList = deleteArray(imgList, imgIndex);
-    console.log(JSON.stringify(imgList));
+    // console.log(JSON.stringify(imgList));
     showImg(imgList);
   }
 }

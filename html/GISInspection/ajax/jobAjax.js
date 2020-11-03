@@ -278,6 +278,50 @@ function postAjaxTurnJobDetail(options) {
     }, options)
     ajaxMethod(options);
 }
+// 领导获取工单列表
+/**
+* @method {Function} postAjaxTurnJobDetail 领导获取工单列表
+* @param {options} 请求需要的参数及回调函数
+* data 请求需要的数据
+* success 请求成功
+* fail 请求失败
+*/
+function postAjaxJobBoss(options) {
+    var data = options.data;
+    var options = Object.assign({}, {
+        url: baseUrl + 'api/services/Inspection/WorkOrderService/GetWorkOrderList',
+        data: {
+            body: JSON.stringify(data)
+        },
+        error: function(err) {
+            console.log(JSON.stringify(err))
+            if(options.fail) options.fail(err);
+        }
+    }, options)
+    ajaxMethod(options);
+}
+// 根据区域ID获取区域详情
+/**
+* @method {Function} postAjaxAreaDetails 领导获取工单列表
+* @param {options} 请求需要的参数及回调函数
+* data 请求需要的数据
+* success 请求成功
+* fail 请求失败
+*/
+function postAjaxAreaDetails(options) {
+    var data = options.data;
+    var options = Object.assign({}, {
+        url: baseUrl + 'api/services/Inspection/AreaService/GetGetAreaDetails',
+        data: {
+            body: JSON.stringify(data)
+        },
+        error: function(err) {
+            console.log(JSON.stringify(err))
+            if(options.fail) options.fail(err);
+        }
+    }, options)
+    ajaxMethod(options);
+}
 
 // 监听caliberList
 function getCaliberList(){

@@ -63,68 +63,12 @@ apiready = function() {
            alert( JSON.stringify( err ) );
       }
   });
-
-
-  funIniGroup();
-
-  WinSize(['footer-gis']);
-  // alert(JSON.stringify($api.getStorage('userLoginInformation')))
-  // alert(JSON.stringify($api.getStorage('userLoginInformation').loginSuccessData.userId));
-  // 获取当前用户角色（领导还是员工）
-  var userId = $api.getStorage('userLoginInformation').loginSuccessData.userId;
-  var data = {
-    userId: userId
-  }
-
-  getRoles(data);
+    funIniGroup(getCurrentUserRoles());
+    WinSize(['footer-gis']);
 }
 
-// 获取当前用户角色
-function getRoles (data) {
-  getUserRoles('api/services/app/Role/GetUserRolesById', data, showRet, showErr);
 
-  function showRet(ret) {
-    console.log(JSON.stringify(ret));
-    if (ret.result.length != 0) {
-      ret.result.forEach(function(item) {
-        if (item.roleName == '领导') {
-          // 当前用户角色为领导
-          $api.setStorage('isLeader', true);
-
-          return false;
-        } else if(item.roleName == '员工') {
-          $api.setStorage('isLeader', false);
-
-          return false;
-        } else {
-          // 既没有领导角色也没有员工角色，则默认为员工角色
-          $api.setStorage('isLeader', false);
-        }
-      })
-    }
-    console.log($api.getStorage('isLeader'));
-  }
-
-  function showErr(err) {
-    $('#haveNothing').removeClass('aui-hide');
-    if (err.body.error != undefined) {
-      api.toast({
-          msg: err.body.error.message,
-          duration: 2000,
-          location: 'middle'
-      });
-    } else {
-      api.toast({
-          msg: err.msg,
-          duration: 2000,
-          location: 'middle'
-      });
-    }
-  }
-}
-
-function funIniGroup() {
-
+function funIniGroup(roles) {
     api.openFrameGroup({
         name: 'group',
         scrollEnabled: false,
@@ -145,7 +89,8 @@ function funIniGroup() {
 
         frames: [{
             name: 'home_frame',
-            url: '../html/Home/home.html',
+            url: roles==0?'../html/Home/home.html':'../html/Home/leaderHome.html',
+            // url:'../html/Home/home.html',
             scrollEnabled: true,
             vScrollBarEnabled: true,
             hScrollBarEnabled: false,
