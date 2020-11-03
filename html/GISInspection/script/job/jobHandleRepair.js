@@ -328,8 +328,8 @@ function subHandle(){
 
   // 判断至少有一个要填写
   if($("#predictWaterLoss").val() || isHasData){
-    console.log($("#predictWaterLoss").val());
-    console.log(JSON.stringify(workback));
+    // console.log($("#predictWaterLoss").val());
+    // console.log(JSON.stringify(workback));
     // return false;
     // 进入提交接口
     var data={
@@ -349,7 +349,7 @@ function subHandle(){
 }
 
 function subComplete(data){
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   api.showProgress({
       style: 'default',
       animationType: 'fade',
@@ -367,7 +367,7 @@ function subComplete(data){
   // console.log(JSON.stringify($api.getStorage('loginData')));
   function showRet(ret){
     api.hideProgress();
-    console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(ret));
     if(ret.success){
       api.alert({
           title: '提示',
@@ -398,7 +398,7 @@ function subComplete(data){
   function showErr(err){
     api.hideProgress();
 
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(err));
     if(err.body){
       if(err.body.error){
         if(err.body.error.message){

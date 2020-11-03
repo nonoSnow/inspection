@@ -122,7 +122,7 @@ function subHandle(){
 }
 
 function subComplete(data){
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   api.showProgress({
       style: 'default',
       animationType: 'fade',

@@ -22,7 +22,7 @@ function search(){
       title: '搜索中...',
       modal: false
   });
-  console.log($("#search-input").val());
+  // console.log($("#search-input").val());
   var scrollVal = $("#search-input").val();
 
   var options={
@@ -49,7 +49,7 @@ function search(){
 
   function showErr(err){
     api.hideProgress();
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(err));
     if(err.body){
       alert(err.body)
     }else {
@@ -138,7 +138,7 @@ function checkHead(el){
 }
 // 确定请求接口 传递数据
 function onCheck(){
-  console.log(checkHeadObj);
+  // console.log(checkHeadObj);
   api.sendEvent({
       name: 'headList',
       extra: {

@@ -950,3 +950,6 @@ body {
   height:300px;
   overflow:auto;
 }
+.snt-overflow{
+  overflow:auto;
+}
