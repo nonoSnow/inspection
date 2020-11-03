@@ -52,23 +52,12 @@
                 </div>
             </div>
         </div>
-        <div class='margin-top75 Tips'>
-          提示语：设备和管道只选一项
-        </div>
       </div>
-      <div class="flex-con flex-content height100 bgc-f3">
+      <div id='contBox' class="flex-con flex-content height100 bgc-f3">
         <ul id='equipmentList' class="aui-content-padded font-S75 margin-top0">
-          <!-- <li class="padding75 bgc-ff border-radius4">
-            <div class="relative ">
-              名称：蝶阀
-              <input class="aui-radio absolute right0" style="" type="checkbox" name="demo1">
-            </div>
-            <div class="margin-top6">编号：JS808029</div>
-            <div class="relative margin-top6">
-              地址：南京市溧水区交通路阳光小区98号
-              <span class="aui-iconfont aui-icon-location absolute right0"></span>
-            </div>
-          </li> -->
+        </ul>
+
+        <ul id='equipmentList1' class="aui-content-padded font-S75 margin-top0 aui-hide">
         </ul>
       </div>
     </div>
@@ -83,8 +72,8 @@
   <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
   <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
   <script type="text/javascript" src="../../script/public.js"></script>
-  <script type="text/javascript" src="../../script/area/equipmentSelect.js"></script>
-  <script type="text/template" id="equipmentItem">
+  <script type="text/javascript" src="../../script/area/addAreaEquipment.js"></script>
+  <script type="text/template" id="pointItem">
     {{if datas.length > 0}}
        {{each datas item i}}
        {{if i == 0}}
@@ -92,17 +81,36 @@
        {{else}}
        <li class="padding75 bgc-ff border-radius4 margin-top75">
        {{/if}}
-         <div class="relative ">
-           名称：{{item.deviceName}}
-           {{if item.isCheck == true}}
-           <input class="aui-radio absolute right0 equipmentItem" checked=true item="{{item}}" style="" onchange='onCheck(this)' type="radio" name="demo">
-           {{else}}
-           <input class="aui-radio absolute right0 equipmentItem" item="{{item}}" style="" onchange='onCheck(this)' type="radio" name="demo">
-           {{/if}}
+         <div class="relative point">
+           名称：{{item.pointName}}
+           <input class="aui-checkbox absolute right0 equipmentItem" checked=true item="{{item}}" style="" type="checkbox" name="demo">
            </div>
-           <div class="margin-top6">编号：{{item.deviceCode}}</div>
+           <div class="margin-top6">编号：{{item.pointNumbe}}</div>
            <div class="relative margin-top6">
-             地址：{{item.address}}
+             地址：{{item.location}}
+           <span class="aui-iconfont aui-icon-location absolute right0"></span>
+         </div>
+       </li>
+       {{/each}}
+   {{else}}
+     <div class="no-data font-S8">暂无数据!</div>
+   {{/if}}
+  </script>
+  <script type="text/template" id="lineItem">
+    {{if datas.length > 0}}
+       {{each datas item i}}
+       {{if i == 0}}
+       <li class="padding75 bgc-ff border-radius4">
+       {{else}}
+       <li class="padding75 bgc-ff border-radius4 margin-top75">
+       {{/if}}
+         <div class="relative lineitem">
+           名称：{{item.material}}
+           <input class="aui-checkbox absolute right0 equipmentItem" checked=true item="{{item}}" style="" type="checkbox" name="demo">
+           </div>
+           <div class="margin-top6">编号：{{item.lineNumber}}</div>
+           <div class="relative margin-top6">
+             地址：{{item.location}}
            <span class="aui-iconfont aui-icon-location absolute right0"></span>
          </div>
        </li>

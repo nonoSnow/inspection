@@ -6,6 +6,7 @@ var hydrantIndex = nowHydrantIndex = 0; //消防栓总数
 var addressIndex = 0;  //地址总数
 var Id; //工单ID
 var from;  //来源哪个页面
+var caliberList=[];  //口径列表
 
 apiready = function() {
   var header = $api.byId('header');
@@ -13,6 +14,10 @@ apiready = function() {
   //获取工单ID
   Id = parseInt(api.pageParam.Id);
   from = api.pageParam.from;
+
+  // 监听caliberList
+  getCaliberList();
+
   $(".custom-popup-list li").each(function() {
     $(this).click(function() {
       $('#repairType' + nowRepairIndex).val($(this).text());
@@ -50,6 +55,7 @@ apiready = function() {
       onHideHydrantPopup();
     });
   });
+
 }
 
 var popup = new auiPopup();
@@ -322,8 +328,8 @@ function subHandle(){
 
   // 判断至少有一个要填写
   if($("#predictWaterLoss").val() || isHasData){
-    console.log($("#predictWaterLoss").val());
-    console.log(JSON.stringify(workback));
+    // console.log($("#predictWaterLoss").val());
+    // console.log(JSON.stringify(workback));
     // return false;
     // 进入提交接口
     var data={
@@ -343,18 +349,25 @@ function subHandle(){
 }
 
 function subComplete(data){
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   api.showProgress({
       style: 'default',
       animationType: 'fade',
       title: '提交中...',
       modal: false
   });
-  jobPostMethod("api/services/Inspection/WorkOrderService/CompleteWorkOrder",data,showRet,showErr);
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxWriteJob(options);
+  // jobPostMethod("api/services/Inspection/WorkOrderService/CompleteWorkOrder",data,showRet,showErr);
   // console.log(JSON.stringify($api.getStorage('loginData')));
   function showRet(ret){
     api.hideProgress();
-    console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(ret));
     if(ret.success){
       api.alert({
           title: '提示',
@@ -385,7 +398,7 @@ function subComplete(data){
   function showErr(err){
     api.hideProgress();
 
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(err));
     if(err.body){
       if(err.body.error){
         if(err.body.error.message){

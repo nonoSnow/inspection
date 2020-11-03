@@ -58,17 +58,24 @@ function subTurn(){
     transferReason:$("#transferReason").val(),    //转派原因
     resourceInfoList:imgList                    //附件
   }
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   api.showProgress({
       style: 'default',
       animationType: 'fade',
       title: '提交中...',
       modal: false
   });
-  jobPostMethod("api/services/Inspection/WorkOrderService/WorkOrderTransfer",data,showRet,showErr);
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxTurnJob(options);
+  // jobPostMethod("api/services/Inspection/WorkOrderService/WorkOrderTransfer",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
-    console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(ret));
     if(ret.success){
       // api.toast({
       //     msg: '转派工单成功',
@@ -107,7 +114,7 @@ function subTurn(){
 
   function showErr(err){
     api.hideProgress();
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(err));
     if(err.body){
       if(err.body.error){
         api.alert({
@@ -137,15 +144,15 @@ function action() {
   api.actionSheet({
       buttons: ['拍照', '相册选择']
   }, function(ret, err) {
-    console.log(JSON.stringify(ret));
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(err));
     if (ret.buttonIndex == 1) {
       // 选择了拍照
       var type = 'camera';
       getPicture(type, showRet, showErr);
 
       function showRet(ret) {
-        console.log(JSON.stringify(ret));
+        // console.log(JSON.stringify(ret));
         if(ret.length>0){
           imgList.push(ret[0]);
           showImg(imgList);
@@ -153,7 +160,7 @@ function action() {
       }
 
       function showErr(err) {
-        console.log(JSON.stringify(err));
+        // console.log(JSON.stringify(err));
       }
     } else if (ret.buttonIndex == 2) {
       // 选择了从相册选择
@@ -171,21 +178,21 @@ function action() {
       }
 
       function showErr(err) {
-        console.log(JSON.stringify(err));
+        // console.log(JSON.stringify(err));
       }
     }
   })
 }
 // 显示图片
 function showImg(data) {
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   var param = {
     list: data,
     url: baseUrl
   }
   $('#imgBox').html('');
   var str = template('imgData', param);
-  console.log(str);
+  // console.log(str);
   $('#imgBox').append(str);
   // $('#imgBox').prepend(str);
 }
@@ -193,9 +200,9 @@ function showImg(data) {
 function deleteImg(that) {
   if (that != null) {
     var imgIndex = $(that).attr('parse');
-    console.log(imgIndex);
+    // console.log(imgIndex);
     imgList = deleteArray(imgList, imgIndex);
-    console.log(JSON.stringify(imgList));
+    // console.log(JSON.stringify(imgList));
     showImg(imgList);
   }
 }

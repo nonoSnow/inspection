@@ -210,7 +210,14 @@ function uploadData(data){
       title: '提交中...',
       modal: false
   });
-  jobPostMethod("api/services/Inspection/WorkOrderService/InsertWorkOrder",data,showRet,showErr);
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxAddJob(options)
+  // jobPostMethod("api/services/Inspection/WorkOrderService/InsertWorkOrder",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
     // console.log(JSON.stringify(ret));

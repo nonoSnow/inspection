@@ -38,9 +38,10 @@ apiready = function() {
 
   // 监听下拉刷新，上拉加载
   refreshData();
-
+  // 获取口径列表
   getCaliber()
-
+  // 获取领导的工单列表
+  getBossJobList()
 }
 
 // 获取待接收、进行中、已完成的工单 接口调用
@@ -52,17 +53,21 @@ function showData(data,status){
       title: '加载中...',
       modal: false
   });
-  jobPostMethod("api/services/Inspection/WorkOrderService/GetWorkOrderListApp",data,showRet,showErr);
-  // console.log(JSON.stringify($api.getStorage('loginData')));
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxJobList(options)
+  // jobPostMethod("api/services/Inspection/WorkOrderService/GetWorkOrderListApp",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
-
-    console.log("--------------------------"+status);
-    console.log(JSON.stringify(ret));
+    // console.log("--------------------------"+status);
+    // console.log(JSON.stringify(ret));
     if(ret.success){
       // $('#dataList').html('');
       var data = transT(ret.result.items);
-      // console.log(JSON.stringify(data));
       if(data.length){
         if(status=="onGoing"){
           //进行中的总条数、当前页
@@ -181,7 +186,14 @@ function onReceived(el){
       title: '接收中...',
       modal: false
   });
-  jobPostMethod("api/services/Inspection/WorkOrderService/ReceiveWorkOrder",data,showRet,showErr);
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxJobReceived(options)
+  // jobPostMethod("api/services/Inspection/WorkOrderService/ReceiveWorkOrder",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
     if(ret.success){
@@ -229,8 +241,9 @@ function transT(data){
     data[i].creationTime=data[i].creationTime.replace("T"," ");
     data[i].completeTime=data[i].completeTime==""||data[i].completeTime==null?data[i].completeTime:data[i].completeTime.replace("T"," ");
     // console.log(data[i].completeTime);
-
-    data[i].headName = headName;
+    // console.log(data[i].person);
+    data[i].person = data[i].person?data[i].person:headName;
+    // console.log(data[i].person);
   }
   return data
 }
@@ -238,7 +251,7 @@ function transT(data){
 // 填写工单
 function onWrite(el){
   var param=JSON.parse($(el).attr('param')); //工单
-  console.log(JSON.stringify(param));
+  // console.log(JSON.stringify(param));
   // 工单类型（1：查漏；2：查漏延伸；3：维修管道；4：维修管道延伸；5：违章罚款；6：贫水区改造）
   if(param.type==1 || param.type==2){
     // 1：查漏；2：查漏延伸；
@@ -312,8 +325,8 @@ function refreshData(){
         };
         addData(data,"onGoing")
       }else if(jobType==1){
-        console.log(onReceivedPageAll);
-        console.log(pageCount*onReceivedPageNum);
+        // console.log(onReceivedPageAll);
+        // console.log(pageCount*onReceivedPageNum);
         // 如果总条数<当前页条数*页数 就是没有数据
         if(onReceivedPageAll<pageCount*onReceivedPageNum){
           api.toast({
@@ -333,8 +346,8 @@ function refreshData(){
         addData(data,"received")
       }else if(jobType==2){
         // 如果总条数<当前页条数*页数 就是没有数据
-        console.log(onCompletedPageAll);
-        console.log(pageCount*onCompletedPageNum);
+        // console.log(onCompletedPageAll);
+        // console.log(pageCount*onCompletedPageNum);
         if(onCompletedPageAll<pageCount*onCompletedPageNum){
           api.toast({
                msg: '没有更多数据了~',
@@ -365,13 +378,18 @@ function addData(data,status){
       title: '加载中...',
       modal: false
   });
-  jobPostMethod("api/services/Inspection/WorkOrderService/GetWorkOrderListApp",data,showRet,showErr);
-  // console.log(JSON.stringify($api.getStorage('loginData')));
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxJobList(options)
+  // jobPostMethod("api/services/Inspection/WorkOrderService/GetWorkOrderListApp",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
-
-    console.log("--------------------------"+status);
-    console.log(JSON.stringify(ret));
+    // console.log("--------------------------"+status);
+    // console.log(JSON.stringify(ret));
     if(ret.success){
       // $('#dataList').html('');
       var data = transT(ret.result.items);
@@ -425,28 +443,70 @@ function addJob(){
 // 获取口径列表
 function getCaliber(){
   var userLoginInformation = $api.getStorage('userLoginInformation');
-  console.log(JSON.stringify(userLoginInformation));
+  // console.log(JSON.stringify(userLoginInformation));
   var data={
     cateCode:"Caliber",
     orgId:userLoginInformation.currentUserInfo.userInfo.orgId
   }
-  jobGetMethod("api/services/app/Dictionary/GetDictionaryByCateCode",data,showRet,showErr);
+  var options={
+    data:data,
+    type:'get',
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  getAjaxCaliberList(options);
+  // jobGetMethod("api/services/app/Dictionary/GetDictionaryByCateCode",data,showRet,showErr);
   function showRet(ret){
-    console.log("***********************************************************************************************");
-    console.log(JSON.stringify(ret));
+    // console.log("***********************************************************************************************");
+    // console.log(JSON.stringify(ret));
     if(ret.success){
-      api.sendEvent({
-          name: 'caliberList',
-          extra: {
-              caliberList:ret.result
-          }
-      });
+      $api.setStorage('caliberList', ret.result);
     }
   }
 
   function showErr(err){
-    api.hideProgress();
+    // console.log(JSON.stringify(err));
+    if(err.body){
+      if(err.body.error){
+        if(err.body.error.message){
+          alert(err.body.error.message)
+        }else {
+          alert("加载失败")
+        }
+      }else {
+        alert("加载失败")
+      }
+    }else {
+      alert("加载失败");
+    }
+  }
+}
 
+//获取领导的工单列表 postAjaxJobBoss
+function getBossJobList(){
+  var data = {
+    status:2,
+    pageIndex:1,
+    MaxResultCount:pageCount
+  }
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxJobBoss(options)
+  function showRet(ret){
+    api.hideProgress();
+    // console.log("--------------------------"+"boss");
+    // console.log(JSON.stringify(ret));
+    if(ret.success){
+
+    }
+  }
+
+  function showErr(err){
     // console.log(JSON.stringify(err));
     if(err.body){
       if(err.body.error){

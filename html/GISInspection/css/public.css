@@ -945,11 +945,22 @@ body {
 .borra {
   border-radius: 0.2rem;
 }
-<<<<<<< HEAD
 
+<<<<<<< HEAD
+.Tips {
+  width: 100%;
+  height: 1.5rem;
+  font-size: 0.75rem;
+  text-align: center;
+  line-height: 1.5rem;
+  color: #FFF;
+  background: linear-gradient(90deg, rgba(61, 178, 255, 1), rgba(50, 138, 253, 1));
+=======
 .aui-popup-scroll{
   height:300px;
   overflow:auto;
 }
-=======
->>>>>>> 11cf59c325f884d5766b9482bb8b94d05d2fa1e5
+.snt-overflow{
+  overflow:auto;
+>>>>>>> 08800f8e8fa0283996418c7b5228edfeb69f52ab
+}

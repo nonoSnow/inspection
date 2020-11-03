@@ -74,31 +74,16 @@
         <div class="line margin-top6 margin-bot6"></div>
         {{if workArr.length>0 }}
           {{each workArr value i}}
-          <!-- <div>查漏：D15，12m</div>
-          <div class="margin-top75">查漏延伸：D25，13m；D25，13m</div>
-          <div class="margin-top75">预估漏损：135m³</div> -->
           <div class="margin-top75">{{value}}</div>
           {{/each}}
 
           {{if violationReason }}
-          <div class="margin-top75">
-            <div class="item-title">
-              <span class="item-title-text">原因：</span>
-            </div>
-            <div class="margin-top6 bgc-f3 border-radius2 padding75 height6">
-              <textarea class='width100 height100' readonly>{{violationReason}}</textarea>
-            </div>
-          </div>
+          <div class="margin-top75">原因：</div>
+          <div class="width100 height6 bgc-f5f6 border-radius4 margin-top75 padding75 line-height15 snt-overflow">{{violationReason}}</div>
           {{/if}}
           {{if remark }}
-          <div class="margin-top75">
-            <div class="item-title">
-              <span class="item-title-text">备注：</span>
-            </div>
-            <div class="margin-top6 bgc-f3 border-radius2 padding75 height6">
-              <textarea class='width100 height100' readonly>{{remark}}</textarea>
-            </div>
-          </div>
+          <div class="margin-top75">备注：</div>
+          <div class="width100 height6 bgc-f5f6 border-radius4 margin-top75 padding75 line-height15 snt-overflow">{{remark}}</div>
           {{/if}}
         {{/if}}
       </li>
@@ -133,9 +118,10 @@
         </div>
         <div class="margin-top75">预计完成时间：{{planCompleteTime}}</div>
 
-        <div class="margin-top12">工单内容:</div>
-        <div class="width100 height6 bgc-f5f6 border-radius4 margin-top75 padding75 line-height15">{{content}}</div>
+        <div class="margin-top75">工单内容:</div>
+        <div class="width100 height6 bgc-f5f6 border-radius4 margin-top75 padding75 line-height15 snt-overflow">{{content}}</div>
 
+        {{if resourcelist.length>0 }}
         <div class="margin-top12">工单附件:</div>
         <div class="file-list">
           {{each resourcelist value i}}
@@ -143,16 +129,8 @@
             <img src="{{url}}{{value.url}}" class="width100 height100" alt="">
           </div>
           {{/each}}
-          <!-- <div class="file-div">
-
-          </div>
-          <div class="file-div">
-
-          </div>
-          <div class="file-div margin-right0">
-
-          </div> -->
         </div>
+        {{/if}}
       </li>
       {{if eventDetails}}
       <li class="padding75 bgc-ff border-radius4 margin-top6">
@@ -173,11 +151,11 @@
         <div class="margin-top75">异常类型：{{eventDetails.errorType}}</div>
         <div class="margin-top75">事件类型：{{eventDetails.typeStr}}</div>
         <div class="margin-top75">预估漏损量：{{eventDetails.predictWaterLoss}}m³</div>
-        <div class="margin-top12">巡检内容:</div>
-        <div class="width100 height6 bgc-f5f6 border-radius4 margin-top75 padding75 line-height15">{{eventDetails.content}}</div>
+        <div class="margin-top75">巡检内容:</div>
+        <div class="width100 height6 bgc-f5f6 border-radius4 margin-top75 padding75 line-height15 snt-overflow">{{eventDetails.content}}</div>
 
-        {{if eventDetails.resourcelist}}
-        <div class="margin-top12">工单附件</div>
+        {{if eventDetails.resourcelist.length>0}}
+        <div class="margin-top12">事件附件</div>
         <div class="file-list">
           {{each eventDetails.resourcelist value i}}
           <div class="file-div">
