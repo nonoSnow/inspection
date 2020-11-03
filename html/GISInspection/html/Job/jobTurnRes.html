@@ -28,7 +28,7 @@
               <textarea name="name" class='width100 height100 textarea' id="transferReason" readonly></textarea>
             </div>
 
-            <div class="margin-top12 color-666 file-title">附件信息</div>
+            <!-- <div class="margin-top12 color-666 file-title">附件信息</div> -->
             <!-- <div class="file-list">
               <div class="file-div photo">
                 <img src="../../image/camera.png" class="margin-top75 margin-bot3 file-img" alt="">
@@ -37,7 +37,7 @@
 
             </div>
             <div class="margin-top12 color-666">上传附件</div> -->
-            <div id="imgBox" class="img-list"></div>
+            <div id="imgBox"></div>
           </li>
 
         </ul>
@@ -59,10 +59,15 @@
   <script type="text/javascript" src="../../ajax/jobAjax.js"></script>
   <script type="text/javascript" src="../../script/job/jobTurnRes.js"></script>
   <script type="text/template" id='imgData'>
-    {{each list value i}}
-      <div class="file-div">
-        <img src="{{url}}{{value.url}}" class="width100 height100" alt="">
-      </div>
-    {{/each}}
+    {{if list.length>0}}
+    <div class="margin-top12 color-666 file-title">附件信息</div>
+    <div class="img-list margin-top6 ">
+      {{each list value i}}
+        <div class="file-div">
+          <img src="{{url}}{{value.url}}" class="width100 height100" alt="">
+        </div>
+      {{/each}}
+    </div>
+    {{/if}}
   </script>
 </html>

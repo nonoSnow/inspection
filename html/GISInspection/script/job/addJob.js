@@ -28,7 +28,6 @@ apiready = function() {
     api.addEventListener({
         name: 'headList'
     }, function(ret, err) {
-        // api.closeWin({name:'headList'})
         // 获取选中的负责人信息
         headList = JSON.parse(ret.value.checkHeadObj);
         $('#person').val(headList.name);
@@ -58,7 +57,7 @@ apiready = function() {
           indexMap.initDeviceLayer('addArea');
         }
         indexMap.mapClearSource({name: 'addArea'});
-        console.log(JSON.stringify(ret));
+        // console.log(JSON.stringify(ret));
         areaInfo = ret.value.areaInfo;
         indexMap.drawAreaSelect(areaInfo.areaPoint, {name: 'addArea'});
 
@@ -74,8 +73,8 @@ apiready = function() {
             lineList: lineList,
             pointList: pointList
         }, {name: 'addArea'});
-        console.log(JSON.stringify(equipment));
-        console.log(typeof equipment);
+        // console.log(JSON.stringify(equipment));
+        // console.log(typeof equipment);
     });
 
     // 初始化图片列表
@@ -167,6 +166,15 @@ function subJob(){
     return false;
   }
   // 判断巡检区域是否填写
+  // console.log(JSON.stringify(areaInfo));
+  if(!areaInfo.id){
+    api.toast({
+        msg: '请选择巡检区域!',
+        duration: 2000,
+        location: 'middle'
+    });
+    return false;
+  }
   // console.log(JSON.stringify(imgList));
   var data = {
     content:$("#content").val(),  //工单内容
@@ -174,9 +182,10 @@ function subJob(){
     personId:headList.userId,            //负责人ID
     person:$("#person").val(),    //负责人名称
     status:1,                     //工单状态（1：待接收；2：进行中；3：关闭；4：已完成）
-    deviceId:1,                    //设备ID
+    eventId:api.pageParam.eventId,            //事件Id
+    deviceId:equipment[0].id,                    //设备ID
     planCompleteTime:$("#planCompleteTime").val()+":00:00",   //预计完成时间
-    areaId:1,                      //区域（路线）ID
+    areaId:areaInfo.id,                      //区域（路线）ID
     source:source,                //来源：1：PC端；2：APP；3：第三方（管网）
     resourceInfoList:imgList
     // resourceInfoList:{
@@ -199,7 +208,14 @@ function uploadData(data){
       title: '提交中...',
       modal: false
   });
-  jobPostMethod("api/services/Inspection/WorkOrderService/InsertWorkOrder",data,showRet,showErr);
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxAddJob(options)
+  // jobPostMethod("api/services/Inspection/WorkOrderService/InsertWorkOrder",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
     // console.log(JSON.stringify(ret));
@@ -244,6 +260,10 @@ function clearData(){
   $("#planCompleteTime").val("");
   imgList=[];
   showImg(imgList);
+  $("#areaMap").html("");
+  areaInfo={};
+  equipment={};
+  $("#areaMap").addClass("aui-hide");
 }
 
 // 上传附件 图片

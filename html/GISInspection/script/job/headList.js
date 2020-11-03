@@ -22,10 +22,19 @@ function search(){
       title: '搜索中...',
       modal: false
   });
-  console.log($("#search-input").val());
+  // console.log($("#search-input").val());
   var scrollVal = $("#search-input").val();
-  // getUserList("api/services/app/Information/GetSelectPersonnelAsync?key="+scrollVal,"",showRet,showErr);
-  jobGetMethod("api/services/app/Information/GetSelectPersonnelAsync?key="+scrollVal,"",showRet,showErr);
+
+  var options={
+    data:"",
+    type:'get',
+    scrollVal:scrollVal,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  getAjaxSearchHeadList(options);
+  // jobGetMethod("api/services/app/Information/GetSelectPersonnelAsync?key="+scrollVal,"",showRet,showErr);
   function showRet(ret){
     api.hideProgress();
     $('.head-list').html('');
@@ -40,7 +49,7 @@ function search(){
 
   function showErr(err){
     api.hideProgress();
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(err));
     if(err.body){
       alert(err.body)
     }else {
@@ -57,8 +66,15 @@ function onGetData() {
         title: '加载中...',
         modal: false
     });
-
-    jobGetMethod("api/services/app/Information/GetOrganizationAndPersonnel","",showRet,showErr);
+    var options={
+      data:"",
+      type:'get',
+      success:showRet,
+      error:showErr,
+    }
+    // 请求接口 获取数据
+    getAjaxHeadList(options);
+    // jobGetMethod("api/services/app/Information/GetOrganizationAndPersonnel","",showRet,showErr);
     function showRet(ret){
       api.hideProgress();
       $('.head-list').html('');
@@ -122,7 +138,7 @@ function checkHead(el){
 }
 // 确定请求接口 传递数据
 function onCheck(){
-  console.log(checkHeadObj);
+  // console.log(checkHeadObj);
   api.sendEvent({
       name: 'headList',
       extra: {

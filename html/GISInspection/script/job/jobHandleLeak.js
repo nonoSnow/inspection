@@ -4,6 +4,7 @@ var caliberExtendIndex = nowCaliberExtendIndex = 0; //查漏延伸总数
 var addressIndex = 0;  //地址总数
 var Id; //工单ID
 var from;  //来源哪个页面
+var caliberList=[];  //口径列表
 
 apiready = function() {
   var header = $api.byId('header');
@@ -11,6 +12,10 @@ apiready = function() {
   //获取工单ID
   Id = parseInt(api.pageParam.Id);
   from = api.pageParam.from;
+
+  // 监听caliberList
+  getCaliberList();
+
   $(".custom-popup-list li").each(function() {
     $(this).click(function() {
       $('#caliberType' + nowCaliberIndex).val($(this).text());
@@ -67,7 +72,7 @@ function onShowExtendPop(el) {
   }
   popup.show(document.getElementById("caliberExtendPop"));
 }
-
+// 新增
 function onAddItem(type) {
   var item = '';
   if (type == '0') {
@@ -115,7 +120,7 @@ function onAddItem(type) {
     $(".item-three").append(item);
   }
 }
-
+// 删除
 function onDelecteItem(Obj) {
   Obj.parentNode.parentNode.parentNode.removeChild(Obj.parentNode.parentNode);
 }
@@ -200,7 +205,7 @@ function subHandle(){
     });
   }
 }
-
+// 提交完成
 function subComplete(data){
   // console.log(JSON.stringify(data));
   api.showProgress({
@@ -209,7 +214,14 @@ function subComplete(data){
       title: '提交中...',
       modal: false
   });
-  jobPostMethod("api/services/Inspection/WorkOrderService/CompleteWorkOrder",data,showRet,showErr);
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxWriteJob(options);
+  // jobPostMethod("api/services/Inspection/WorkOrderService/CompleteWorkOrder",data,showRet,showErr);
   // console.log(JSON.stringify($api.getStorage('loginData')));
   function showRet(ret){
     api.hideProgress();
@@ -260,3 +272,22 @@ function subComplete(data){
     }
   }
 }
+
+// 监听caliberList
+// function getCaliberList(){
+//   caliberList=$api.getStorage('caliberList');
+//   // if(!caliberList){
+//   //   //再次请求接口
+//   // }
+//   console.log(JSON.stringify(caliberList));
+//   var str="";
+//   for (var i = 0; i < caliberList.length; i++) {
+//     if(i==caliberList.length-1){
+//       str=str+'<li class="custom-popup-item border-none">'+caliberList[i].value+'</li>'
+//     }else{
+//       str=str+'<li class="custom-popup-item">'+caliberList[i].value+'</li>'
+//     }
+//   }
+//   $("#caliberList1").html(str);
+//   $("#caliberList2").html(str);
+// }

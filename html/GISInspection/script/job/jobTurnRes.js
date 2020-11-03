@@ -20,14 +20,21 @@ function showData() {
   var data={
     id:Id
   }
-  console.log(Id);
+  // console.log(Id);
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxTurnJobDetail(options);
   // 请求数据，渲染页面
-  jobPostMethod("api/services/Inspection/WorkOrderService/AppGetWorkOrderTransferById",data,showRet,showErr);
+  // jobPostMethod("api/services/Inspection/WorkOrderService/AppGetWorkOrderTransferById",data,showRet,showErr);
 
   function showRet(ret) {
     api.hideProgress();
     $(".reson").removeClass("aui-hide")
-    console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(ret));
     $("#transferReason").val(ret.result.transferReason);
     imgList=ret.result.resourcelist;
     showImg(imgList);
@@ -36,7 +43,7 @@ function showData() {
   function showErr(err){
     api.hideProgress();
 
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(err));
     if(err.body){
       if(err.body.error){
         if(err.body.error.message){
@@ -54,14 +61,14 @@ function showData() {
 }
 // 显示图片
 function showImg(data) {
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   var param = {
     list: data,
     url: baseUrl
   }
   $('#imgBox').html('');
   var str = template('imgData', param);
-  console.log(str);
+  // console.log(str);
   $('#imgBox').append(str);
   // $('#imgBox').prepend(str);
 }

@@ -180,160 +180,285 @@ function showData(data, status) {
     title: '加载中...',
     text: '请稍后',
   });
-  getTaskDataSingle("api/services/Inspection/InspectionTaskService/AppGetTaskList",data,showRet,showErr);
+  getTaskDataSingle({
+    data: data,
+    success: function (ret) {
+      // console.log(JSON.stringify(ret));
+      var data;
+      var str;
 
-  function showRet(ret) {
-    // console.log('1111111111111111111111111111111111111');
-    // console.log(JSON.stringify(ret));
-    // $('#taskList').html('');
-    // console.log(JSON.stringify($('#taskList').html()));
+      if (ret.result.items.length != 0) {
+        $('#haveNothing').addClass('aui-hide');
+        $('#list-box').removeClass('bgc-ff');
+        switch (status) {
+          case 'onGoing':
+            goingHasNext = ret.result.hasNextPage;
+            // if (ret.result.items.length != 0) {
+              ret.result.items.forEach(function (item, i) {
+                if (item.planStartTime != null || item.planStartTime != '') {
+                  item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+                }
 
-    var data;
-    var str;
+                if (item.startTime != null || item.startTime != '') {
+                  item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+                }
 
-    if (ret.result.items.length != 0) {
-      $('#haveNothing').addClass('aui-hide');
-      $('#list-box').removeClass('bgc-ff');
-      switch (status) {
-        case 'onGoing':
-          goingHasNext = ret.result.hasNextPage;
-          // if (ret.result.items.length != 0) {
-            ret.result.items.forEach(function (item, i) {
-              if (item.planStartTime != null || item.planStartTime != '') {
-                item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
-              }
+                if (item.endTime != null || item.endTime != '') {
+                  item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+                }
 
-              if (item.startTime != null || item.startTime != '') {
-                item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
-              }
+                if (item.planEndTime != null || item.planEndTime != '') {
+                  item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+                }
+              })
+            // }
+            data = {
+              list: ret.result.items
+            }
+            str = template(status, data);
+            break;
+          case 'received':
+            receiveHasNext = ret.result.hasNextPage;
+            // if (ret.result.items.length != 0) {
+              ret.result.items.forEach(function (item, i) {
+                if (item.planStartTime != null || item.planStartTime != '') {
+                  item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+                }
 
-              if (item.endTime != null || item.endTime != '') {
-                item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
-              }
+                if (item.startTime != null || item.startTime != '') {
+                  item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+                }
 
-              if (item.planEndTime != null || item.planEndTime != '') {
-                item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
-              }
-            })
-          // }
-          data = {
-            list: ret.result.items
-          }
-          str = template(status, data);
-          break;
-        case 'received':
-          receiveHasNext = ret.result.hasNextPage;
-          // if (ret.result.items.length != 0) {
-            ret.result.items.forEach(function (item, i) {
-              if (item.planStartTime != null || item.planStartTime != '') {
-                item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
-              }
+                if (item.endTime != null || item.endTime != '') {
+                  item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+                }
 
-              if (item.startTime != null || item.startTime != '') {
-                item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
-              }
+                if (item.planEndTime != null || item.planEndTime != '') {
+                  item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+                }
+              })
+            // }
+            data = {
+              list: ret.result.items
+            }
 
-              if (item.endTime != null || item.endTime != '') {
-                item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
-              }
+            str = template(status, data);
+            break;
+          case 'suspended':
+            suspendHasNext = ret.result.hasNextPage;
+            // if (ret.result.items.length != 0) {
+              ret.result.items.forEach(function (item, i) {
+                if (item.planStartTime != null || item.planStartTime != '') {
+                  item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+                }
 
-              if (item.planEndTime != null || item.planEndTime != '') {
-                item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
-              }
-            })
-          // }
-          data = {
-            list: ret.result.items
-          }
+                if (item.startTime != null || item.startTime != '') {
+                  item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+                }
 
-          str = template(status, data);
-          break;
-        case 'suspended':
-          suspendHasNext = ret.result.hasNextPage;
-          // if (ret.result.items.length != 0) {
-            ret.result.items.forEach(function (item, i) {
-              if (item.planStartTime != null || item.planStartTime != '') {
-                item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
-              }
+                if (item.endTime != null || item.endTime != '') {
+                  item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+                }
 
-              if (item.startTime != null || item.startTime != '') {
-                item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
-              }
+                if (item.planEndTime != null || item.planEndTime != '') {
+                  item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+                }
+              })
+            // }
+            data = {
+              list: ret.result.items
+            }
+            str = template(status, data);
+            break;
+          case 'completed':
+            completedHasNext = ret.result.hasNextPage;
+            // if (ret.result.items.length != 0) {
+              ret.result.items.forEach(function (item, i) {
+                if (item.planStartTime != null || item.planStartTime != '') {
+                  item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+                }
 
-              if (item.endTime != null || item.endTime != '') {
-                item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
-              }
+                if (item.startTime != null || item.startTime != '') {
+                  item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+                }
 
-              if (item.planEndTime != null || item.planEndTime != '') {
-                item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
-              }
-            })
-          // }
-          data = {
-            list: ret.result.items
-          }
-          str = template(status, data);
-          break;
-        case 'completed':
-          completedHasNext = ret.result.hasNextPage;
-          // if (ret.result.items.length != 0) {
-            ret.result.items.forEach(function (item, i) {
-              if (item.planStartTime != null || item.planStartTime != '') {
-                item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
-              }
+                if (item.endTime != null || item.endTime != '') {
+                  item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+                }
 
-              if (item.startTime != null || item.startTime != '') {
-                item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
-              }
+                if (item.planEndTime != null || item.planEndTime != '') {
+                  item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+                }
+              })
+            // }
+            data = {
+              list: ret.result.items
+            }
+            str = template(status, data);
+            break;
+        }
 
-              if (item.endTime != null || item.endTime != '') {
-                item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
-              }
+        // console.log(str);
+        $('#taskList').append(str);
 
-              if (item.planEndTime != null || item.planEndTime != '') {
-                item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
-              }
-            })
-          // }
-          data = {
-            list: ret.result.items
-          }
-          str = template(status, data);
-          break;
+      } else {
+        $('#list-box').addClass('bgc-ff');
+        $('#haveNothing').removeClass('aui-hide');
       }
 
-      // console.log(str);
-      $('#taskList').append(str);
-
-    } else {
-      $('#list-box').addClass('bgc-ff');
-      $('#haveNothing').removeClass('aui-hide');
+      api.hideProgress();
     }
+  });
 
-    api.hideProgress();
-  }
-
-  function showErr(err) {
-    // console.log(JSON.stringify(err));
-    api.hideProgress();
-    $('#haveNothing').removeClass('aui-hide');
-    if (err.body.error != undefined) {
-      api.toast({
-          msg: err.body.error.message,
-          duration: 2000,
-          location: 'middle'
-      });
-
-      // alert(err.body.error.message)
-    } else {
-      api.toast({
-          msg: err.msg,
-          duration: 2000,
-          location: 'middle'
-      });
-      // alert(err.msg);
-    }
-  }
+  // getTaskDataSingle("api/services/Inspection/InspectionTaskService/AppGetTaskList",data,showRet,showErr);
+  //
+  // function showRet(ret) {
+    // var data;
+    // var str;
+    //
+    // if (ret.result.items.length != 0) {
+    //   $('#haveNothing').addClass('aui-hide');
+    //   $('#list-box').removeClass('bgc-ff');
+    //   switch (status) {
+    //     case 'onGoing':
+    //       goingHasNext = ret.result.hasNextPage;
+    //       // if (ret.result.items.length != 0) {
+    //         ret.result.items.forEach(function (item, i) {
+    //           if (item.planStartTime != null || item.planStartTime != '') {
+    //             item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+    //           }
+    //
+    //           if (item.startTime != null || item.startTime != '') {
+    //             item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+    //           }
+    //
+    //           if (item.endTime != null || item.endTime != '') {
+    //             item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+    //           }
+    //
+    //           if (item.planEndTime != null || item.planEndTime != '') {
+    //             item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+    //           }
+    //         })
+    //       // }
+    //       data = {
+    //         list: ret.result.items
+    //       }
+    //       str = template(status, data);
+    //       break;
+    //     case 'received':
+    //       receiveHasNext = ret.result.hasNextPage;
+    //       // if (ret.result.items.length != 0) {
+    //         ret.result.items.forEach(function (item, i) {
+    //           if (item.planStartTime != null || item.planStartTime != '') {
+    //             item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+    //           }
+    //
+    //           if (item.startTime != null || item.startTime != '') {
+    //             item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+    //           }
+    //
+    //           if (item.endTime != null || item.endTime != '') {
+    //             item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+    //           }
+    //
+    //           if (item.planEndTime != null || item.planEndTime != '') {
+    //             item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+    //           }
+    //         })
+    //       // }
+    //       data = {
+    //         list: ret.result.items
+    //       }
+    //
+    //       str = template(status, data);
+    //       break;
+    //     case 'suspended':
+    //       suspendHasNext = ret.result.hasNextPage;
+    //       // if (ret.result.items.length != 0) {
+    //         ret.result.items.forEach(function (item, i) {
+    //           if (item.planStartTime != null || item.planStartTime != '') {
+    //             item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+    //           }
+    //
+    //           if (item.startTime != null || item.startTime != '') {
+    //             item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+    //           }
+    //
+    //           if (item.endTime != null || item.endTime != '') {
+    //             item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+    //           }
+    //
+    //           if (item.planEndTime != null || item.planEndTime != '') {
+    //             item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+    //           }
+    //         })
+    //       // }
+    //       data = {
+    //         list: ret.result.items
+    //       }
+    //       str = template(status, data);
+    //       break;
+    //     case 'completed':
+    //       completedHasNext = ret.result.hasNextPage;
+    //       // if (ret.result.items.length != 0) {
+    //         ret.result.items.forEach(function (item, i) {
+    //           if (item.planStartTime != null || item.planStartTime != '') {
+    //             item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+    //           }
+    //
+    //           if (item.startTime != null || item.startTime != '') {
+    //             item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+    //           }
+    //
+    //           if (item.endTime != null || item.endTime != '') {
+    //             item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+    //           }
+    //
+    //           if (item.planEndTime != null || item.planEndTime != '') {
+    //             item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+    //           }
+    //         })
+    //       // }
+    //       data = {
+    //         list: ret.result.items
+    //       }
+    //       str = template(status, data);
+    //       break;
+    //   }
+    //
+    //   // console.log(str);
+    //   $('#taskList').append(str);
+    //
+    // } else {
+    //   $('#list-box').addClass('bgc-ff');
+    //   $('#haveNothing').removeClass('aui-hide');
+    // }
+    //
+    // api.hideProgress();
+  // }
+  //
+  // function showErr(err) {
+  //   // console.log(JSON.stringify(err));
+  //   api.hideProgress();
+  //   $('#haveNothing').removeClass('aui-hide');
+  //   if (err.body.error != undefined) {
+  //     api.toast({
+  //         msg: err.body.error.message,
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //
+  //     // alert(err.body.error.message)
+  //   } else {
+  //     api.toast({
+  //         msg: err.msg,
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //     // alert(err.msg);
+  //   }
+  // }
 }
 
 function onMenu(index, el) {
@@ -503,41 +628,57 @@ function closeTask(that) {
           operate: 4
         }
 
-        changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', param, showRet, showErr);
-
-        function showRet(ret) {
-          // 修改状态成功，完成成功，重新加载
-          $('#taskList').html('');
-          if (type == 'suspended') {
-            // 已暂停
-            suspendPageIndex = 1;
-            initSuspended();
-          } else if (type == 'received') {
-            // 待接收
-            receivePageIndex = 1;
-            initReceived();
+        changeTaskStatus({
+          data: param,
+          success: function(ret) {
+            // 修改状态成功，完成成功，重新加载
+            $('#taskList').html('');
+            if (type == 'suspended') {
+              // 已暂停
+              suspendPageIndex = 1;
+              initSuspended();
+            } else if (type == 'received') {
+              // 待接收
+              receivePageIndex = 1;
+              initReceived();
+            }
           }
-
-        }
-
-        function showErr(err) {
-          if(err.body.error != undefined){
-            // alert(err.body.error.message);
-            api.toast({
-                msg: err.body.error.message,
-                duration: 2000,
-                location: 'middle'
-            });
-
-          }else{
-            // alert(err.msg);
-            api.toast({
-                msg: err.msg,
-                duration: 2000,
-                location: 'middle'
-            });
-          }
-        }
+        })
+        // changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', param, showRet, showErr);
+        //
+        // function showRet(ret) {
+        //   // 修改状态成功，完成成功，重新加载
+        //   $('#taskList').html('');
+        //   if (type == 'suspended') {
+        //     // 已暂停
+        //     suspendPageIndex = 1;
+        //     initSuspended();
+        //   } else if (type == 'received') {
+        //     // 待接收
+        //     receivePageIndex = 1;
+        //     initReceived();
+        //   }
+        //
+        // }
+        //
+        // function showErr(err) {
+        //   if(err.body.error != undefined){
+        //     // alert(err.body.error.message);
+        //     api.toast({
+        //         msg: err.body.error.message,
+        //         duration: 2000,
+        //         location: 'middle'
+        //     });
+        //
+        //   }else{
+        //     // alert(err.msg);
+        //     api.toast({
+        //         msg: err.msg,
+        //         duration: 2000,
+        //         location: 'middle'
+        //     });
+        //   }
+        // }
       }
   });
 }

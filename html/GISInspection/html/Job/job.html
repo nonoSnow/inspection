@@ -15,6 +15,9 @@
     <div class="flex-wrap flex-vertical height100">
       <header class="aui-bar aui-bar-nav aui-bar-light bgi-none" id="header">
           <div class="aui-title">工单</div>
+          <a class='aui-pull-right color-333' tapmode onclick="addJob()">
+              <span>新增工单</span>
+          </a>
       </header>
 
       <div class="header-type display-flex text-cent line-height25 color-666">
@@ -38,7 +41,7 @@
         </div>
       </div>
 
-      <div class="flex-con flex-content height100 bgc-f3">
+      <div class="flex-con flex-content height100 bgc-f3" id="dataBox">
         <ul class="aui-content-padded" id="dataList">
         </ul>
       </div>
@@ -67,7 +70,7 @@
               <img src="../../image/job-icon.png" class='task-icon' alt="">
               <span class="margin-left3 font-w4">工单类型：{{value.typeStr}}</span>
             </div>
-            <div class="margin-top10 font-S75 color-666 charge">负责人：{{value.headName}}</div>
+            <div class="margin-top10 font-S75 color-666 charge">负责人：{{value.person}}</div>
           </div>
           <div class="margin-top6 font-S75 color-666 end-time">
             预计完成时间：{{value.planCompleteTime}}
@@ -121,7 +124,7 @@
             <img src="../../image/job-icon.png" class='task-icon' alt="">
             <span class="margin-left3 font-w4">工单类型：{{value.typeStr}}</span>
           </div>
-          <div class="margin-top10 font-S75 color-666 charge">负责人：{{value.headName}}</div>
+          <div class="margin-top10 font-S75 color-666 charge">负责人：{{value.person}}</div>
           <div class="margin-top6 font-S75 color-666 start-time">
             开始时间：{{value.creationTime}}
           </div>

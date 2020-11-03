@@ -2,6 +2,7 @@
 var bRuleIndex = nowBRuleIndex = 0;    // 查漏总数
 var Id; //工单ID
 var from;  //来源哪个页面
+var caliberList=[];  //口径列表
 
 apiready = function() {
   var header = $api.byId('header');
@@ -9,7 +10,8 @@ apiready = function() {
   //获取工单ID
   Id = parseInt(api.pageParam.Id);
   from = api.pageParam.from;
-
+  // 监听caliberList
+  getCaliberList();
   // 管径/口径的选择
   $(".extend-popup-list li").each(function() {
     $(this).click(function() {
@@ -120,14 +122,21 @@ function subHandle(){
 }
 
 function subComplete(data){
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   api.showProgress({
       style: 'default',
       animationType: 'fade',
       title: '提交中...',
       modal: false
   });
-  jobPostMethod("api/services/Inspection/WorkOrderService/CompleteWorkOrder",data,showRet,showErr);
+  var options={
+    data:data,
+    success:showRet,
+    error:showErr,
+  }
+  // 请求接口 获取数据
+  postAjaxWriteJob(options);
+  // jobPostMethod("api/services/Inspection/WorkOrderService/CompleteWorkOrder",data,showRet,showErr);
   // console.log(JSON.stringify($api.getStorage('loginData')));
   function showRet(ret){
     api.hideProgress();
