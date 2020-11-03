@@ -419,13 +419,16 @@
             var areaFeatye = new window.ol.Feature({
                 geometry: new window.ol.geom.Polygon([pointsArray])
             });
-            // 设置属性值 （20201029 zxf）
-            areaFeatye.setProperties({
-                areaId: areaSingleList.areaId,
-                areaName: areaSingleList.areaName,
-                areaPoint: areaSingleList.areaPoint,
-                type: areaSingleList.type
-            });
+            if(areaSingleList){
+              // 设置属性值 （20201029 zxf）
+              areaFeatye.setProperties({
+                  areaId: areaSingleList.areaId,
+                  areaName: areaSingleList.areaName,
+                  areaPoint: areaSingleList.areaPoint,
+                  type: areaSingleList.type
+              });
+            }
+
             this[sourceName]['source'].addFeature(areaFeatye);
             // 完成区域绘制之后将地图的中心点适配到区域范围
             var xmax = Math.max.apply(null, xArray);
@@ -857,8 +860,8 @@
                   coords: areaExtent
               },
               success: function(ret) {
-                _this.getLineListInArea(ret.result.line, deviceInfo.lineList, name)
-                _this.getPointListInArea(ret.result.point, deviceInfo.pointList, name)
+                _this.getLineListInArea(ret.result.line, deviceInfo, name)
+                _this.getPointListInArea(ret.result.point, deviceInfo, name)
               }
           })
       },

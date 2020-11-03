@@ -55,6 +55,12 @@ function subJobClose(){
       });
       // 清空数据
       clearData();
+      if(api.pageParam.from=="jobDetail"){
+        api.closeWin({
+            name: 'jobDetail'
+        });
+
+      }
       api.closeWin();
 
     }else {

@@ -242,7 +242,8 @@ function onCloseJob(el){
       url: './jobClose.html',
       pageParam: {
           Id:Id,
-          jobType:jobType
+          jobType:jobType,
+          from:'job'
       }
   });
 }

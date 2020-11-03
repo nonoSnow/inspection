@@ -62,6 +62,7 @@ apiready = function() {
         indexMap.mapClearSource({name: 'addArea'});
         // console.log(JSON.stringify(ret));
         areaInfo = ret.value.areaInfo;
+        console.log(JSON.stringify(areaInfo));
         indexMap.drawAreaSelect(areaInfo.areaPoint, {name: 'addArea'});
 
         equipment = ret.value.equipment;
