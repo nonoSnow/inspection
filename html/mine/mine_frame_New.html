@@ -97,8 +97,9 @@
             height: 100%;
             border: none;
         }
-        .c-setting-list{
-          font-size: 0.7rem;
+
+        .c-setting-list {
+            font-size: 0.7rem;
         }
     </style>
 </head>
@@ -113,7 +114,7 @@
                             <div class="aui-list-item-media" id="head">
                                 <div class="headImgDiv">
                                     <img :src="headImg" class="aui-img-round">
-                                      <!-- <img src="../../image/mine_frame/mine_head.png" class="aui-img-round"> -->
+                                    <!-- <img src="../../image/mine_frame/mine_head.png" class="aui-img-round"> -->
 
                                 </div>
                             </div>
@@ -122,7 +123,7 @@
                                     <div class="aui-list-item-title aui-font-size-14">{{userName}}</div>
                                 </div>
                                 <div class="aui-list-item-text">
-                                  {{userAccount}}
+                                    {{userAccount}}
                                 </div>
                             </div>
                         </div>
@@ -196,14 +197,14 @@
         // 确定退出登录 zxf 20200616
         api.addEventListener({
             name: 'deleteMessage'
-        }, function(ret, err){
-            if( ret ){
-             mineVue.loginOutSure();
+        }, function(ret, err) {
+            if (ret) {
+                mineVue.loginOutSure();
             }
         });
 
 
-     ininVue();
+        ininVue();
     };
 
     function ininVue() {
@@ -213,32 +214,32 @@
                 listData: [{
                         name: '工作通知',
                         imageUrl: '../../image/mine_frame/myMessage.png',
-                        openWinName:'message',
-                        url:'../message/worknotice.html'
+                        openWinName: 'message',
+                        url: '../message/worknotice.html'
                     }, {
                         name: '报警消息',
                         imageUrl: '../../image/mine_frame/warning.png',
-                        openWinName:'alarm',
-                        url:'../message/alarm.html'
+                        openWinName: 'alarm',
+                        url: '../message/alarm.html'
                     }, {
                         name: '我的资料',
                         imageUrl: '../../image/mine_frame/myInfo.png',
-                        openWinName:'myInfo',
-                        url:'./myInfo.html'
+                        openWinName: 'myInfo',
+                        url: './myInfo.html'
                     }, {
                         name: '我的应用',
                         imageUrl: '../../image/mine_frame/myApp.png',
-                        openWinName:'myApp',
-                        url:'./myApp.html'
+                        openWinName: 'myApp',
+                        url: './myApp.html'
                     }, {
                         name: '设置',
                         imageUrl: '../../image/mine_frame/settings.png',
-                        openWinName:'settings_New',
-                        url:'./settings_New.html'
+                        openWinName: 'settings_New',
+                        url: './settings_New.html'
                     }, {
                         name: '注销',
                         imageUrl: '../../image/mine_frame/loginOut.png',
-                        openWinName:'loginOut',
+                        openWinName: 'loginOut',
                     },
                     // {
                     //     name: '公共测试',
@@ -258,20 +259,20 @@
                 headImg: '../../image/mine_frame/mine_head.png', //用户头像
             },
             methods: {
-                init:function() {
-                  var _this = this;
+                init: function() {
+                    var _this = this;
                     if (api.connectionType != 'none') {
                         _this.getInfo();
                     } else {
                         _this.initLocalData();
                     }
-                    setTimeout(function(){
-                       if(_this.userName == ""){
-                         _this.init();
-                       }
-                    },1000);
+                    setTimeout(function() {
+                        if (_this.userName == "") {
+                            _this.init();
+                        }
+                    }, 1000);
                 },
-                initLocalData:function() { // 没有网络的时候显示用户信息 12.16 zxf
+                initLocalData: function() { // 没有网络的时候显示用户信息 12.16 zxf
                     if (api.connectionType == "none" || api.connectionType == "2g") {
                         var userLoginInformation = $api.getStorage('userLoginInformation');
                         if (userLoginInformation != undefined && userLoginInformation.currentUserInfo != undefined) {
@@ -286,7 +287,7 @@
                         }
                     }
                 },
-                getInfo:function() { //获取租户和用户信息
+                getInfo: function() { //获取租户和用户信息
                     var _this = this;
                     fnGet('services/app/Home/GetLoginInfo', {}, false, function(ret, err) {
                         api.hideProgress();
@@ -303,17 +304,17 @@
                         }
                     })
                 },
-                setUserInfo:function(data1, data2) { //设置用户名和账户
+                setUserInfo: function(data1, data2) { //设置用户名和账户
                     this.userName = data1.trueName;
                     this.userAccount = data1.userName;
-                    if(data1.avatar!=null && data1.avatar!=''&& data1.avatar!=""){
-                      this.headImg =apiUrl+data1.avatar;
-                    }else{
+                    if (data1.avatar != null && data1.avatar != '' && data1.avatar != "") {
+                        this.headImg = apiUrl + data1.avatar;
+                    } else {
                         this.headImg = '../../image/mine_frame/mine_head.png';
                     }
 
                 },
-                openWinPageInfo:function(item) { //打开相应页面
+                openWinPageInfo: function(item) { //打开相应页面
                     var options = {
                         name: '',
                         url: '',
@@ -335,129 +336,130 @@
                         case item.openWinName == 'loginOut': //注销
                             this.loginOut();
                             break;
-                            default:
+                        default:
                             this.openWin(item);
                             break;
                     }
                 },
-                openWin:function(options) {
+                openWin: function(options) {
                     api.openWin({
                         name: options.name,
                         url: options.url,
                         pageParam: options.pageParam
                     });
                 }, //打开相应页面
-                loginOut:function(){ //注销
-                 this.isHasCb(function(ret) {
-                         if (ret) {
-                             var text = "确定注销吗？注销后会删除所有的抄表数据！";
-                         } else {
-                             var text = "确定退出当前账号吗？";
-                         }
-                         api.openFrame({
-                             name: 'delete_frame',
-                             url: '../delete_frame.html',
-                             rect: {
-                                 x: 0,
-                                 y: 0,
-                                 w: 'auto',
-                                 h: 'auto'
-                             },
-                             pageParam: {
-                                 msg: text,
-                             },
-                             bounces: false,
-                             bgColor: 'rgba(0,0,0,0.1)',
-                         });
-                     })
-                   },
-                isHasCb:function(callback) { //判断是否有抄表管家
-                  console.log(1);
-                   var userLoginInformation = $api.getStorage('userLoginInformation');
-                   if (userLoginInformation != undefined && userLoginInformation.appList != undefined) {
-                       var appList = userLoginInformation.appList[0].applications;
-                       var number = 0;
-                       if (appList != null) {
-                           if (appList.length != 0 && appList != undefined) {
-                               appList.forEach(function(item){
-                                   if (item.coding == 'WaterStarOne-MRH-S8') {
-                                       number++;
-                                   }
-                               });
-                               if (number != 0) {
-                                   callback(true);
-                               } else {
-                                   callback(false);
-                               }
-                           }
-                       } else {
-                           callback(false);
-                       }
-                   } else {
-                       callback(false);
-                   }
-                  },
-                loginOutSure:function() {   //确认退出当前账号
-                   var bindData = {
-                       userId: this.myInfoData.userInfo.userId,
-                       machineCode: ""
-                   }
-                   fnPost('services/app/User/UpdateMachineCode', {
-                       body: JSON.stringify(bindData)
-                   }, 'application/json', true, true, function(ret, err) {
-                       api.hideProgress();
-                       api.openWin({
-                           name: 'login_New',
-                           url: '../login/login_New.html',
-                           bgColor: '../../image/login/login_backgroud.png',
-                           animation: {
-                               type: "reveal", //动画类型（详见动画类型常量）
-                               subType: "from_bottom", //动画子类型（详见动画子类型常量）
-                               duration: 300 //动画过渡时间，默认300毫秒
-                           },
-                           reload: true,
-                           slidBackEnabled: false
-                       });
-                       // 删除抄表文件 zxf 2020-04-17
-                       var fs = api.require('fs');
-                       fs.remove({
-                           path: 'fs://SntSoft'
-                       }, function(ret, err) {
-                           if (ret.status) {
-                               // console.log( JSON.stringify( ret ) );
-                           }
-                       });
+                loginOut: function() { //注销
+                    this.isHasCb(function(ret) {
+                        if (ret) {
+                            var text = "确定注销吗？注销后会删除所有的抄表数据！";
+                        } else {
+                            var text = "确定退出当前账号吗？";
+                        }
+                        api.openFrame({
+                            name: 'delete_frame',
+                            url: '../delete_frame.html',
+                            rect: {
+                                x: 0,
+                                y: 0,
+                                w: 'auto',
+                                h: 'auto'
+                            },
+                            pageParam: {
+                                msg: text,
+                            },
+                            bounces: false,
+                            bgColor: 'rgba(0,0,0,0.1)',
+                        });
+                    })
+                },
+                isHasCb: function(callback) { //判断是否有抄表管家
+                    console.log(1);
+                    var userLoginInformation = $api.getStorage('userLoginInformation');
+                    if (userLoginInformation != undefined && userLoginInformation.appList != undefined) {
+                        var appList = userLoginInformation.appList[0].applications;
+                        var number = 0;
+                        if (appList != null) {
+                            if (appList.length != 0 && appList != undefined) {
+                                appList.forEach(function(item) {
+                                    if (item.coding == 'WaterStarOne-MRH-S8') {
+                                        number++;
+                                    }
+                                });
+                                if (number != 0) {
+                                    callback(true);
+                                } else {
+                                    callback(false);
+                                }
+                            }
+                        } else {
+                            callback(false);
+                        }
+                    } else {
+                        callback(false);
+                    }
+                },
+                loginOutSure: function() { //确认退出当前账号
+                    var bindData = {
+                        userId: this.myInfoData.userInfo.userId,
+                        machineCode: ""
+                    }
+                    fnPost('services/app/User/UpdateMachineCode', {
+                        body: JSON.stringify(bindData)
+                    }, 'application/json', true, true, function(ret, err) {
+                        api.hideProgress();
+                        api.openWin({
+                            name: 'login_New',
+                            url: '../login/login_New.html',
+                            bgColor: '../../image/login/login_backgroud.png',
+                            animation: {
+                                type: "reveal", //动画类型（详见动画类型常量）
+                                subType: "from_bottom", //动画子类型（详见动画子类型常量）
+                                duration: 300 //动画过渡时间，默认300毫秒
+                            },
+                            reload: true,
+                            slidBackEnabled: false
+                        });
+                        // 删除抄表文件 zxf 2020-04-17
+                        var fs = api.require('fs');
+                        fs.remove({
+                            path: 'fs://SntSoft'
+                        }, function(ret, err) {
+                            if (ret.status) {
+                                // console.log( JSON.stringify( ret ) );
+                            }
+                        });
 
-                       $api.rmStorage('appData');
-                       $api.rmStorage('jhUserName');
-                       $api.rmStorage('jhPassWord');
-                       $api.rmStorage('jhapipath');
-                       $api.rmStorage('jhUserId');
-                       $api.rmStorage('jhHeaders');
+                        $api.rmStorage('appData');
+                        $api.rmStorage('jhUserName');
+                        $api.rmStorage('jhPassWord');
+                        $api.rmStorage('jhapipath');
+                        $api.rmStorage('jhUserId');
+                        $api.rmStorage('jhHeaders');
 
-                       $api.rmStorage('bwapipath');
-                       $api.rmStorage('bwUserId');
-                       $api.rmStorage('bwHeaders');
-                       $api.rmStorage('bwUserName');
-                       $api.rmStorage('bwPassWord');
+                        $api.rmStorage('bwapipath');
+                        $api.rmStorage('bwUserId');
+                        $api.rmStorage('bwHeaders');
+                        $api.rmStorage('bwUserName');
+                        $api.rmStorage('bwPassWord');
 
-                       $api.rmStorage('yptOperatorName');
-                       $api.rmStorage('yptPassword');
-                       $api.rmStorage('yptOperatorId');
-                       $api.rmStorage('cbapipath');
-                       $api.rmStorage('cbHeaders');
+                        $api.rmStorage('yptOperatorName');
+                        $api.rmStorage('yptPassword');
+                        $api.rmStorage('yptOperatorId');
+                        $api.rmStorage('cbapipath');
+                        $api.rmStorage('cbHeaders');
 
-                       $api.rmStorage('thirdPartyAccount');
-                       $api.rmStorage('thirdPartyPassWord');
+                        $api.rmStorage('thirdPartyAccount');
+                        $api.rmStorage('thirdPartyPassWord');
 
-
-                       setTimeout(function() {
-                           api.closeFrameGroup({
-                               name: 'group'
-                           })
-                       }, 300);
-                   })
-               }
+                        //  删除当前用户角色缓存
+                        $api.rmStorage('currentUserRoles');
+                        setTimeout(function() {
+                            api.closeFrameGroup({
+                                name: 'group'
+                            })
+                        }, 300);
+                    })
+                }
 
             },
             mounted: function() {

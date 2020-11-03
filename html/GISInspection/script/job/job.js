@@ -12,12 +12,19 @@ var onReceivedPageNum=1;
 var onCompletedPageAll=0;
 var onCompletedPageNum=1;
 
+// 身份角色 0是员工 1是领导
+var role=0
 // 设置页数
 var pageCount=5
 
 apiready = function() {
   var header = $api.byId('header');
   $api.fixStatusBar(header);
+  // 获取身份：领导还是员工
+  role=getCurrentUserRoles();
+  if(role){
+    $(".aui-pull-right").removeClass("aui-hide")
+  }
   initOngoing();
   // 获取负责人
   var userLoginInformation = $api.getStorage('userLoginInformation');
@@ -59,7 +66,12 @@ function showData(data,status){
     error:showErr,
   }
   // 请求接口 获取数据
-  postAjaxJobList(options)
+  if(role){
+    // 领导
+    postAjaxJobBoss(options)
+  }else{
+    postAjaxJobList(options)
+  }
   // postAjaxJobBoss(options)
   // jobPostMethod("api/services/Inspection/WorkOrderService/GetWorkOrderListApp",data,showRet,showErr);
   function showRet(ret){
@@ -141,7 +153,7 @@ function initCompleted(){
   }
   showData(data,'completed');
 }
-
+// 菜单
 function onMenu(index, el) {
   jobType = index;
   if (index == 0) {
@@ -385,8 +397,12 @@ function addData(data,status){
     error:showErr,
   }
   // 请求接口 获取数据
-  postAjaxJobList(options)
-  // postAjaxJobBoss(options)
+  if(role){
+    // 领导
+    postAjaxJobBoss(options)
+  }else {
+    postAjaxJobList(options)
+  }
   // jobPostMethod("api/services/Inspection/WorkOrderService/GetWorkOrderListApp",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
