@@ -43,8 +43,6 @@ apiready = function() {
   taskId = api.pageParam.id;
 
   // console.log(api.pageParam.id);
-  console.log(taskId);
-  console.log('nowTaskType>>>>>>' + nowTaskType);
   if (nowTaskType == '0') {
     $('.task-stop').html('暂停');
     $('.task-complete').html('完成');
@@ -55,7 +53,6 @@ apiready = function() {
     $('.task-stop').html('关闭');
     $('.task-complete').html('重启');
   } else if (nowTaskType == '3') {
-    console.log('当前点击了已完成任务进入');
     $('#footer').addClass('aui-hide');
     $('.flex-con').removeClass('margin-bot250');
   }
@@ -576,8 +573,23 @@ function getTaskDetail(param) {
               mapid: 'mapBox'
           });
           indexMap.initArea('addArea');
-          var areaInfo = ret1.result;
-          indexMap.drawAreaSelect(areaInfo.areaPoint, {name: 'addArea'});
+          indexMap.initDeviceLayer('addArea');
+          // var areaPoint = ret1.areaPoint;
+          console.log(JSON.stringify(mapInfo));
+          console.log(typeof(mapInfo.areaPoint));
+          console.log(mapInfo.areaPoint);
+          indexMap.drawAreaSelect(mapInfo, {
+            name: 'addArea',
+            areaId: mapInfo.id
+          });
+          // indexMap.mapConduitEquipment({
+          //     areaPoint: mapInfo.areaPoint,
+          //     lineList: mapInfo.pipelineLists,
+          //     pointList: mapInfo.deviceLists
+          // }, {
+          //   name: 'addArea',
+          //   areaId: mapInfo.id
+          // });
         }
       })
     }

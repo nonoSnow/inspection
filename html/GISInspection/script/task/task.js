@@ -46,8 +46,13 @@ apiready = function() {
 
   var footer = $api.byId('footer');
   var footerH = $api.offset(footer).h;
-  // console.log(footerH);
-  // $("#list-box").css("height", );
+
+  //获取当前用户所属角色(领导、员工)
+  if (getCurrentUserRoles() == 1) {
+    isLeader = true;
+  } else {
+    isLeader = false;
+  }
 
 
   if (isLeader) {
