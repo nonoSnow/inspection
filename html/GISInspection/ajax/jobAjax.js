@@ -51,7 +51,7 @@ function postAjaxJobList(options) {
             body: JSON.stringify(data)
         },
         error: function(err) {
-            console.log(JSON.stringify(err))
+            // console.log(JSON.stringify(err))
             if(options.fail) options.fail(err);
         }
     }, options)
@@ -73,7 +73,7 @@ function postAjaxJobReceived(options) {
             body: JSON.stringify(data)
         },
         error: function(err) {
-            console.log(JSON.stringify(err))
+            // console.log(JSON.stringify(err))
             if(options.fail) options.fail(err);
         }
     }, options)
@@ -94,7 +94,7 @@ function getAjaxCaliberList(options) {
             body: JSON.stringify(data)
         },
         error: function(err) {
-            console.log(JSON.stringify(err))
+            // console.log(JSON.stringify(err))
             if(options.fail) options.fail(err);
         }
     }, options)
@@ -116,7 +116,7 @@ function postAjaxAddJob(options) {
             body: JSON.stringify(data)
         },
         error: function(err) {
-            console.log(JSON.stringify(err))
+            // console.log(JSON.stringify(err))
             if(options.fail) options.fail(err);
         }
     }, options)
@@ -139,7 +139,7 @@ function getAjaxHeadList(options) {
             body: JSON.stringify(data)
         },
         error: function(err) {
-            console.log(JSON.stringify(err))
+            // console.log(JSON.stringify(err))
             if(options.fail) options.fail(err);
         }
     }, options)
@@ -160,7 +160,7 @@ function getAjaxSearchHeadList(options) {
             body: JSON.stringify(data)
         },
         error: function(err) {
-            console.log(JSON.stringify(err))
+            // console.log(JSON.stringify(err))
             if(options.fail) options.fail(err);
         }
     }, options)
@@ -183,7 +183,7 @@ function postAjaxCloseJob(options) {
             body: JSON.stringify(data)
         },
         error: function(err) {
-            console.log(JSON.stringify(err))
+            // console.log(JSON.stringify(err))
             if(options.fail) options.fail(err);
         }
     }, options)
@@ -205,7 +205,7 @@ function postAjaxTurnJob(options) {
             body: JSON.stringify(data)
         },
         error: function(err) {
-            console.log(JSON.stringify(err))
+            // console.log(JSON.stringify(err))
             if(options.fail) options.fail(err);
         }
     }, options)
@@ -227,7 +227,7 @@ function postAjaxJobDetail(options) {
             body: JSON.stringify(data)
         },
         error: function(err) {
-            console.log(JSON.stringify(err))
+            // console.log(JSON.stringify(err))
             if(options.fail) options.fail(err);
         }
     }, options)
@@ -249,7 +249,7 @@ function postAjaxWriteJob(options) {
             body: JSON.stringify(data)
         },
         error: function(err) {
-            console.log(JSON.stringify(err))
+            // console.log(JSON.stringify(err))
             if(options.fail) options.fail(err);
         }
     }, options)
@@ -272,7 +272,7 @@ function postAjaxTurnJobDetail(options) {
             body: JSON.stringify(data)
         },
         error: function(err) {
-            console.log(JSON.stringify(err))
+            // console.log(JSON.stringify(err))
             if(options.fail) options.fail(err);
         }
     }, options)
@@ -294,7 +294,7 @@ function postAjaxJobBoss(options) {
             body: JSON.stringify(data)
         },
         error: function(err) {
-            console.log(JSON.stringify(err))
+            // console.log(JSON.stringify(err))
             if(options.fail) options.fail(err);
         }
     }, options)
@@ -316,7 +316,7 @@ function postAjaxAreaDetails(options) {
             body: JSON.stringify(data)
         },
         error: function(err) {
-            console.log(JSON.stringify(err))
+            // console.log(JSON.stringify(err))
             if(options.fail) options.fail(err);
         }
     }, options)
@@ -329,7 +329,7 @@ function getCaliberList(){
   // if(!caliberList){
   //   //再次请求接口
   // }
-  console.log(JSON.stringify(caliberList));
+  // console.log(JSON.stringify(caliberList));
   var str="";
   for (var i = 0; i < caliberList.length; i++) {
     if(i==caliberList.length-1){
