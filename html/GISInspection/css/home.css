@@ -1,10 +1,247 @@
-.member-status > div {
+.member-status>div {
     display: none;
 }
+
 .member-status .unline, .member-status.on .online {
     display: block;
 }
 
 .member-status .online, .member-status.on .unline {
     display: none;
+}
+
+.homePage_order_list_box {
+    width: 100vw;
+    /*max-height: 90vh;*/
+    /*min-height: 30vh;*/
+    height: 8vh;
+    margin: 0 auto;
+    background: #FFFFFF;
+    box-shadow: 0 -3px 9px 0 rgba(0, 0, 0, 0.16);
+    border-radius: 16px 16px 0 0;
+    position: absolute;
+    bottom: 0rem;
+    z-index: 100;
+    overflow: hidden;
+    transition: 0.8s;
+}
+
+.homePage_order_list_box.one {
+    height: 30vh;
+}
+
+.homePage_order_list_box.active {
+    height: 90vh;
+    transition: 0.5s;
+}
+
+.homePage_order_upper {
+    width: 1.6rem;
+    height: 0.4rem;
+    background: url(../image/upper.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    position: relative;
+    top: 0.4rem;
+    left: 8.3rem;
+    transform: rotate(180deg)!important;
+    transition: 0.5s;
+}
+
+.homePage_order_upper.active {
+    transform: rotate(0deg)!important;
+    transition: 0.5s;
+}
+
+.homePage_order_narrow {
+    width: 1.9rem;
+    height: 0.2rem;
+    background: url(../image/narrow.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    position: relative;
+    top: 0.4rem;
+    left: 8rem;
+    opacity: 0.2;
+}
+
+.homePage_order_title {
+    width: 100%;
+    height: 2.5rem;
+    font-size: 0.8rem;
+    color: #333333;
+    letter-spacing: 0;
+    line-height: 2.5rem;
+    text-align: center;
+    padding-left: 0.2rem;
+}
+
+.homePage_order_body {
+    width: 17rem;
+    height: auto;
+    max-height: 27.19rem;
+    overflow: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 auto;
+    padding-bottom: 4rem;
+}
+
+.homePage_order_body_content {
+    width: 99%;
+    height: 5rem;
+    background: #F7F7F9;
+    border: 1px solid #E1E1E6;
+    border-radius: 16px;
+    margin-bottom: 0.6rem;
+    position: relative;
+}
+
+.homePage_order_body_content .job_title, .homePage_order_body_content .task_title {
+    font-size: 0.8rem;
+    color: #333333;
+    letter-spacing: 0;
+    line-height: 0.8rem;
+    margin: 0.8rem 0 0.8rem 0.8rem;
+}
+
+.homePage_order_body_content .task_title::before, .homePage_order_body_content .job_title::before {
+    content: "";
+    width: 0.725rem;
+    height: 0.795rem;
+    display: inline-block;
+    position: relative;
+    top: 0.1rem;
+    margin-right: 0.3rem;
+}
+
+.homePage_order_body_content .task_title::before {
+    background: url('../image/task-icon.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.homePage_order_body_content .job_title::before {
+    width: 0.75rem;
+    height: 0.85rem;
+    background: url('../image/job-icon.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    top: 0;
+}
+
+.homePage_order_body_content .text_content {
+    font-size: 0.65rem;
+    color: #666666;
+    letter-spacing: 0;
+    line-height: 0.65rem;
+    margin-left: 0.8rem;
+    margin-bottom: 0.6rem;
+}
+
+.homePage_order_plan, .homePage_order_temporary {
+    width: 1.825rem;
+    height: 1.825rem;
+    position: absolute;
+    top: 0;
+    right: 0.8rem;
+}
+
+.homePage_order_plan {
+    background: url(../image/plan.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.homePage_order_temporary {
+    background: url(../image/temporary.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.homePage_order_btns, .task_status_btns {
+    min-width: 3.225rem;
+    height: 1.05rem;
+    line-height: 1.05rem;
+    border-radius: 0.2rem;
+    text-align: center;
+    font-size: 0.65rem;
+    letter-spacing: 0;
+    position: absolute;
+    padding: 0 0.3rem;
+}
+
+.homePage_order_btns {
+    background: rgba(24, 144, 255, 0.15);
+    border: 1px solid #1890FF;
+    color: #1890FF;
+    right: 0.8rem;
+    top: 0.75rem;
+}
+
+.task_status_btns {
+    background: rgba(255, 105, 102, 0.16);
+    border: 1px solid #FF6966;
+    color: #FF6966;
+    right: 0.8rem;
+    bottom: 0.5rem;
+}
+
+
+/* 没有数据*/
+
+.homePage_order_list_noData {
+    width: 100%;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #333;
+}
+
+
+/*领导首页添加地图覆盖物*/
+
+.personDetail_popup {
+    position: absolute;
+    z-index: 100;
+    width: 8.35rem;
+    height: 2.45rem;
+    padding: 0.35rem;
+    background: #FFFFFF;
+    box-shadow: 0 3px 9px 0 rgba(0, 0, 0, 0.20);
+    border-radius: 0.2rem;
+    display: none;
+}
+
+.personDetail_popup::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-right: 7px solid transparent;
+    border-left: 7px solid transparent;
+    border-top: 7px solid #fff;
+    top: 2.45rem;
+    left: 3.8rem;
+}
+
+.personDetail_popup_content {
+    width: 100%;
+    height: auto;
+    font-size: 0.6rem;
+    color: #333333;
+    letter-spacing: 0;
+}
+
+.personDetail_popup_content:first-child>div {
+    width: 70%;
+    float: left;
+    overflow: hidden;
+    overflow-x: auto;
+}
+
+.personDetail_popup_content:first-child>div:last-child {
+   width: 30%!important;
+    text-align: right;
 }
