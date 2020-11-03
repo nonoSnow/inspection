@@ -60,6 +60,7 @@ function showData(data,status){
   }
   // 请求接口 获取数据
   postAjaxJobList(options)
+  // postAjaxJobBoss(options)
   // jobPostMethod("api/services/Inspection/WorkOrderService/GetWorkOrderListApp",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
@@ -385,6 +386,7 @@ function addData(data,status){
   }
   // 请求接口 获取数据
   postAjaxJobList(options)
+  // postAjaxJobBoss(options)
   // jobPostMethod("api/services/Inspection/WorkOrderService/GetWorkOrderListApp",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
