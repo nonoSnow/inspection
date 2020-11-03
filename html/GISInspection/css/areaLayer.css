@@ -3,17 +3,19 @@
   width: 100%;
   height: auto;
   background-color: #fff;
-  display: flex;
-  border-top: 1px solid #E6E6E6;
+  font-size: 0;
 }
 
 .layer-cont-item {
+  width: 25%;
   height: 6rem;
   padding: 0.4rem;
   box-sizing: border-box;
   border-right: 1px solid #E6E6E6;
+  border-top: 1px solid #E6E6E6;
   text-align: center;
-  flex: 1;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .item-cont {
