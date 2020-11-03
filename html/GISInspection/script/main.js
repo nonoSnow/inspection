@@ -31,57 +31,38 @@ apiready = function() {
   WinSize(['footer-gis']);
   // alert(JSON.stringify($api.getStorage('userLoginInformation')))
   // alert(JSON.stringify($api.getStorage('userLoginInformation').loginSuccessData.userId));
-  // 获取当前用户角色（领导还是员工）
+}
+
+// 获取当前用户角色
+function getRoles () {
   var userId = $api.getStorage('userLoginInformation').loginSuccessData.userId;
   var data = {
     userId: userId
   }
+  getUserRoles({
+    data: data,
+    success: function(ret) {
+      // alert(JSON.stringify(ret));
+      if (ret.result.length != 0) {
+        ret.result.forEach(function(item) {
+          if (item.roleName == '领导') {
+            // 当前用户角色为领导
+            $api.setStorage('isLeader', true);
 
-  getRoles(data);
-}
+            return false;
+          } else if(item.roleName == '员工') {
+            $api.setStorage('isLeader', false);
 
-// 获取当前用户角色
-function getRoles (data) {
-  getUserRoles('api/services/app/Role/GetUserRolesById', data, showRet, showErr);
-
-  function showRet(ret) {
-    console.log(JSON.stringify(ret));
-    if (ret.result.length != 0) {
-      ret.result.forEach(function(item) {
-        if (item.roleName == '领导') {
-          // 当前用户角色为领导
-          $api.setStorage('isLeader', true);
-
-          return false;
-        } else if(item.roleName == '员工') {
-          $api.setStorage('isLeader', false);
-
-          return false;
-        } else {
-          // 既没有领导角色也没有员工角色，则默认为员工角色
-          $api.setStorage('isLeader', false);
-        }
-      })
+            return false;
+          } else {
+            // 既没有领导角色也没有员工角色，则默认为员工角色
+            $api.setStorage('isLeader', false);
+          }
+        })
+        console.log($api.getStorage('isLeader'));
+      }
     }
-    console.log($api.getStorage('isLeader'));
-  }
-
-  function showErr(err) {
-    $('#haveNothing').removeClass('aui-hide');
-    if (err.body.error != undefined) {
-      api.toast({
-          msg: err.body.error.message,
-          duration: 2000,
-          location: 'middle'
-      });
-    } else {
-      api.toast({
-          msg: err.msg,
-          duration: 2000,
-          location: 'middle'
-      });
-    }
-  }
+  })
 }
 
 function funIniGroup() {

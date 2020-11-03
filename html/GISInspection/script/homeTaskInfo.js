@@ -13,7 +13,7 @@ var xunPageSize = 5;
 // 任务详情
 var taskDetail;
 // 待巡总数（点击完成时提示需要）
-var daixunTotal;
+// var daixunTotal;
 
 var daixunPageIndex = 1;
 var daixunHasNext = false;
@@ -42,7 +42,7 @@ apiready = function() {
 
   // console.log(api.pageParam.id);
   console.log(taskId);
-
+  console.log('nowTaskType>>>>>>' + nowTaskType);
   if (nowTaskType == '0') {
     $('.task-stop').html('暂停');
     $('.task-complete').html('完成');
@@ -53,7 +53,8 @@ apiready = function() {
     $('.task-stop').html('关闭');
     $('.task-complete').html('重启');
   } else if (nowTaskType == '3') {
-    $('.footer').addClass('aui-hide');
+    console.log('当前点击了已完成任务进入');
+    $('#footer').addClass('aui-hide');
     $('.flex-con').removeClass('margin-bot250');
   }
 
@@ -112,7 +113,9 @@ function onMenu(index, el) {
   taskDetype = index;
   if (index == 0) {
     // $(".task-info").removeClass('aui-hide');
-    $(".footer").removeClass('aui-hide');
+    if (nowTaskType != 3) {
+      $(".footer").removeClass('aui-hide');
+    }
 
     // $(".task-list").addClass('aui-hide');
     // $(".flex-con").addClass('margin-bot250');
@@ -122,7 +125,7 @@ function onMenu(index, el) {
     $(".footer").addClass('aui-hide');
 
     // $(".task-list").removeClass('aui-hide');
-    // $(".flex-con").removeClass('margin-bot250');
+    $(".flex-con").removeClass('margin-bot250');
 
     if (index == 1) {
       // $('.item-btn').addClass('aui-hide');
@@ -372,8 +375,11 @@ function complete() {
   getInspectDataList({
     data: data,
     success: function(ret) {
-      daixunTotal = ret.result.totalCount;
-      var message = '该任务中有' + daiXunTotal + '个待巡点未完成！您确定要完成该任务吗？'
+      console.log(JSON.stringify(ret));
+      var daixunTotal = ret.result.totalCount;
+      // console.log(daixunTotal);
+      var message = '该任务中有' + daixunTotal + '个待巡点未完成！您确定要完成该任务吗？';
+      // console.log(message);
       api.confirm({
           msg: message,
           buttons: ['确定', '取消']
@@ -388,7 +394,9 @@ function complete() {
             changeTaskStatus({
               data: param,
               success: function(ret) {
-                  initOngoing();
+                  // initOngoing();
+                  api.closeWin({});
+
               }
             })
           }
@@ -550,7 +558,7 @@ function getTaskDetail(param) {
 
       var data = ret.result;
       var str = template('taskBasicInfo', data);
-      console.log(str);
+      // console.log(str);
       $('#taskDetail').append(str);
 
       var data = {

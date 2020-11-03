@@ -115,9 +115,11 @@
       <div class="absolute top0 right0 del-icon">x</div>
     </div> -->
     {{each list value i}}
-    <div class="margin-top75 file-div relative">
+    <div class="margin-top75 file-div relative" onclick="previewImg(this)" parse="{{url}}{{value.url}}">
       <img src="{{url}}{{value.url}}" class="width100 height100" alt="">
-      <div class="absolute top0 right0 del-icon" tapmode onclick="deleteImg(this)" parse="{{i}}">x</div>
+      <div class="absolute top0 right0 del-icon" tapmode onclick="deleteImg(this)" parse="{{i}}">
+        <img class="width100 height100 borra" src="../../image/del.png" alt="">
+      </div>
     </div>
     {{/each}}
     <div class="margin-top75 file-div relative" tapmode onclick="action()">

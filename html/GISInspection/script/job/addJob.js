@@ -68,6 +68,8 @@ apiready = function() {
         } else {
           lineList = equipment;
         }
+        console.log(JSON.stringify(pointList));
+        console.log(JSON.stringify(lineList));
         indexMap.mapConduitEquipment({
             areaPoint: areaInfo.areaPoint,
             lineList: lineList,
