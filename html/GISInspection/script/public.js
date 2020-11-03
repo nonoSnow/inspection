@@ -314,6 +314,8 @@ function uploadLocation() {
   // }, 5000);
 }
 
+
+
 /**
 * 图片预览
 * @param {data} Array 图片路径 ['imgSrc1', 'imgsrc2']

@@ -44,6 +44,9 @@ apiready = function() {
     api.addEventListener({
         name: 'addArea'
     }, function(ret, err){
+
+      // console.log(JSON.stringify(ret));
+      // console.log(JSON.stringify(err));
         $("#areaMapDiv").removeClass("padding75");
         $("#areaDefault").addClass("aui-hide");
         $("#areaMap").removeClass("aui-hide");
@@ -69,6 +72,8 @@ apiready = function() {
         } else {
           lineList = equipment;
         }
+        // console.log(JSON.stringify(pointList));
+        // console.log(JSON.stringify(lineList));
         indexMap.mapConduitEquipment({
             areaPoint: areaInfo.areaPoint,
             lineList: lineList,

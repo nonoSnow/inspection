@@ -46,8 +46,13 @@ apiready = function() {
 
   var footer = $api.byId('footer');
   var footerH = $api.offset(footer).h;
-  // console.log(footerH);
-  // $("#list-box").css("height", );
+
+  //获取当前用户所属角色(领导、员工)
+  if (getCurrentUserRoles() == 1) {
+    isLeader = true;
+  } else {
+    isLeader = false;
+  }
 
 
   if (isLeader) {
@@ -190,27 +195,54 @@ function showData(data, status) {
       if (ret.result.items.length != 0) {
         $('#haveNothing').addClass('aui-hide');
         $('#list-box').removeClass('bgc-ff');
+
+        ret.result.items.forEach(function (item, i) {
+          if (item.planStartTime != null || item.planStartTime != '') {
+            item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+          }
+
+          if (item.startTime != null || item.startTime != '') {
+            item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+          }
+
+          if (item.endTime != null || item.endTime != '') {
+            item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+          }
+
+          if (item.planEndTime != null || item.planEndTime != '') {
+            item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+          }
+
+          if (item.stopTime != null || item.stopTime != '') {
+            item.stopTime = parseTime(item.stopTime, '{y}-{m}-{d} {h}:{i}');
+          }
+        })
+        // console.log(JSON.stringify(ret.result.items))
         switch (status) {
           case 'onGoing':
             goingHasNext = ret.result.hasNextPage;
             // if (ret.result.items.length != 0) {
-              ret.result.items.forEach(function (item, i) {
-                if (item.planStartTime != null || item.planStartTime != '') {
-                  item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
-                }
-
-                if (item.startTime != null || item.startTime != '') {
-                  item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
-                }
-
-                if (item.endTime != null || item.endTime != '') {
-                  item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
-                }
-
-                if (item.planEndTime != null || item.planEndTime != '') {
-                  item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
-                }
-              })
+              // ret.result.items.forEach(function (item, i) {
+              //   if (item.planStartTime != null || item.planStartTime != '') {
+              //     item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+              //   }
+              //
+              //   if (item.startTime != null || item.startTime != '') {
+              //     item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+              //   }
+              //
+              //   if (item.endTime != null || item.endTime != '') {
+              //     item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+              //   }
+              //
+              //   if (item.planEndTime != null || item.planEndTime != '') {
+              //     item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+              //   }
+              //
+              //   if (item.stopTime != null || item.stopTime != '') {
+              //     item.stopTime = parseTime(item.stopTime, '{y}-{m}-{d} {h}:{i}');
+              //   }
+              // })
             // }
             data = {
               list: ret.result.items
@@ -220,50 +252,50 @@ function showData(data, status) {
           case 'received':
             receiveHasNext = ret.result.hasNextPage;
             // if (ret.result.items.length != 0) {
-              ret.result.items.forEach(function (item, i) {
-                if (item.planStartTime != null || item.planStartTime != '') {
-                  item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
-                }
-
-                if (item.startTime != null || item.startTime != '') {
-                  item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
-                }
-
-                if (item.endTime != null || item.endTime != '') {
-                  item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
-                }
-
-                if (item.planEndTime != null || item.planEndTime != '') {
-                  item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
-                }
-              })
-            // }
+          //     ret.result.items.forEach(function (item, i) {
+          //       if (item.planStartTime != null || item.planStartTime != '') {
+          //         item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+          //       }
+          //
+          //       if (item.startTime != null || item.startTime != '') {
+          //         item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+          //       }
+          //
+          //       if (item.endTime != null || item.endTime != '') {
+          //         item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+          //       }
+          //
+          //       if (item.planEndTime != null || item.planEndTime != '') {
+          //         item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+          //       }
+          //     })
+          //   // }
             data = {
               list: ret.result.items
             }
 
             str = template(status, data);
-            break;
+          //   break;
           case 'suspended':
             suspendHasNext = ret.result.hasNextPage;
-            // if (ret.result.items.length != 0) {
-              ret.result.items.forEach(function (item, i) {
-                if (item.planStartTime != null || item.planStartTime != '') {
-                  item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
-                }
-
-                if (item.startTime != null || item.startTime != '') {
-                  item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
-                }
-
-                if (item.endTime != null || item.endTime != '') {
-                  item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
-                }
-
-                if (item.planEndTime != null || item.planEndTime != '') {
-                  item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
-                }
-              })
+          //   // if (ret.result.items.length != 0) {
+          //     ret.result.items.forEach(function (item, i) {
+          //       if (item.planStartTime != null || item.planStartTime != '') {
+          //         item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+          //       }
+          //
+          //       if (item.startTime != null || item.startTime != '') {
+          //         item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+          //       }
+          //
+          //       if (item.endTime != null || item.endTime != '') {
+          //         item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+          //       }
+          //
+          //       if (item.planEndTime != null || item.planEndTime != '') {
+          //         item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+          //       }
+              // })
             // }
             data = {
               list: ret.result.items
@@ -273,23 +305,23 @@ function showData(data, status) {
           case 'completed':
             completedHasNext = ret.result.hasNextPage;
             // if (ret.result.items.length != 0) {
-              ret.result.items.forEach(function (item, i) {
-                if (item.planStartTime != null || item.planStartTime != '') {
-                  item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
-                }
-
-                if (item.startTime != null || item.startTime != '') {
-                  item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
-                }
-
-                if (item.endTime != null || item.endTime != '') {
-                  item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
-                }
-
-                if (item.planEndTime != null || item.planEndTime != '') {
-                  item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
-                }
-              })
+              // ret.result.items.forEach(function (item, i) {
+              //   if (item.planStartTime != null || item.planStartTime != '') {
+              //     item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+              //   }
+              //
+              //   if (item.startTime != null || item.startTime != '') {
+              //     item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+              //   }
+              //
+              //   if (item.endTime != null || item.endTime != '') {
+              //     item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+              //   }
+              //
+              //   if (item.planEndTime != null || item.planEndTime != '') {
+              //     item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+              //   }
+              // })
             // }
             data = {
               list: ret.result.items
@@ -696,33 +728,43 @@ function startUpTask(that) {
     operate: 3
   }
   console.log(JSON.stringify(data));
-  changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', data, showRet, showErr);
 
-  function showRet(ret) {
-    // 启动成功，重新加载待启动列表
-    $('#taskList').html('');
-    receivePageIndex = 1;
-    initReceived();
-  }
-
-  function showErr(err) {
-    if(err.body.error != undefined){
-      // alert(err.body.error.message);
-      api.toast({
-          msg: err.body.error.message,
-          duration: 2000,
-          location: 'middle'
-      });
-
-    }else{
-      // alert(err.msg);
-      api.toast({
-          msg: err.msg,
-          duration: 2000,
-          location: 'middle'
-      });
+  changeTaskStatus({
+    data: data,
+    success: function() {
+      // 启动成功，重新加载待启动列表
+      $('#taskList').html('');
+      receivePageIndex = 1;
+      initReceived();
     }
-  }
+  })
+  // changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', data, showRet, showErr);
+  //
+  // function showRet(ret) {
+  //   // 启动成功，重新加载待启动列表
+  //   $('#taskList').html('');
+  //   receivePageIndex = 1;
+  //   initReceived();
+  // }
+  //
+  // function showErr(err) {
+  //   if(err.body.error != undefined){
+  //     // alert(err.body.error.message);
+  //     api.toast({
+  //         msg: err.body.error.message,
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //
+  //   }else{
+  //     // alert(err.msg);
+  //     api.toast({
+  //         msg: err.msg,
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //   }
+  // }
 }
 
 // 重启任务
@@ -737,33 +779,42 @@ function reStartTask(that) {
     operate: 5
   }
 
-  changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', data, showRet, showErr);
-
-  function showRet(ret) {
-    // 重启成功，重新加载已暂停列表
-    $('#taskList').html('');
-    receivePageIndex = 1;
-    initSuspended();
-  }
-
-  function showErr(err) {
-    if(err.body.error != undefined){
-      // alert(err.body.error.message);
-      api.toast({
-          msg: err.body.error.message,
-          duration: 2000,
-          location: 'middle'
-      });
-
-    }else{
-      // alert(err.msg);
-      api.toast({
-          msg: err.msg,
-          duration: 2000,
-          location: 'middle'
-      });
+  changeTaskStatus({
+    data: data,
+    success: function(ret) {
+      // 重启成功，重新加载已暂停列表
+      $('#taskList').html('');
+      receivePageIndex = 1;
+      initSuspended();
     }
-  }
+  })
+  // changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', data, showRet, showErr);
+  //
+  // function showRet(ret) {
+  //   // 重启成功，重新加载已暂停列表
+  //   $('#taskList').html('');
+  //   receivePageIndex = 1;
+  //   initSuspended();
+  // }
+  //
+  // function showErr(err) {
+  //   if(err.body.error != undefined){
+  //     // alert(err.body.error.message);
+  //     api.toast({
+  //         msg: err.body.error.message,
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //
+  //   }else{
+  //     // alert(err.msg);
+  //     api.toast({
+  //         msg: err.msg,
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //   }
+  // }
 }
 
 
@@ -824,33 +875,42 @@ function getDaiXunDev(data) {
             operate: 2
           }
 
-          changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', param, showRet, showErr);
-
-          function showRet(ret) {
-            // 修改状态成功，完成成功, 重新加载
-            goingPageIndex = 1;
-            $('#taskList').html('');
-            initOngoing();
-          }
-
-          function showErr(err) {
-            if(err.body.error != undefined){
-              // alert(err.body.error.message);
-              api.toast({
-                  msg: err.body.error.message,
-                  duration: 2000,
-                  location: 'middle'
-              });
-
-            }else{
-              // alert(err.msg);
-              api.toast({
-                  msg: err.msg,
-                  duration: 2000,
-                  location: 'middle'
-              });
+          changeTaskStatus({
+            data: param,
+            success: function(ret) {
+              // 修改状态成功，完成成功, 重新加载
+              goingPageIndex = 1;
+              $('#taskList').html('');
+              initOngoing();
             }
-          }
+          })
+          // changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', param, showRet, showErr);
+          //
+          // function showRet(ret) {
+          //   // 修改状态成功，完成成功, 重新加载
+          //   goingPageIndex = 1;
+          //   $('#taskList').html('');
+          //   initOngoing();
+          // }
+          //
+          // function showErr(err) {
+          //   if(err.body.error != undefined){
+          //     // alert(err.body.error.message);
+          //     api.toast({
+          //         msg: err.body.error.message,
+          //         duration: 2000,
+          //         location: 'middle'
+          //     });
+          //
+          //   }else{
+          //     // alert(err.msg);
+          //     api.toast({
+          //         msg: err.msg,
+          //         duration: 2000,
+          //         location: 'middle'
+          //     });
+          //   }
+          // }
         }
     });
   }

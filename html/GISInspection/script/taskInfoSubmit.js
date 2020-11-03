@@ -274,7 +274,6 @@ function deleteImg(that) {
 function previewImg(that) {
   if (that != null) {
     var imgSrc = $(that).attr('parse');
-    console.log(imgSrc);
     var data = [];
     data.push(imgSrc);
     previewImage(data);
