@@ -314,6 +314,18 @@ function uploadLocation() {
   // }, 5000);
 }
 
+// 预览
+// function previewimg(that) {
+//   if (that != null) {
+//     var list = JSON.parse($(that).attr('parse'));
+//     list.forEach(function(item) {
+//
+//     })
+//     // var data = [];
+//     // data.push(imgSrc);
+//     previewImage(data);
+//   }
+// }
 
 
 /**
