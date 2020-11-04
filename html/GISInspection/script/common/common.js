@@ -179,7 +179,7 @@ function getCurrentUserRoles(){
   var currentUserRoles = $api.getStorage('currentUserRoles');
     var Roles = [];
    currentUserRoles.forEach(function(item){
-     if(item.roleName.indexOf('管理员')!=-1){
+     if(item.roleName.indexOf('领导')!=-1){
        Roles.push(item);
      }
    });
