@@ -1,84 +1,99 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
-    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
     <title>人员列表</title>
-    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
-    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../public/css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css" />
 
     <link rel="stylesheet" type="text/css" href="../../css/public.css">
     <link rel="stylesheet" type="text/css" href="../../css/common.css">
-  </head>
-  <body>
-    <div class="flex-wrap flex-vertical height100">
-      <header class="aui-bar aui-bar-nav aui-bar-light bgi-none" id="header">
-          <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
-              <span class='aui-iconfont aui-icon-left'></span>
-          </div>
-          <div class="aui-title">人员列表</div>
-      </header>
+    <style media="screen">
+        .noData {
+            width: 100%;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #333;
+        }
+    </style>
+</head>
 
-      <div class="header-type display-flex text-cent line-height25 color-666">
-        <div class="flex1 header-type-item color-598" tapmode onclick="onMenu(0, this)">
-            <span class="line-height1">
-              全部(2)
+<body>
+    <div class="flex-wrap flex-vertical height100">
+        <header class="aui-bar aui-bar-nav aui-bar-light bgi-none" id="header">
+            <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
+                <span class='aui-iconfont aui-icon-left'></span>
+            </div>
+            <div class="aui-title">人员列表</div>
+        </header>
+
+        <div class="header-type display-flex text-cent line-height25 color-666">
+            <div class="flex1 header-type-item color-598" tapmode data-type='0'>
+                <span class="line-height1" id="allPersons">
+              全部(0)
               <div class="type-line bgc-blue margin-top3 width60"></div>
             </span>
-        </div>
-        <div class="flex1 header-type-item" tapmode onclick="onMenu(1, this)">
-            <span class="line-height1">
-              在线(1)
+            </div>
+            <div class="flex1 header-type-item" tapmode data-type='1'>
+                <span class="line-height1" id="onliePersons">
+              在线(0)
               <div class="type-line margin-top3 width60"></div>
             </span>
-        </div>
-        <div class="flex1 header-type-item" tapmode onclick="onMenu(1, this)">
-            <span class="line-height1">
-              离线(1)
+            </div>
+            <div class="flex1 header-type-item" tapmode data-type='2'>
+                <span class="line-height1" id="offlinePersons">
+              离线(0)
               <div class="type-line margin-top3 width60"></div>
             </span>
+            </div>
         </div>
-      </div>
 
-      <div class="flex-con flex-content height100 bgc-f3">
-        <ul class="aui-content-padded color-333 font-S75">
-          <li class="padding75 bgc-ff border-radius4">
-            <div class="relative ">
-              姓名：张三
-              <span class="absolute right0">
-                <span class="aui-iconfont aui-icon-date font-bold color-598"></span>
-                时长：8h
-              </span>
-            </div>
-            <div class="margin-top6">任务：阳光小区巡检任务</div>
-            <div class="margin-top6">
-              上线：2020-08-21 09:15:28
-            </div>
-          </li>
-          <li class="padding75 bgc-ff border-radius4 margin-top75">
-            <div class="relative ">
-              姓名：张三
-              <span class="absolute right0">
-                <span class="aui-iconfont aui-icon-date font-bold"></span>
-                时长：8h
-              </span>
-            </div>
-            <div class="margin-top6">任务：阳光小区巡检任务</div>
-            <div class="margin-top6">
-              上线：2020-08-21 09:15:28
-            </div>
-          </li>
-        </ul>
-      </div>
+        <div class="flex-con flex-content height100 bgc-f3">
+            <ul class="aui-content-padded color-333 font-S75" id='personListDemo'>
+            </ul>
+        </div>
 
     </div>
-  </body>
-  <script type="text/javascript" src="../../../public/script/api.js"></script>
-  <script type="text/javascript" src="../../../public/script/common.js"></script>
-  <script type="text/javascript" src="../../../public/script/remote.js"></script>
-  <script type="text/javascript" src="../../../public/script/zepto.js"></script>
+</body>
+<script type="text/javascript" src="../../../public/script/api.js"></script>
+<script type="text/javascript" src="../../../public/script/common.js"></script>
+<script type="text/javascript" src="../../../public/script/remote.js"></script>
+<script type="text/javascript" src="../../../public/script/zepto.js"></script>
+<script type="text/javascript" src="../../../public/script/template.js"></script>
+<script type="text/javascript" src="../../../public/script/moment.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
+<script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
+<script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
+<script type="text/javascript" src="../../script/home/userList.js"></script>
+<script type="text/html" id="personListTemplate">
+   {{ if result.pageIndex == 1 && result.items.length == 0}}
+     <div class="noData"> 暂无数据! </div>
+   {{else}}
+  {{each result.items value i}}
+    <li class="padding75 bgc-ff border-radius4 margin-top75">
+        <div class="relative ">
+            姓名：{{value.userName}}
+            <span class="absolute right0">
+  <span class="aui-iconfont aui-icon-date font-bold"></span> 时长：{{value.duration}}h
+            </span>
+        </div>
+        {{ if isOnline}}
+        <div class="margin-top6">
+            上线：{{value.onlineTime}}
+        </div>
+        {{else}}
+        <div class="margin-top6">
+            离线：{{value.offlineTime}}
+        </div>
+        {{/if}}
+    </li>
+    {{/each}}
+    {{/if}}
+</script>
 
-  <script type="text/javascript" src="../../script/public.js"></script>
-  <script type="text/javascript" src="../../script/userList.js"></script>
 </html>
