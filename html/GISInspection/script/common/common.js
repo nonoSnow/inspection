@@ -180,11 +180,14 @@ function upLocation() {
 
 }
 // 获取当前用户的角色
+// 获取当前用户的角色
 function getCurrentUserRoles(){
   var currentUserRoles = $api.getStorage('currentUserRoles');
     var Roles = [];
-    Roles = currentUserRoles.filter(function(item){
-    return item.roleName.indexOf('管理员')!=-1;
-  })
-  return Roles.lengt!=0?1:0;
+   currentUserRoles.forEach(function(item){
+     if(item.roleName.indexOf('管理员')!=-1){
+       Roles.push(item);
+     }
+   });
+  return Roles.length!=0?1:0;
 }
