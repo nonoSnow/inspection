@@ -138,3 +138,13 @@ function checkMap() {
         }
      });
 }
+
+// 预览图片
+function previewImg(that) {
+  if (that != null) {
+    var imgSrc = $(that).attr('parse');
+    var data = [];
+    data.push(imgSrc);
+    previewImage(data);
+  }
+}
