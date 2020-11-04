@@ -199,7 +199,7 @@ function savaData(data) {
               api.closeToWin({
                   name: 'TaskAssign'
               });
-        }, 500)
+          }, 500)
         }else {
           alert("添加事件失败")
           $(".footer-btn").removeClass('btn-disabled')

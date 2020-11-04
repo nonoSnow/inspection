@@ -105,7 +105,7 @@
       <div class="margin-top75">附件信息：</div>
       <div class="file-list clearfix">
         {{each resourcelist value i}}
-        <div class="file-item">
+        <div class="file-item" onclick="previewImg(this)" parse="{{url}}{{value.url}}">
             <div class="margin-top6 file-div">
               <img src="{{url}}{{value.url}}" class="margin-top75 margin-bot3 file-img" alt="">
             </div>
