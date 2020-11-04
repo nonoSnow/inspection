@@ -161,35 +161,44 @@ function suspendedTask() {
   }
 
   console.log(JSON.stringify(data));
-  changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', data, showRet, showErr);
 
-  function showRet(ret) {
-    console.log(JSON.stringify(ret));
-    // 操作成功
-    // 返回列表页
-    openTask();
-  }
-
-  function showErr(err) {
-    console.log(JSON.stringify(err));
-    console.log(JSON.stringify(err.body.error));
-    if(err.body.error != undefined){
-      // alert(err.body.error.message);
-      api.toast({
-          msg: err.body.error.message,
-          duration: 2000,
-          location: 'middle'
-      });
-
-    }else{
-      // alert(err.msg);
-      api.toast({
-          msg: err.msg,
-          duration: 2000,
-          location: 'middle'
-      });
+  changeTaskStatus({
+    data: data,
+    success: function(ret) {
+      // 操作成功
+      // 返回列表页
+      openTask();
     }
-  }
+  })
+  // changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', data, showRet, showErr);
+  //
+  // function showRet(ret) {
+  //   console.log(JSON.stringify(ret));
+  //   // 操作成功
+  //   // 返回列表页
+  //   openTask();
+  // }
+  //
+  // function showErr(err) {
+  //   console.log(JSON.stringify(err));
+  //   console.log(JSON.stringify(err.body.error));
+  //   if(err.body.error != undefined){
+  //     // alert(err.body.error.message);
+  //     api.toast({
+  //         msg: err.body.error.message,
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //
+  //   }else{
+  //     // alert(err.msg);
+  //     api.toast({
+  //         msg: err.msg,
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //   }
+  // }
 }
 
 // 删除图片
@@ -200,6 +209,17 @@ function deleteImg(that) {
     imgList = deleteArray(imgList, imgIndex);
     console.log(JSON.stringify(imgList));
     showImg(imgList);
+  }
+}
+
+// 预览
+function previewImg(that) {
+  if (that != null) {
+    var imgSrc = $(that).attr('parse');
+    console.log(imgSrc);
+    var data = [];
+    data.push(imgSrc);
+    previewImage(data);
   }
 }
 

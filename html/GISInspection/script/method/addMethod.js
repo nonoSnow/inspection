@@ -23,7 +23,7 @@ apiready = function() {
         deviceId = pageParam.id;
 
         $(".aui-icon-location").addClass('aui-hide');
-        $("input[name=location]").val("106.123456, 39.123456")
+        $("input[name=location]").val(pageParam.point)
         $("input[name=address]").val(pageParam.address)
     }
 
@@ -32,8 +32,7 @@ apiready = function() {
         $('#methodType').val($(this).text());
         $('#methodType').data("type", $(this).data("value"));
         $('.custom-popup-item').removeClass('color-598');
-        $(this).addClass('color-598');
-        onHidePopup();
+         onHidePopup();
     })
     // $(".custom-popup-list").each(function() {
     //   $(this).click(function() {
@@ -137,24 +136,14 @@ function onSubmit(){
     });
     return false;
   }
-  // 判断设备点坐标是否填写
-  // if(!$("#point").val()){
-  //   api.toast({
-  //       msg: '请选择设备点坐标!',
-  //       duration: 2000,
-  //       location: 'middle'
-  //   });
-  //   return false;
-  // }
-  // 判断设备地址是否填写
-  // if(!$("#address").val()){
-  //   api.toast({
-  //       msg: '请选择设备地址!',
-  //       duration: 2000,
-  //       location: 'middle'
-  //   });
-  //   return false;
-  // }
+  if(!deviceId) {
+      api.toast({
+          msg: '请选择设备信息!',
+          duration: 2000,
+          location: 'middle'
+      });
+      return false;
+  }
   // 判断巡检内容是否填写
   if(!$("#content").val()){
     api.toast({
@@ -164,6 +153,9 @@ function onSubmit(){
     });
     return false;
   }
+
+  if($(this).hasClass('btn-disabled')) return false;
+  $(this).addClass('btn-disabled');
 
   var data = {
     type: $('#methodType').data("type"),
@@ -188,33 +180,39 @@ function savaData(data) {
 
   getEventInsert("api/services/Inspection/EventService/InsertEvent",data,showRet,showErr);
   function showRet(ret){
-    api.hideProgress();
-    if(ret.success){
-      api.toast({
-          msg: '添加事件成功',
-          duration: 2000,
-          location: 'middle'
-      });
-      // 清空数据
-      clearData();
-      setTimeout(function() {
-          api.openWin({
-              name: 'method',
-              url: '../Method/method.html'
+        api.hideProgress();
+        if(ret.success){
+          api.toast({
+              msg: '添加事件成功',
+              duration: 2000,
+              location: 'middle'
           });
-
-      }, 2000)
-    }else {
-      alert("添加事件失败")
-    }
+          // 清空数据
+          setTimeout(function() {
+              clearData();
+              api.sendEvent({
+                  name: 'closeEvent',
+                  extra: {
+                      index: 0
+                  }
+              });
+              api.closeToWin({
+                  name: 'TaskAssign'
+              });
+        }, 500)
+        }else {
+          alert("添加事件失败")
+          $(".footer-btn").removeClass('btn-disabled')
+        }
   }
   function showErr(err){
-    api.hideProgress();
-    if(err.body.error.message){
-      alert(err.body.error.message)
-    }else {
-      alert("加载失败")
-    }
+      $(".footer-btn").removeClass('btn-disabled')
+      api.hideProgress();
+      if(err.body.error.message){
+          alert(err.body.error.message)
+      }else {
+          alert("加载失败")
+      }
   }
 }
 // 清空数据

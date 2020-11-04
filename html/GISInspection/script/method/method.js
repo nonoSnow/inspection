@@ -1,5 +1,4 @@
 var methodType = 0;
-console.log('------')
 apiready = function() {
     var header = $api.byId('header');
     $api.fixStatusBar(header);
@@ -7,39 +6,19 @@ apiready = function() {
     onMenu(methodType)
 
     api.addEventListener({
-        name: 'aaa'
-    }, function(ret, err) {
-        JSON.stringify(ret)
-        JSON.stringify(err)
-        // onMenu(1, )
+        name: 'eventMethod'
+    }, function(ret, err){
+        if( ret ){
+            alert(JSON.stringify(ret))
+            onMenu(ret.value.index)
+        }else{
+        }
     });
+
 }
 
 // 获取待接收、转工单、已关闭事件列表
-function getListData(data,status){
-  getEventList("api/services/Inspection/EventService/GetEventList",data,showRet,showErr);
-  function showRet(ret){
-    // console.log(JSON.stringify(ret));
-    // $('#dataList').html('');
-    // var data = {
-    //     list: [
-    //       {
-    //       Id:"1",
-    //       type:"巡检异常1",
-    //       errorType:"外观损坏",
-    //       creationTime:"2020-09-22 18:00",
-    //     },
-    //     {
-    //       Id:"2",
-    //       type:"巡检异常2",
-    //       errorType:"外观损坏",
-    //       creationTime:"2020-09-22 18:00",
-    //
-    //     }
-    //     ]
-    // };
-    // var str = template(status, data);
-    // $('#dataList').append(str);
+function getListData(data,status) {
     api.showProgress({
         style: 'default',
         animationType: 'fade',
@@ -50,21 +29,19 @@ function getListData(data,status){
     function showRet(ret) {
       api.hideProgress();
       console.log("--------------------------"+status);
-      if(ret.success){
+      if (ret.success) {
         $('#dataList').html('');
         var data = ret.result.items;
-        console.log(JSON.stringify(data));
-        if(data.length){
+        if (data.length) {
           var list = {list:data};
           var str = template(status, list);
           $('#dataList').append(str);
-        }else{
+        } else {
           var str="<div style='text-align:center;margin:20px;'>暂无数据</div>"
           $('#dataList').append(str);
         }
       }
     }
-  }
 
   function showErr(err){
     // console.log(JSON.stringify(err));
@@ -113,12 +90,13 @@ function onMenu(index, el) {
     initOnPending()
   } else if (index == 1) {
     // 转工单事件
-    initWorkOrder()
+    initWorkOrder();
   } else if (index == 2) {
     // 已关闭事件
     initClosed()
   }
-  onCheckMenu(el, function(){
+  var elem = $(".header-type .flex1")
+  onCheckMenu(elem[index], function(){
     // console.log(el)
   });
 }

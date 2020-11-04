@@ -493,3 +493,71 @@ footer.aui-bar-tab ~ .snt-container {
 	width: 100%;
 	height: 100%;
 }
+
+
+.pop-boxer {
+  position: absolute;
+  line-height: 1;
+  background-color: white;
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+  padding: 0.4rem;
+  border-radius: 0.5rem;
+  border: 1px solid #cccccc;
+  bottom: 0.6rem;
+  left: -7rem;
+  width: 14rem;
+}
+
+.pop-boxer:before, .pop-boxer:after {
+  top: 100%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.pop-boxer:before {
+  border-top-color: #cccccc;
+  border-width: 0.6rem;
+  left: 50%;
+  margin-left: -0.6rem;
+}
+.pop-boxer:after {
+  border-top-color: white;
+  border-width: 0.5rem;
+  left: 50%;
+  margin-left: -.5rem;
+}
+
+.pop-container p {
+  margin: 0.5rem 0;
+}
+/*.trangle:before, .trangle:after {
+	position: absolute;
+	left: 50%;
+	bottom: 0;
+}
+.trangle:before {
+	display: inline-block;
+	border: 10px solid transparent;
+	border-top: #ccc;
+}
+.trangle:after {
+	display: inline-block;
+	border: 10px solid transparent;
+	border-top: #fff;
+}*/
+/*.pop-closer {
+  text-decoration: none;
+  position: absolute;
+  top: 2px;
+  right: 0.4rem;
+  color: #4b77be;
+}
+.pop-closer:after {
+  content: "✖";
+}
+.pop-closer:hover {
+  color: #23527c;
+}*/

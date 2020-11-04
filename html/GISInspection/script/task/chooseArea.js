@@ -41,7 +41,6 @@ apiready = function() {
 function getAreaList() {
   // $('#areaList').html('');
   var param = {
-    name: '',
     pageIndex: areaPage,
     maxResultCount: areaPageSize
   }
@@ -51,40 +50,53 @@ function getAreaList() {
     text: '请稍后'
   });
 
-  getAreaListData('api/services/Inspection/AreaService/AppGetAreaDetailsByName' ,param, showRet, showErr);
+  getAreaListData({
+    data: param,
+    success: function(ret) {
+      // console.log(JSON.stringify(ret));
+      areaHasNext = ret.result.hasNextPage;
+      var data = {
+        list: ret.result.items
+      }
 
-  function showRet(ret) {
-    // 请求成功，渲染数据
-    console.log(JSON.stringify(ret));
-    areaHasNext = ret.result.hasNextPage;
-
-    var data = {
-      list: ret.result.items
+      var str = template('areaItems', data);
+      $('#areaList').append(str);
     }
-
-    var str = template('areaItems', data);
-    $('#areaList').append(str);
-  }
-
-  function showErr(err) {
-    console.log(JSON.stringify(err));
-    api.hideProgress();
-
-    if(err.body.error != undefined){
-      api.toast({
-          msg: err.body.error.message,
-          duration: 2000,
-          location: 'middle'
-      });
-
-    }else{
-      api.toast({
-          msg: err.msg,
-          duration: 2000,
-          location: 'middle'
-      });
-    }
-  }
+  })
+  // getAreaListData('api/services/Inspection/AreaService/AppGetAreaDetailsByName' ,param, showRet, showErr);
+  //
+  // function showRet(ret) {
+  //   // 请求成功，渲染数据
+  //   console.log(JSON.stringify(ret));
+  //   areaHasNext = ret.result.hasNextPage;
+  //
+    // var data = {
+    //   list: ret.result.items
+    // }
+    //
+    // var str = template('areaItems', data);
+    // $('#areaList').append(str);
+  // }
+  //
+  // function showErr(err) {
+  //   console.log(JSON.stringify(err));
+  //   api.hideProgress();
+  //
+  //   if(err.body.error != undefined){
+  //     api.toast({
+  //         msg: err.body.error.message,
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //
+  //   }else{
+  //     api.toast({
+  //         msg: err.msg,
+  //         duration: 2000,
+  //         location: 'middle'
+  //     });
+  //   }
+  // }
 
   // var data = {
   //   list: [

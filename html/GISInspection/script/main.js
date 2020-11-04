@@ -26,63 +26,47 @@ apiready = function() {
       }
   });
 
+  api.addEventListener({
+      name: 'closeEvent',
+  }, function(ret, err){
+      if( ret ){
+          api.sendEvent({
+              name: 'eventMethod',
+              extra: {
+                  index: ret.value.index
+              }
+          });
+
+      }else{
+           alert( JSON.stringify( err ) );
+      }
+  });
+
+
+  api.addEventListener({
+      name: 'returnEvent'
+  }, function(ret, err){
+      if( ret ){
+          api.setFrameGroupIndex({
+            name: 'group',
+            index: 2,
+            reload: true
+        });
+        var el = $("#footer-gis .flex1")[2];
+        $("#footer-gis .flex1").removeClass('color-598');
+        $(el).addClass('color-598');
+
+        $('.type-line').removeClass('bgc-blue');
+        $(el).children().children().addClass('bgc-blue');
+
+      }else{
+           alert( JSON.stringify( err ) );
+      }
+  });
     funIniGroup(getCurrentUserRoles());
-
-  WinSize(['footer-gis']);
-  // alert(JSON.stringify($api.getStorage('userLoginInformation')))
-  // alert(JSON.stringify($api.getStorage('userLoginInformation').loginSuccessData.userId));
-  // 获取当前用户角色（领导还是员工）
-  var userId = $api.getStorage('userLoginInformation').loginSuccessData.userId;
-  var data = {
-    userId: userId
-  }
-
-  getRoles(data);
+    WinSize(['footer-gis']);
 }
 
-// 获取当前用户角色
-function getRoles (data) {
-  getUserRoles('api/services/app/Role/GetUserRolesById', data, showRet, showErr);
-
-  function showRet(ret) {
-    console.log(JSON.stringify(ret));
-    if (ret.result.length != 0) {
-      ret.result.forEach(function(item) {
-        if (item.roleName == '领导') {
-          // 当前用户角色为领导
-          $api.setStorage('isLeader', true);
-
-          return false;
-        } else if(item.roleName == '员工') {
-          $api.setStorage('isLeader', false);
-
-          return false;
-        } else {
-          // 既没有领导角色也没有员工角色，则默认为员工角色
-          $api.setStorage('isLeader', false);
-        }
-      })
-    }
-    console.log($api.getStorage('isLeader'));
-  }
-
-  function showErr(err) {
-    $('#haveNothing').removeClass('aui-hide');
-    if (err.body.error != undefined) {
-      api.toast({
-          msg: err.body.error.message,
-          duration: 2000,
-          location: 'middle'
-      });
-    } else {
-      api.toast({
-          msg: err.msg,
-          duration: 2000,
-          location: 'middle'
-      });
-    }
-  }
-}
 
 function funIniGroup(roles) {
     api.openFrameGroup({

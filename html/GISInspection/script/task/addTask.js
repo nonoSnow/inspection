@@ -2,6 +2,10 @@
 var headList = {};
 var areaData = {};
 
+var indexMap = {};
+
+var areaInfo = {};
+
 apiready = function() {
   var header = $api.byId('header');
   $api.fixStatusBar(header);
@@ -23,11 +27,18 @@ apiready = function() {
       name: 'checkedAreaData'
   }, function(ret, err){
       if( ret ){
-          //  alert( JSON.stringify( ret ) );
+           console.log( JSON.stringify( ret ) );
           areaData = ret.value.checkedArea;
           if (areaData.name != '') {
             $('#tishiBox').addClass('aui-hide');
             $('#mapBox').removeClass('aui-hide');
+
+            indexMap = new Map({
+                mapid: 'mapBox'
+            });
+            indexMap.initArea('addArea');
+            var areaPoint = ret.value.areaPoint;
+            indexMap.drawAreaSelect(areaPoint, {name: 'addArea'});
           } else {
             $('#tishiBox').removeClass('aui-hide');
             $('#mapBox').addClass('aui-hide');

@@ -17,7 +17,7 @@
         color: #333;
       }
       .footer.aui-hide ~ .flex-con {
-          margin-bottom: 1.5rem;
+          margin-bottom: 0;
       }
     </style>
   </head>
@@ -39,7 +39,7 @@
           </div>
         </div>
         <div class="flex1">
-          <div class='footer-btn btn-border' tapmode >
+          <div class='footer-btn btn-border' tapmode onclick="checkMap()" >
             查看地图
           </div>
         </div>
@@ -100,14 +100,15 @@
       <div class="margin-top75">预估漏损量：{{predictWaterLoss}}</div>
       <div class="margin-top75">巡检内容：</div>
       <div class="margin-top6 bgc-f3 border-radius2 padding75 height6">
-        <textarea name="name" class='width100 height100'>{{content}}</textarea>
+        <textarea readonly="readonly" name="name" class='width100 height100'>{{content}}</textarea>
       </div>
       <div class="margin-top75">附件信息：</div>
-      <div class="file-list">
+      <div class="file-list clearfix">
         {{each resourcelist value i}}
-        {{value}}
-        <div class="margin-top6 file-div">
-          <img src="{{url}}{{value.url}}" class="margin-top75 margin-bot3 file-img" alt="">
+        <div class="file-item">
+            <div class="margin-top6 file-div">
+              <img src="{{url}}{{value.url}}" class="margin-top75 margin-bot3 file-img" alt="">
+            </div>
         </div>
         {{/each}}
       </div>

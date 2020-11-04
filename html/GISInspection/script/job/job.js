@@ -22,6 +22,7 @@ apiready = function() {
   $api.fixStatusBar(header);
   // 获取身份：领导还是员工
   role=getCurrentUserRoles();
+  // console.log(role);
   if(role){
     $(".aui-pull-right").removeClass("aui-hide")
   }
@@ -242,7 +243,8 @@ function onCloseJob(el){
       url: './jobClose.html',
       pageParam: {
           Id:Id,
-          jobType:jobType
+          jobType:jobType,
+          from:'job'
       }
   });
 }

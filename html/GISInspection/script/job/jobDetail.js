@@ -1,7 +1,11 @@
 
 var jobType;
 var Id;
-var areaPoint;//地图需要的区域坐标点
+var mapInfo={
+  areaPoint:"",       //区域坐标点（区域详情里有这个，必须有）
+  deviceLists:[],    // 设备点集合（有则传，没有不传）
+  pipelineLists:[] // 管道集合（有则传，没有不传）
+};
 apiready = function() {
   var header = $api.byId('header');
   $api.fixStatusBar(header);
@@ -78,7 +82,9 @@ function showData(id){
       data:{id:ret.result.areaId},
       success:function(ret1){
         // console.log(JSON.stringify(ret1))
-        areaPoint=ret1.result.areaPoint
+        mapInfo.areaPoint=ret1.result.areaPoint;
+        mapInfo.deviceLists=ret1.result.deviceLists;
+        mapInfo.pipelineLists=ret1.result.pipelineLists;
       },
       error:function(err1){
         // console.log(JSON.stringify(err1))
@@ -122,7 +128,8 @@ function onOpenCloseTurn(type) {
         url: './jobClose.html',
         pageParam: {
             Id:Id,
-            jobType:1
+            jobType:1,
+            from:'jobDetail'
         }
     });
   }else if(type=='2'){
@@ -329,13 +336,12 @@ function onReceived(){
 
 // 打开查看地图页面
 function openViewMap() {
+  // console.log(JSON.stringify(mapInfo));
   api.openWin({
       name: 'viewMap',
       url: '../task/viewMap.html',
       pageParam: {
-        mapInfo: {
-          areaPoint:areaPoint
-        }
+        mapInfo: mapInfo
       }
   });
 
