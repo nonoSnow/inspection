@@ -79,13 +79,14 @@ function getPersonsLoction() {
         data: data,
         success: function(ret) {
             if (ret.success) {
-                var location = [106.44257422295854, 29.461625125595196];
-                var result = ret.result.items.map(function(item) {
-                    location[0] = location[0] + 0.1;
-                    location[1] = location[1] + 0.1;
-                    item.location = [location[0], location[1]];
-                    return item;
-                });
+                // var location = [106.44257422295854, 29.461625125595196];
+                // var result = ret.result.items.map(function(item) {
+                //     location[0] = location[0] + 0.1;
+                //     location[1] = location[1] + 0.1;
+                //     item.location = [location[0], location[1]];
+                //     return item;
+                // });
+                var result = ret.result.items;
                 indexMap.renderAllPersionToMap(result, function(ret) {
                   if(ret==null){
                     $('body .personDetail_popup').remove();

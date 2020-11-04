@@ -703,6 +703,8 @@
                 if (paramers[i].isOnline == true || paramers[i].isOnline == 'true' && paramers[i].isOnline != null) {
                     FeatureImage = '../../image/location.png';
                 }
+                if(paramers[i].location=="" || paramers[i].location==null)
+                return false;
                 var allPersondLayerFeature = new ol.Feature({
                     geometry: new ol.geom.Point(paramers[i].location),
                 });
