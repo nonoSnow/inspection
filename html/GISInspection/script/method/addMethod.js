@@ -304,8 +304,22 @@ function showImg(data) {
 // 删除图片
 function deleteImg(that) {
   if (that != null) {
+    var e = e || window.event;
+    e.stopPropagation();
+    
     var imgIndex = $(that).attr('parse');
     imgList = deleteArray(imgList, imgIndex);
     showImg(imgList);
+  }
+}
+
+// 预览
+function previewImg(that) {
+  if (that != null) {
+    var imgSrc = $(that).attr('parse');
+    console.log(imgSrc);
+    var data = [];
+    data.push(imgSrc);
+    previewImage(data);
   }
 }

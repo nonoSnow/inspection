@@ -32,14 +32,13 @@ var completeData = [];
 
 apiready = function() {
   var header = $api.byId('header');
-  // console.log(JSON.stringify(header));
   $api.fixStatusBar(header);
 
   var headerH = $api.offset(header).h;
   // console.log(headerH);
 
-  var mainBox = $api.byId('flex-box');
-  var mainBoxH = $api.offset(mainBox).h;
+  // var mainBox = $api.byId('flex-box');
+  // var mainBoxH = $api.offset(mainBox).h;
 
   var tabBox = $api.byId('flex-vertical');
   var tabBoxH = $api.offset(tabBox).h;

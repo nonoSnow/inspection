@@ -208,9 +208,7 @@ function deleteImg(that) {
     e.stopPropagation();
 
     var imgIndex = $(that).attr('parse');
-    console.log(imgIndex);
     imgList = deleteArray(imgList, imgIndex);
-    console.log(JSON.stringify(imgList));
     showImg(imgList);
   }
 }
