@@ -98,7 +98,7 @@ function onOpenSubmit() {
 }
 
 function onOpenInspectionRecord() {
-  // if (hasOperate) {
+  if (hasOperate) {
     api.openWin({
         name: 'inspectionRecord',
         url: '../Method/inspectionRecord.html',
@@ -107,13 +107,13 @@ function onOpenInspectionRecord() {
             devInfo: inspectDetail
         }
     });
-  // } else {
-  //   api.toast({
-  //       msg: '无设备信息，无法操作',
-  //       duration: 2000,
-  //       location: 'middle'
-  //   });
-  // }
+  } else {
+    api.toast({
+        msg: '无设备信息，无法操作',
+        duration: 2000,
+        location: 'middle'
+    });
+  }
 
 }
 

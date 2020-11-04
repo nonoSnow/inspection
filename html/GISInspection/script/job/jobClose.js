@@ -166,10 +166,11 @@ function showImg(data) {
 // 删除图片
 function deleteImg(that) {
   if (that != null) {
+    var e = e || window.event;
+    e.stopPropagation();
+
     var imgIndex = $(that).attr('parse');
-    // console.log(imgIndex);
     imgList = deleteArray(imgList, imgIndex);
-    // console.log(JSON.stringify(imgList));
     showImg(imgList);
   }
 }

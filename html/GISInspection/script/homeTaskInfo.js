@@ -29,6 +29,9 @@ var indexMap = {};
 
 var mapInfo;
 
+// 区域id
+var areaId;
+
 apiready = function() {
   var header = $api.byId('header');
   // 实现沉浸式状态栏效果
@@ -183,8 +186,10 @@ function onOpenTaskDetail(that) {
   var data = $(that).attr('parse');
   data = JSON.parse(data);
   data.taskId = taskId;
-  // console.log(typeof(data));
-  console.log(JSON.stringify(data));
+  data.areaId = areaId;
+  // console.log(JSON.stringify(mapInfo));
+  console.log(areaId);
+  // console.log(JSON.stringify(data));
   api.openWin({
       name: 'taskInfoSubmit',
       url: './taskInfoSubmit.html',
@@ -559,6 +564,8 @@ function getTaskDetail(param) {
       var str = template('taskBasicInfo', data);
       // console.log(str);
       $('#taskDetail').append(str);
+
+      areaId = ret.result.areaId;
 
       var data = {
         id: ret.result.areaId

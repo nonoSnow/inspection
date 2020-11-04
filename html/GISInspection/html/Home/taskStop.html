@@ -17,7 +17,7 @@
           <div class='aui-pull-left aui-btn' tapmode onclick="onBack()">
               <span class='aui-iconfont aui-icon-left'></span>
           </div>
-          <div class="aui-title">任务详情</div>
+          <div class="aui-title">暂停任务</div>
       </header>
 
       <div class="flex-con flex-content height100 bgc-f3">
@@ -115,7 +115,7 @@
       <div class="absolute top0 right0 del-icon">x</div>
     </div> -->
     {{each list value i}}
-    <div class="margin-top75 file-div relative" onclick="previewImg(this)" parse="{{url}}{{value.url}}">
+    <div class="margin-top75 file-div relative margin-right3" onclick="previewImg(this)" parse="{{url}}{{value.url}}">
       <img src="{{url}}{{value.url}}" class="width100 height100" alt="">
       <div class="absolute top0 right0 del-icon" tapmode onclick="deleteImg(this)" parse="{{i}}">
         <img class="width100 height100 borra" src="../../image/del.png" alt="">
