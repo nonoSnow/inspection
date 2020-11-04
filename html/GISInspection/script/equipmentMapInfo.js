@@ -181,3 +181,10 @@ function getInspectDetail() {
       }
   }
 }
+
+// 导航
+function goHere() {
+  var pointStr = inspectDetail.point;
+  var data = pointStr.split(',');
+  Navigator(data);
+}

@@ -22,11 +22,11 @@
       .method-item{
         margin-top: 0.75rem;
       }
-      header .aui-pull-right{
+      /*header .aui-pull-right{
         position: absolute;
         right:0.5rem;
         color: #333;
-      }
+      }*/
 
       /*.footer {
           width: 100%;
@@ -61,19 +61,28 @@
 
 <body>
     <div class="flex-wrap flex-vertical height100">
+      <div>
         <header class="aui-bar aui-bar-nav aui-bar-light bgi-none" id="header">
+            <div class="aui-title">事件</div>
+            <a class='aui-pull-right color-333' tapmode onclick="onOpenReportEvent()">
+                <span>上报事件</span>
+            </a>
+        </header>
+      </div>
+
+        <!-- <header class="aui-bar aui-bar-nav aui-bar-light bgi-none" id="header">
             <div class="aui-title">事件</div>
             <a class='aui-pull-right' tapmode onclick="onOpenReportEvent()">
                 <span>上报事件</span>
             </a>
-        </header>
+        </header> -->
 
         <div class="header-type display-flex text-cent line-height25 color-666">
             <div class="flex1 header-type-item color-598" tapmode onclick="onMenu(0, this)">
-                <span class="line-height1">
+              <span class="line-height1">
               待处理
-              <div class="type-line bgc-blue margin-top3 width60"></div>
-            </span>
+                <div class="type-line bgc-blue margin-top3 width60"></div>
+              </span>
             </div>
             <div class="flex1 header-type-item" tapmode onclick="onMenu(1, this)">
                 <span class="line-height1">
