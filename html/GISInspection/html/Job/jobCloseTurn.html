@@ -74,9 +74,17 @@
   <script type="text/javascript" src="../../script/job/jobCloseTurn.js"></script>
   <script type="text/template" id='imgData'>
     {{each list value i}}
-    <div class="margin-top75 file-div relative" onclick="previewImg(this)" parse="{{url}}{{value.url}}">
+    <!-- <div class="margin-top75 file-div relative margin-right3" onclick="previewImg(this)" parse="{{url}}{{value.url}}">
       <img src="{{url}}{{value.url}}" class="width100 height100" alt="">
-      <div class="absolute top0 right0 del-icon" tapmode onclick="deleteImg(this)" parse="{{i}}">x</div>
+      <div class="absolute top0 right0 del-icon" tapmode onclick="deleteImg(this)" parse="{{i}}">
+        <img class="width100 height100 borra" src="../../image/del.png" alt="">
+      </div>
+    </div> -->
+    <div class="margin-top75 file-div relative margin-right3" onclick="previewImg(this)" parse="{{url}}{{value.url}}">
+      <img src="{{url}}{{value.url}}" class="width100 height100" alt="">
+      <div class="absolute top0 right0 del-icon" tapmode onclick="deleteImg(this)" parse="{{i}}">
+        <img class="width100 height100 borra" src="../../image/del.png" alt="">
+      </div>
     </div>
     {{/each}}
     <div class="margin-top75 file-div relative" tapmode onclick="action()">
