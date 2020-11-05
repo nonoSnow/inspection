@@ -83,9 +83,18 @@ function setCurrentMapLocation() {
  * @method getHomeTaskList 请求接口改变员工离线、在线状态
  */
 function setOnlineStatus(status) {
+  var userInfo = $api.getStorage('userLoginInformation');
+  // console.log(JSON.stringify(userInfo.currentUserInfo.userInfo.userId));
+  var param = {
+    IsOnline: status ? false : true,
+    userId: userInfo.currentUserInfo.userInfo.userId
+  }
+
+  console.log(JSON.stringify(param));
     insertPersonStatus({
         data: {
-            IsOnline: status ? false : true
+            IsOnline: status ? false : true,
+            userId: userInfo.currentUserInfo.userInfo.userId
         },
         success: function(ret) {
             memberStatus = status ? 0 : 1;
@@ -232,8 +241,21 @@ function onOpenTaskInfo() {
 
 }
 
-function onBack() {
-    api.closeWin({});
+function toHome() {
+    // api.closeWin({});
+
+    api.openWin({
+        name: 'cloudMain',
+        url: 'widget://html/main.html', //fs://wgt/public/html/main.html', //'../../html/main.html'
+        bounces: false,
+        reload: true,
+        slidBackEnabled: false,
+        animation: {
+            type: "reveal", //动画类型（详见动画类型常量）
+            subType: "from_bottom", //动画子类型（详见动画子类型常量）
+            duration: 300 //动画过渡时间，默认300毫秒
+        }
+    });
 }
 
 // 新增区域 （zxf 20201028）

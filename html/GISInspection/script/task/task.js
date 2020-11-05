@@ -338,6 +338,24 @@ function showData(data, status) {
       }
 
       api.hideProgress();
+    },
+    fail: function(err) {
+      api.hideProgress();
+      console.log(JSON.stringify(err));
+      if (err.body.error != undefined) {
+        api.toast({
+            msg: err.body.error.message,
+            duration: 2000,
+            location: 'middle'
+        });
+
+      } else {
+        api.toast({
+            msg: err.msg,
+            duration: 2000,
+            location: 'middle'
+        });
+      }
     }
   });
 
@@ -629,13 +647,28 @@ function completedTask(that) {
   e.stopPropagation();
   var taskId = Number($(that).attr('parse'));
   // console.log(taskId);
-  var data = {
-    taskId: taskId,
-    status: 1,
-    PageIndex: 1,
-    MaxResultCount: 10
+  // var data = {
+  //   taskId: taskId,
+  //   status: 1,
+  //   PageIndex: 1,
+  //   MaxResultCount: 10
+  // }
+  // getDaiXunDev(data);
+  //点击确定，完成任务
+  var param = {
+    id: taskId,
+    operate: 2
   }
-  getDaiXunDev(data);
+
+  changeTaskStatus({
+    data: param,
+    success: function(ret) {
+      goingPageIndex = 1;
+      $('#taskList').html('');
+      initOngoing();
+
+    }
+  })
 }
 
 // 点击关闭任务
@@ -644,6 +677,7 @@ function closeTask(that) {
   e.stopPropagation();
 
   var taskId = Number($(that).attr('parse'));
+  console.log(taskId);
   var taskName = $(that).attr('taskName');
   var type = $(that).attr('parseType');
   var message = '您确定要关闭' + taskName + '吗？'
@@ -654,6 +688,7 @@ function closeTask(that) {
   }, function(ret, err) {
       if (ret.buttonIndex == 1) {
         //点击确定，关闭任务
+        console.log(taskId);
         var param = {
           id: taskId,
           operate: 4

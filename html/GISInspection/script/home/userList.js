@@ -45,8 +45,8 @@ function appGetPersonCount() {
         success: function(ret) {
             if (ret.success) {
                 $('#allPersons').text('全部(' + ret.result.all + ')');
-                $('#onliePersons').text('在线(' + ret.result.all + ')');
-                $('#offlinePersons').text('离线(' + ret.result.all + ')');
+                $('#onliePersons').text('在线(' + ret.result.online + ')');
+                $('#offlinePersons').text('离线(' + ret.result.offline + ')');
             }
         },
         error: function(err) {},

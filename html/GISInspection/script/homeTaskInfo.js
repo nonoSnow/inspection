@@ -280,6 +280,7 @@ function startTask() {
 
 // 关闭
 function closeTask() {
+  console.log(JSON.stringify(taskDetail));
   var message = '您确定要关闭' + taskDetail.name + '吗？'
   api.confirm({
       msg: message,
@@ -543,6 +544,7 @@ function getTaskDetail(param) {
   getTaskBasicInfo({
     data: param,
     success: function(ret) {
+      taskDetail = ret.result;
       $('#taskDetail').html('');
       if (ret.result.planStartTime != null || ret.result.planStartTime != '') {
         ret.result.planStartTime = parseTime(ret.result.planStartTime, '{y}-{m}-{d} {h}:{i}');

@@ -105,8 +105,9 @@ function action() {
       }
 
       function showErr(err) {
-        console.log(JSON.stringify(err));
+        // console.log(JSON.stringify(err));
         // showImg(imgList);
+        // console.log(JSON.stringify(err.body));
         if(err.body.error != undefined){
           // alert(err.body.error.message);
           api.toast({

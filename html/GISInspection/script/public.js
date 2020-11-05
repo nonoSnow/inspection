@@ -143,10 +143,13 @@ function getPicture(type, showRet, showErr) {
               showErr(err)
             }
           } else {
-            showErr({
-              code: 0,
-              message: '没有选择图片'
-            })
+            console.log('没有选择图片');
+            // showErr({
+            //   code: 0,
+            //   statusCode: 0,
+            //   msg: '没有选择图片',
+            //   body: '没有选择图片'
+            // })
           }
 
       } else {

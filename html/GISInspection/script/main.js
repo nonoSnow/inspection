@@ -1,5 +1,24 @@
 var isOnline;
 apiready = function() {
+
+  api.closeFrameGroup({
+    name: 'group'
+  });
+
+  api.addEventListener({
+      name: 'keyback'
+  }, function(ret, err) {
+      if(ret){
+        api.openWin({
+            name: 'cloudMain',
+            url: 'widget://html/main.html',
+            pageParam: {
+                name: 'test'
+            }
+        });
+
+      }
+  });
   // 设置状态栏为透明
   api.setStatusBarStyle({
     style: 'dark',
@@ -48,7 +67,7 @@ apiready = function() {
   }, function(ret, err){
       if( ret ){
           api.setFrameGroupIndex({
-            name: 'group',
+            name: 'group1',
             index: 2,
             reload: true
         });
@@ -70,7 +89,7 @@ apiready = function() {
 
 function funIniGroup(roles) {
     api.openFrameGroup({
-        name: 'group',
+        name: 'group1',
         scrollEnabled: false,
         rect: {
             x: 0,
@@ -112,7 +131,7 @@ function funIniGroup(roles) {
 
 function onFotterMenu(index, el) {
   api.setFrameGroupIndex({
-      name: 'group',
+      name: 'group1',
       index: index,
   });
 
