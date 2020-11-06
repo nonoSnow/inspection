@@ -3,6 +3,10 @@ var hasNextPage = false;
 var pageIndex = 1;
 // var xunData = [];
 // 初始化事件为当前月
+
+// 是否从事件详情页面来
+var type;
+
 var date = parseTime(new Date(), '{y}-{m}');
 var initDate = date;
 apiready = function() {
@@ -12,6 +16,12 @@ apiready = function() {
 
     devInfo = api.pageParam.devInfo;
     console.log(JSON.stringify(devInfo))
+
+    if (api.pageParam.type == 'methodDetail') {
+      type = true;
+    } else {
+      type = false;
+    }
 
     initBasic();
     getXunData();
@@ -41,19 +51,36 @@ apiready = function() {
 
 // 初始化基础信息
 function initBasic() {
-  var data = template('basic-box', devInfo);
+  var dev = {};
+  if (type) {
+    dev.name = devInfo.deviceName;
+    dev.code = devInfo.deviceCode;
+    dev.point = devInfo.devicePoint;
+    dev.status = devInfo.deviceStatus;
+    dev.address = devInfo.address;
+    dev.id = devInfo.deviceId;
+  } else {
+    dev = devInfo
+  }
+
+  var data = template('basic-box', dev);
   $('#basicInfo').append(data);
 }
 
 // 获取巡检记录
 function getXunData() {
+  console.log(JSON.stringify(devInfo));
+  console.log(JSON.stringify(devInfo.id));
+  var deviceId = devInfo.id == undefined ? devInfo.deciceId : devInfo.id;
+  console.log(deviceId);
   var param = {
-    deviceId: devInfo.id,
+    deviceId: deviceId,
     time: date,
     pageIndex: pageIndex,
     maxResultCount: 10
   }
 
+  console.log(JSON.stringify(param));
   getXunList('api/services/Inspection/InspectionTask/AppGetInspectionRecordList', param, showRet, showErr);
 
   function showRet(ret) {

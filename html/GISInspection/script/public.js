@@ -119,6 +119,7 @@ function onShowList(element, minH, maxH, mapListStatus, bodyHeight,callback) {
 * @param {type} 类型（相册或者拍照）
 **/
 function getPicture(type, showRet, showErr) {
+  console.log(type);
   api.getPicture({
     sourceType: type,
     encodingType: 'jpg',
@@ -130,8 +131,8 @@ function getPicture(type, showRet, showErr) {
     targetHeight: 750,
     saveToPhotoAlbum: false
   }, function(ret, err) {
-    // console.log(JSON.stringify(ret));
-    // console.log(JSON.stringify(err));
+    console.log(JSON.stringify(ret));
+    console.log(JSON.stringify(err));
       if (ret) {
           if (ret.data != '') {
             uploadPic(ret.data, success, error);

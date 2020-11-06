@@ -18,7 +18,7 @@ apiready = function() {
     pageParam = api.pageParam.data;
 
     if(pageParam) {
-        alert(JSON.stringify(pageParam))
+        // alert(JSON.stringify(pageParam))
         taskId = pageParam.taskId;
         deviceId = pageParam.id;
 
@@ -306,7 +306,7 @@ function deleteImg(that) {
   if (that != null) {
     var e = e || window.event;
     e.stopPropagation();
-    
+
     var imgIndex = $(that).attr('parse');
     imgList = deleteArray(imgList, imgIndex);
     showImg(imgList);

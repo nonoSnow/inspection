@@ -15,6 +15,8 @@ var type;
 // 是否可以操作上报事件和正常
 var isOper = false;
 
+var indexMap = {};
+
 // console.log('---------------------');
 apiready = function() {
   var header = $api.byId('header');
@@ -26,6 +28,7 @@ apiready = function() {
   taskId = api.pageParam.taskId;
   type = api.pageParam.taskType;
 
+  console.log(JSON.stringify(inspectParam));
   console.log(type);
 
 
@@ -33,6 +36,9 @@ apiready = function() {
   console.log(taskId);
   getInspectDetail();
   initBtn();
+
+  // 初始化地图
+  initMap();
 }
 
 function initBtn() {
@@ -51,7 +57,7 @@ function initBtn() {
 
 function onOpenReport() {
   if (isOper) {
-    // if (hasOperate) {
+    if (hasOperate) {
       var data = inspectParam;
       data.taskId = taskId;
       console.log(JSON.stringify(data));
@@ -63,14 +69,14 @@ function onOpenReport() {
               data: data
           }
       });
-    // } else {
-    //   api.toast({
-    //       msg: '无设备信息，无法上报事件',
-    //       duration: 2000,
-    //       location: 'middle'
-    //   });
-    //
-    // }
+    } else {
+      api.toast({
+          msg: '无设备信息，无法上报事件',
+          duration: 2000,
+          location: 'middle'
+      });
+
+    }
   }
 
 }
@@ -78,12 +84,14 @@ function onOpenReport() {
 function onOpenSubmit() {
   if (isOper) {
     if (hasOperate) {
+      var data = inspectParam;
+      data.taskId = taskId;
       api.openWin({
           name: 'taskInfoSubmit',
           url: './taskInfoSubmit.html',
           pageParam: {
               type: 'handle',
-              data: inspectParam
+              data: data
           }
       });
     } else {
@@ -141,7 +149,8 @@ function getInspectDetail() {
     inspectionStatus: inspectParam.inspectionStatus
   }
 
-  getInspectDetails('api/services/Inspection/InspectionTaskService/GetPointDetails', inspectParam, showRet, showRet);
+  console.log(JSON.stringify(data));
+  getInspectDetails('api/services/Inspection/InspectionTaskService/GetPointDetails', data, showRet, showRet);
 
   function showRet(ret) {
     console.log(JSON.stringify(ret));
@@ -184,7 +193,91 @@ function getInspectDetail() {
 
 // 导航
 function goHere() {
-  var pointStr = inspectDetail.point;
-  var data = pointStr.split(',');
-  Navigator(data);
+  if (hasOperate) {
+    var pointStr = inspectDetail.point;
+    var data = pointStr.split(',');
+    var navigator = new Navigator(data);
+
+  } else {
+    hasOperate = false;
+    api.toast({
+        msg: '无设备信息',
+        duration: 2000,
+        location: 'middle'
+    });
+  }
+}
+
+// 通过任务id获取片区内容展示片区及设备
+function initMap() {
+  var data = {
+    id: taskId
+  }
+  getTaskBasicInfo({
+    data: data,
+    success: function(ret) {
+      // console.log(JSON.stringify(ret));
+      var param = {
+        id: ret.result.areaId
+      }
+      getAreaDetails({
+        data: param,
+        success: function(ret1) {
+          // console.log(JSON.stringify(ret1));
+          var mapInfo = ret1.result;
+          var pointList = [];
+          var lineList = [];
+          pointList = inspectParam.point.split(',');
+          // console.log(JSON.stringify(mapInfo));
+          indexMap = new Map({
+              mapid: 'mapBox'
+          });
+          indexMap.initArea('addArea');
+          indexMap.initDeviceLayer('addArea');
+
+          indexMap.drawAreaSelect(mapInfo.areaPoint, {
+            name: 'addArea',
+            areaId: mapInfo.id
+          });
+          indexMap.mapConduitEquipment({
+              areaPoint: mapInfo.areaPoint,
+              lineList: lineList,
+              pointList: pointList
+          }, {name: 'addArea'});
+        },
+        fail: function(err) {
+          if (err.body.error != undefined) {
+            api.toast({
+                msg: err.body.error.message,
+                duration: 2000,
+                location: 'middle'
+            });
+
+          } else {
+            api.toast({
+                msg: err.msg,
+                duration: 2000,
+                location: 'middle'
+            });
+          }
+        }
+      })
+    },
+    fail: function(err) {
+      if (err.body.error != undefined) {
+        api.toast({
+            msg: err.body.error.message,
+            duration: 2000,
+            location: 'middle'
+        });
+
+      } else {
+        api.toast({
+            msg: err.msg,
+            duration: 2000,
+            location: 'middle'
+        });
+      }
+    }
+  })
 }

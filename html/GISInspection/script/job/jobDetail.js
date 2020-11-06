@@ -77,7 +77,7 @@ function showData(id){
     api.hideProgress();
 
     // console.log("****************************"+id);
-    // console.log(JSON.stringify(ret));
+    console.log(JSON.stringify(ret));
     var options1={
       data:{id:ret.result.areaId},
       success:function(ret1){

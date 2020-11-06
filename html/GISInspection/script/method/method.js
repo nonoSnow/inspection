@@ -9,7 +9,7 @@ apiready = function() {
         name: 'eventMethod'
     }, function(ret, err){
         if( ret ){
-            alert(JSON.stringify(ret))
+            // alert(JSON.stringify(ret))
             onMenu(ret.value.index)
         }else{
         }

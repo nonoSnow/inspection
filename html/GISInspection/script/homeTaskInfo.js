@@ -44,6 +44,7 @@ apiready = function() {
 
   nowTaskType = api.pageParam.type;
   taskId = api.pageParam.id;
+  console.log(taskId);
 
   // console.log(api.pageParam.id);
   if (nowTaskType == '0') {
@@ -248,7 +249,13 @@ function startTask() {
   changeTaskStatus({
     data: data,
     success: function(ret) {
-        openTask();
+        api.sendEvent({
+            name: 'returnList',
+            extra: {
+                back: 1,
+            }
+        });
+        api.closeWin({});
     }
   })
   // changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', data, showRet, showErr);
@@ -339,7 +346,14 @@ function reStartTask() {
   changeTaskStatus({
     data: data,
     success: function(ret) {
-        openTask();
+        // openTask();
+        api.sendEvent({
+            name: 'returnList',
+            extra: {
+                back: 1,
+            }
+        });
+        api.closeWin({});
     }
   })
   // changeTaskStatus('api/services/Inspection/InspectionTaskService/UpdateTaskStatus', data, showRet, showErr);
@@ -587,7 +601,7 @@ function getTaskDetail(param) {
           console.log(JSON.stringify(mapInfo));
           console.log(typeof(mapInfo.areaPoint));
           console.log(mapInfo.areaPoint);
-          indexMap.drawAreaSelect(mapInfo, {
+          indexMap.drawAreaSelect(mapInfo.areaPoint, {
             name: 'addArea',
             areaId: mapInfo.id
           });
@@ -720,6 +734,7 @@ function getInspecteList(param, status) {
   getInspectDataList({
     data: param,
     success: function(ret) {
+      console.log(JSON.stringify(ret));
       var str;
       if (ret.result.items != 0) {
         $('#haveNothing').addClass('aui-hide');
@@ -751,6 +766,10 @@ function getInspecteList(param, status) {
 
       api.hideProgress();
       $('#taskDetail').append(str);
+    },
+    fail: function(err) {
+      api.hideProgress();
+
     }
   })
   // getInspectDataList("api/services/Inspection/InspectionTaskService/AppGetInspectionPointList",param,showRet,showErr);
@@ -844,12 +863,12 @@ function getInspecteList(param, status) {
   // }
 }
 
-function openTask() {
-  api.openWin({
-      name: 'Task',
-      url: '../task/task.html'
-  });
-}
+// function openTask() {
+//   api.openWin({
+//       name: 'Task',
+//       url: '../task/task.html'
+//   });
+// }
 
 // 打开地图页面
 function openViewMap() {
@@ -861,4 +880,15 @@ function openViewMap() {
       }
   });
 
+}
+
+// 返回列表页
+function backList() {
+  api.sendEvent({
+      name: 'returnList',
+      extra: {
+          back: 1,
+      }
+  });
+  api.closeWin({});
 }

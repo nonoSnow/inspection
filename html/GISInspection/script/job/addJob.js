@@ -124,11 +124,11 @@ function openCamera() {
       saveToPhotoAlbum: false,
     }, function(ret, err) {
         if (ret) {
-            alert(JSON.stringify(ret));
+            // alert(JSON.stringify(ret));
             var str = '<img src="'+ret.data+'" class="margin-bot3 file-div" style="margin-left:10px;" alt="">'
             $("#picBox").append(str)
         } else {
-            alert(JSON.stringify(err));
+            // alert(JSON.stringify(err));
         }
     });
 }

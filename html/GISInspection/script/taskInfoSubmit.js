@@ -4,6 +4,12 @@ var isLeader = false;  // 是否是领导
 var details;
 var imgList = [];
 
+// 设备详情
+var deviceInfo = {};
+
+// 是否有数据
+var hasRet = false;
+
 apiready = function() {
   var header = $api.byId('header');
   // 实现沉浸式状态栏效果
@@ -98,9 +104,16 @@ function initDevInfo() {
     console.log(JSON.stringify(ret));
 
     if (ret.result != null) {
+      hasRet = true;
       $('#devInfo').removeClass('aui-hide');
       $('#devInfoBox').removeClass('aui-hide');
       $('#haveNothing').addClass('aui-hide');
+
+      if (ret.result.time != null || ret.result.time != '') {
+        ret.result.time = parseTime(ret.result.time, '{y}-{m}-{d} {h}:{i}');
+      }
+
+      deviceInfo = ret.result;
 
       // 基础信息
       var str = template('devBasicInfo', ret.result);
@@ -127,6 +140,7 @@ function initDevInfo() {
   }
 
   function showErr(err) {
+    hasRet = false;
     if(err.body.error != undefined){
       // alert(err.body.error.message);
       api.toast({
@@ -170,23 +184,30 @@ function onOpenInspectionRecord() {
 
 // 转工单
 function onTransferJob() {
-  var dialog = new auiDialog({});
-  dialog.alert({
-      title:"弹出提示",
-      buttons:['取消','确定']
-  },function(ret){
-      console.log(JSON.stringify(ret));
-      if (ret.buttonIndex == '2') {
-        api.openWin({
-            name: 'addJob',
-            url: '../Job/addJob.html',
-            pageParam: {
-                name: 'test'
-            }
-        });
-
+  api.openWin({
+      name: 'addJob',
+      url: '../Job/addJob.html',
+      pageParam: {
+          name: 'test'
       }
-  })
+  });
+  // var dialog = new auiDialog({});
+  // dialog.alert({
+  //     title:"弹出提示",
+  //     buttons:['取消','确定']
+  // },function(ret){
+  //     console.log(JSON.stringify(ret));
+  //     if (ret.buttonIndex == '2') {
+  //       api.openWin({
+  //           name: 'addJob',
+  //           url: '../Job/addJob.html',
+  //           pageParam: {
+  //               name: 'test'
+  //           }
+  //       });
+  //
+  //     }
+  // })
 }
 
 // 上传附件
@@ -301,24 +322,29 @@ function submit() {
     return false;
   }
 
+  var userInfo = $api.getStorage('userLoginInformation');
+  console.log(JSON.stringify(userInfo.currentUserInfo.userInfo));
+
   var data = {
     deviceId: details.id,
     taskId: details.taskId,
     content: content,
-    personId: '',
-    person: '',
+    personId: userInfo.currentUserInfo.userInfo.userId,
+    person: userInfo.currentUserInfo.userInfo.trueName,
     resourceInfoList: imgList
   }
+
+  console.log(JSON.stringify(data));
 
   AppInsertDeviceInspection('api/services/Inspection/DeviceService/AppInsertDeviceInspection' , data, showRet, showErr);
 
   function showRet(ret) {
     // 提交成功，返回任务详情列表
+    api.closeWin({});
   }
 
   function showErr(err) {
     if(err.body.error != undefined){
-      // alert(err.body.error.message);
       api.toast({
           msg: err.body.error.message,
           duration: 2000,
@@ -338,61 +364,65 @@ function submit() {
 
 function onOpenViewMap() {
   // 打开地图
-  // var mapInfo =
-  getAreaDetails({
-    data: {
-      id: details.areaId
-    },
-    success: function(ret) {
-      // console.log(JSON.stringify(ret));
-      var mapInfo = ret.result;
-      // var map = {
-      //   areaPoint: "104.15384531021118,30.024325847625732;104.15101289749146,30.02067804336548;104.15757894515991,30.01861810684204;104.15766477584839,30.02166509628296;104.15534734725952,30.023467540740967;104.15384531021118,30.024325847625732",
-      //   deviceLists: [
-      //     {
-      //       type:1,
-      //       typeStr: "设备点",
-      //       deviceCode: "2012014",
-      //       deviceName:"设备11",
-      //       devicePoint:"104.15464826,30.02035061",
-      //       address:"上清寺",
-      //       status:3,
-      //       statusStr:"异常",
-      //       id:1
-      //     },
-      //     {
-      //       type:1,
-      //       typeStr:"设备点",
-      //       deviceCode:"2012015",
-      //       deviceName:"设备2",
-      //       devicePoint:"104.15497394,30.01950963",
-      //       address:"上清寺环球大厦",
-      //       status:2,
-      //       statusStr:"正常",
-      //       id:2
-      //     }
-      //   ],
-      //   pipelineLists: [
-      //     {
-      //       type:2,
-      //       typeStr:"管道",
-      //       deviceCode:"2013141",
-      //       deviceName:"蝶阀",
-      //       devicePoint:"104.15172506,30.02112864",
-      //       address:"华美整形",
-      //       status:2,
-      //       statusStr:"正常",
-      //       id:3
-      //     }
-      //   ]
-      // }
-      api.openWin({
-          name: 'viewMap',
-          url: '../task/viewMap.html',
-          pageParam: {
-            mapInfo: mapInfo
-          }
-      });
-    }
-  })
+  // var mapInfo = ret.result;
+  // console.log(JSON.stringify(mapInfo));
+  // console.log(JSON.stringify(details));
+  // console.log(JSON.stringify(deviceInfo));
+  if (hasRet) {
+    var devInfo = {};
+    devInfo.deviceId = deviceInfo.id;
+    devInfo.deviceName = deviceInfo.name;
+    devInfo.devicePoint = deviceInfo.point;
+    devInfo.deviceCode = deviceInfo.code;
+    devInfo.address = deviceInfo.address;
+
+    api.openWin({
+        name: 'devicemap',
+        url: '../common/device.html',
+        pageParam: {
+            deviceInfo: devInfo
+        }
+     });
+  } else {
+    api.toast({
+        msg: '没有查到设备信息',
+        duration: 2000,
+        location: 'middle'
+    });
+
+  }
+
+
+  // getAreaDetails({
+  //   data: {
+  //     id: details.areaId
+  //   },
+  //   success: function(ret) {
+  //     // console.log(JSON.stringify(ret));
+  //     var mapInfo = ret.result;
+  //     console.log(JSON.stringify(mapInfo));
+  //     console.log(JSON.stringify(details));
+  //     console.log(JSON.stringify(deviceInfo));
+  //     var devInfo = {};
+  //     devInfo.deviceId = deviceInfo.id;
+  //     devInfo.deviceName = deviceInfo.name;
+  //     devInfo.devicePoint = deviceInfo.point;
+  //     devInfo.deviceCode = deviceInfo.code;
+  //     devInfo.address = deviceInfo.address;
+  //     // api.openWin({
+  //     //     name: 'viewMap',
+  //     //     url: '../task/viewMap.html',
+  //     //     pageParam: {
+  //     //       mapInfo: mapInfo
+  //     //     }
+  //     // });
+  //     api.openWin({
+  //         name: 'devicemap',
+  //         url: '../common/device.html',
+  //         pageParam: {
+  //             deviceInfo: devInfo
+  //         }
+  //      });
+  //   }
+  // })
 }

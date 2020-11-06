@@ -22,7 +22,7 @@
         <div>
           <header class="aui-bar aui-bar-nav aui-bar-light bgi-none" id="header">
               <div class="aui-title">任务</div>
-              
+
           </header>
         </div>
 
@@ -247,7 +247,14 @@
               </div>
               {{/if}}
               <div class="absolute bottom0 right0 task-item-overdue">
+                {{value.statusStr}}
+                  <!-- {{if value.status == 6}}
+                  已完成
+                  {{else if value.status == 5}}
                   已关闭
+                  {{else if value.status == 4}}
+                  已超期
+                  {{/if}} -->
               </div>
           </div>
           <!-- <div class="line margin-top75 margin-bot5 item-bot-btn"></div>

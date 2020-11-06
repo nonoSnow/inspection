@@ -203,7 +203,7 @@ function GetPointDetails(path,data,showRet,showErr) {
 }
 
 // 新增设备巡检情况
-function AppInsertDeviceInspection() {
+function AppInsertDeviceInspection(path,data,showRet,showErr) {
   var options = {
     url: baseUrl+path,
     data: data,

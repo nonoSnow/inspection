@@ -66,6 +66,7 @@ function getAppGetAllPerson(isScroll) {
         type: "post",
         data: data,
         success: function(ret) {
+          console.log(JSON.stringify(ret));
             if (ret.success) {
                 var str = template('personListTemplate', ret);
                 ret.result.items.forEach(function(item) {

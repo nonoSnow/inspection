@@ -10,7 +10,7 @@ apiready = function() {
   Id=api.pageParam.Id;
   showDetailsData(api.pageParam.Id)
   // showDetailsData(id);
-
+  console.log(methodType);
   if(methodType == 1) {
       $(".footer").removeClass('aui-hide')
   }
@@ -54,12 +54,13 @@ function showDetailsData(id){
 }
 // 跳转到巡检记录页面
 function onOpenInspectionRecord() {
-    alert(JSON.stringify(deviceInfo))
+    // alert(JSON.stringify(deviceInfo))
   api.openWin({
       name: 'inspectionRecord',
       url: '../Method/inspectionRecord.html',
       pageParam: {
-          devInfo: deviceInfo
+          devInfo: deviceInfo,
+          type: 'methodDetail'
       }
   });
 }
@@ -87,7 +88,7 @@ function onOpenClose() {
                  closeEvent()
              }
         }else{
-             alert( JSON.stringify( err ) );
+            //  alert( JSON.stringify( err ) );
         }
     });
 }
@@ -130,6 +131,7 @@ function closeEvent() {
 
 // 查看地图
 function checkMap() {
+  console.log(JSON.stringify(deviceInfo));
     api.openWin({
         name: 'devicemap',
         url: '../common/device.html',

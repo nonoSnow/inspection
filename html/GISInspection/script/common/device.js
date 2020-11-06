@@ -1,6 +1,10 @@
 var pageParam;
 var indexMap;
 apiready = function() {
+  var header = $api.byId('header');
+  // 实现沉浸式状态栏效果
+  $api.fixStatusBar(header);
+
     pageParam = api.pageParam.deviceInfo;
     $(".pop-container .name").html(pageParam.deviceCode);
     $(".pop-container .location").html(pageParam.devicePoint);

@@ -66,7 +66,7 @@ function action() {
 
       function showRet(ret) {
         console.log(JSON.stringify(ret));
-        imgList.push(ret);
+        imgList.push(ret[0]);
         showImg(imgList);
       }
 
@@ -168,7 +168,16 @@ function suspendedTask() {
     success: function(ret) {
       // 操作成功
       // 返回列表页
-      openTask();
+      // openTask();
+      api.sendEvent({
+          name: 'returnList',
+          extra: {
+              back: 1,
+          }
+      });
+
+      api.closeWin({});
+
     }
   })
   // changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', data, showRet, showErr);

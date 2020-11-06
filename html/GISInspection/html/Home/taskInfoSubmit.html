@@ -74,7 +74,7 @@
         <!-- 办理界面显示 -->
         <footer id="fotSubmit" class="aui-bar aui-bar-tab display-flex footer">
             <div class="flex1">
-                <div class='footer-btn bgc-blue color-fff' onclick="submit">
+                <div class='footer-btn bgc-blue color-fff' onclick="submit()">
                     提交
                 </div>
             </div>
@@ -140,7 +140,12 @@
       {{inspectionStatusStr}}
   </div>
   <div class="margin-top75 detail">巡检人：{{person}}</div>
-  <div class="margin-top75 detail leader">联系电话：15087694326</div>
+  <div class="margin-top75 detail leader">联系电话：
+    {{if phone != null}}
+    {{phone}}
+    {{else}}
+    {{/if}}
+  </div>
   <div class="margin-top75 detail">巡检时间：{{time}}</div>
   <div class="margin-top75">地址：{{address}}</div>
 </script>
@@ -190,7 +195,7 @@
 <script type="text/template" id='imgData'>
   <!-- 上传附件信息或者展现附件信息 -->
   {{each list value i}}
-  <div class="margin-top75 file-div relative" onclick="previewImg(this)" parse="{{url}}{{value.url}}">
+  <div class="margin-top75 file-div relative margin-right3" onclick="previewImg(this)" parse="{{url}}{{value.url}}">
     <img src="{{url}}{{value.url}}" class="width100 height100" alt="">
     <div class="absolute top0 right0 del-icon" tapmode onclick="deleteImg(this)" parse="{{i}}">
       <img class="width100 height100 borra" src="../../image/del.png" alt="">

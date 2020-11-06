@@ -134,6 +134,21 @@ apiready = function() {
 
   // $('#list-box').css('height', (mainBoxH - headerH - tabBoxH));
   initOngoing();
+
+  api.addEventListener({
+      name: 'returnList'
+  }, function(ret, err){
+      if( ret ){
+          //  alert( JSON.stringify( ret ) );
+           if (ret.value.back == 1) {
+             // 返回list ，需要刷新当前页面
+             onMenu(taskTypeIndex, '');
+           }
+      }else{
+          //  alert( JSON.stringify( err ) );
+      }
+  });
+
 }
 
 // 初始化进行中的任务列表
@@ -187,7 +202,7 @@ function showData(data, status) {
   getTaskDataSingle({
     data: data,
     success: function (ret) {
-      // console.log(JSON.stringify(ret));
+      // alert(JSON.stringify(ret));
       var data;
       var str;
 

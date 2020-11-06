@@ -40,7 +40,7 @@ apiready = function() {
           //  alert( JSON.stringify( ret ) );
            onMenu(parseInt(ret.value.funcName))
       }else{
-           alert( JSON.stringify( err ) );
+          //  alert( JSON.stringify( err ) );
       }
   });
 
