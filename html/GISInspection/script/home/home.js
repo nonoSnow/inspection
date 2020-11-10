@@ -22,6 +22,7 @@ apiready = function() {
 
     // 初始化员工在线、离线状态
     memberStatus = $api.getStorage('isOnline');
+    console.log(memberStatus);
     memberStatus = memberStatus ? memberStatus : 0;
     $(".member-status").addClass(memberStatus ? 'on' : '');
     // 获取当前用户的位置 并向地图中添加

@@ -2,18 +2,31 @@ var methodType;
 var Id;
 var deviceId = '';
 var deviceInfo = {};
+
+// 是否是领导
+var isLeader = false;
+
 apiready = function() {
   var header = $api.byId('header');
   // 实现沉浸式状态栏效果
   $api.fixStatusBar(header);
   methodType = api.pageParam.type;
-  Id=api.pageParam.Id;
-  showDetailsData(api.pageParam.Id)
+  Id = api.pageParam.Id;
+  showDetailsData(api.pageParam.Id);
+
+  if (getCurrentUserRoles() == 1) {
+    isLeader = true;
+  } else {
+    isLeader = false;
+  }
   // showDetailsData(id);
   console.log(methodType);
   if (methodType == 0) {
     // 待处理事件，可以转工单或者关闭
     $(".footer").removeClass('aui-hide');
+    if (isLeader) {
+      $('.transforOrder').removeClass('aui-hide');
+    }
   }else if(methodType == 1) {
     // 转工单事件
     $(".footer").addClass('aui-hide');
