@@ -260,8 +260,15 @@ function toHome() {
 
 // 新增区域 （zxf 20201028）
 function onAddArea() {
+    // api.openWin({
+    //     name: 'addArea',
+    //     url: '../../html/Area/addArea.html',
+    // });
     api.openWin({
-        name: 'addArea',
-        url: '../../html/Area/addArea.html',
+        name: 'areaLayer',
+        url: '../Area/areaLayer.html',
+        pageParam: {
+            name: 'test'
+        }
     });
 }

@@ -8,10 +8,21 @@ var equipment = {}; // 设备相关信息
 var source=2; // 来源：1：PC端；2：APP；3：第三方（管网）
 var imgList = []; //图片列表
 
+// 是否从事件转工单
+// var transOrder = false;
+
 apiready = function() {
     var header = $api.byId('header');
     // 实现沉浸式状态栏效果
     $api.fixStatusBar(header);
+
+    // console.log(api.pageParam.type);
+    // if (api.pageParam.type == 'transOrder') {
+    //   transOrder = true;
+    // } else {
+    //   transOrder = false;
+    // }
+
 
     // 工单类型
     $(".custom-popup-list li").each(function() {
