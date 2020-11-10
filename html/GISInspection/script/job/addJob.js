@@ -15,15 +15,12 @@ apiready = function() {
     var header = $api.byId('header');
     // 实现沉浸式状态栏效果
     $api.fixStatusBar(header);
-
-<<<<<<< HEAD
     // 如果是 事件转工单 就不显示区域
     if(api.pageParam.eventId){
       $("#xjArea").hide();
     }else {
       $("#xjArea").show();
     }
-=======
     // console.log(api.pageParam.type);
     // if (api.pageParam.type == 'transOrder') {
     //   transOrder = true;
@@ -31,8 +28,6 @@ apiready = function() {
     //   transOrder = false;
     // }
 
-
->>>>>>> cfc9e34a449a727a694f7b8e5716ed92d6c92a76
     // 工单类型
     $(".custom-popup-list li").each(function() {
         $(this).click(function() {
@@ -257,7 +252,7 @@ function uploadData(data){
       success:showRet,
       error:showErr,
     }
-    alert(JSON.stringify(options.data));
+    // alert(JSON.stringify(options.data));
 
     console.log("事件转工单");
     postAjaxMethodToAddJob(options)
@@ -268,35 +263,40 @@ function uploadData(data){
   // jobPostMethod("api/services/Inspection/WorkOrderService/InsertWorkOrder",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
-    console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(ret));
     if(ret.success){
-      api.toast({
-          msg: '新增工单成功',
-          duration: 2000,
-          location: 'middle'
+      // api.toast({
+      //     msg: '新增工单成功',
+      //     duration: 2000,
+      //     location: 'middle'
+      // });
+      api.alert({
+          title: '提示',
+          msg: "新增工单成功",
+      }, function(ret, err) {
+        // 清空数据
+        clearData();
+        if(api.pageParam.eventId){
+          api.sendEvent({
+              name: 'closeEvent',
+              extra: {
+                  index: 0
+              }
+          });
+          api.closeToWin({
+              name: 'TaskAssign'
+          });
+        }else{
+          api.sendEvent({
+              name: 'initJob',
+              extra: {
+                  funcName: jobType,
+              }
+          });
+          // onBack();
+          api.openWin()
+        }
       });
-      // 清空数据
-      clearData();
-      if(api.pageParam.eventId){
-        api.sendEvent({
-            name: 'closeEvent',
-            extra: {
-                index: 0
-            }
-        });
-        api.closeToWin({
-            name: 'TaskAssign'
-        });
-      }else{
-        api.sendEvent({
-            name: 'initJob',
-            extra: {
-                funcName: jobType,
-            }
-        });
-        // onBack();
-        api.openWin()
-      }
     }else {
       alert("新增工单失败")
     }
