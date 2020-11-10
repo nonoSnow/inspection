@@ -11,8 +11,15 @@ apiready = function() {
   showDetailsData(api.pageParam.Id)
   // showDetailsData(id);
   console.log(methodType);
-  if(methodType == 1) {
-      $(".footer").removeClass('aui-hide')
+  if (methodType == 0) {
+    // 待处理事件，可以转工单或者关闭
+    $(".footer").removeClass('aui-hide');
+  }else if(methodType == 1) {
+    // 转工单事件
+    $(".footer").addClass('aui-hide');
+  } else if (methodType == 2) {
+    //已关闭事件
+    $(".footer").addClass('aui-hide');
   }
 }
 
@@ -67,14 +74,17 @@ function onOpenInspectionRecord() {
 
 // 转工单
 function onOpenTransfWorkOrder() {
-    api.openWin({
-        name: 'addJob',
-        url: '../Job/addJob.html',
-        pageParam: {
-            deviceId: deviceId,
-            eventId: Id
-        }
-    });
+  // console.log(deviceId);
+  // console.log(Id);
+  api.openWin({
+      name: 'addJob',
+      url: '../Job/addJob.html',
+      pageParam: {
+          deviceId: deviceId,
+          eventId: Id,
+          // type: 'transOrder'
+      }
+  });
 }
 
 // 关闭事件

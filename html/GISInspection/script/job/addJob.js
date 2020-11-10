@@ -8,17 +8,31 @@ var equipment = {}; // 设备相关信息
 var source=2; // 来源：1：PC端；2：APP；3：第三方（管网）
 var imgList = []; //图片列表
 
+// 是否从事件转工单
+// var transOrder = false;
+
 apiready = function() {
     var header = $api.byId('header');
     // 实现沉浸式状态栏效果
     $api.fixStatusBar(header);
 
+<<<<<<< HEAD
     // 如果是 事件转工单 就不显示区域
     if(api.pageParam.eventId){
       $("#xjArea").hide();
     }else {
       $("#xjArea").show();
     }
+=======
+    // console.log(api.pageParam.type);
+    // if (api.pageParam.type == 'transOrder') {
+    //   transOrder = true;
+    // } else {
+    //   transOrder = false;
+    // }
+
+
+>>>>>>> cfc9e34a449a727a694f7b8e5716ed92d6c92a76
     // 工单类型
     $(".custom-popup-list li").each(function() {
         $(this).click(function() {

@@ -16,6 +16,10 @@ apiready = function() {
   checkPoint = api.pageParam.checkPoint;
   checkLine = api.pageParam.checkLine;
 
+  // console.log(JSON.stringify(areaPoint));
+  // console.log(JSON.stringify(checkPoint));
+  // console.log(JSON.stringify(checkLine));
+
   for (var i = 0; i < checkLine.length; i++) {
     lineLength += parseFloat(checkLine[i].length);
 
