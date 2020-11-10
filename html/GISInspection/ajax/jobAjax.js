@@ -122,6 +122,27 @@ function postAjaxAddJob(options) {
     }, options)
     ajaxMethod(options);
 }
+/**
+* @method {Function} postAjaxMethodToAddJob 新增工单 事件转 修改事件状态
+* @param {options} 请求需要的参数及回调函数
+* data 请求需要的数据
+* success 请求成功
+* fail 请求失败
+*/
+function postAjaxMethodToAddJob(options) {
+    var data = options.data;
+    var options = Object.assign({}, {
+        url: baseUrl + 'api/services/Inspection/EventService/UpdateEventById',
+        data: {
+            body: JSON.stringify(data)
+        },
+        error: function(err) {
+            // console.log(JSON.stringify(err))
+            if(options.fail) options.fail(err);
+        }
+    }, options)
+    ajaxMethod(options);
+}
 
 // 负责人页面
 /**
