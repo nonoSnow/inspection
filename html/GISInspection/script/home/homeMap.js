@@ -81,16 +81,20 @@ function initTaskListAndOrderList() {
         getHomeTaskList(),
         getHomeOrderList()
     ]
+    // console.log($.when);
     $.when.apply($, ajaxArr)
         .then(
             function(res1, res2) {
+              // console.log(JSON.stringify(res1));
+              // console.log(JSON.stringify(res2));
                 if (res1.success && res2.success) {
+                  // console.log('111111111111');
                     taskOrderList = taskOrderList.concat(result = res1.result.map(function(item) {
                         item.type = 'task';
                         return item;
                     }));
                     taskOrderList = taskOrderList.concat(result = res2.result.map(function(item) {
-                        item.type = 'task';
+                        item.type = 'order';
                         return item;
                     }));
                     drawAreaList();
@@ -101,6 +105,7 @@ function initTaskListAndOrderList() {
 
             },
             function() {
+              console.log('error');
                 //  alert("error");
             }
         );
@@ -117,6 +122,7 @@ function getHomeTaskList() {
         type: "post",
         data: data,
         success: function(ret) {
+          console.log(JSON.stringify(ret));
             if (ret.success) {}
         },
         complete: function(ret) {
@@ -131,6 +137,7 @@ function getHomeTaskList() {
 //getHomeTaskList 查询用户负责和参与的任务信息实体方法 (zxf 20201028)
 function getHomeOrderList() {
     var def = $.Deferred();
+    console.log(userLoginInformation.currentUserInfo.userInfo.userId);
     var data = {
         userId: userLoginInformation.currentUserInfo.userInfo.userId,
     }
@@ -139,6 +146,7 @@ function getHomeOrderList() {
         type: "post",
         data: data,
         success: function(ret) {
+          console.log(JSON.stringify(ret));
             if (ret.success) {
 
             }

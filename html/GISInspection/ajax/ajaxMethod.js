@@ -82,6 +82,8 @@ function ajaxMethod(options) {
       // console.log(url);
       // console.log(JSON.stringify(ret));
       // console.log(JSON.stringify(err));
+
+        if(options.complete) options.complete(ret);
         if(err) {
             if(options.error) options.error(err);
             return false;

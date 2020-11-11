@@ -1,21 +1,25 @@
 var isOnline;
 apiready = function() {
 
-  api.closeFrameGroup({
-    name: 'group'
-  });
+  // api.closeFrameGroup({
+  //   name: 'group'
+  // });
 
   api.addEventListener({
       name: 'keyback'
   }, function(ret, err) {
       if(ret){
-        api.openWin({
-            name: 'cloudMain',
-            url: 'widget://html/main.html',
-            pageParam: {
-                name: 'test'
-            }
+        api.closeToWin({
+            name: 'main'
         });
+
+        // api.openWin({
+        //     name: 'cloudMain',
+        //     url: 'widget://html/main.html',
+        //     pageParam: {
+        //         name: 'test'
+        //     }
+        // });
 
       }
   });
@@ -82,12 +86,25 @@ apiready = function() {
            alert( JSON.stringify( err ) );
       }
   });
+
+  // api.addEventListener({
+  //     name: 'freshHome'
+  // }, function(ret, err){
+  //     if( ret ){
+  //          console.log( JSON.stringify( ret ) );
+  //     }else{
+  //          console.log( JSON.stringify( err ) );
+  //     }
+  // });
+
     funIniGroup(getCurrentUserRoles());
     WinSize(['footer-gis']);
 }
 
 
 function funIniGroup(roles) {
+  console.log('111111111111111111111111');
+  console.log(roles);
     api.openFrameGroup({
         name: 'group1',
         scrollEnabled: false,

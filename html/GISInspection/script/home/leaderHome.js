@@ -66,6 +66,14 @@ function onOpenUserList() {
     });
 }
 
+// 返回云平台首页
+function toHome() {
+    // api.closeWin({});
+    api.closeToWin({
+      name: 'main'
+    })
+}
+
 // 获取所有人员定位
 function getPersonsLoction() {
     var data = {

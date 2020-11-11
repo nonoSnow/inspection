@@ -283,6 +283,13 @@ function fnInVue() {
             },
             openApp(data) { //打开应用
                 var that = this;
+                // api.sendEvent({
+                //     name: 'freshHome',
+                //     extra: {
+                //         index: 0
+                //     }
+                // });
+
                 if (data.openMobile) {
                     if ((data.iosPackage != "" && data.iosPackage != null) || (data.androidPackage != "" && data.androidPackage != null)) {
                         if (data.iosPackage != "" && data.iosPackage != null) {
