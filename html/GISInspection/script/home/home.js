@@ -4,7 +4,7 @@ var taskOrderList = [],
     taskList = [],
     resultIndex = 0;
 var indexMap = {},
-    memberStatus = 0,
+    memberStatus = 0;
 apiready = function() {
     api.parseTapmode();
     //  initTaskListEvent();
@@ -22,6 +22,7 @@ apiready = function() {
 
     // 初始化员工在线、离线状态
     memberStatus = $api.getStorage('isOnline');
+    console.log(memberStatus);
     memberStatus = memberStatus ? memberStatus : 0;
     $(".member-status").addClass(memberStatus ? 'on' : '');
     // 获取当前用户的位置 并向地图中添加
@@ -241,21 +242,25 @@ function onOpenTaskInfo() {
 
 }
 
+// 返回云平台首页
 function toHome() {
     // api.closeWin({});
+    api.closeToWin({
+      name: 'main'
+    })
 
-    api.openWin({
-        name: 'cloudMain',
-        url: 'widget://html/main.html', //fs://wgt/public/html/main.html', //'../../html/main.html'
-        bounces: false,
-        reload: true,
-        slidBackEnabled: false,
-        animation: {
-            type: "reveal", //动画类型（详见动画类型常量）
-            subType: "from_bottom", //动画子类型（详见动画子类型常量）
-            duration: 300 //动画过渡时间，默认300毫秒
-        }
-    });
+    // api.openWin({
+    //     name: 'cloudMain',
+    //     url: 'widget://html/main.html', //fs://wgt/public/html/main.html', //'../../html/main.html'
+    //     bounces: false,
+    //     reload: true,
+    //     slidBackEnabled: false,
+    //     animation: {
+    //         type: "reveal", //动画类型（详见动画类型常量）
+    //         subType: "from_bottom", //动画子类型（详见动画子类型常量）
+    //         duration: 300 //动画过渡时间，默认300毫秒
+    //     }
+    // });
 }
 
 // 新增区域 （zxf 20201028）

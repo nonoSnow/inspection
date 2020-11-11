@@ -15,14 +15,18 @@ apiready = function() {
     var header = $api.byId('header');
     // 实现沉浸式状态栏效果
     $api.fixStatusBar(header);
-
+    // 如果是 事件转工单 就不显示区域
+    if(api.pageParam.eventId){
+      $("#xjArea").hide();
+    }else {
+      $("#xjArea").show();
+    }
     // console.log(api.pageParam.type);
     // if (api.pageParam.type == 'transOrder') {
     //   transOrder = true;
     // } else {
     //   transOrder = false;
     // }
-
 
     // 工单类型
     $(".custom-popup-list li").each(function() {
@@ -184,13 +188,15 @@ function subJob(){
   }
   // 判断巡检区域是否填写
   // console.log(JSON.stringify(areaInfo));
-  if(!areaInfo.id){
-    api.toast({
-        msg: '请选择巡检区域!',
-        duration: 2000,
-        location: 'middle'
-    });
-    return false;
+  if(!api.pageParam.eventId){
+    if(!areaInfo.id){
+      api.toast({
+          msg: '请选择巡检区域!',
+          duration: 2000,
+          location: 'middle'
+      });
+      return false;
+    }
   }
   // console.log(JSON.stringify(imgList));
   var data = {
@@ -200,7 +206,7 @@ function subJob(){
     person:$("#person").val(),    //负责人名称
     status:1,                     //工单状态（1：待接收；2：进行中；3：关闭；4：已完成）
     eventId:api.pageParam.eventId,            //事件Id
-    deviceId:equipment[0].id,                    //设备ID
+    deviceId:equipment[0]?equipment[0].id:"",                    //设备ID
     planCompleteTime:$("#planCompleteTime").val()+":00:00",   //预计完成时间
     areaId:areaInfo.id,                      //区域（路线）ID
     source:source,                //来源：1：PC端；2：APP；3：第三方（管网）
@@ -231,19 +237,66 @@ function uploadData(data){
     error:showErr,
   }
   // 请求接口 获取数据
-  postAjaxAddJob(options)
+  if(api.pageParam.eventId){
+    options={
+      data:{
+        id:api.pageParam.eventId,
+        status:2,
+        type:jobType,
+        personId:headList.userId,            //负责人ID
+        person:$("#person").val(),    //负责人名称
+        planCompleteTime:$("#planCompleteTime").val()+":00:00",   //预计完成时间
+        content:$("#content").val(),  //工单内容
+        resourceInfoList:imgList
+      },
+      success:showRet,
+      error:showErr,
+    }
+    // alert(JSON.stringify(options.data));
+
+    console.log("事件转工单");
+    postAjaxMethodToAddJob(options)
+  }else{
+    console.log("新增工单");
+    postAjaxAddJob(options)
+  }
   // jobPostMethod("api/services/Inspection/WorkOrderService/InsertWorkOrder",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
     // console.log(JSON.stringify(ret));
     if(ret.success){
-      api.toast({
-          msg: '新增工单成功',
-          duration: 2000,
-          location: 'middle'
+      // api.toast({
+      //     msg: '新增工单成功',
+      //     duration: 2000,
+      //     location: 'middle'
+      // });
+      api.alert({
+          title: '提示',
+          msg: "新增工单成功",
+      }, function(ret, err) {
+        // 清空数据
+        clearData();
+        if(api.pageParam.eventId){
+          api.sendEvent({
+              name: 'closeEvent',
+              extra: {
+                  index: 0
+              }
+          });
+          api.closeToWin({
+              name: 'TaskAssign'
+          });
+        }else{
+          api.sendEvent({
+              name: 'initJob',
+              extra: {
+                  funcName: jobType,
+              }
+          });
+          // onBack();
+          api.openWin()
+        }
       });
-      // 清空数据
-      clearData();
     }else {
       alert("新增工单失败")
     }
