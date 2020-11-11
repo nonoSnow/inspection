@@ -66,6 +66,7 @@ function onShowList(element, minH, maxH, mapListStatus, bodyHeight,callback) {
     } else if (mapListStatus == 2) {
         $('.' + element).css('height', minH + 'px');
     }
+    console.log(bodyHeight);
     console.log(maxH);
     mapListStatus++;
     if (mapListStatus > 2) {

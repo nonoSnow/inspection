@@ -911,7 +911,10 @@
                 width: 3,
               })
             }),
-            minPoints: 3
+            minPoints: 3,
+            finishCondition: function() {
+              console.log(isSave);
+            }
           });
         }
         var _this = this;
@@ -942,9 +945,11 @@
        var _this = this;
        var coordinates = [];
        measureDraw.on('drawend', function(event) {
-          coordinates = JSON.parse(JSON.stringify(event.feature.getGeometry().getCoordinates()));
-          if (coordinates[0].length > 2) {
-            _this.map.removeInteraction(measureDraw); //取消绘制
+          if (event.feature != null) {
+            coordinates = JSON.parse(JSON.stringify(event.feature.getGeometry().getCoordinates()));
+            if (coordinates[0].length > 2) {
+              _this.map.removeInteraction(measureDraw); //取消绘制
+            }
           }
        });
        measureDraw.finishDrawing();

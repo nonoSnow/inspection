@@ -57,6 +57,7 @@ apiready = function() {
 
 
     onGetListData();
+
 }
 
 function onShowItem() {
@@ -284,51 +285,67 @@ function onInuptFocus() {
   $('#areaSearcgList').removeClass("aui-hide");
 
   $(".area-search-text").text("搜索");
-  onShowList('map-footer',
-             $('.status1').height() + 0.5 * 20 + $('.status2').height() + 0.75 * 20,
-             $('.list-item').height() + 0.75 * 20,
-             1,
-             bodyHeight,
-             function(ret){
-                mapListStatus = ret;
-                onTransitionStatus(mapListStatus);
-             });
 
-   // 获取搜索历史记录
-   api.showProgress({
-       title: '加载中',
-       text: '',
-       modal: false
-   });
-   var data = {
-     name: '',
-     id: userId,
-     pageIndex: 1,
-     maxResultCount: 10
-   };
-   var optionsHistory = {
-     url: baseUrl + "api/services/Inspection/AreaService/GetAreaHistory",
-     data: data,
-     success: function(ret) {
-       api.hideProgress();
-       var searchArr = ret.result;
-       if (searchArr.length == 0)
-          return false;
-       var datas = {
-         datas: searchArr
-       };
-       var str = template('areaSearch', datas);
-       $('#areaSearcgList').empty();
-       $('#areaSearcgList').append(str);
-       var emptyLi = "<li class='emptyHistory' tapmode onclick='onEmptyHistory()'>清空历史记录</li>";
-       $('#areaSearcgList').append(emptyLi);
-     },
-     error: function(err) {
-       api.hideProgress();
-       console.log(JSON.stringify(err));
-     }
-   };
-   ajaxMethod(optionsHistory);
+  $(window).resize(function() {
+    console.log($(this).height());
+    var bHeight;
+    if (api.systemType == 'android') {
+      bHeight = $(this).height() - 25;
+    } else if (api.systemType == 'ios') {
+      bHeight = $(this).height() - 20;
+    }
+    $(".map-footer").css("height", bHeight + 'px');
+    mapListStatus = 2;
+    onTransitionStatus(mapListStatus);
+    // onShowList('map-footer',
+    //            $('.status1').height() + 0.5 * 20 + $('.status2').height() + 0.75 * 20,
+    //            $('.list-item').height() + 0.75 * 20,
+    //            1,
+    //            bHeight,
+    //            function(ret){
+    //               mapListStatus = ret;
+    //               onTransitionStatus(mapListStatus);
+    //            });
+     // 获取搜索历史记录
+     api.showProgress({
+         title: '加载中',
+         text: '',
+         modal: false
+     });
+     var data = {
+       name: '',
+       id: userId,
+       pageIndex: 1,
+       maxResultCount: 10
+     };
+     var optionsHistory = {
+       url: baseUrl + "api/services/Inspection/AreaService/GetAreaHistory",
+       data: data,
+       success: function(ret) {
+         console.log(JSON.stringify(ret));
+         api.hideProgress();
+         var searchArr = ret.result;
+         if (searchArr.length == 0)
+            return false;
+         var datas = {
+           datas: searchArr
+         };
+         var str = template('areaSearch', datas);
+         $('#areaSearcgList').empty();
+         $('#areaSearcgList').append(str);
+         var emptyLi = "<li class='emptyHistory' tapmode onclick='onEmptyHistory()'>清空历史记录</li>";
+         $('#areaSearcgList').append(emptyLi);
+       },
+       error: function(err) {
+         api.hideProgress();
+         console.log(JSON.stringify(err));
+       }
+     };
+     ajaxMethod(optionsHistory);
+  });
+
+
+
 }
 
 function onCheckHistory(item) {

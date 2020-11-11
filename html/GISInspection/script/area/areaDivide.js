@@ -133,17 +133,7 @@ function onGetAreaPorintLine(areaExtent) {
       },
       success: function(ret) {
           api.hideProgress();
-          if (ret.result.point.length == 0 && ret.result.line.length == 0) {
-            var dialog = new auiDialog({});
-            dialog.alert({
-                title:"划分区域内无设备",
-                buttons:['取消','确定']
-            },function(ret){
 
-            });
-            onResetArea();
-            return false;
-          }
 
           onShowPoint(ret.result.point, ret.result.line);
       }
@@ -170,6 +160,18 @@ function onShowPoint(pointArr, lineArr) {
         break;
       }
     }
+  }
+  
+  if (checkPoint.length == 0 && checkLine.length == 0) {
+    var dialog = new auiDialog({});
+    dialog.alert({
+        title:"划分区域内无设备",
+        buttons:['取消','确定']
+    },function(ret){
+
+    });
+    onResetArea();
+    return false;
   }
   indexMap.showPointLine(checkPoint, checkLine, 'areaDivide');
 }
