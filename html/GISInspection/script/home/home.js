@@ -244,10 +244,27 @@ function onOpenTaskInfo() {
 
 // 返回云平台首页
 function toHome() {
-    // api.closeWin({});
-    api.closeToWin({
-      name: 'main'
-    })
+  api.closeWin();
+  api.closeFrame({
+    name: 'group1'
+  });
+    // api.closeWin({
+    //   name:'inspectionMain'
+    // });
+    // alert('点击了X');
+    //
+    // setTimeout(function() {
+    //   api.closeWin({});
+    // }, 500)
+    //
+    // api.closeFrameGroup({
+    //     name: 'group1'
+    // });
+
+
+    // api.closeToWin({
+    //   name: 'main'
+    // })
 
     // api.openWin({
     //     name: 'cloudMain',

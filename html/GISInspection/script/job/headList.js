@@ -49,12 +49,25 @@ function search(){
 
   function showErr(err){
     api.hideProgress();
-    // console.log(JSON.stringify(err));
-    if(err.body){
-      alert(err.body)
-    }else {
-      alert("加载失败")
+    if (err.body.error == undefined) {
+      api.toast({
+          msg: err.msg,
+          duration: 2000,
+          location: 'middle'
+      });
+    } else {
+      api.toast({
+          msg: err.body.error.message,
+          duration: 2000,
+          location: 'middle'
+      });
     }
+    // console.log(JSON.stringify(err));
+    // if(err.body){
+    //   alert(err.body)
+    // }else {
+    //   alert("加载失败")
+    // }
   }
 }
 // 请求接口获取人员列表
@@ -89,11 +102,12 @@ function onGetData() {
 
     function showErr(err){
       api.hideProgress();
-      if(err.body){
-        alert(err.body)
-      }else {
-        alert("加载失败")
-      }
+
+      // if(err.body.error){
+      //   alert(err.body)
+      // }else {
+      //   alert("加载失败")
+      // }
     }
 }
 

@@ -258,7 +258,7 @@ function subComplete(data){
 
     // console.log(JSON.stringify(err));
     if(err.body){
-      if(err.body.error){
+      if(err.body.error != undefined){
         if(err.body.error.message){
           alert(err.body.error.message)
         }else {

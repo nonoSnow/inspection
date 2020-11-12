@@ -37,20 +37,34 @@ function getListData(data,status) {
           var str = template(status, list);
           $('#dataList').append(str);
         } else {
-          var str="<div style='text-align:center;margin:20px;'>暂无数据</div>"
+          var str = "<div class='text-cent'><img class='margin-top200' src='../../image/nothing.png'><div class='text-cent color-666 line-height25'>暂无事件</div></div>";
+          // var str="<div style='text-align:center;margin:20px;'>暂无数据</div>"
           $('#dataList').append(str);
         }
       }
     }
 
   function showErr(err){
-    // console.log(JSON.stringify(err));
+    console.log(JSON.stringify(err));
     api.hideProgress();
-    if(err.body.error.message){
-      alert(err.body.error.message)
-    }else {
-      alert("加载失败")
+    if (err.body.message == undefined) {
+      api.toast({
+          msg: err.msg,
+          duration: 2000,
+          location: 'middle'
+      });
+    } else {
+      api.toast({
+          msg: err.body.message,
+          duration: 2000,
+          location: 'middle'
+      });
     }
+    // if(err.body.error.message){
+    //   alert(err.body.error.message)
+    // }else {
+    //   alert("加载失败")
+    // }
   }
 }
 // 初始化待处理的事件列表

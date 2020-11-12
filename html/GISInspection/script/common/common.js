@@ -177,6 +177,7 @@ function getLocationGPS(callback) {
 // 获取当前用户的角色
 function getCurrentUserRoles(){
   var currentUserRoles = $api.getStorage('currentUserRoles');
+  // alert(JSON.stringify(currentUserRoles));
     var Roles = [];
    currentUserRoles.forEach(function(item){
      console.log(item);

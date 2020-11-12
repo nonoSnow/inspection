@@ -38,6 +38,19 @@ function onGetData() {
       timeout: 30,
       error: function(err) {
           api.hideProgress();
+          if (err.body.error == undefined) {
+            api.toast({
+                msg: err.msg,
+                duration: 2000,
+                location: 'middle'
+            });
+          } else {
+            api.toast({
+                msg: err.body.error.message,
+                duration: 2000,
+                location: 'middle'
+            });
+          }
           console.log(JSON.stringify(err));
       },
       success: function(ret) {

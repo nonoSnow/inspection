@@ -68,10 +68,34 @@ function onOpenUserList() {
 
 // 返回云平台首页
 function toHome() {
+  // console.log('点击了关闭');
+  // api.closeWin({
+  //   name:'inspectionMain'
+  // });
+  api.closeWin();
+  api.closeFrame({
+    name: 'group1'
+  });
     // api.closeWin({});
-    api.closeToWin({
-      name: 'main'
-    })
+    // api.closeToWin({
+    //   name: 'main'
+    // })
+    // setTimeout(function() {
+    //   api.closeWin({});
+    // }, 500);
+
+    // api.openWin({
+    //     name: 'cloudMain',
+    //     url: 'widget://html/main.html', //fs://wgt/public/html/main.html', //'../../html/main.html'
+    //     bounces: false,
+    //     reload: true,
+    //     slidBackEnabled: false,
+    //     animation: {
+    //         type: "reveal", //动画类型（详见动画类型常量）
+    //         subType: "from_bottom", //动画子类型（详见动画子类型常量）
+    //         duration: 300 //动画过渡时间，默认300毫秒
+    //     }
+    // });
 }
 
 // 获取所有人员定位
@@ -86,6 +110,7 @@ function getPersonsLoction() {
         type: "post",
         data: data,
         success: function(ret) {
+          console.log(JSON.stringify(ret));
             if (ret.success) {
                 // var location = [106.44257422295854, 29.461625125595196];
                 // var result = ret.result.items.map(function(item) {
@@ -96,6 +121,7 @@ function getPersonsLoction() {
                 // });
                 var result = ret.result.items;
                 indexMap.renderAllPersionToMap(result, function(ret) {
+                  console.log(ret);
                   if(ret==null){
                     $('body .personDetail_popup').remove();
                     $('body .homePage_order_list_box').remove();

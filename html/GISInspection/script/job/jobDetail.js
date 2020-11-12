@@ -112,7 +112,7 @@ function showData(id){
     api.hideProgress();
 
     // console.log(JSON.stringify(err));
-    if(err.body.error.message){
+    if(err.body.error != undefined){
       alert(err.body.error.message)
     }else {
       alert("加载失败")

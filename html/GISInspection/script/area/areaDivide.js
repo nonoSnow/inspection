@@ -35,7 +35,9 @@ apiready = function() {
   indexMap.initDivide();
 
   // 测试代码   设置当前地图位置
-  indexMap.map.getView().setCenter([104.15865182876587,30.02561330795288]);
+  // indexMap.map.getView().setCenter([104.15865182876587,30.02561330795288]);
+  // 初始化地图定位到溧水
+  indexMap.map.getView().setCenter([119.0319,31.6655]);
 
   if (addareaPoint.length > 0) {
     isDivide = true;
@@ -161,7 +163,7 @@ function onShowPoint(pointArr, lineArr) {
       }
     }
   }
-  
+
   if (checkPoint.length == 0 && checkLine.length == 0) {
     var dialog = new auiDialog({});
     dialog.alert({

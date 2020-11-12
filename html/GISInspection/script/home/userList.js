@@ -59,7 +59,7 @@ function getAppGetAllPerson(isScroll) {
     var data = {
         status: statusType,
         pageIndex: pageIndex,
-        maxResultCount: 10
+        maxResultCount: 5
     }
     var options = {
         url: requestUrl + 'PersonService/AppGetAllPerson',

@@ -100,7 +100,7 @@ function showData(data,status){
         var str = template(status, list);
         $('#dataList').append(str);
       }else{
-        var str="<div style='text-align:center;margin-top:80px;color:#aaa;'><img src='../../image/nothing.png'><div>暂无工单</div></div>"
+        var str="<div class='text-cent'><img class='margin-top200' src='../../image/nothing.png'><div class='text-cent color-666 line-height25'>暂无工单</div></div>"
         $('#dataList').append(str);
       }
     }

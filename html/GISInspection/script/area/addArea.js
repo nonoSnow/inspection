@@ -79,6 +79,7 @@ function onSave() {
   var optionsAdd = {
     url: baseUrl + "api/services/Inspection/AreaService/InsertArea",
     data: data,
+    timeout: 300,
     success: function(ret) {
       api.hideProgress();
       console.log(JSON.stringify(ret));

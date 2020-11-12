@@ -57,7 +57,7 @@
             var zoomMap = this.zoomMap;
             this.map = new SNTGIS.Map({
                 layers: [tdMap, dmLayer, pointLayer, lineLayer],
-                center: [106.548293, 29.565552],
+                center: [119.0319,31.6655],
                 zoom: zoomMap,
                 maxZoom: 18,
                 minZoom: 5,

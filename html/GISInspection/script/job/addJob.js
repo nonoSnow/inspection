@@ -306,7 +306,7 @@ function uploadData(data){
     api.hideProgress();
     // console.log(JSON.stringify(err));
     if(err.body){
-      if(err.body.error){
+      if(err.body.error != undefined){
         api.alert({
             title: '提示',
             msg: err.body.error.message,
@@ -359,6 +359,19 @@ function action() {
 
       function showErr(err) {
         // console.log(JSON.stringify(err));
+        if (err.body.error == undefined) {
+          api.toast({
+              msg: err.msg,
+              duration: 2000,
+              location: 'middle'
+          });
+        } else {
+          api.toast({
+              msg: err.body.error.message,
+              duration: 2000,
+              location: 'middle'
+          });
+        }
       }
     } else if (ret.buttonIndex == 2) {
       // 选择了从相册选择
@@ -377,6 +390,19 @@ function action() {
 
       function showErr(err) {
         // console.log(JSON.stringify(err));
+        if (err.body.error == undefined) {
+          api.toast({
+              msg: err.msg,
+              duration: 2000,
+              location: 'middle'
+          });
+        } else {
+          api.toast({
+              msg: err.body.error.message,
+              duration: 2000,
+              location: 'middle'
+          });
+        }
       }
     }
   })

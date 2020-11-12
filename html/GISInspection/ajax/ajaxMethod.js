@@ -51,7 +51,7 @@ function ajaxMethod(options) {
     var requestOption = {
         url: url,
         method: options.type,
-        timeout: options.timeout || 10,
+        // timeout: options.timeout || 10,
         dataType: 'json',
         headers: headers,
         data: data,

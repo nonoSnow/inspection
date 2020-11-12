@@ -1,6 +1,6 @@
 var isOnline;
 apiready = function() {
-
+  // console.log('进入页面了');
   // api.closeFrameGroup({
   //   name: 'group'
   // });
@@ -9,9 +9,33 @@ apiready = function() {
       name: 'keyback'
   }, function(ret, err) {
       if(ret){
-        api.closeToWin({
-            name: 'main'
+        api.closeWin();
+        api.closeFrame({
+          name: 'group1'
         });
+        // api.closeWin({
+        //   name:'inspectionMain'
+        // });
+
+        // setTimeout(function() {
+        //   api.closeWin({});
+        // }, 500);
+        //
+        // api.openWin({
+        //     name: 'cloudMain',
+        //     url: 'widget://html/main.html', //fs://wgt/public/html/main.html', //'../../html/main.html'
+        //     bounces: false,
+        //     reload: true,
+        //     slidBackEnabled: false,
+        //     animation: {
+        //         type: "reveal", //动画类型（详见动画类型常量）
+        //         subType: "from_bottom", //动画子类型（详见动画子类型常量）
+        //         duration: 300 //动画过渡时间，默认300毫秒
+        //     }
+        // });
+        // api.closeToWin({
+        //     name: 'main'
+        // });
 
         // api.openWin({
         //     name: 'cloudMain',
@@ -96,15 +120,15 @@ apiready = function() {
   //          console.log( JSON.stringify( err ) );
   //     }
   // });
-
+    // console.log(getCurrentUserRoles());
     funIniGroup(getCurrentUserRoles());
     WinSize(['footer-gis']);
 }
 
 
 function funIniGroup(roles) {
-  console.log('111111111111111111111111');
-  console.log(roles);
+  // console.log('111111111111111111111111');
+  // console.log(roles);
     api.openFrameGroup({
         name: 'group1',
         scrollEnabled: false,

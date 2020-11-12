@@ -33,11 +33,19 @@ apiready = function() {
             $('#tishiBox').addClass('aui-hide');
             $('#mapBox').removeClass('aui-hide');
 
-            indexMap = new Map({
-                mapid: 'mapBox'
-            });
-            indexMap.initArea('addArea');
-            var areaPoint = ret.value.areaPoint;
+            if ($.isEmptyObject(indexMap)) {
+              indexMap = new Map({
+                  mapid: 'mapBox'
+              });
+              indexMap.initArea('addArea');
+            }
+            // indexMap = new Map({
+            //     mapid: 'mapBox'
+            // });
+            // indexMap.initArea('addArea');
+            // indexMap.initDeviceLayer('addArea');
+            var areaPoint = ret.value.checkedArea.areaPoint;
+            console.log(JSON.stringify(areaPoint));
             indexMap.drawAreaSelect(areaPoint, {name: 'addArea'});
           } else {
             $('#tishiBox').removeClass('aui-hide');
@@ -92,7 +100,7 @@ function openEndDate() {
 function subTask() {
   // console.log('点击了提交');
 
-  var taskName = $('#').val();
+  var taskName = $('#task-name').val();
   console.log(taskName);
   if (taskName == '') {
     // 提示没有输入任务名称
@@ -190,13 +198,36 @@ function subTask() {
     type: 1
   }
 
-  // console.log(JSON.stringify(param));
+  console.log(JSON.stringify(param));
   addTask({
     data: param,
     success: function(ret) {
+      api.sendEvent({
+          name: 'returnList',
+          extra: {
+              back: 1,
+          }
+      });
       api.closeWin({
           name: 'addTask'
       });
+    },
+    fail: function(err) {
+      console.log(JSON.stringify(err));
+      if (err.body.error != undefined) {
+        api.toast({
+            msg: err.body.error.message,
+            duration: 2000,
+            location: 'middle'
+        });
+
+      } else {
+        api.toast({
+            msg: err.msg,
+            duration: 2000,
+            location: 'middle'
+        });
+      }
     }
   })
   // addTask('api/services/Inspection/InspectionTaskService/InsertTask', param, showRet, showErr);
