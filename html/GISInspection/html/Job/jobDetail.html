@@ -136,18 +136,18 @@
       <li class="padding75 bgc-ff border-radius4 margin-top6">
         <div class="color-666">事件信息</div>
         <div class="line margin-top6 margin-bot6"></div>
-        <div>名称：{{eventDetails.deviceName}}</div>
-        <div class="margin-top75">编号：{{eventDetails.deviceCode}}</div>
-        <div class="margin-top75">坐标：{{eventDetails.devicePoint}}</div>
-        <div class="margin-top75">地址：南京市溧水区交通路阳光小区98号</div>
+        <!-- <div>名称：{{eventDetails.deviceName}}</div> -->
+        <!-- <div class="margin-top75">编号：{{eventDetails.deviceCode}}</div> -->
+        <!-- <div class="margin-top75">坐标：{{eventDetails.devicePoint}}</div> -->
+        <!-- <div class="margin-top75">地址：南京市溧水区交通路阳光小区98号</div> -->
         <div class="margin-top75">巡检人：{{eventDetails.creationName}}</div>
         <div class="margin-top75">联系电话：{{eventDetails.phone}}</div>
         <div class="margin-top75">事件提交时间：{{eventDetails.creationTime}}</div>
-        <div class="margin-top75">
+        <!-- <div class="margin-top75">
           设备状态：
           <span class='inline-block task-status-circular bgc-dan margin-right3'></span>
           {{eventDetails.statusStr}}
-        </div>
+        </div> -->
         <div class="margin-top75">异常类型：{{eventDetails.errorType}}</div>
         <div class="margin-top75">事件类型：{{eventDetails.typeStr}}</div>
         <div class="margin-top75">预估漏损量：{{eventDetails.predictWaterLoss}}m³</div>
@@ -164,6 +164,28 @@
           {{/each}}
         </div>
         {{/if}}
+      </li>
+      {{/if}}
+
+      {{if deviceDetails}}
+      <li class="padding75 bgc-ff border-radius4 margin-top6">
+        <div class="color-666">设备信息</div>
+        <div class="line margin-top6 margin-bot6"></div>
+        <div>名称：{{deviceDetails.deviceName}}</div>
+        <div class="margin-top75">编号：{{deviceDetails.deviceCode}}</div>
+        <div class="margin-top75">坐标：{{deviceDetails.devicePoint}}</div>
+        <div class="margin-top75">地址：{{deviceDetails.address}}</div>
+
+        <div class="margin-top75">
+          设备状态：
+          {{if deviceDetails.deviceStatusStr=="异常"}}
+          <span class='inline-block task-status-circular bgc-dan margin-right3'></span>
+          {{else}}
+          <span class='inline-block task-status-circular bgc-5cd margin-right3'></span>
+          {{/if}}
+          {{deviceDetails.deviceStatusStr}}
+        </div>
+
       </li>
       {{/if}}
   </script>
