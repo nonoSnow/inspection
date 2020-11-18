@@ -134,9 +134,9 @@
   <script type="text/template" id='areaSearch'>
     {{each datas item i}}
     {{if i == 0}}
-    <li class="padding75 bgc-f3 border-radius4 line-height1 list-item" tapmode onclick="onCheckedArea({{item}})">
+    <li class="padding75 bgc-f3 border-radius4 line-height1 list-item" tapmode onclick="searchArea(this)" parse="{{item}}">
     {{else}}
-    <li class="padding75 bgc-f3 border-radius4 line-height1 list-item margin-top75" tapmode onclick="onCheckedArea({{item}})">
+    <li class="padding75 bgc-f3 border-radius4 line-height1 list-item margin-top75" tapmode onclick="searchArea(this)"  parse="{{item}}">
     {{/if}}
       <div class="aui-list-item-inner block font-S9">
         <div class="font-w4 color-333">{{item}}</div>

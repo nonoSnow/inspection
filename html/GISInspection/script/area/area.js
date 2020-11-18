@@ -11,6 +11,8 @@ var userId = '';
 
 var pageType = '';
 
+var isSearch = false;
+
 // 工单  巡检片区选择区域及设备信息
 var checkAreaInfo = checkEquipment = {};
 
@@ -73,6 +75,7 @@ function onShowItem() {
 }
 
 function onTransitionStatus(mapListStatus) {
+  console.log(mapListStatus);
   if (mapListStatus == 0) {
     $(".list-xl").css("transform", "rotate(180deg)");
     $(".list-xl").removeClass("aui-hide");
@@ -90,6 +93,7 @@ function onTransitionStatus(mapListStatus) {
   }
 
   if (mapListStatus == 2 && isSearch) {
+    console.log('是搜索');
     $('#areaList').addClass("aui-hide");
     $('#areaSearcgList').removeClass("aui-hide");
     $(".area-search-text").text("搜索");
@@ -161,6 +165,50 @@ function onSearchVal() {
   });
   var data = {
     name: $("#search-input").val(),
+    pageIndex: 1,
+    maxResultCount: 1000
+  };
+  var optionsEmpty = {
+    url: baseUrl + "api/services/Inspection/AreaService/AppGetAreaDetailsByName",
+    data: data,
+    success: function(ret) {
+      api.hideProgress();
+      $('#areaSearcgList').empty();
+      var searchArea = ret.result.items;
+      var areaPointArr = [];
+      for (var i = 0; i < searchArea.length; i++) {
+        areaPointArr.push({areaPoint: searchArea[i].areaPoint});
+      }
+
+      onMapShow(areaPointArr, searchArea);
+
+      onShowHtml(searchArea);
+    },
+    error: function(err) {
+      api.hideProgress();
+      console.log(JSON.stringify(err));
+    }
+  };
+  ajaxMethod(optionsEmpty);
+
+  isSearch = false;
+  $('#areaList').removeClass("aui-hide");
+  $('#areaSearcgList').addClass("aui-hide");
+  $(".area-search-text").text("片区列表");
+}
+
+// 点击历史搜索记录搜索片区
+function searchArea(that) {
+  // console.log(data);
+  var searchWords = $(that).attr('parse');
+  console.log(searchWords);
+  api.showProgress({
+      title: '加载中',
+      text: '',
+      modal: false
+  });
+  var data = {
+    name: searchWords,
     pageIndex: 1,
     maxResultCount: 1000
   };
@@ -272,7 +320,6 @@ function onGetListData() {
 
 }
 
-var isSearch = false;
 function onInuptBlur() {
   // $('#areaList').removeClass("aui-hide");
   // $('#areaSearcgList').addClass("aui-hide");
@@ -280,12 +327,14 @@ function onInuptBlur() {
 }
 
 function onInuptFocus() {
+  console.log('点击了搜索的输入框');
   isSearch = true;
+  console.log(isSearch);
   $('#areaList').addClass("aui-hide");
   $('#areaSearcgList').removeClass("aui-hide");
 
   $(".area-search-text").text("搜索");
-
+  console.log('11111111111');
   $(window).resize(function() {
     console.log($(this).height());
     var bHeight;
@@ -307,43 +356,80 @@ function onInuptFocus() {
     //               onTransitionStatus(mapListStatus);
     //            });
      // 获取搜索历史记录
-     api.showProgress({
-         title: '加载中',
-         text: '',
-         modal: false
-     });
-     var data = {
-       name: '',
-       id: userId,
-       pageIndex: 1,
-       maxResultCount: 10
-     };
-     var optionsHistory = {
-       url: baseUrl + "api/services/Inspection/AreaService/GetAreaHistory",
-       data: data,
-       success: function(ret) {
-         console.log(JSON.stringify(ret));
-         api.hideProgress();
-         var searchArr = ret.result;
-         if (searchArr.length == 0)
-            return false;
-         var datas = {
-           datas: searchArr
-         };
-         var str = template('areaSearch', datas);
-         $('#areaSearcgList').empty();
-         $('#areaSearcgList').append(str);
-         var emptyLi = "<li class='emptyHistory' tapmode onclick='onEmptyHistory()'>清空历史记录</li>";
-         $('#areaSearcgList').append(emptyLi);
-       },
-       error: function(err) {
-         api.hideProgress();
-         console.log(JSON.stringify(err));
-       }
-     };
-     ajaxMethod(optionsHistory);
+    //  api.showProgress({
+    //      title: '加载中',
+    //      text: '',
+    //      modal: false
+    //  });
+    //  var data = {
+    //    name: '',
+    //    id: userId,
+    //    pageIndex: 1,
+    //    maxResultCount: 10
+    //  };
+    //  console.log(data);
+    //  var optionsHistory = {
+    //    url: baseUrl + "api/services/Inspection/AreaService/GetAreaHistory",
+    //    data: data,
+    //    success: function(ret) {
+    //      console.log(JSON.stringify(ret));
+    //      api.hideProgress();
+    //      var searchArr = ret.result;
+    //      if (searchArr.length == 0)
+    //         return false;
+    //      var datas = {
+    //        datas: searchArr
+    //      };
+    //      var str = template('areaSearch', datas);
+    //      $('#areaSearcgList').empty();
+    //      $('#areaSearcgList').append(str);
+    //      var emptyLi = "<li class='emptyHistory' tapmode onclick='onEmptyHistory()'>清空历史记录</li>";
+    //      $('#areaSearcgList').append(emptyLi);
+    //    },
+    //    error: function(err) {
+    //      api.hideProgress();
+    //      console.log(JSON.stringify(err));
+    //    }
+    //  };
+    //  ajaxMethod(optionsHistory);
+     console.log(2222222222222222222);
   });
-
+  api.showProgress({
+      title: '加载中',
+      text: '',
+      modal: false
+  });
+  var data = {
+    name: '',
+    id: userId,
+    pageIndex: 1,
+    maxResultCount: 10
+  };
+  console.log(data);
+  var optionsHistory = {
+    url: baseUrl + "api/services/Inspection/AreaService/GetAreaHistory",
+    data: data,
+    success: function(ret) {
+      console.log(JSON.stringify(ret));
+      api.hideProgress();
+      var searchArr = ret.result;
+      if (searchArr.length == 0)
+         return false;
+      var datas = {
+        datas: searchArr
+      };
+      var str = template('areaSearch', datas);
+      $('#areaSearcgList').empty();
+      $('#areaSearcgList').append(str);
+      var emptyLi = "<li class='emptyHistory' tapmode onclick='onEmptyHistory()'>清空历史记录</li>";
+      $('#areaSearcgList').append(emptyLi);
+    },
+    error: function(err) {
+      api.hideProgress();
+      console.log(JSON.stringify(err));
+    }
+  };
+  ajaxMethod(optionsHistory);
 
 
 }

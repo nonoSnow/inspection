@@ -182,7 +182,7 @@ function setOnlineStatus(status) {
 //     }
 // }
 
-// 根据人员位置列表绘制人员运动轨迹
+// 绘制人位置及跳动
 // function drawAnmateByOribt(userRoute) {
 //     var position = userRoute[0].location.split(',');
 //     $(".map-member-img").eq(1).css({opacity: 1})

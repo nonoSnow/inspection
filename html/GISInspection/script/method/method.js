@@ -28,11 +28,16 @@ function getListData(data,status) {
     getEventList("api/services/Inspection/EventService/GetEventList",data,showRet,showErr);
     function showRet(ret) {
       api.hideProgress();
-      console.log("--------------------------"+status);
+      // console.log("--------------------------"+status);
       if (ret.success) {
         $('#dataList').html('');
         var data = ret.result.items;
         if (data.length) {
+          data.forEach(function (item) {
+            if (item.creationTime != null) {
+              item.creationTime = parseTime(item.creationTime, '{y}-{m}-{d} {h}:{i}')
+            }
+          })
           var list = {list:data};
           var str = template(status, list);
           $('#dataList').append(str);

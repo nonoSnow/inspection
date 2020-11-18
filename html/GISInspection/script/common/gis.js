@@ -21,8 +21,8 @@
         // this.zoomMap = (options && options.zoom) || '12';
 
         // 初始化地图的用户名和密码
-        window.SNTGIS.userName = 'admin';
-        window.SNTGIS.passWord = 'Sntsoft123';
+        // window.SNTGIS.userName = 'admin';
+        // window.SNTGIS.passWord = 'Sntsoft123';
 
         this.init(options.mapid);
 
@@ -199,7 +199,7 @@
                 source: orbitSource,
                 updateWhileInteracting: true,
                 style: _this.orbitStyle,
-                zoom: _this.zo
+                zoom: _this.zoom
             });
             this[layername] = orbitLayer;
             this.map.addLayer(orbitLayer);
