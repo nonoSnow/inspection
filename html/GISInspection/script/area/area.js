@@ -201,44 +201,6 @@ function onSearchVal() {
 function searchArea(that) {
   // console.log(data);
   var searchWords = $(that).attr('parse');
-  console.log(searchWords);
-  api.showProgress({
-      title: '加载中',
-      text: '',
-      modal: false
-  });
-  var data = {
-    name: searchWords,
-    pageIndex: 1,
-    maxResultCount: 1000
-  };
-  var optionsEmpty = {
-    url: baseUrl + "api/services/Inspection/AreaService/AppGetAreaDetailsByName",
-    data: data,
-    success: function(ret) {
-      api.hideProgress();
-      $('#areaSearcgList').empty();
-      var searchArea = ret.result.items;
-      var areaPointArr = [];
-      for (var i = 0; i < searchArea.length; i++) {
-        areaPointArr.push({areaPoint: searchArea[i].areaPoint});
-      }
-
-      onMapShow(areaPointArr, searchArea);
-
-      onShowHtml(searchArea);
-    },
-    error: function(err) {
-      api.hideProgress();
-      console.log(JSON.stringify(err));
-    }
-  };
-  ajaxMethod(optionsEmpty);
-
-  isSearch = false;
-  $('#areaList').removeClass("aui-hide");
-  $('#areaSearcgList').addClass("aui-hide");
-  $(".area-search-text").text("片区列表");
 }
 
 function onGetListData() {
@@ -259,6 +221,7 @@ function onGetListData() {
     url: baseUrl + "api/services/Inspection/AreaService/GetAreaMyListsAPP",
     data: data,
     success: function(ret){
+      // console.log(JSON.stringify(ret));
       var myAreaArr = ret.result.items;
       // 获取别人创建的片区列表
       var optionsOther = {
@@ -266,10 +229,11 @@ function onGetListData() {
         data: data,
         success: function(ret) {
           api.hideProgress();
+          // console.log(JSON.stringify(ret));
           var otherAreaArr = ret.result.items;
           var areaPointArr = [];
           areaList = myAreaArr.concat(otherAreaArr);
-          for (var i = 1; i < areaList.length; i++) {
+          for (var i = 0; i < areaList.length; i++) {
             areaPointArr.push({areaPoint: areaList[i].areaPoint});
           }
           onMapShow(areaPointArr, areaList);
@@ -486,6 +450,7 @@ function onCheckedArea(item) {
 function onMapShow(areaPointArr, areaList) {
   indexMap.mapClearSource({name: 'areaList'});
   // 地图渲染区域  添加区域点击事件
+  // console.log(JSON.stringify(areaPointArr));
   indexMap.drawAreaSelect(areaPointArr, {name: 'areaList'});
   indexMap.mapClickArea(function(ret) {
     if (ret == undefined) {

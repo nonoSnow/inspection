@@ -313,10 +313,10 @@ var timer = null;
 function uploadLocation() {
 
 
-  // timer = setInterval(function(){
-  //   console.log('----------------------------------');
-  //   console.log("不管跳转到哪个页面,我一直在");
-  // }, 5000);
+  timer = setInterval(function(){
+    // console.log('----------------------------------');
+    // console.log("不管跳转到哪个页面,我一直在");
+  }, 5000);
 }
 
 // 预览

@@ -21,8 +21,8 @@
         // this.zoomMap = (options && options.zoom) || '12';
 
         // 初始化地图的用户名和密码
-        // window.SNTGIS.userName = 'admin';
-        // window.SNTGIS.passWord = 'Sntsoft123';
+        window.SNTGIS.userName = 'admin';
+        window.SNTGIS.passWord = 'Sntsoft123';
 
         this.init(options.mapid);
 
@@ -57,7 +57,7 @@
             var zoomMap = this.zoomMap;
             this.map = new SNTGIS.Map({
                 layers: [tdMap, dmLayer, pointLayer, lineLayer],
-                center: [119.0319,31.6655],
+                center: [106.548293, 29.565552],
                 zoom: zoomMap,
                 maxZoom: 18,
                 minZoom: 5,
@@ -199,7 +199,7 @@
                 source: orbitSource,
                 updateWhileInteracting: true,
                 style: _this.orbitStyle,
-                zoom: _this.zoom
+                zoom: _this.zo
             });
             this[layername] = orbitLayer;
             this.map.addLayer(orbitLayer);
@@ -810,7 +810,9 @@
         var name = areainfo.name || 'area'
         var sourceName = name + 'source';
         (JSON.stringify(areaPoint));
+        console.log(this[sourceName]['source']);
         var feature = this[sourceName]['source'].getClosestFeatureToCoordinate(areaPoint);
+        console.log(feature);
         this.mapHighlight(feature);
 
         var geometry = feature.getGeometry();

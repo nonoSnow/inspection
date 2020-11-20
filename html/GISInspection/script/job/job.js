@@ -78,7 +78,7 @@ function showData(data,status){
   function showRet(ret){
     api.hideProgress();
     // console.log("--------------------------"+status);
-    console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(ret));
     if(ret.success){
       // $('#dataList').html('');
       var data = transT(ret.result.items);

@@ -683,7 +683,7 @@ function fnInVue() {
             onOpenAssign() {
               api.openWin({
                   name: 'TaskAssign',
-                  url: '../GISInspection/html/main.html',
+                  url: '../GISInspection/html/inspectionMain.html',
                   pageParam: {
                       name: 'test'
                   }

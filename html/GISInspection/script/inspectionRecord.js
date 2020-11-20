@@ -69,10 +69,10 @@ function initBasic() {
 
 // 获取巡检记录
 function getXunData() {
-  console.log(JSON.stringify(devInfo));
-  console.log(JSON.stringify(devInfo.id));
+  // console.log(JSON.stringify(devInfo));
+  // console.log(JSON.stringify(devInfo.id));
   var deviceId = devInfo.id == undefined ? devInfo.deciceId : devInfo.id;
-  console.log(deviceId);
+  // console.log(deviceId);
   var param = {
     deviceId: deviceId,
     time: date,
@@ -80,12 +80,15 @@ function getXunData() {
     maxResultCount: 10
   }
 
-  console.log(JSON.stringify(param));
-  getXunList('api/services/Inspection/InspectionTask/AppGetInspectionRecordList', param, showRet, showErr);
+  // console.log(JSON.stringify(param));
+  getXunList('/api/services/Inspection/InspectionTaskService/AppGetInspectionRecordList', param, showRet, showErr);
 
   function showRet(ret) {
+    // console.log(JSON.stringify(ret));
     hasNextPage = ret.result.hasNextPage;
     if (ret.result.items.length != 0) {
+      $('#haveNothing').addClass('aui-hide');
+
       ret.result.items.forEach(function (item, index) {
         if (item.time != null || item.time != '') {
           item.time = parseTime(item.time, '{y}-{m}-{d} {h}:{i}');
@@ -97,10 +100,13 @@ function getXunData() {
       }
       var str = template('xun-box', data);
       $('#xunjianBox').append(str);
+    } else {
+      $('#haveNothing').removeClass('aui-hide');
     }
   }
 
   function showErr(err) {
+    // console.log(JSON.stringify(err));
     if (err.body.error != undefined) {
       api.toast({
           msg: err.body.error.message,

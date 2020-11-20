@@ -1,14 +1,16 @@
 var isOnline;
 apiready = function() {
-  // console.log('进入页面了');
+  console.log('进入页面了');
   // api.closeFrameGroup({
   //   name: 'group'
   // });
+  setOnlineStatus(0);
 
   api.addEventListener({
       name: 'keyback'
   }, function(ret, err) {
       if(ret){
+        setOnlineStatus(0);
         api.closeWin();
         api.closeFrame({
           name: 'group1'
@@ -53,25 +55,27 @@ apiready = function() {
     color:'transparent'
   });
 
-  api.addEventListener({
-      name: 'isOnline'
-  }, function(ret, err){
-      if( ret ){
-           console.log(JSON.stringify(ret));
-          //  memberStatus为1代表在线
-          isOnline = ret.value.memberStatus;
-          if (isOnline) {
-            // 在线则每五分钟上传定位
-            uploadLocation()
-          } else {
-            clearInterval(timer);
-            console.log('清除了定时器');
-          }
-      }else{
-          console.log( JSON.stringify( err ));
-          clearInterval(timer);
-      }
-  });
+  console.log(1111111111111111111);
+  // api.addEventListener({
+  //     name: 'isOnline'
+  // }, function(ret, err){
+  //     if( ret ){
+  //          console.log(JSON.stringify(ret));
+  //
+  //         //  memberStatus为1代表在线
+  //         isOnline = ret.value.memberStatus;
+  //         if (isOnline) {
+  //           // 在线则每五分钟上传定位
+  //           uploadLocation()
+  //         } else {
+  //           clearInterval(timer);
+  //           console.log('清除了定时器');
+  //         }
+  //     }else{
+  //         console.log( JSON.stringify( err ));
+  //         clearInterval(timer);
+  //     }
+  // });
 
   api.addEventListener({
       name: 'closeEvent',

@@ -11,7 +11,7 @@
 * error 失败回调函数
 */
 function ajaxMethod(options) {
-    console.log(JSON.stringify(options))
+    // console.log(JSON.stringify(options))
     if(!options.url) return false;
     var data = {}, url = options.url, headers = options.headers || {};
     headers['Authorization'] = headers['Authorization'] || $api.getStorage('loginInfo')

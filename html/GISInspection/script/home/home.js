@@ -244,6 +244,7 @@ function onOpenTaskInfo() {
 
 // 返回云平台首页
 function toHome() {
+  setOnlineStatus(0);
   api.closeWin();
   api.closeFrame({
     name: 'group1'
