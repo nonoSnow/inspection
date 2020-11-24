@@ -22,9 +22,11 @@ apiready = function() {
 
     // 初始化员工在线、离线状态
     memberStatus = $api.getStorage('isOnline');
-    console.log(memberStatus);
+    // console.log(memberStatus);
+    // console.log(memberStatus);
     memberStatus = memberStatus ? memberStatus : 0;
-    $(".member-status").addClass(memberStatus ? 'on' : '');
+    $(".member-status").addClass(memberStatus ? '' : 'on');
+    // memberStatus = memberStatus ? 0 : memberStatus;
     // 获取当前用户的位置 并向地图中添加
     setCurrentMapLocation();
     // 缩放地图事件
@@ -38,7 +40,9 @@ apiready = function() {
 
     // 改变员工在线、离线状态
     $(".member-status").on('click', function() {
-        setOnlineStatus(memberStatus);
+        var status = $api.getStorage('isOnline');
+        console.log(status);
+        setOnlineStatus(status);
     });
 
     // 点击定位图标将员工的位置定位到屏幕中间
@@ -84,22 +88,25 @@ function setCurrentMapLocation() {
  * @method getHomeTaskList 请求接口改变员工离线、在线状态
  */
 function setOnlineStatus(status) {
+  // console.log(status);
+  // console.log(status == 1 ? false : true);
   var userInfo = $api.getStorage('userLoginInformation');
   // console.log(JSON.stringify(userInfo.currentUserInfo.userInfo.userId));
   var param = {
-    IsOnline: status ? false : true,
+    IsOnline: status ==1 ? false : true,
     userId: userInfo.currentUserInfo.userInfo.userId
   }
 
   console.log(JSON.stringify(param));
     insertPersonStatus({
         data: {
-            IsOnline: status ? false : true,
+            IsOnline: status == 1 ? false : true,
             userId: userInfo.currentUserInfo.userInfo.userId
         },
         success: function(ret) {
-            memberStatus = status ? 0 : 1;
+            memberStatus = status == 1 ? 0 : 1;
             $api.setStorage('isOnline', memberStatus);
+            // console.log($api.getStorage('isOnline'));
             if (memberStatus) {
                 $(".member-status").addClass('on');
             } else {
@@ -110,7 +117,21 @@ function setOnlineStatus(status) {
             });
         },
         fail: function(err) {
-            console.log(JSON.stringify(err))
+            // console.log(JSON.stringify(err));
+            if (err.body.error != undefined) {
+              api.toast({
+                  msg: err.body.error.message,
+                  duration: 2000,
+                  location: 'middle'
+              });
+
+            } else {
+              api.toast({
+                  msg: err.msg,
+                  duration: 2000,
+                  location: 'middle'
+              });
+            }
         }
     })
 }
@@ -244,7 +265,7 @@ function onOpenTaskInfo() {
 
 // 返回云平台首页
 function toHome() {
-  setOnlineStatus(0);
+  setOnlineStatus(1);
   api.closeWin();
   api.closeFrame({
     name: 'group1'

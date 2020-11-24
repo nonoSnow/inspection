@@ -54,6 +54,7 @@ function onGetData() {
           console.log(JSON.stringify(err));
       },
       success: function(ret) {
+        console.log(JSON.stringify(ret));
           api.hideProgress();
           pointsArr = ret.result.points;
           lines = ret.result.lines;

@@ -79,10 +79,10 @@
         <div class="relative ">
             姓名：{{value.userName}}
             <span class="absolute right0">
-  <span class="aui-iconfont aui-icon-date font-bold"></span> 时长：{{value.duration}}h
+            <span class="aui-iconfont aui-icon-date font-bold"></span> 时长：{{value.duration}}h
             </span>
         </div>
-        {{ if isOnline}}
+        {{ if value.isOnline}}
         <div class="margin-top6">
             上线：{{value.onlineTime}}
         </div>

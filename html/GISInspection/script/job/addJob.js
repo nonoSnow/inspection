@@ -9,7 +9,8 @@ var source=2; // 来源：1：PC端；2：APP；3：第三方（管网）
 var imgList = []; //图片列表
 
 // 是否从事件转工单
-// var transOrder = false;
+var transOrder = false;
+var personInfo = {};
 
 apiready = function() {
     var header = $api.byId('header');
@@ -21,12 +22,14 @@ apiready = function() {
     }else {
       $("#xjArea").show();
     }
+
     // console.log(api.pageParam.type);
-    // if (api.pageParam.type == 'transOrder') {
-    //   transOrder = true;
-    // } else {
-    //   transOrder = false;
-    // }
+    if (api.pageParam.type == 'transOrder') {
+      transOrder = true;
+      personInfo = api.pageParam.personInfo;
+    } else {
+      transOrder = false;
+    }
 
     // 工单类型
     $(".custom-popup-list li").each(function() {
@@ -127,7 +130,11 @@ function onHidePopup() {
 function onOpenHead() {
     api.openWin({
         name: 'headList',
-        url: './headList.html'
+        url: './headList.html',
+        pageParam: {
+          type: 'transOrder',
+          personInfo: personInfo
+        }
     });
 }
 

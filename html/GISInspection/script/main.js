@@ -4,13 +4,14 @@ apiready = function() {
   // api.closeFrameGroup({
   //   name: 'group'
   // });
-  setOnlineStatus(0);
+  // 初始化为离线状态
+  setOnlineStatus(1);
 
   api.addEventListener({
       name: 'keyback'
   }, function(ret, err) {
       if(ret){
-        setOnlineStatus(0);
+        setOnlineStatus(1);
         api.closeWin();
         api.closeFrame({
           name: 'group1'

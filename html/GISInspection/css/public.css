@@ -1002,3 +1002,14 @@ body {
 .snt-overflow{
   overflow:auto;
 }
+
+/*溢出隐藏*/
+.overflow-hidden {
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+
+.width80 {
+  width: 80%;
+}

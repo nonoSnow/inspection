@@ -59,7 +59,7 @@ function getAppGetAllPerson(isScroll) {
     var data = {
         status: statusType,
         pageIndex: pageIndex,
-        maxResultCount: 5
+        maxResultCount: 10
     }
     var options = {
         url: requestUrl + 'PersonService/AppGetAllPerson',
@@ -68,12 +68,21 @@ function getAppGetAllPerson(isScroll) {
         success: function(ret) {
           console.log(JSON.stringify(ret));
             if (ret.success) {
-                var str = template('personListTemplate', ret);
                 ret.result.items.forEach(function(item) {
+                  if (item.onlineTime != null) {
                     item.onlineTime = moment(item.onlineTime).format('YYYY-MM-DD HH:mm');
+                  }
+                  if (item.offlineTime != null) {
                     item.offlineTime = moment(item.offlineTime).format('YYYY-MM-DD HH:mm');
+                  }
+                  if (item.duration != 0) {
+                    item.duration = item.duration.toFixed(2);
+                  }
                 });
+
+                var str = template('personListTemplate', ret);
                 listDatas = ret.result.items;
+                // console.log(JSON.stringify(listDatas));
                 if (!isScroll) {
                     $('#personListDemo').html("");
                 }

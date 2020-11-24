@@ -2,6 +2,10 @@
 var headArr = [];
 var checkHeadObj;
 
+// 是否是转工单进来的
+var transOrder = false;
+var personInfo = {};
+
 apiready = function() {
     var header = $api.byId('header');
     // 实现沉浸式状态栏效果
@@ -13,6 +17,13 @@ apiready = function() {
           // console.log($(this).val());
         }
     })
+
+    if (api.pageParam.type == 'transOrder') {
+      transOrder = true;
+      personInfo = api.pageParam.personInfo;
+    } else {
+      transOrder = false;
+    }
 }
 // 点击搜索
 function search(){
@@ -148,21 +159,35 @@ function pySegSort(arr) {
 // 选中负责人
 function checkHead(el){
   checkHeadObj = $(el).attr('param');
+  console.log(JSON.stringify(checkHeadObj));
   $("#sure").removeClass('aui-hide')
 }
 // 确定请求接口 传递数据
 function onCheck(){
-  // console.log(checkHeadObj);
+  // console.log(JSON.stringify(checkHeadObj));
+  console.log(JSON.stringify(personInfo));
+  console.log(JSON.stringify(checkHeadObj));
+  if (transOrder) {
+    if (checkHeadObj.userId == personInfo.userId) {
+      api.toast({
+          msg: '请转给其他人！',
+          duration: 2000,
+          location: 'middle'
+      });
+      return false;
+    }
+  }
   api.sendEvent({
       name: 'headList',
       extra: {
           checkHeadObj
       }
   });
+
   // api.openWin({
   //     name: 'addJob',
   //     url: './addJob.html'
   // });
-  api.closeWin();
+  // api.closeWin();
   // alert($(el).attr('param'))
 }

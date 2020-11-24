@@ -100,6 +100,7 @@ function toHome() {
 
 // 获取所有人员定位
 function getPersonsLoction() {
+  // console.log('点击了人员');
     var data = {
         oneDay: "",
         userId: userLoginInformation.currentUserInfo.userInfo.userId,
@@ -110,7 +111,7 @@ function getPersonsLoction() {
         type: "post",
         data: data,
         success: function(ret) {
-          console.log(JSON.stringify(ret));
+          // console.log(JSON.stringify(ret));
             if (ret.success) {
                 // var location = [106.44257422295854, 29.461625125595196];
                 // var result = ret.result.items.map(function(item) {

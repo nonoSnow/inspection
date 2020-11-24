@@ -122,6 +122,7 @@ function onGetAreaPorintLine(areaExtent) {
       text: '',
       modal: false
   });
+  console.log(gisUrl);
   reqOptions = {
       url: gisUrl + 'SearchPipe/GetPipeByExtent',
       type: 'get',

@@ -20,7 +20,7 @@ apiready = function() {
     isLeader = false;
   }
   // showDetailsData(id);
-  console.log(methodType);
+  // console.log(methodType);
   if (methodType == 0) {
     // 待处理事件，可以转工单或者关闭
     $(".footer").removeClass('aui-hide');
@@ -87,15 +87,20 @@ function onOpenInspectionRecord() {
 
 // 转工单
 function onOpenTransfWorkOrder() {
-  // console.log(deviceId);
-  // console.log(Id);
+  console.log(JSON.stringify(deviceInfo));
+  var personInfo = {
+    userName: deviceInfo.creationName,
+    userId: deviceInfo.creationId
+  }
+  console.log(JSON.stringify(personInfo));
   api.openWin({
       name: 'addJob',
       url: '../Job/addJob.html',
       pageParam: {
           deviceId: deviceId,
           eventId: Id,
-          // type: 'transOrder'
+          type: 'transOrder',
+          personInfo: personInfo
       }
   });
 }

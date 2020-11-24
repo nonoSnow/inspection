@@ -1,7 +1,7 @@
 var taskTypeIndex = 0;
 var daiXunTotal = 0;
 
-var taskPageSize = 4;
+var taskPageSize = 5;
 
 // 是否是领导
 var isLeader = true;
@@ -142,7 +142,8 @@ apiready = function() {
           //  alert( JSON.stringify( ret ) );
            if (ret.value.back == 1) {
              // 返回list ，需要刷新当前页面
-             onMenu(taskTypeIndex, '');
+             var el = $('.header-type-item');
+             onMenu(taskTypeIndex, el[taskTypeIndex]);
            }
       }else{
           //  alert( JSON.stringify( err ) );
@@ -202,7 +203,7 @@ function showData(data, status) {
   getTaskDataSingle({
     data: data,
     success: function (ret) {
-      // alert(JSON.stringify(ret));
+      // console.log(JSON.stringify(ret));
       var data;
       var str;
 
@@ -234,56 +235,18 @@ function showData(data, status) {
         // console.log(JSON.stringify(ret.result.items))
         switch (status) {
           case 'onGoing':
-            goingHasNext = ret.result.hasNextPage;
-            // if (ret.result.items.length != 0) {
-              // ret.result.items.forEach(function (item, i) {
-              //   if (item.planStartTime != null || item.planStartTime != '') {
-              //     item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
-              //   }
-              //
-              //   if (item.startTime != null || item.startTime != '') {
-              //     item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
-              //   }
-              //
-              //   if (item.endTime != null || item.endTime != '') {
-              //     item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
-              //   }
-              //
-              //   if (item.planEndTime != null || item.planEndTime != '') {
-              //     item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
-              //   }
-              //
-              //   if (item.stopTime != null || item.stopTime != '') {
-              //     item.stopTime = parseTime(item.stopTime, '{y}-{m}-{d} {h}:{i}');
-              //   }
-              // })
-            // }
+            // goingHasNext = ret.result.hasNextPage;
+            goingHasNext = ret.result.pageIndex < ret.result.totalPages ? true : false;
             data = {
               list: ret.result.items
             }
             str = template(status, data);
             break;
           case 'received':
-            receiveHasNext = ret.result.hasNextPage;
-            // if (ret.result.items.length != 0) {
-          //     ret.result.items.forEach(function (item, i) {
-          //       if (item.planStartTime != null || item.planStartTime != '') {
-          //         item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
-          //       }
-          //
-          //       if (item.startTime != null || item.startTime != '') {
-          //         item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
-          //       }
-          //
-          //       if (item.endTime != null || item.endTime != '') {
-          //         item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
-          //       }
-          //
-          //       if (item.planEndTime != null || item.planEndTime != '') {
-          //         item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
-          //       }
-          //     })
-          //   // }
+            // receiveHasNext = ret.result.hasNextPage;
+            receiveHasNext = ret.result.pageIndex < ret.result.totalPages ? true : false;
+            // console.log(receiveHasNext);
+
             data = {
               list: ret.result.items
             }
@@ -291,33 +254,17 @@ function showData(data, status) {
             str = template(status, data);
           //   break;
           case 'suspended':
-            suspendHasNext = ret.result.hasNextPage;
-          //   // if (ret.result.items.length != 0) {
-          //     ret.result.items.forEach(function (item, i) {
-          //       if (item.planStartTime != null || item.planStartTime != '') {
-          //         item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
-          //       }
-          //
-          //       if (item.startTime != null || item.startTime != '') {
-          //         item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
-          //       }
-          //
-          //       if (item.endTime != null || item.endTime != '') {
-          //         item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
-          //       }
-          //
-          //       if (item.planEndTime != null || item.planEndTime != '') {
-          //         item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
-          //       }
-              // })
-            // }
+            // suspendHasNext = ret.result.hasNextPage;
+            suspendHasNext = ret.result.pageIndex < ret.result.totalPages ? true : false;
+
             data = {
               list: ret.result.items
             }
             str = template(status, data);
             break;
           case 'completed':
-            completedHasNext = ret.result.hasNextPage;
+            // completedHasNext = ret.result.hasNextPage;
+            completedHasNext = ret.result.pageIndex < ret.result.totalPages ? true : false;
             // if (ret.result.items.length != 0) {
               // ret.result.items.forEach(function (item, i) {
               //   if (item.planStartTime != null || item.planStartTime != '') {
@@ -550,7 +497,7 @@ function onMenu(index, el) {
     initCompleted();
   }
   onCheckMenu(el, function(){
-    // console.log(123);
+  //   console.log(123);
   });
 }
 
