@@ -355,3 +355,65 @@ function previewImage(data) {
       }
   });
 }
+
+/**
+ * @method getHomeTaskList 请求接口改变员工离线、在线状态
+ */
+function setOnlineStatus(status) {
+  // console.log(status);
+  // console.log(status == 1 ? false : true);
+  var userInfo = $api.getStorage('userLoginInformation');
+  // console.log(JSON.stringify(userInfo.currentUserInfo.userInfo.userId));
+  var param = {
+    IsOnline: status == 1 ? false : true,
+    userId: userInfo.currentUserInfo.userInfo.userId
+  }
+
+  console.log(JSON.stringify(param));
+    insertPersonStatus({
+        data: {
+            IsOnline: status == 1 ? false : true,
+            userId: userInfo.currentUserInfo.userInfo.userId
+        },
+        success: function(ret) {
+            memberStatus = status == 1 ? 0 : 1;
+            $api.setStorage('isOnline', memberStatus);
+            // console.log($api.getStorage('isOnline'));
+            if (memberStatus) {
+                $(".member-status").addClass('on');
+            } else {
+                $(".member-status").removeClass('on');
+            }
+            console.log(getCurrentUserRoles());
+            if (getCurrentUserRoles()) {
+              // 为领导时
+              console.log('为领导');
+              api.sendEvent({
+                  name: 'sendLeaderLocation',
+              });
+            } else {
+              // 为员工时
+              api.sendEvent({
+                  name: 'sendPersonLocation',
+              });
+            }
+        },
+        fail: function(err) {
+            // console.log(JSON.stringify(err));
+            if (err.body.error != undefined) {
+              api.toast({
+                  msg: err.body.error.message,
+                  duration: 2000,
+                  location: 'middle'
+              });
+
+            } else {
+              api.toast({
+                  msg: err.msg,
+                  duration: 2000,
+                  location: 'middle'
+              });
+            }
+        }
+    })
+}

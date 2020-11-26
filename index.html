@@ -139,17 +139,40 @@ function sendInspectionLocation() {
                     name: 'sendPersonLocation'
                 }, function(ret, err) {
                     if (ret) {
+                      if (getCurrentUserRoles1()) {
+                        return false;
+                      } else {
                         var timer = setInterval(function() {
                             if ($api.getStorage('isOnline') == "1") {
                                 InsertPersonLocation();
                             } else {
                                 clearInterval(timer);
                             }
-                        }, 5000);
+                        }, 300000);
+                      }
                     }
                 });
 
-
+                // 巡检上传人员定位（领导）
+                api.addEventListener({
+                    name: 'sendLeaderLocation'
+                }, function(ret, err) {
+                    if (ret) {
+                      console.log(JSON.stringify(ret));
+                      console.log(getCurrentUserRoles1())
+                      if (getCurrentUserRoles1()) {
+                        var timer1 = setInterval(function() {
+                            if ($api.getStorage('isOnline') == "1") {
+                                InsertPersonLocation();
+                            } else {
+                                clearInterval(timer1);
+                            }
+                        }, 300000);
+                      } else {
+                        return false;
+                      }
+                    }
+                });
 
         api.addEventListener({
             name: 'changedFontSize'
@@ -175,7 +198,7 @@ function sendInspectionLocation() {
                     } else {
                         clearInterval(timer);
                     }
-                }, 300000);
+                }, 5000);
             }
         });
 

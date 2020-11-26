@@ -84,7 +84,9 @@
             <label class="width100 height100 layerItem">
                 <input class="aui-checkbox margin-top0 absolute right4" item="{{childrenItem}}" onchange="onCheckItem(this)" type="checkbox" name="{{item.label}}">
                 <div class="item-cont">
-                  <span class="item-cont-img"><img class="width100 height100" src="{{item.urlApi + childrenItem.icon}}" alt=""></span>
+                  <span class="item-cont-img">
+                    <img class="width100 height100" src="{{item.urlApi}} + {{childrenItem.icon}}" alt="">
+                  </span>
                   <span class="item-cont-name">{{childrenItem.label}}</span>
                 </div>
             </label>

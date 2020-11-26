@@ -84,57 +84,57 @@ function setCurrentMapLocation() {
     });
 }
 
-/**
- * @method getHomeTaskList 请求接口改变员工离线、在线状态
- */
-function setOnlineStatus(status) {
-  // console.log(status);
-  // console.log(status == 1 ? false : true);
-  var userInfo = $api.getStorage('userLoginInformation');
-  // console.log(JSON.stringify(userInfo.currentUserInfo.userInfo.userId));
-  var param = {
-    IsOnline: status ==1 ? false : true,
-    userId: userInfo.currentUserInfo.userInfo.userId
-  }
-
-  console.log(JSON.stringify(param));
-    insertPersonStatus({
-        data: {
-            IsOnline: status == 1 ? false : true,
-            userId: userInfo.currentUserInfo.userInfo.userId
-        },
-        success: function(ret) {
-            memberStatus = status == 1 ? 0 : 1;
-            $api.setStorage('isOnline', memberStatus);
-            // console.log($api.getStorage('isOnline'));
-            if (memberStatus) {
-                $(".member-status").addClass('on');
-            } else {
-                $(".member-status").removeClass('on');
-            }
-            api.sendEvent({
-                name: 'sendPersonLocation',
-            });
-        },
-        fail: function(err) {
-            // console.log(JSON.stringify(err));
-            if (err.body.error != undefined) {
-              api.toast({
-                  msg: err.body.error.message,
-                  duration: 2000,
-                  location: 'middle'
-              });
-
-            } else {
-              api.toast({
-                  msg: err.msg,
-                  duration: 2000,
-                  location: 'middle'
-              });
-            }
-        }
-    })
-}
+// /**
+//  * @method getHomeTaskList 请求接口改变员工离线、在线状态
+//  */
+// function setOnlineStatus(status) {
+//   // console.log(status);
+//   // console.log(status == 1 ? false : true);
+//   var userInfo = $api.getStorage('userLoginInformation');
+//   // console.log(JSON.stringify(userInfo.currentUserInfo.userInfo.userId));
+//   var param = {
+//     IsOnline: status ==1 ? false : true,
+//     userId: userInfo.currentUserInfo.userInfo.userId
+//   }
+//
+//   console.log(JSON.stringify(param));
+//     insertPersonStatus({
+//         data: {
+//             IsOnline: status == 1 ? false : true,
+//             userId: userInfo.currentUserInfo.userInfo.userId
+//         },
+//         success: function(ret) {
+//             memberStatus = status == 1 ? 0 : 1;
+//             $api.setStorage('isOnline', memberStatus);
+//             // console.log($api.getStorage('isOnline'));
+//             if (memberStatus) {
+//                 $(".member-status").addClass('on');
+//             } else {
+//                 $(".member-status").removeClass('on');
+//             }
+//             api.sendEvent({
+//                 name: 'sendPersonLocation',
+//             });
+//         },
+//         fail: function(err) {
+//             // console.log(JSON.stringify(err));
+//             if (err.body.error != undefined) {
+//               api.toast({
+//                   msg: err.body.error.message,
+//                   duration: 2000,
+//                   location: 'middle'
+//               });
+//
+//             } else {
+//               api.toast({
+//                   msg: err.msg,
+//                   duration: 2000,
+//                   location: 'middle'
+//               });
+//             }
+//         }
+//     })
+// }
 
 /**
  * @method getHomeTaskList 查询用户负责和参与的任务信息实体方法
@@ -251,17 +251,17 @@ function setOnlineStatus(status) {
 // }
 
 // 用于测试
-function onOpenTaskInfo() {
-    // 需传参数  type-0  表示进行中任务
-    api.openWin({
-        name: 'homeTaskInfo',
-        url: './homeTaskInfo.html',
-        pageParam: {
-            type: '0'
-        }
-    });
-
-}
+// function onOpenTaskInfo() {
+//     // 需传参数  type-0  表示进行中任务
+//     api.openWin({
+//         name: 'homeTaskInfo',
+//         url: './homeTaskInfo.html',
+//         pageParam: {
+//             type: '0'
+//         }
+//     });
+//
+// }
 
 // 返回云平台首页
 function toHome() {

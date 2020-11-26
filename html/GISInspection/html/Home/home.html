@@ -101,6 +101,7 @@
 <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
 <script type="text/javascript" src="../../ajax/homeajax.js"></script>
 <script type="text/javascript" src="../../script/home/homeCommon.js"></script>
+<script type="text/javascript" src="../../script/public.js"></script>
 <script type="text/javascript" src="../../script/home/home.js"></script>
 <script type="text/javascript" src="../../script/home/homeMap.js"></script>
 <script type="text/javascript" src="../../../public/script/moment.js"></script>
@@ -118,13 +119,13 @@
         <div class="homePage_order_body">
             {{if taskLists.length >0}}
             {{each taskLists value i}}
-            <div class="homePage_order_body_content" value="{{value}}" type='task'>
+            <div class="homePage_order_body_content" parse="{{value}}" type='task'>
                 {{if value.type == 1 || value.type == '1'}}
                 <div class="homePage_order_temporary"></div>
                 {{else}}
                 <div class="homePage_order_plan"></div>
                 {{/if}}
-                <div class="task_title">{{value.name}}</div>
+                <div class="task_title width80 overflow-hidden">{{value.name}}</div>
                 <div class="text_content">实际开始:&nbsp;&nbsp;<span>{{value.beginTime}}</span></div>
                 <div class="text_content">预计完成:&nbsp;&nbsp;<span>{{value.planComplateTime}}</span></div>
                 {{if value.overdue!=null && value.overdue!="" && value.overdue!='' }}
@@ -136,9 +137,9 @@
 
             {{if workOrderLists.length >0}}
             {{each workOrderLists value i}}
-            <div class="homePage_order_body_content" value="{{value}}" type='order'>
+            <div class="homePage_order_body_content" parse="{{value}}" type='order'>
                 <div class="homePage_order_btns">{{value.typeStr}}</div>
-                <div class="task_title">{{value.content}}</div>
+                <div class="task_title width80 overflow-hidden">{{value.content}}</div>
                 <div class="text_content">负责人:&nbsp;&nbsp;<span>{{value.person}}</span></div>
                 <div class="text_content">预计完成时间:&nbsp;&nbsp;<span>{{value.planComplateTime}}</span></div>
                 {{if value.overdue!=null && value.overdue!="" && value.overdue!='' }}

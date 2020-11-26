@@ -227,7 +227,12 @@ function initMap() {
           var mapInfo = ret1.result;
           var pointList = [];
           var lineList = [];
-          pointList = inspectParam.point.split(',');
+          if (inspectParam.point) {
+            pointList = inspectParam.point.split(',');
+          } else {
+            pointList = inspectParam.devicePoint.split(',');
+          }
+
           // console.log(JSON.stringify(mapInfo));
           indexMap = new Map({
               mapid: 'mapBox'

@@ -5,7 +5,15 @@ apiready = function() {
   //   name: 'group'
   // });
   // 初始化为离线状态
-  setOnlineStatus(1);
+  console.log(getCurrentUserRoles());
+  if (getCurrentUserRoles()) {
+    // 当为领导时，进入页面及在线
+    console.log('领导');
+    setOnlineStatus(0);
+  } else {
+    // 为员工时则初始化为离线状态
+    setOnlineStatus(1);
+  }
 
   api.addEventListener({
       name: 'keyback'
@@ -172,7 +180,18 @@ function funIniGroup(roles) {
             name: 'area_frame',
             url: '../html/Area/area.html',
         }]
-    }, function(ret, err) {});
+    }, function(ret, err) {
+      console.log(JSON.stringify(ret));
+      if (ret) {
+        if (ret.index == 0) {
+          api.setFrameGroupIndex({
+              name: 'group1',
+              index: 0,
+              reload: true
+          });
+        }
+      }
+    });
 }
 
 function onFotterMenu(index, el) {

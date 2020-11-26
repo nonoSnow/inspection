@@ -180,7 +180,7 @@ function getCurrentUserRoles(){
   // alert(JSON.stringify(currentUserRoles));
     var Roles = [];
    currentUserRoles.forEach(function(item){
-     console.log(item);
+    //  console.log(item);
      if(item.roleName.indexOf('领导')!=-1){
        Roles.push(item);
      }

@@ -90,6 +90,7 @@ function onShowHtml(showArr, showType) {
   var datas = {
     datas: showArr
   };
+  console.log(JSON.stringify(datas));
   if (showType == '0') {
     var str = template('pointAndLine', datas);
     $('#layerList').empty();

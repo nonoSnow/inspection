@@ -694,6 +694,8 @@
             this.map.addInteraction(measureDraw);
         },
         renderAllPersionToMap(paramers, callback) { //领导页面添加多个人员 2020-11-3 zxf
+
+            var locationData = [];
             var allPersondLayer = new ol.layer.Vector({
                 source: new ol.source.Vector({}),
             });
@@ -705,9 +707,17 @@
                 }
                 if(paramers[i].location=="" || paramers[i].location==null)
                 return false;
+                // console.log('符合条件，有数据');
+                // locationData.push({location: paramers[i].location});
+                // locationData.push({location: "106.552988,29.565076"})
+                var locations = paramers[i].location.split(',');
+                // var location = [parseFloat(locations[0]),)];
+                console.log(locations[0]);
+                console.log(locations[1]);
                 var allPersondLayerFeature = new ol.Feature({
-                    geometry: new ol.geom.Point(paramers[i].location),
+                    geometry: new ol.geom.Point([106.552342,29.564836]),
                 });
+                // console.log(allPersondLayerFeature);
                 allPersondLayerFeature.setStyle(new ol.style.Style({
                     image: new ol.style.Icon({
                         scale: 0.4,
@@ -725,10 +735,18 @@
                     workOrderLists: paramers[i].workOrderLists,
                     taskLists: paramers[i].taskLists,
                 });
-
+                console.log('111111111111111');
                 source.addFeature(allPersondLayerFeature);
             }
+            console.log('执行到这一步了');
             this.map.addLayer(allPersondLayer);
+            this.nextTick(function() {
+              console.log(locationData);
+              if (locationData.length != 0) {
+                var center = locationData[0];
+                // this.map.getView().setCenter(Number(center));
+              }
+            })
             this.LineAndPointselectSingleClick(callback); //选择了地图上的元素
         },
         addOverlayToMap: function(location) { // 2020-11-3 zxf

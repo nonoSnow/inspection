@@ -112,7 +112,14 @@ apiready = function() {
 }
 
 function onMenu(index, el) {
-  console.log(footerH);
+  if (taskId == undefined) {
+    api.toast({
+        msg: '未获取到任务',
+        duration: 2000,
+        location: 'middle'
+    });
+    return false;
+  }
   taskDetype = index;
   if (index == 0) {
     // $(".task-info").removeClass('aui-hide');
@@ -160,7 +167,7 @@ function onMenu(index, el) {
 function onOpenEquipment(that) {
   if (that != null) {
     var data = JSON.parse($(that).attr("parse"));
-    console.log(JSON.stringify(data));
+    // console.log(JSON.stringify(data));
     // var param = {
     //   deviceId: data.Id,
     //   taskId: taskId,

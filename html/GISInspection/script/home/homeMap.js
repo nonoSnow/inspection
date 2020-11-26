@@ -270,7 +270,8 @@ function initequipmentBtns(areaId, areaType) {
                                 url: '../../html/Home/equipmentMapInfo.html',
                                 pageParam: {
                                     data: paramers,
-                                    taskId:paramers.taskId
+                                    taskId:paramers.taskId,
+                                    taskType: 0
                                 }
                             });
                         } else { //工单

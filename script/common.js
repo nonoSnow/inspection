@@ -2616,3 +2616,17 @@ function stopTouchendPropagationAfterScroll(element, callback) {
         locked = false;
     }
 }
+
+// 获取当前用户的角色
+function getCurrentUserRoles1(){
+  var currentUserRoles = $api.getStorage('currentUserRoles');
+  // alert(JSON.stringify(currentUserRoles));
+    var Roles = [];
+   currentUserRoles.forEach(function(item){
+    //  console.log(item);
+     if(item.roleName.indexOf('领导')!=-1){
+       Roles.push(item);
+     }
+   });
+  return Roles.length!=0?1:0;
+}

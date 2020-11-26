@@ -49,9 +49,11 @@ function initTaskListEvent() {
         }
     });
     $('.homePage_order_body_content').on('click', function() {
+      console.log('11111111111111111');
         var type = $(this).attr('type');
-        var paramers = $(this).attr('value');
-        paramers = JSON.stringify(JSON.parse(paramers));
+        var paramers = $(this).attr('parse');
+        paramers = JSON.parse(paramers);
+        console.log(JSON.stringify(paramers));
         if (type == 'task') {
             api.openWin({
                 name: 'homeTaskInfo',

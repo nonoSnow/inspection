@@ -72,6 +72,7 @@ function toHome() {
   // api.closeWin({
   //   name:'inspectionMain'
   // });
+  setOnlineStatus(1);
   api.closeWin();
   api.closeFrame({
     name: 'group1'
@@ -112,15 +113,16 @@ function getPersonsLoction() {
         data: data,
         success: function(ret) {
           // console.log(JSON.stringify(ret));
+          // var retResult = {
+          //    totalCount:10,
+          //    result:{
+          //      items:[0,1]
+          //    },
+          //    success:true
+          // };
             if (ret.success) {
-                // var location = [106.44257422295854, 29.461625125595196];
-                // var result = ret.result.items.map(function(item) {
-                //     location[0] = location[0] + 0.1;
-                //     location[1] = location[1] + 0.1;
-                //     item.location = [location[0], location[1]];
-                //     return item;
-                // });
                 var result = ret.result.items;
+                console.log('result'+JSON.stringify(result));
                 indexMap.renderAllPersionToMap(result, function(ret) {
                   console.log(ret);
                   if(ret==null){
@@ -154,6 +156,7 @@ function getPersonsLoction() {
 
                     $('body .personDetail_popup').remove();
                     var str = template('personDetailPopupTemplate', templateData);
+                    console.log(str);
                     $('body').append(str);
                     if ($('body .personDetail_popup').length != 0) {
                         indexMap.addOverlayToMap(templateData.location);
@@ -161,7 +164,22 @@ function getPersonsLoction() {
                 });
             }
         },
-        error: function(err) {},
+        error: function(err) {
+          if (err.body.error != undefined) {
+            api.toast({
+                msg: err.body.error.message,
+                duration: 2000,
+                location: 'middle'
+            });
+
+          } else {
+            api.toast({
+                msg: err.msg,
+                duration: 2000,
+                location: 'middle'
+            });
+          }
+        },
 
     }
     ajaxMethod(options);
