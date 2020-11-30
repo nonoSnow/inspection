@@ -1,10 +1,23 @@
 
 var carData = [];
+var pageType = '';
 
 apiready = function() {
   var header = $api.byId('header');
   $api.fixStatusBar(header);
 
+  carData = api.pageParam.carArr;
+  pageType = api.pageParam.type;
+  console.log(pageType);
+  if (pageType == '1') {
+    $("#header").text("车辆总数：" + carData.length);
+  } else if (pageType == '2') {
+    $("#header").text("在线车辆：" + carData.length);
+  } else if (pageType == '3') {
+    $("#header").text("离线车辆：" + carData.length);
+  }
+
+  $(".carNum").text(carData.length);
   $("#nameList").on('click', 'li', function() {
     if ($(this).hasClass('active')) {
       $(this).removeClass('active');
@@ -17,14 +30,6 @@ apiready = function() {
 }
 
 function onGetCarData() {
-  carData = [
-    {"id": "0001", "type": "0", "carName": "渝A66666", "position": ["106.5025712070178", "29.591623152627714"]},
-    {"id": "0002", "type": "1", "carName": "渝A88888", "position": ["106.5325712070178", "29.551623152627714"]},
-    {"id": "0003", "type": "0", "carName": "渝A99999", "position": ["106.5325712070178", "29.501623152627714"]},
-    {"id": "0001", "type": "0", "carName": "渝A66666", "position": ["106.5025712070178", "29.591623152627714"]},
-    {"id": "0002", "type": "1", "carName": "渝A88888", "position": ["106.5325712070178", "29.551623152627714"]},
-    {"id": "0003", "type": "0", "carName": "渝A99999", "position": ["106.5325712070178", "29.501623152627714"]},
-  ];
 
   var datas = {
       datas: carData

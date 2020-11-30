@@ -1,0 +1,153 @@
+
+.search-div {
+  margin-top: 0.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+.list-search {
+  box-shadow: 0 3px 9px 0 rgba(0,0,0,0.20);
+  background-color: #fff;
+}
+
+.aui-searchbar .aui-iconfont {
+  font-size: 0.7rem;
+  color: #333!important;
+  font-weight: bold;
+}
+
+.map-btn-img {
+  height: auto;
+}
+
+.map-right-number {
+  display: block;
+  font-size: 0.8rem;
+  color: #333;
+  padding: 0.6rem 0rem 0rem;
+}
+
+.map-member-img {
+  width: 5rem;
+  height: auto;
+  display: inline-block;
+  opacity: 1;
+}
+
+.map-member-img img {
+  width: 3rem;
+  height: auto;
+  margin: auto;
+}
+
+.map-text {
+  width: auto;
+  font-size: 0.7rem;
+  color: #333;
+  text-align: center;
+  padding: 0.2rem 0.3rem;
+  background-color: #FFF;
+  box-shadow: 0 3px 6px -4px rgba(0,0,0,0.12), 0 6px 16px 0 rgba(0,0,0,0.08), 0 9px 28px 8px rgba(0,0,0,0.05);
+}
+
+.map-triangle {
+  width: 0px;
+  height: 0px;
+  border: 4px solid #FFF;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent; margin: auto;
+}
+
+#map-footer {
+  height: 13rem;
+  z-index: 30;
+}
+
+.footer-btn img{
+  width: 1rem;
+  display: inline-block;
+  margin-top: 0.4rem;
+  margin-right: 0.2rem;
+}
+
+.footer-btn span {
+  vertical-align: top;
+}
+
+.row {
+  width: 100%;
+  height: auto;
+  float: left;
+  margin-bottom: 0.3rem;
+}
+
+.row img {
+  width: 1rem;
+  display: inline-block;
+  float: left;
+}
+
+.row span {
+  width: calc(100% - 1rem);
+  display: inline-block;
+  vertical-align: top;
+  float: left;
+  padding-left: 0.3rem;
+}
+
+.car-info-w50 {
+  width: 50%;
+  float: left;
+}
+
+.padding-5-75 {
+  padding: 0.5rem 0.75rem;
+}
+
+.carinfo-div {
+  width: auto;
+  height: auto;
+  min-height: 100%;
+  float: left;
+}
+
+.status-dian {
+  width: 0.4rem!important;
+  height: 0.4rem;
+  border-radius: 100%;
+  display: inline-block;
+  background-color: #5EEAA3;
+  padding-left: 0rem!important;
+  margin-top: 0.4rem;
+  margin-right: 0.2rem;
+}
+
+.font-S7 {
+  font-size: 0.7rem;
+}
+
+.car-status, .car-status-text {
+  width: auto!important;
+  display: inline-block;
+  padding-left: 0rem!important;
+}
+
+.signal-strong {
+  width: 0.9rem!important;
+  float: none!important;
+  margin-right: 0.2rem;
+}
+
+.signal-text {
+  vertical-align: top;
+  width: auto!important;
+  padding-left: 0rem!important;
+}
+
+.signal-weak-text {
+  vertical-align: top;
+  width: auto!important;
+  padding-left: 0rem!important;
+  float: none!important;
+}

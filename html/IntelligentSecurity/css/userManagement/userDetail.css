@@ -1,0 +1,10 @@
+
+.item-title {
+  width: 30%;
+  display: inline-block;
+}
+
+.item-cont {
+  width: 70%;
+  display: inline-block;
+}
