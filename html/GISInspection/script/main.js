@@ -133,7 +133,7 @@ apiready = function() {
   //          console.log( JSON.stringify( err ) );
   //     }
   // });
-    // console.log(getCurrentUserRoles());
+    console.log(getCurrentUserRoles());
     funIniGroup(getCurrentUserRoles());
     WinSize(['footer-gis']);
 }
@@ -184,6 +184,7 @@ function funIniGroup(roles) {
       console.log(JSON.stringify(ret));
       if (ret) {
         if (ret.index == 0) {
+          console.log('触发了');
           api.setFrameGroupIndex({
               name: 'group1',
               index: 0,

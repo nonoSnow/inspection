@@ -165,29 +165,48 @@ function checkHead(el){
 // 确定请求接口 传递数据
 function onCheck(){
   // console.log(JSON.stringify(checkHeadObj));
+  console.log(transOrder);
   console.log(JSON.stringify(personInfo));
   console.log(JSON.stringify(checkHeadObj));
+  console.log(typeof(checkHeadObj));
+  var checkPerson = JSON.parse(checkHeadObj);
   if (transOrder) {
-    if (checkHeadObj.userId == personInfo.userId) {
+    console.log(checkPerson.userId == personInfo.userId);
+    if (checkPerson.userId == personInfo.userId) {
       api.toast({
           msg: '请转给其他人！',
           duration: 2000,
           location: 'middle'
       });
       return false;
+    } else {
+      api.sendEvent({
+          name: 'headList',
+          extra: {
+              checkHeadObj
+          }
+      });
+      api.openWin({
+          name: 'addJob',
+          url: './addJob.html'
+      });
+      api.closeWin();
     }
+  } else {
+    api.sendEvent({
+        name: 'headList',
+        extra: {
+            checkHeadObj
+        }
+    });
+    api.openWin({
+        name: 'addJob',
+        url: './addJob.html'
+    });
+    api.closeWin();
   }
-  api.sendEvent({
-      name: 'headList',
-      extra: {
-          checkHeadObj
-      }
-  });
 
-  // api.openWin({
-  //     name: 'addJob',
-  //     url: './addJob.html'
-  // });
-  // api.closeWin();
+
+
   // alert($(el).attr('param'))
 }

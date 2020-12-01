@@ -88,7 +88,8 @@ function onGetData() {
 
 function onShowHtml(showArr, showType) {
   var datas = {
-    datas: showArr
+    datas: showArr,
+    iconUrl: iconUrl
   };
   console.log(JSON.stringify(datas));
   if (showType == '0') {

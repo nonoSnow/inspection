@@ -29,8 +29,9 @@
 .item-cont-img {
   width: 1.5rem;
   height: 1.5rem;
-  background-color: #D8D8D8;
+  /*background-color: #D8D8D8;*/
   margin-bottom: 0.4rem;
+  /*display: flex;*/
 }
 
 .item-cont-name {

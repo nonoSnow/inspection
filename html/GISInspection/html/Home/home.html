@@ -139,7 +139,7 @@
             {{each workOrderLists value i}}
             <div class="homePage_order_body_content" parse="{{value}}" type='order'>
                 <div class="homePage_order_btns">{{value.typeStr}}</div>
-                <div class="task_title width80 overflow-hidden">{{value.content}}</div>
+                <div class="task_title">{{value.content}}</div>
                 <div class="text_content">负责人:&nbsp;&nbsp;<span>{{value.person}}</span></div>
                 <div class="text_content">预计完成时间:&nbsp;&nbsp;<span>{{value.planComplateTime}}</span></div>
                 {{if value.overdue!=null && value.overdue!="" && value.overdue!='' }}

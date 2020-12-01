@@ -27,16 +27,16 @@
 
       <div class="header-type display-flex text-cent line-height25 color-666">
           <div class="flex1 header-type-item color-598" tapmode onclick="onMenu(0, this)">
-              <span class="line-height1">
-            管点图层
-            <div class="type-line bgc-blue margin-top3 width60"></div>
-          </span>
+            <span class="line-height1">
+              管点图层
+              <div class="type-line bgc-blue margin-top3 width60"></div>
+            </span>
           </div>
           <div class="flex1 header-type-item" tapmode onclick="onMenu(1, this)">
-              <span class="line-height1">
-            管线图层
-            <div class="type-line margin-top3 width60"></div>
-          </span>
+            <span class="line-height1">
+              管线图层
+              <div class="type-line margin-top3 width60"></div>
+            </span>
           </div>
       </div>
 
@@ -81,13 +81,14 @@
             <div class="layer-cont-item relative">
             {{/if}}
             {{if childrenItem != ''}}
+            <!-- {{childrenItem.icon}} -->
             <label class="width100 height100 layerItem">
                 <input class="aui-checkbox margin-top0 absolute right4" item="{{childrenItem}}" onchange="onCheckItem(this)" type="checkbox" name="{{item.label}}">
                 <div class="item-cont">
                   <span class="item-cont-img">
-                    <img class="width100 height100" src="{{item.urlApi}} + {{childrenItem.icon}}" alt="">
+                    <img class="width100 height100" src="{{iconUrl + childrenItem.icon}}" alt="">
                   </span>
-                  <span class="item-cont-name">{{childrenItem.label}}</span>
+                  <span class="item-cont-name">{{item.label}}</span>
                 </div>
             </label>
             {{/if}}
