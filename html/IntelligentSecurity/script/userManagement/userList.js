@@ -8,6 +8,12 @@ apiready = function() {
   // 页面类型  1 - 申请   2 - 管理
   pageType = api.pageParam.type;
 
+  if (pageType == '1') {
+    $(".aui-title").html("访客申请列表");
+  } else if (pageType == '2') {
+    $(".aui-title").html("访客管理列表");
+  }
+
   orgId = $api.getStorage('userLoginInformation').currentUserInfo.userInfo.orgId;
 
   onGetList();
@@ -109,6 +115,7 @@ function onGetList() {
   if (pageType == '1') {
     fnPost("services/Security/VisitRecordService/GetApplyList", body, "application/json", true, false, function(ret, err){
       api.hideProgress();
+      console.log(JSON.stringify(ret));
       if (ret || ret.success) {
         userListData = ret.result;
       }
@@ -117,6 +124,7 @@ function onGetList() {
   } else if (pageType == '2') {
     fnPost("services/Security/VisitRecordService/GetPageList", body, "application/json", true, false, function(ret, err){
       api.hideProgress();
+      console.log(JSON.stringify(ret));
       if (ret || ret.success) {
         userListData = ret.result.items;
 

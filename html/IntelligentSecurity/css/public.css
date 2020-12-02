@@ -254,7 +254,7 @@ body {
 }
 
 .margin-bot0 {
-	margin-bottom: 0rem;
+	margin-bottom: 0rem!important;
 }
 
 .margin-bot3 {
@@ -379,7 +379,11 @@ body {
 }
 
 .bgc-f5f6 {
-  background-color:  #F5F6F7;
+  background-color:  #F5F6F7!important;
+}
+
+.bgc-26B {
+  background-color:  #26B7FF!important;
 }
 
 .fixed {
@@ -535,6 +539,10 @@ body {
 
 .padding-left75 {
   padding-left: 0.75rem!important;
+}
+
+.padding-right75 {
+  padding-right: 0.75rem!important;
 }
 
 .heightauto {

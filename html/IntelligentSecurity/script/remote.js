@@ -36,6 +36,16 @@ function fnPost(Path, data, contentType, isLogin, isPut, callback, files = "null
         text: '',
         modal: false
     });
+    console.log(1);
+    console.log(JSON.stringify({
+        url: app.apipath + Path,
+        method: isPut ? 'put' : 'post',
+        timeout: 30,
+        dataType: 'json',
+        returnAll: false,
+        headers: files == 'null'?headers:{},
+        data: body
+    }));
 
     api.ajax({
         url: app.apipath + Path,

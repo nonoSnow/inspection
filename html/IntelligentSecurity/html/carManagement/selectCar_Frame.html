@@ -8,12 +8,12 @@
     <link rel="stylesheet" type="text/css" href="../../../public/css/api.css"/>
     <link rel="stylesheet" type="text/css" href="../../../public/css/aui.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/public.css">
-    <link rel="stylesheet" type="text/css" href="../../css/selectCar_Frame.css">
+    <link rel="stylesheet" type="text/css" href="../../css/carManagement/selectCar_Frame.css">
   </head>
   <body>
     <div class="flex-wrap flex-vertical height100">
       <header class="aui-bar aui-bar-nav aui-bar-light bgi-none text-left color-333 padding-left75 border-bottom-dashed width75-right" id="header">
-        车辆总数：3
+        <!-- 车辆总数：<span class="carNum"></span> -->
       </header>
 
       <div class="flex-con flex-content bgc-ff height100 margin-bot250 width75-right">
@@ -72,7 +72,7 @@
         <li class="car-name-item float-rig relative" item="{{item}}">
         {{/if}}
       {{/if}}
-        {{item.carName}}
+        {{item.carNumber}}
         <img src="../../image/right_checked.png" class="checked" alt="" item="{{item}}">
       </li>
       {{/each}}

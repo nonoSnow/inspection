@@ -512,6 +512,106 @@
             zoom = zoom >= 5 ? zoom : 5;
             this.zoomMap = zoom;
             this.map.getView().setZoom(zoom);
+        },
+
+        // 车辆轨迹
+        initMapTrajectory: function() {
+            //中间站
+            var stops=[
+                [12909554.6597,4933234.84552],   //14
+                [12909824.6852,4931594.7854],    //43
+                [12910026.8837,4930523.89946],   //63
+                [12910870.563,4929357.26511]     //85
+            ];
+
+            var stopMakers = new Array();
+
+            for(var i=0;i<4;i++){
+                var s = new ol.Feature({
+                    type: 'stop',
+                    geometry: new ol.geom.Point(stops[i])
+                });
+                stopMakers.push(s);
+            }
+            //将离散点构建成一条折线
+            var route = new ol.geom.LineString(stopMakers);
+            //获取直线的坐标
+            var routeCoords = route.getCoordinates();
+            var routeLength = routeCoords.length;
+
+            var routeFeature = new ol.Feature({
+                type: 'route',
+                geometry: route
+            });
+            var geoMarker = new ol.Feature({
+                type: 'geoMarker',
+                geometry: new ol.geom.Point(routeCoords[0])
+            });
+            var startMarker = new ol.Feature({
+                type: 'icon',
+                geometry: new ol.geom.Point(routeCoords[0])
+            });
+            var endMarker = new ol.Feature({
+                type: 'icon',
+                geometry: new ol.geom.Point(routeCoords[routeLength - 1])
+            });
+
+            var style = {
+                'route': new ol.style.Style({
+                      stroke: new ol.style.Stroke({
+                          width: 6,
+                          color: '#F2C841'
+                      }),
+                      fill:new ol.style.Fill({
+                          color:"#F6E3A3"
+                      })
+                  }),
+                  'geoMarker': new ol.style.Style({
+                      /*image: new ol.style.Circle({
+                          radius: 7,
+                          snapToPixel: false,
+                          fill: new ol.style.Fill({ color: 'black' }),
+                          stroke: new ol.style.Stroke({
+                              color: 'white',
+                              width: 2
+                          })
+                      })*/
+                      image: new ol.style.Icon({
+                          src: '../../image/ordinary_car.png',
+                          rotateWithView: false,
+                          // rotation: -Math.atan2(routeCoords[0][1]-routeCoords[1][1], routeCoords[0][0]-routeCoords[1][0]),
+                          scale:0.3,
+                      })
+                  }),
+                  'stop':new ol.style.Style({
+                      image:new ol.style.Circle({
+                          radius:10,
+                          snapToPixel:false,
+                          fill:new ol.style.Fill({ color:'red'}),
+                          stroke:new ol.style.Stroke({
+                              color:'white',
+                              width:2
+                          })
+                      })
+                  })
+            };
+            console.log(1123);
+            var animating = false;
+            var vectorLayer = new ol.layer.Vector({
+                id:'carLayer',
+                source: new ol.source.Vector({
+                    features: [routeFeature, geoMarker, startMarker, endMarker,stopMakers[0],stopMakers[1],stopMakers[2],stopMakers[3]]
+                }),
+                style: function (feature) {
+                    //如果动画是激活的就隐藏geoMarker
+                    if (animating && feature.get('type') === 'geoMarker') {
+                        return null;
+                    }
+                    return styles[feature.get('type')];
+                }
+            });
+
+            this.map.addLayer(vectorLayer);
         }
     }
     window.Map = Map;
