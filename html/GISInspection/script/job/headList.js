@@ -83,6 +83,7 @@ function search(){
 }
 // 请求接口获取人员列表
 function onGetData() {
+  console.log('请求了人员列表接口');
     // alert("1")
     api.showProgress({
         style: 'default',
@@ -100,6 +101,7 @@ function onGetData() {
     getAjaxHeadList(options);
     // jobGetMethod("api/services/app/Information/GetOrganizationAndPersonnel","",showRet,showErr);
     function showRet(ret){
+      // console.log(JSON.stringify(ret));
       api.hideProgress();
       $('.head-list').html('');
       if(ret.success){
@@ -165,10 +167,10 @@ function checkHead(el){
 // 确定请求接口 传递数据
 function onCheck(){
   // console.log(JSON.stringify(checkHeadObj));
-  console.log(transOrder);
-  console.log(JSON.stringify(personInfo));
-  console.log(JSON.stringify(checkHeadObj));
-  console.log(typeof(checkHeadObj));
+  // console.log(transOrder);
+  // console.log(JSON.stringify(personInfo));
+  // console.log(JSON.stringify(checkHeadObj));
+  // console.log(typeof(checkHeadObj));
   var checkPerson = JSON.parse(checkHeadObj);
   if (transOrder) {
     console.log(checkPerson.userId == personInfo.userId);
@@ -186,10 +188,10 @@ function onCheck(){
               checkHeadObj
           }
       });
-      api.openWin({
-          name: 'addJob',
-          url: './addJob.html'
-      });
+      // api.openWin({
+      //     name: 'addJob',
+      //     url: './addJob.html'
+      // });
       api.closeWin();
     }
   } else {
@@ -198,10 +200,6 @@ function onCheck(){
         extra: {
             checkHeadObj
         }
-    });
-    api.openWin({
-        name: 'addJob',
-        url: './addJob.html'
     });
     api.closeWin();
   }

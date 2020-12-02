@@ -65,9 +65,10 @@ apiready = function() {
  * @method setCurrentMapLocation 设置当前员工在地图上
  */
 function setCurrentMapLocation() {
-    getMemberLocation(function(location) {
+    getMemberLocation(
+      function(location) {
         var location = [106.54258025120019, 29.561620073599133];
-        location = [parseFloat(location[0]), parseFloat(location[1])]
+        location = [parseFloat(location[0]), parseFloat(location[1])];
         var position = [];
         position.push(location);
         $(".map-member-img").css({
@@ -81,7 +82,8 @@ function setCurrentMapLocation() {
             name: 'memberlay',
             // centerPosition: location
         })
-    });
+    }
+  );
 }
 
 // /**

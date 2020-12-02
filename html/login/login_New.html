@@ -827,6 +827,7 @@
                 },
                 getUserRolesById(userId){
                   fnGet('services/app/Role/GetUserRolesById?userId='+userId, {}, false, function(ret, err) {
+                      console.log(JSON.stringify(ret));
                       api.hideProgress();
                       if (ret && ret.success) {
                        $api.setStorage('currentUserRoles', ret.result);

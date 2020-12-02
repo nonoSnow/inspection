@@ -83,96 +83,96 @@
         }
         return quit
     }
-    // 实时更新当前人员定位
-function InsertPersonLocation() {
-    var nativeTimer = api.require('nativeTimer');
-    var params = {
-        interval: 10,
-        cycle: true,
-        delay: 0,
-    }
-    nativeTimer.acquireCpu();
-    nativeTimer.start(params, function(ret) {
-        var ids = [];
-        ids.push(ret.id);
-        if ($api.getStorage('isOnline') == "1") {
-            sendInspectionLocation();
-        } else {
-            nativeTimer.stop({
-                ids: ids
-            })
-            nativeTimer.releaseCpu();
-        }
-    });
-}
-
-// 实时更新当前人员定位
-function sendInspectionLocation() {
-  var userLoginInformation = $api.getStorage('userLoginInformation');
-  aMapLBS.singleLocation({
-      timeout: 10
-  }, function(ret, err) {
-      if (ret.status) {
-        var data = {
-            personId: userLoginInformation.currentUserInfo.userInfo.userId,
-            person:userLoginInformation.currentUserInfo.userInfo.userName,
-            location:ret.lon+','+ ret.lat
-        };
-        fnPost('services/Inspection/PersonService/InsertLocation', {
-            body: JSON.stringify(data)
-        }, 'application/json', true, false, function(ret, err) {
-
-        })
-
-      }
-      // alert(JSON.stringify(ret))
-
-  });
-}
+//     // 实时更新当前人员定位
+// function InsertPersonLocation() {
+//     var nativeTimer = api.require('nativeTimer');
+//     var params = {
+//         interval: 10,
+//         cycle: true,
+//         delay: 0,
+//     }
+//     nativeTimer.acquireCpu();
+//     nativeTimer.start(params, function(ret) {
+//         var ids = [];
+//         ids.push(ret.id);
+//         if ($api.getStorage('isOnline') == "1") {
+//             sendInspectionLocation();
+//         } else {
+//             nativeTimer.stop({
+//                 ids: ids
+//             })
+//             nativeTimer.releaseCpu();
+//         }
+//     });
+// }
+//
+// // 实时更新当前人员定位
+// function sendInspectionLocation() {
+//   var userLoginInformation = $api.getStorage('userLoginInformation');
+//   aMapLBS.singleLocation({
+//       timeout: 10
+//   }, function(ret, err) {
+//       if (ret.status) {
+//         var data = {
+//             personId: userLoginInformation.currentUserInfo.userInfo.userId,
+//             person:userLoginInformation.currentUserInfo.userInfo.userName,
+//             location:ret.lon+','+ ret.lat
+//         };
+//         fnPost('services/Inspection/PersonService/InsertLocation', {
+//             body: JSON.stringify(data)
+//         }, 'application/json', true, false, function(ret, err) {
+//
+//         })
+//
+//       }
+//       // alert(JSON.stringify(ret))
+//
+//   });
+// }
 
     apiready = function() {
             onCreateFS();//创建数据库 zxf 2020-04-10
             getCurrentLocation(); //获取当前定位 zxf 2020-04-17
 
             //  溧水巡检，定时上传定位信息
-            api.addEventListener({
-                    name: 'sendPersonLocation'
-                }, function(ret, err) {
-                    if (ret) {
-                      if (getCurrentUserRoles1()) {
-                        return false;
-                      } else {
-                        var timer = setInterval(function() {
-                            if ($api.getStorage('isOnline') == "1") {
-                                InsertPersonLocation();
-                            } else {
-                                clearInterval(timer);
-                            }
-                        }, 300000);
-                      }
-                    }
-                });
+            // api.addEventListener({
+            //         name: 'sendPersonLocation'
+            //     }, function(ret, err) {
+            //         if (ret) {
+            //           if (getCurrentUserRoles1()) {
+            //             return false;
+            //           } else {
+            //             var timer = setInterval(function() {
+            //                 if ($api.getStorage('isOnline') == "1") {
+            //                     InsertPersonLocation();
+            //                 } else {
+            //                     clearInterval(timer);
+            //                 }
+            //             }, 300000);
+            //           }
+            //         }
+            //     });
 
                 // 巡检上传人员定位（领导）
-                api.addEventListener({
-                    name: 'sendLeaderLocation'
-                }, function(ret, err) {
-                    if (ret) {
-                      console.log(JSON.stringify(ret));
-                      console.log(getCurrentUserRoles1())
-                      if (getCurrentUserRoles1()) {
-                        var timer1 = setInterval(function() {
-                            if ($api.getStorage('isOnline') == "1") {
-                                InsertPersonLocation();
-                            } else {
-                                clearInterval(timer1);
-                            }
-                        }, 300000);
-                      } else {
-                        return false;
-                      }
-                    }
-                });
+                // api.addEventListener({
+                //     name: 'sendLeaderLocation'
+                // }, function(ret, err) {
+                //     if (ret) {
+                //       console.log(JSON.stringify(ret));
+                //       console.log(getCurrentUserRoles1())
+                //       if (getCurrentUserRoles1()) {
+                //         var timer1 = setInterval(function() {
+                //             if ($api.getStorage('isOnline') == "1") {
+                //                 InsertPersonLocation();
+                //             } else {
+                //                 clearInterval(timer1);
+                //             }
+                //         }, 300000);
+                //       } else {
+                //         return false;
+                //       }
+                //     }
+                // });
 
         api.addEventListener({
             name: 'changedFontSize'
