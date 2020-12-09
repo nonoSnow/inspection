@@ -3,6 +3,20 @@ var indexMap = {};
 
 var carInfo = {};
 
+var carOribtList = [{
+    longitude: '119.014598',
+    latitude: '31.595281'
+}, {
+    longitude: '119.015598',
+    latitude: '31.595281'
+}, {
+    longitude: '119.015598',
+    latitude: '31.596281'
+}, {
+    longitude: '119.016598',
+    latitude: '31.597281'
+}]
+
 apiready = function() {
   var header = $api.byId('header');
   $api.fixStatusBar(header);
@@ -10,13 +24,95 @@ apiready = function() {
 
   // 初始化地图
   indexMap = new Map({
-      mapid: 'map'
+      mapid: 'map',
+      zoom: 18
   });
 
   carInfo = api.pageParam.carInfo;
   onCreateCarLayer(carInfo);
+  // indexMap.initMapTrajectory();
 
-  indexMap.initMapTrajectory();
+  // 初始化车辆轨迹图层
+  indexMap.initLineOrbit('car');
+
+  // 绘制车辆轨迹
+  drawCarOribt(carOribtList);
+}
+pcAnimate();
+function pcAnimate() {
+
+    // 初始化地图
+    indexMap = new Map({
+        mapid: 'map',
+        zoom: 18
+    });
+
+    // 初始化车辆轨迹图层
+    indexMap.initLineOrbit('car');
+
+    // 绘制车辆轨迹
+    drawCarOribt(carOribtList);
+}
+
+$(".start-animate").on('click', function() {
+    startJernyAmimate(2)
+})
+
+/**
+* @method startJernyAmimate
+* @param speed {Array}  车辆行走的速度，比如startJernyAmimate(2)  表示以两倍速度运动
+* orbitList
+*/
+function startJernyAmimate(speed) {
+    indexMap.drawCarTrajectory({
+        name: 'car',
+        speed: speed || 1,
+        callback: function(corr_car, rotation) {
+            var rotate = rotation / 3.14 * 180
+            $("#map-member-img-0 img").css({
+                transform: 'rotate('+ (rotate) +'deg)'
+            })
+            indexMap['memberlay']['0'].setPosition(corr_car);
+        }
+    });
+}
+
+
+/**
+* @method drawCarOribt 绘制车辆轨迹
+* @param orbitList {Array}  车辆行走途经点列表数据
+* orbitList
+*/
+function drawCarOribt(oribtArr) {
+    var coordinates = [];
+    for(var i = 0; i< oribtArr.length; i++){
+        coordinates.push([Number(oribtArr[i].longitude), Number(oribtArr[i].latitude)]);
+    }
+    indexMap.addOverLayer({
+        dom: '#map-start',
+        position: [coordinates[0]],
+        offset: [0, -31],
+        // isCenter: true,
+        name: 'start',
+        // centerPosition: ''
+    })
+    indexMap.addOverLayer({
+        dom: '#map-member-img',
+        position: [coordinates[0]],
+        offset: [-30, -21],
+        isCenter: true,
+        name: 'memberlay',
+        // centerPosition: ''
+    })
+    indexMap.addOverLayer({
+        dom: '#map-end',
+        position: [coordinates[coordinates.length - 1]],
+        offset: [0, -31],
+        // isCenter: true,
+        name: 'end',
+        // centerPosition: ''
+    })
+    indexMap.drawOribitRoute(coordinates, 'car');
 }
 
 function onCreateCarLayer(carInfo) {
@@ -25,12 +121,11 @@ function onCreateCarLayer(carInfo) {
   indexMap.addOverLayer({
       dom: '#map-member-img',
       position: positionArr,
-      offset: [38.5, -43.5],
+      offset: [-30, -21],
       isCenter: true,
       name: 'memberlay',
       // centerPosition: ''
   })
-
   indexMap.map.getView().setCenter([carInfo.longitude, carInfo.latitude]);
   indexMap['memberlay']['0'].setPosition([carInfo.longitude, carInfo.latitude]);
 }

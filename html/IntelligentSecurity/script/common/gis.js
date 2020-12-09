@@ -56,7 +56,7 @@
             var zoomMap = this.zoomMap;
             this.map = new SNTGIS.Map({
               layers: [tdMap, dmLayer, pointLayer, lineLayer],
-              center: [106.548293, 29.565552],
+              center: [119.014598, 31.595281],
               zoom: zoomMap,
               maxZoom: 18,
               minZoom: 5,
@@ -81,12 +81,10 @@
             var location = layObj.position
             var dom = layObj.dom;
             for(var i = 0; i< location.length; i++) {
-                console.log(JSON.stringify(location[i]));
                 layObj.position = location[i];
 
                 layObj.dom = dom + '-' + i
                 layObj.index = i
-                console.log(JSON.stringify(layObj));
                 this.addOverLayerEvent(layObj)
             }
             if(layObj.centerPosition) {
@@ -98,8 +96,6 @@
             var name = layObj.name;
             var index = layObj.index;
             var elDom = document.querySelector(layObj.dom);
-            console.log(layObj.dom);
-            console.log(JSON.stringify(elDom));
             layObj = Object.assign({}, {
                 positioning: 'center-center',
                 className: 'customer-' + name + 'customer-' + name + '-' + index,
@@ -295,7 +291,6 @@
         getCommonEle: function(deviceInfo, name) {
 
             var selectFeature = this.selectFeature;
-            console.log(selectFeature)
             var polygon = selectFeature.getGeometry();
             // coordinates =
             // var wktPoint = new window.ol.format.WKT().writeGeometry(polygon, {
@@ -317,7 +312,6 @@
             // 获取区域与管线图层相交的所有元素
             if(deviceInfo.lineList.length > 0) {
                 window.SNTGIS.NetWork.getFeaturesByCoords(_this.lineLayer, areaExtent, function (data) {
-                    console.log(data)
                     _this.getLineListInArea(data, deviceInfo.lineList, name)
                     // _this.lineInArea = data;
                     // if (type) {
@@ -331,7 +325,6 @@
                 // 获取区域与管点图层相交的所有元素
                 window.SNTGIS.NetWork.getFeaturesByCoords(_this.pointLayer, areaExtent, function (data) {
                     _this.pointInArea = data;
-                    console.log(data)
                     _this.getPointListInArea(data, deviceInfo.pointList, name);
                     // if (type) {
                     //     // _this.drawPointSelect(deviceInfo.selectPoint)
@@ -358,14 +351,12 @@
             //    var url = source.urls[0].replace('/wms','/wfs');
             // console.log(layerNameArray[0])
             //    url = url.replace('/'+layerNameArray[0],'');
-               console.log(url)
                ajax.open('get', url);
                ajax.withCredentials = true;
                ajax.setRequestHeader("Authorization", authenticateUser('admin', "Sntsoft123"));
                ajax.send();
                ajax.onreadystatechange = function() {
                    if (ajax.readyState == 4 && ajax.status == 200) {
-                       console.log(ajax.responseText)
                        feature = queryPointInfoclayersource.getFormat().readFeatures(ajax.responseText);
                        queryPointInfoclayersource.addFeatures(feature);
                    }
@@ -426,7 +417,6 @@
         // 根据数据返回的管线 判断是否在传入的区域内 并绘制在区域内的管线
         getLineListInArea: function(allLineList, checkedLine, name) {
             var lineList = [];
-            console.log(checkedLine)
             for(let i = 0; i < checkedLine.length; i++) {
                 for(let j = 0; j < allLineList.length; j++) {
                     if(checkedLine[i].deviceCode ==allLineList[j].properties.LineNumber) {
@@ -446,7 +436,6 @@
             // if(type == 1) {
             //     this.areaObj.lineLength = lineLength;
             //     this.areaObj.lineList = lineList;
-            console.log(lineList)
             this.drawLineSelect(lineList, name);
             // }else if(type == 2) {
             //     this.drawLineCheckFunc(lineList);
@@ -458,7 +447,6 @@
             var pointList = [];
             for(let i = 0; i < checkedPoint.length; i++) {
                 for(let j = 0; j < allPointList.length; j++) {
-                    console.log(checkedPoint)
                     if(checkedPoint[i].deviceCode ==allPointList[j].properties.PointNumbe) {
                         pointList.push({
                             deviceCode: allPointList[j].properties.PointNumbe,
@@ -512,6 +500,186 @@
             zoom = zoom >= 5 ? zoom : 5;
             this.zoomMap = zoom;
             this.map.getView().setZoom(zoom);
+        },
+
+        // 初始化轨迹图层
+        initLineOrbit: function(name) {
+            var _this = this;
+            var layername = name ? name + 'OrbitLayer' : 'lineOrbitLayer'
+            var sourcename = name ? name + 'OrbitSource' : 'lineOrbitSource'
+
+            let orbitSource = new window.ol.source.Vector({});
+            this[sourcename] = orbitSource;
+            var orbitLayer = new window.ol.layer.Vector({
+                source: orbitSource,
+                updateWhileInteracting: true,
+                style: _this.orbitStyle,
+                zoom: _this.zo
+            });
+            this[layername] = orbitLayer;
+            this.map.addLayer(orbitLayer);
+        },
+        /*
+            样式方法回调  返回路径样式及 路径上箭头 及 箭头样式和旋转角度
+            feature: 地图上的要素对象，既有属性，也有坐标图形。
+            res：当前地图分辨率参数。
+        */
+        orbitStyle: function(feature, res) {
+            let _this = this;
+            var geometry = feature.getGeometry();
+            var length = geometry.getLength();
+            var stpes = 40;
+            var geo_steps = stpes * res;
+            var arrowsNum = parseInt(length / geo_steps);
+            var styles = [
+                // linestring
+                new ol.style.Style({
+                    stroke: new window.ol.style.Stroke({
+                        color: 'rgba(29, 191, 124, 1)',
+                        width: 6
+                    }),
+                })
+            ];
+            var tree = new RBush();
+            geometry.forEachSegment(function(start, end) {
+                var dx = end[0] - start[0];
+                var dy = end[1] - start[1];
+
+                //计算每个segment的方向，即箭头旋转方向
+                var rotation = Math.atan2(dy, dx);
+                var geom = new ol.geom.LineString([start, end]);
+                var extent = geom.getExtent();
+                var item = {
+                    minX: extent[0],
+                    minY: extent[1],
+                    maxX: extent[2],
+                    maxY: extent[3],
+                    geom: geom,
+                    rotation: rotation
+                };
+                tree.insert(item);
+            });
+            for (var i = 1; i < arrowsNum; i++) {
+                var arraw_coor = geometry.getCoordinateAt(i * 1.0 / arrowsNum);
+                var tol = 0.0001; //查询设置的点的容差，测试地图单位是米。如果是4326坐标系单位为度的话，改成0.0001.
+                var arraw_coor_buffer = [arraw_coor[0] - tol, arraw_coor[1] - tol, arraw_coor[0] + tol, arraw_coor[1] + tol];
+                //进行btree查询
+                var treeSearch = tree.search({
+                    minX: arraw_coor_buffer[0],
+                    minY: arraw_coor_buffer[1],
+                    maxX: arraw_coor_buffer[2],
+                    maxY: arraw_coor_buffer[3]
+                });
+                var arrow_rotation;
+                //只查询一个，那么肯定是它了，直接返回
+                if (treeSearch.length == 1)
+                    arrow_rotation = treeSearch[0].rotation;
+                else if (treeSearch.length > 1) {
+                    var results = treeSearch.filter(function(item) {
+                        //箭头点与segment相交，返回结果。该方法实测不是很准，可能是计算中间结果
+                        //保存到小数精度导致查询有点问题
+                        // if(item.geom.intersectsCoordinate(arraw_coor))
+                        //   return true;
+
+                        //换一种方案，设置一个稍小的容差，消除精度问题
+                        var _tol = 0.00001; //消除精度误差的容差
+                        if (item.geom.intersectsExtent([arraw_coor[0] - _tol, arraw_coor[1] - _tol, arraw_coor[0] + _tol, arraw_coor[1] + _tol]))
+                            return true;
+                    })
+                    if (results.length > 0)
+                        arrow_rotation = results[0].rotation;
+                }
+                styles.push(new ol.style.Style({
+                    geometry: new ol.geom.Point(arraw_coor),
+                    image: new ol.style.Icon({
+                        src: '../../image/icon-arrow.png',
+                        anchor: [0.75, 0.5],
+                        rotateWithView: true,
+                        rotation: -arrow_rotation
+                    })
+                }));
+            }
+            return styles;
+        },
+
+        // 根据多点绘制轨迹路径
+        drawOribitRoute: function(pointList, name) {
+            var sourcename = name ? name + 'OrbitSource' : 'lineOrbitSource'
+            var feature = new ol.Feature({
+                geometry: new ol.geom.LineString(pointList)
+            })
+            this[sourcename].addFeature(feature);
+        },
+
+        // 车辆轨迹绘制
+        drawCarTrajectory: function(options) {
+            let _this = this;
+            var sourcename = options.name ? options.name + 'OrbitSource' : 'lineOrbitSource';
+            // var layername = name ? name + 'OrbitLayer' : 'lineOrbitLayer';
+            var feature = this[sourcename].getFeatures()[0];
+            var geometry = feature.getGeometry();
+            var length = geometry.getLength();
+            var curCount = this.curCount || 0;
+            var meterLength = Math.round(length * 100 * 1000)
+            speed = (options.speed || 1) * 1;
+
+            var carAniCount = parseInt(meterLength / speed);
+
+            var treeRoute = new RBush();
+
+            geometry.forEachSegment(function(start, end) {
+                var dx = end[0] - start[0];
+                var dy = end[1] - start[1];
+
+                //计算每个segment的方向，即箭头旋转方向
+                var rotation = Math.atan2(dy, dx);
+                var geom = new ol.geom.LineString([start, end]);
+                var extent = geom.getExtent();
+                var item = {
+                    minX: extent[0],
+                    minY: extent[1],
+                    maxX: extent[2],
+                    maxY: extent[3],
+                    geom: geom,
+                    rotation: rotation
+                };
+                treeRoute.insert(item);
+            });
+
+            this.animate = setInterval(function() {
+                curCount++
+                var arraw_coor = geometry.getCoordinateAt(curCount * 1.0 / carAniCount);
+                var tol = 0.0001;
+                var arraw_coor_buffer = [arraw_coor[0] - tol, arraw_coor[1] - tol, arraw_coor[0] + tol, arraw_coor[1] + tol];
+                var treeSearch = treeRoute.search({
+                    minX: arraw_coor_buffer[0],
+                    minY: arraw_coor_buffer[1],
+                    maxX: arraw_coor_buffer[2],
+                    maxY: arraw_coor_buffer[3]
+                });
+                var arrow_rotation;
+                if(treeSearch.length == 1) {
+                    arrow_rotation = treeSearch[0].rotation;
+                } else if (treeSearch.length > 1) {
+                    var results = treeSearch.filter(function(item) {
+
+                        //换一种方案，设置一个稍小的容差，消除精度问题
+                        var _tol = 0.00001; //消除精度误差的容差
+                        if (item.geom.intersectsExtent([arraw_coor[0] - _tol, arraw_coor[1] - _tol, arraw_coor[0] + _tol, arraw_coor[1] + _tol]))
+                            return true;
+                    })
+                    if (results.length > 0)
+                        arrow_rotation = results[0].rotation;
+                }
+                //计算车辆的位置和角度后  改变车辆的位置和角度
+                if(options.callback) options.callback(arraw_coor, -arrow_rotation)
+                if(curCount + 1 >= carAniCount) {
+                    clearInterval(_this.animate);
+                }
+                _this.curCount = curCount;
+            }, 10)
+
+
         },
 
         // 车辆轨迹

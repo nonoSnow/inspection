@@ -681,13 +681,13 @@ function fnInVue() {
                 })
             },
             onOpenAssign() {
-              api.openWin({
-                  name: 'TaskAssign',
-                  url: '../GISInspection/html/inspectionMain.html',
-                  pageParam: {
-                      name: 'test'
-                  }
-              });
+            //   api.openWin({
+            //       name: 'TaskAssign',
+            //       url: '../GISInspection/html/inspectionMain.html',
+            //       pageParam: {
+            //           name: 'test'
+            //       }
+            //   });
               // api.openWin({
               //     name: 'BaoZhuang',
               //     url: '../BaoZhuang/home.html',
@@ -695,13 +695,13 @@ function fnInVue() {
               //         name: 'test'
               //     }
               // });
-              // api.openWin({
-              //     name: 'IntelligentSecurity',
-              //     url: '../IntelligentSecurity/html/IntelligentSecurityMain.html',
-              //     pageParam: {
-              //         name: 'test'
-              //     }
-              // });
+              api.openWin({
+                  name: 'IntelligentSecurity',
+                  url: '../IntelligentSecurity/html/IntelligentSecurityMain.html',
+                  pageParam: {
+                      name: 'test'
+                  }
+              });
 
             }
         },

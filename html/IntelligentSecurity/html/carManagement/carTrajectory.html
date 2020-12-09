@@ -27,11 +27,13 @@
         <div tapmode onclick="onTimeTrajectory('2')">
           昨日
         </div>
-        <div tapmode onclick="onTimeTrajectory('3')">
+        <!-- <div tapmode onclick="onTimeTrajectory('3')">
           自定义
+        </div> -->
+        <div class="start-animate" tapmode >
+          开始运动
         </div>
       </div>
-
       <!-- 地图 -->
       <div class="map-box">
           <div class="map" id="map"></div>
@@ -40,7 +42,13 @@
       <div class="map-member-img" id="map-member-img-0" tapmode>
           <div class="map-text">渝A88888</div>
           <div class="map-triangle"></div>
-          <img src="../../image/ordinary_car.png" />
+          <img src="../../image/icon-ordi-right.png" />
+      </div>
+      <div class="map-member-img" id="map-start-0">
+          <img src="../../image/icon-start.png" />
+      </div>
+      <div class="map-member-img" id="map-end-0">
+          <img src="../../image/icon-end.png" />
       </div>
     </div>
   </body>
@@ -51,6 +59,7 @@
   <script type="text/javascript" src="../../script/public.js"></script>
   <script type="text/javascript" src="../../script/sntgis/sntgis.js"></script>
   <script type="text/javascript" src="../../script/sntgis/sntgis_extend.js"></script>
+  <script type="text/javascript" src="../../script/sntgis/rbush.min.js"></script>
   <script type="text/javascript" src="../../script/common/common.js"></script>
   <script type="text/javascript" src="../../script/common/gis.js"></script>
   <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
