@@ -1,4 +1,5 @@
 function renderOrderOrworkTemplate(ret) {
+  console.log(ret);
     var taskLists = ret.result.taskLists.map(function(item) {
         item.beginTime = item.beginTime != undefined ? item.beginTime : item.planStartTime != undefined ? item.planStartTime : null;
         item.planComplateTime = item.planComplateTime != undefined ? item.planComplateTime : item.planEndTime != undefined ? item.planEndTime : null;

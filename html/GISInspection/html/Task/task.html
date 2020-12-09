@@ -19,10 +19,12 @@
         <!-- <header class="aui-bar aui-bar-nav aui-bar-light bgi-none" id="header">
             <div class="aui-title">任务</div>
         </header> -->
-        <div>
+        <div style="background: red; display: flex;">
           <header class="aui-bar aui-bar-nav aui-bar-light bgi-none" id="header">
+            <div class='aui-pull-left aui-btn'>
+                <span class='aui-iconfont'></span>
+            </div>
               <div class="aui-title">任务</div>
-
           </header>
         </div>
 
@@ -54,10 +56,12 @@
             </div>
         </div>
 
-        <div id="list-box" class="flex-con flex-content bgc-f3 overflowScroll">
-          <ul class="aui-content-padded" id="taskList">
-          </ul>
-          <div id="haveNothing" class="text-cent aui-hide">
+        <div id="list-box" class="flex-con flex-content height100 bgc-f3 relative over-hide">
+          <div class="height100 overflowScroll">
+            <ul class="aui-content-padded" id="taskList">
+            </ul>
+          </div>
+          <div id="haveNothing" style="top: 0; left: 0;" class="text-cent aui-hide height100 width100 absolute bgc-f3">
             <img class="margin-top200" src="../../image/nothing.png" alt="">
             <div class="text-cent color-666 line-height25">暂无任务</div>
           </div>

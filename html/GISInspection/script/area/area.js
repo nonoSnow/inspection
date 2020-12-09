@@ -155,19 +155,22 @@ function onEmptySearch() {
   onGetSearchVal();
   onGetListData();
 }
-
-// 根据片区名称模糊查询片区信息
-function onSearchVal() {
-  api.showProgress({
-      title: '加载中',
-      text: '',
-      modal: false
-  });
+// 搜索框点击搜索
+function searchByInput() {
   var data = {
     name: $("#search-input").val(),
     pageIndex: 1,
     maxResultCount: 1000
   };
+  onSearchVal(data);
+}
+// 根据片区名称模糊查询片区信息
+function onSearchVal(data) {
+  api.showProgress({
+      title: '加载中',
+      text: '',
+      modal: false
+  });
   var optionsEmpty = {
     url: baseUrl + "api/services/Inspection/AreaService/AppGetAreaDetailsByName",
     data: data,
@@ -201,6 +204,12 @@ function onSearchVal() {
 function searchArea(that) {
   // console.log(data);
   var searchWords = $(that).attr('parse');
+  var data = {
+    name: searchWords,
+    pageIndex: 1,
+    maxResultCount: 1000
+  };
+  onSearchVal(data);
 }
 
 function onGetListData() {

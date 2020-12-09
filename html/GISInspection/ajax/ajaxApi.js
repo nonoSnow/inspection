@@ -1,6 +1,7 @@
 // 请求后台接口地址
 // var baseUrl = 'http://' + $api.getStorage('apiUrl') + '/';
 var baseUrl = 'http://' + $api.getStorage('apiUrl') + '/';
+var iconUrl = 'http://221.226.213.42:9090';
 // var baseUrl = 'http://192.168.9.44:9090/';
 // console.log(baseUrl);
 var requestUrl = baseUrl + 'api/services/Inspection/';

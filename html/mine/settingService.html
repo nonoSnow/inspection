@@ -265,7 +265,10 @@
             methods: {
                 initServiceUrl:function() {
                     var _this = this;
+                    // var data = [];
+                    // $api.setStorage('addressHistory', data);
                     var addressHistory = $api.getStorage('addressHistory');
+                    console.log(JSON.stringify(addressHistory));
                     if (addressHistory != undefined && addressHistory != null && addressHistory != '') {
                         _this.addressHistory = addressHistory;
                     }
@@ -289,6 +292,8 @@
                     });
                 },
                 addNewAddress:function() {
+                  console.log(JSON.stringify(this.addressHistory));
+                  console.log(typeof(this.addressHistory));
                     this.addressHistory.push({
                         url: "",
                         isCheck: false,

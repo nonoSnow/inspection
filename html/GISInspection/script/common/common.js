@@ -27,7 +27,7 @@ function getMemberLocation(callback) {
 function getLocationGPS(callback) {
     var gpsmodel = api.require('gpsState');
     gpsmodel.gpsstate(function(ret) {
-        if(ret.gps == true) {
+        if(ret.gps === 'true' || ret.gps == true) {
             callback();
         } else {
             if (api.systemType == 'android') {

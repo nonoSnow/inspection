@@ -706,16 +706,13 @@
                     FeatureImage = '../../image/location.png';
                 }
                 if(paramers[i].location=="" || paramers[i].location==null)
-                return false;
+                continue;
                 // console.log('符合条件，有数据');
-                // locationData.push({location: paramers[i].location});
-                // locationData.push({location: "106.552988,29.565076"})
                 var locations = paramers[i].location.split(',');
-                // var location = [parseFloat(locations[0]),)];
-                console.log(locations[0]);
-                console.log(locations[1]);
+                locationData.push(locations);
+                console.log(JSON.stringify(locations));
                 var allPersondLayerFeature = new ol.Feature({
-                    geometry: new ol.geom.Point([106.552342,29.564836]),
+                    geometry: new ol.geom.Point(locations),
                 });
                 // console.log(allPersondLayerFeature);
                 allPersondLayerFeature.setStyle(new ol.style.Style({
@@ -738,15 +735,16 @@
                 console.log('111111111111111');
                 source.addFeature(allPersondLayerFeature);
             }
-            console.log('执行到这一步了');
+            // console.log('执行到这一步了');
             this.map.addLayer(allPersondLayer);
-            this.nextTick(function() {
-              console.log(locationData);
+            // this.nextTick(function() {
+            //   console.log(locationData);
               if (locationData.length != 0) {
                 var center = locationData[0];
-                // this.map.getView().setCenter(Number(center));
+                // console.log(center);
+                this.map.getView().setCenter(center);
               }
-            })
+            // })
             this.LineAndPointselectSingleClick(callback); //选择了地图上的元素
         },
         addOverlayToMap: function(location) { // 2020-11-3 zxf
