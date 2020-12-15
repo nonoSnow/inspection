@@ -177,9 +177,11 @@ function drawAreaList() {
    //      areaPoint: "104.15302991867065,30.023317337036136;104.14753675460815,30.019583702087406;104.15122747421265,30.01739501953125;104.1548752784729,30.017309188842773;104.15496110916138,30.01889705657959;104.15405988693237,30.0216007232666;104.15302991867065,30.023317337036136;"
    //  }];
    //  if (resultIndex >= 2 && taskOrderList.length > 0) {
+  //  console.log(JSON.stringify(taskOrderList));
    if (taskOrderList.length > 0) {
         indexMap.drawAreaSelect(taskOrderList);
         indexMap.initMapClick(function(ret) {
+          // console.log(JSON.stringify(ret));
           if(ret == null){
             $(".home-device img").attr('src','../../image/equipment.png');
             $('.homePage_order_list_box').remove();

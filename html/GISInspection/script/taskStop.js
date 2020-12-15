@@ -180,6 +180,8 @@ function suspendedTask() {
 
     }
   })
+
+
   // changeTaskStatus('api/services/Inspection/InspectionTask/UpdateTaskStatus', data, showRet, showErr);
   //
   // function showRet(ret) {

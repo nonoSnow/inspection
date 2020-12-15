@@ -1,0 +1,229 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>定位导航页</title>
+    <link rel="stylesheet" type="text/css" href="../css/auicss/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/auicss/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/public.css" />
+    <style>
+        .aui-bar-nav,.aui-bar-nav.aui-bar-light .aui-iconfont{
+            /* background-color:#4089F3 */
+            color: #333333;
+        }
+        #header-title{
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+        .soso-title{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.25rem 0.6rem;
+            background: white;
+        }
+        .aui-searchbar{
+            /*width: 14.8rem;*/
+            width: 79.3%;
+            background-color: white;
+        }
+        .aui-searchbar-input{
+            height: 1.65rem;
+            border-radius: 1.65rem;
+            line-height: 1.65rem;
+            background-color:#efefef;
+            margin: 0;
+        }
+        .aui-searchbar-input input{
+            height: 1.65rem;
+            width: 100%;
+        }
+        .change-box{
+          width: 100%;
+          position: relative;
+        }
+        .change-box .aui-list-item-input{
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+        .change-box .aui-list{
+          font-size: 0.75rem;
+          color: #333333;
+          height: 0;
+          overflow: hidden;
+          position: absolute;
+          top: 0;
+          width: 100%;
+          /*transition: all 10s;*/
+        }
+        .change-box input[type="text"]{
+          font-size: 0.75rem;
+        }
+        .results-box{
+          width: 100%;
+        }
+        .results-box .results-list{
+          padding: 0.4rem 0.6rem;
+          display: flex;
+          background-color: #fff;
+          justify-content: space-between;
+          align-items: center;
+          border-top-left-radius: 20px;
+          border-top-right-radius: 20px;
+        }
+        .results-list-mid{
+          display: flex;
+          flex-direction: column;
+        }
+        .results-list-right{
+          display: flex;
+          height: 100%;
+          align-items: center;
+          justify-content: center;
+        }
+        .results-list-right .round{
+          width: 1.4rem;
+          height: 1.4rem;
+          background: url('../image/rightno.png');
+          background-size: 100% 100%;
+        }
+        .results-list-right .round.active{
+          background: url('../image/rightok.png');
+          background-size: 100% 100%;
+        }
+        .results-list-left-list{
+          display: flex;
+          flex-wrap: wrap;
+          font-size: 0.7rem;
+          align-items: center;
+          margin-bottom: 0.3rem;
+        }
+        .results-list-left-list .winingbtn{
+            font-size: 0.7rem;
+            color: #FFA420;
+            height: 1rem;
+            border-radius: 0.5rem;
+            width: 4.85rem;
+            border: 1px solid #FFA420;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .imgfile{
+          width: 3.65rem;
+          height: 3.65rem;
+          background: #E6E6E6;
+          opacity: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+        }
+        #footer{
+          display: flex;
+          width: 100%;
+          /*height: 3.5rem;*/
+          background-color: #ffffff;
+          justify-content: space-around;
+          align-items: center;
+          padding:0.6rem;
+        }
+        .brnList{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 3.5rem;
+            width: 100%;
+            background-color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+</body>
+<script type="text/javascript" src="../script/auijs/api.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src='../script/public.js'></script>
+
+<script type="text/javascript" src='../script/template.js'></script>
+<script type="text/template" id='sosolist'>
+  <div class='results-box'>
+    <!-- list -->
+    <div class='results-list'>
+          <div class='results-list-mid'>
+            <span class='results-list-left-list'>
+              <span class="co-333333 mlr-10">营业区域:</span>
+              <span class="co-595959">{{OrgName}}</span>
+            </span>
+            <span class='results-list-left-list'>
+              <span class="co-333333 mlr-10">供水片区:</span>
+              <span class="co-595959">{{AreaName}}</span>
+            </span>
+            <span class='results-list-left-list'>
+              <span class="co-333333 mlr-10">用户编号:</span>
+              <span class="co-595959">{{CustomerCode}}</span>
+            </span>
+            <span class='results-list-left-list'>
+              <span class="co-333333 mlr-10">水表表号:</span>
+              <span class="co-595959">{{StampNo}}</span>
+            </span>
+            <span class='results-list-left-list'>
+              <span class="co-333333 mlr-10">用户名称:</span>
+              <span class="co-595959">{{CustomerName}}</span>
+            </span>
+            <span class='results-list-left-list'>
+              <span class="mlr-10">用户地址：{{CustomerAddress}}</span>
+            </span>
+          </div>
+    </div>
+  </div>
+  <div class='brnList'>
+    <div class='btnKong' tapmode onclick="navigationTAB()"><img src='../image/leftgps.png' style="width:0.74rem"/>导航</div>
+    <div class='btnKong' tapmode onclick="openslide()" ><img src='../image/rightimg.png' style="width:0.61rem"/>图片</div>
+  </div>
+</script>
+<script type="text/javascript">
+var apiready = function() {
+        api.parseTapmode();
+        api.setStatusBarStyle({
+            style:"dark"
+        });
+        // 模板引擎
+        var list=api.pageParam.list
+        var str = template('sosolist', list);
+        $('body').html(str);
+        }
+function openslide(){
+  api.openFrame({
+      name: 'slide',
+      url: '../view/slide.html',
+      rect: {
+          x: 0,
+          y: 0
+      },
+      pageParam: {
+        // 可传图片过去
+          pictureList: api.pageParam.list.Imgs.split(',')
+      },
+      bounces: false,
+      bgColor: 'rgba(0,0,0,0)',
+      vScrollBarEnabled: true,
+      hScrollBarEnabled: true
+  });
+}
+function navigationTAB(){
+    api.closeFrame({
+        name: 'index_navdtail'
+    });
+}
+</script>
+
+</html>

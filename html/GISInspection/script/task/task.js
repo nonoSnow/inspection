@@ -1,7 +1,7 @@
 var taskTypeIndex = 0;
 var daiXunTotal = 0;
 
-var taskPageSize = 5;
+var taskPageSize = 20;
 
 // 是否是领导
 var isLeader = true;
@@ -43,8 +43,8 @@ apiready = function() {
   var tabBox = $api.byId('flex-vertical');
   var tabBoxH = $api.offset(tabBox).h;
 
-  var footer = $api.byId('footer');
-  var footerH = $api.offset(footer).h;
+  // var footer = $api.byId('footer');
+  // var footerH = $api.offset(footer).h;
 
   //获取当前用户所属角色(领导、员工)
   if (getCurrentUserRoles() == 1) {
@@ -55,11 +55,11 @@ apiready = function() {
 
 
   if (isLeader) {
-    $('#footer').removeClass('aui-hide');
-    $("#taskList").css("margin-bottom", footerH + 10);
+    $('.aui-pull-right').removeClass('aui-hide');
+    // $("#taskList").css("margin-bottom", footerH + 10);
   } else {
-    $('#footer').addClass('aui-hide');
-    $("#taskList").css("margin-bottom", 0);
+    $('.aui-pull-right').addClass('aui-hide');
+    // $("#taskList").css("margin-bottom", 0);
   }
 
   $('#list-box').scroll(function() {
@@ -203,7 +203,7 @@ function showData(data, status) {
   getTaskDataSingle({
     data: data,
     success: function (ret) {
-      // console.log(JSON.stringify(ret));
+      console.log(JSON.stringify(ret));
       var data;
       var str;
 

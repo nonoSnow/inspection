@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>查询结果页面</title>
+    <link rel="stylesheet" type="text/css" href="../css/auicss/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/auicss/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/public.css" />
+    <style>
+        .aui-bar-nav,.aui-bar-nav.aui-bar-light .aui-iconfont{
+            /* background-color:#4089F3 */
+            color: #333333;
+        }
+        #header-title{
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+        #content{
+            height:100vh;
+            background-color:rgba(245, 245, 245, 1);
+        }
+        .soso-title{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.25rem 0.6rem;
+            background: white;
+        }
+        .aui-searchbar{
+            /*width: 14.8rem;*/
+            width: 79.3%;
+            background-color: white;
+        }
+        .aui-searchbar-input{
+            height: 1.65rem;
+            border-radius: 1.65rem;
+            line-height: 1.65rem;
+            background-color:#efefef;
+            margin: 0;
+        }
+        .aui-searchbar-input input{
+            height: 1.65rem;
+            width: 100%;
+        }
+        .change-box{
+          width: 100%;
+          position: relative;
+        }
+        .change-box .aui-list-item-input{
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+        .change-box .aui-list{
+          font-size: 0.75rem;
+          color: #333333;
+          height: 0;
+          overflow: hidden;
+          position: absolute;
+          top: 0;
+          width: 100%;
+          /*transition: all 10s;*/
+        }
+        .change-box input[type="text"]{
+          font-size: 0.75rem;
+        }
+        .results-box{
+          width: 100%;
+        }
+        .results-box .results-list{
+          padding: 0.4rem 0.6rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background-color: #fff;
+          margin-top: 0.25rem;
+        }
+        .results-list-left{
+          display: flex;
+          flex-direction: column;
+          max-width: 74%;
+        }
+        .results-list-right{
+          background-color: #FF6769;
+          width: 4rem;
+          height: 4.8rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          border-radius: 0.2rem;
+        }
+        .results-list-left-list{
+          display: flex;
+          flex-wrap: wrap;
+          font-size: 0.7rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='header-title'>
+        <header class="aui-bar aui-bar-nav aui-bar-light" id="header">
+            <a class="aui-pull-left aui-btn" tapmode onclick="backwin()">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </a>
+            <div class="aui-title">处理记录</div>
+        </header>
+    </div>
+    <div id='content'>
+        <!-- 搜索出来的list -->
+        <div class='results-box'>
+          <!-- list -->
+
+          </div>
+        </div>
+</body>
+<script
+<script type="text/javascript" src="../script/auijs/api.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src='../script/public.js'></script>
+<script type="text/javascript" src='../script/aui-popup.js'></script>
+<script type="text/javascript" src='../script/template.js'></script>
+<script type="text/javascript" src="../script/request.js"></script>
+<script type="text/template" id='sosolist'>
+  {{each list value index}}
+  <div class='results-list' tapmode onclick="toDispose({{value}})">
+    <div class='results-list-left'>
+        <span class='results-list-left-list'>
+          <span class="co-333333">水表表号:</span>
+          <span class="co-595959">{{value.StampNo}}</span>
+        </span>
+        <span class='results-list-left-list'>
+          <span class="co-333333">用户编号:</span>
+          <span class="co-595959">{{value.CustomerCode}}</span>
+        </span>
+        <span class='results-list-left-list'>
+          <span class="co-333333">状况描述:</span>
+          <span class="co-595959">{{value.WarnTypeName}}</span>
+        </span>
+        <span class='results-list-left-list'>
+          <span class="co-333333">处理人:</span>
+          <span class="co-595959">{{value.DealerName}}</span>
+        </span>
+        <span class='results-list-left-list'>
+          <span class="co-333333">处理时间:</span>
+          <span class="co-595959">{{value.DealTime}}</span>
+        </span>
+    </div>
+    <div class='results-list-right'>
+        <span class="co-ffffff fn-07">次数</span>
+        <span class="co-ffffff fn-175">{{value.WarnCount}}</span>
+    </div>
+  </div>
+  {{/each}}
+</script>
+<script type="text/javascript">
+var scrolltobottomTimer;
+var apiready = function() {
+        headerHeight();
+        api.setStatusBarStyle({
+            style:"dark"
+        });
+        var list = api.pageParam.list
+        MeterDealedWarnList.StampNo=list.StampNo;
+        MeterDealedWarnList.WarnType=list.WarnType;
+        MeterDealedWarnList.DealerId=list.DealerId;
+        MeterDealedWarnList.BeginDealTime=list.BeginDealTime;
+        MeterDealedWarnList.EndDealTime=list.EndDealTime;
+        GetMeterDealedWarnListjax();
+
+        //上拉加载
+        api.addEventListener({
+            name:'scrolltobottom',
+            extra:{
+                threshold:0           //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err){
+          clearTimeout(scrolltobottomTimer);
+          scrolltobottomTimer=setTimeout(function(){
+            GetMeterDealedWarnListjax()
+          },1000)
+
+        });
+}
+
+function toDispose(value){
+    value.BeginDealTime = MeterDealedWarnList.BeginDealTime;
+    value.EndDealTime = MeterDealedWarnList.EndDealTime;
+    api.openWin({
+        name: 'index_detail',
+        url: './index_detail.html',
+        pageParam: {
+            value:value
+        }
+    });
+
+}
+//处理记录详情列表
+var MeterDealedWarnList={
+    // UserId:$api.getStorage('cqUserId'),//用户ID*
+    StampNo:'',//用户编号或者水表表号*
+    WarnType:'',//报警类型
+    DealerId:'',//处理人ID
+    BeginDealTime:'',//开始报警时间
+    EndDealTime:'',//结束报警时间
+    PageIndex:1,//页码*
+    PageSize:10//每页条数*
+}
+
+//获取报警主页信息
+function GetMeterDealedWarnListjax(){
+// console.log(JSON.stringify(MeterDealedWarnList));
+    NewGet('/wapi/WRPData/GetMeterDealedWarnList',MeterDealedWarnList,
+    $api.getStorage('token'),function(ret,err){
+      // console.log(JSON.stringify(ret));
+      if(ret.IsSuccess){
+          if(MeterDealedWarnList.PageIndex==1){
+            let startStr=`<div class='startStr' style='color:#fff;
+background: linear-gradient(90deg, #3DB2FF 0%, #328BFD 100%);text-align: center'>共计：${ret.Data.TotalCount}条数据</div>`;
+            $('.results-box').prepend(startStr)
+            setTimeout(function(){
+              $('.startStr').remove()
+            },5000)
+          }
+          if(MeterDealedWarnList.PageIndex<=ret.Data.TotalPages){
+            var list = arrysplice(ret.Data.PageData)
+            let str = template('sosolist',{list:list});
+            $('.results-box').append(str);
+            MeterDealedWarnList.PageIndex++;
+          }else{
+            $('.endStr').remove()
+            let endStr=`<div class='endStr' style='color:#fff;
+background: linear-gradient(90deg, #3DB2FF 0%, #328BFD 100%);text-align: center'>没有更多了</div>`
+            $('.results-box').append(endStr)
+            // setTimeout(function(){
+            //   $('.endStr').remove()
+            // },2000)
+          }
+      }else {
+          api.toast({
+              msg:ret.Msg,
+              duration: 2000,
+              location: 'top'
+          });
+      }
+    })
+}
+//数组去重
+function arrysplice(list) {
+  for (var i = 0; i < list.length; i++) {
+          for (var j = i+1; j < list.length; j++) {
+              if(list[i].WarnType===list[j].WarnType){
+                BeginWarnTimei=new Date(list[i].BeginWarnTime)
+                EndWarnTimei=new Date(list[i].EndWarnTime)
+                BeginWarnTimej=new Date(list[j].BeginWarnTime)
+                EndWarnTimej=new Date(list[j].EndWarnTime)
+                list[i].WarnCount=list[i].WarnCount+list[j].WarnCount
+                //开始时间
+                if(BeginWarnTimei>BeginWarnTimej){
+                  list[i].BeginWarnTime=list[j].BeginWarnTime
+                }
+                //结束时间
+                if(EndWarnTimei<EndWarnTimej){
+                  list[i].EndWarnTime=list[j].EndWarnTime
+                }
+                list.splice(j,1);
+                j--
+              }
+        }
+  }
+  return list
+}
+</script>
+
+</html>

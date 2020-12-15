@@ -300,16 +300,16 @@ function onInuptBlur() {
 }
 
 function onInuptFocus() {
-  console.log('点击了搜索的输入框');
+  // console.log('点击了搜索的输入框');
   isSearch = true;
-  console.log(isSearch);
+  // console.log(isSearch);
   $('#areaList').addClass("aui-hide");
   $('#areaSearcgList').removeClass("aui-hide");
 
   $(".area-search-text").text("搜索");
-  console.log('11111111111');
+  // console.log('11111111111');
   $(window).resize(function() {
-    console.log($(this).height());
+    // console.log($(this).height());
     var bHeight;
     if (api.systemType == 'android') {
       bHeight = $(this).height() - 25;
@@ -365,7 +365,7 @@ function onInuptFocus() {
     //    }
     //  };
     //  ajaxMethod(optionsHistory);
-     console.log(2222222222222222222);
+    //  console.log(2222222222222222222);
   });
   api.showProgress({
       title: '加载中',
@@ -378,12 +378,12 @@ function onInuptFocus() {
     pageIndex: 1,
     maxResultCount: 10
   };
-  console.log(data);
+  // console.log(data);
   var optionsHistory = {
     url: baseUrl + "api/services/Inspection/AreaService/GetAreaHistory",
     data: data,
     success: function(ret) {
-      console.log(JSON.stringify(ret));
+      // console.log(JSON.stringify(ret));
       api.hideProgress();
       var searchArr = ret.result;
       if (searchArr.length == 0)
@@ -454,6 +454,18 @@ function onCheckedArea(item) {
   var areaPoint = item.areaPoint.split(';');
   var point = areaPoint[0].split(',');
   indexMap.mapCheckedArea([point[0], point[1]], {name: 'areaList'});
+
+  // 将列表置为最低状态，显示出区域
+  mapListStatus = 2;
+  onShowList('map-footer',
+             $('.status1').height() + 0.5 * 20 + $('.status2').height() + 0.75 * 20,
+             $('.list-item').height() + 0.75 * 20,
+             mapListStatus,
+             bodyHeight,
+             function(ret){
+                mapListStatus = ret;
+                onTransitionStatus(mapListStatus);
+             });
 }
 
 function onMapShow(areaPointArr, areaList) {
@@ -462,6 +474,7 @@ function onMapShow(areaPointArr, areaList) {
   // console.log(JSON.stringify(areaPointArr));
   indexMap.drawAreaSelect(areaPointArr, {name: 'areaList'});
   indexMap.mapClickArea(function(ret) {
+    // console.log(JSON.stringify(ret));
     if (ret == undefined) {
       return false;
     }

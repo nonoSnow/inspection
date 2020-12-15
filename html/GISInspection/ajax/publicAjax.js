@@ -29,20 +29,15 @@ function getAreaListData(options) {
 }
 
 // 上传定位
-function insertLocation(path, data, showRet, showErr) {
-  var options = {
-    url: baseUrl+path,
-    files: data,
-    success:function(ret){
-      // console.log(JSON.stringify(ret));
-      showRet(ret);
-    },
-    error:function(err){
-      // console.log(JSON.stringify(err));
-      showErr(err);
-    }
-  }
-  ajaxMethod(options)
+function insertLocation(options) {
+  var options = Object.assign({}, options, {
+      url: baseUrl+ 'api/services/Inspection/PersonService/InsertLocation',
+      data: options.data,
+      error: function(err) {
+          if(options.fail) options.fail(err);
+      }
+  })
+  ajaxMethod(options);
 }
 
 // 获取当前用户角色
@@ -58,18 +53,16 @@ function getUserRoles(options) {
   })
   ajaxMethod(options);
 }
-// function getUserRoles(path, data, showRet, showErr) {
-//   var options = {
-//     url: baseUrl+path,
-//     files: data,
-//     success:function(ret){
-//       // console.log(JSON.stringify(ret));
-//       showRet(ret);
-//     },
-//     error:function(err){
-//       // console.log(JSON.stringify(err));
-//       showErr(err);
-//     }
-//   }
-//   ajaxMethod(options)
-// }
+
+// 获取当前用户是否在线
+function getUserStatus(options) {
+  var options = Object.assign({}, options, {
+      url: baseUrl + 'api/services/Inspection/PersonService/GetStatusByUserId',
+      data: options.data,
+      error: function(err) {
+          console.log(JSON.stringify(err))
+          if(options.fail) options.fail(err);
+      }
+  })
+  ajaxMethod(options);
+}

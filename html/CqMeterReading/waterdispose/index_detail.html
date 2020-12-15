@@ -1,0 +1,280 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>报警处理详情页</title>
+    <link rel="stylesheet" type="text/css" href="../css/auicss/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/auicss/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/public.css" />
+    <style>
+        .aui-bar-nav,.aui-bar-nav.aui-bar-light .aui-iconfont{
+            /* background-color:#4089F3 */
+            color: #333333;
+        }
+        #header-title{
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+        .soso-title{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.25rem 0.6rem;
+            background: white;
+        }
+        .aui-searchbar{
+            /*width: 14.8rem;*/
+            width: 79.3%;
+            background-color: white;
+        }
+        .aui-searchbar-input{
+            height: 1.65rem;
+            border-radius: 1.65rem;
+            line-height: 1.65rem;
+            background-color:#efefef;
+            margin: 0;
+        }
+        .aui-searchbar-input input{
+            height: 1.65rem;
+            width: 100%;
+        }
+        .change-box{
+          width: 100%;
+          position: relative;
+        }
+        .change-box .aui-list-item-input{
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+        .change-box .aui-list{
+          font-size: 0.75rem;
+          color: #333333;
+          height: 0;
+          overflow: hidden;
+          position: absolute;
+          top: 0;
+          width: 100%;
+          /*transition: all 10s;*/
+        }
+        .change-box input[type="text"]{
+          font-size: 0.75rem;
+        }
+        .results-box{
+          width: 100%;
+        }
+        .results-box .results-list{
+          padding: 0.4rem 0.6rem;
+          display: flex;
+          background-color: #fff;
+          margin: 0 0.6rem;
+          margin-top: 0.6rem;
+          flex-direction: column;
+        }
+        .results-list-left-list{
+          display: flex;
+          flex-wrap: wrap;
+          font-size: 0.7rem;
+        }
+        .imgfile{
+          width: 3.65rem;
+          height: 3.65rem;
+          background: #E6E6E6;
+          margin-right: 0.45rem;
+          opacity: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id='header-title'>
+        <header class="aui-bar aui-bar-nav aui-bar-light" id="header">
+            <a class="aui-pull-left aui-btn" tapmode onclick="backwin()">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </a>
+            <div class="aui-title">详情</div>
+        </header>
+    </div>
+    <div id='content' style="background-color:rgba(245, 245, 245, 1);">
+        <!-- 搜索出来的list -->
+        <div class='results-box'>
+          <!-- list -->
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript" src="../script/auijs/api.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src='../script/public.js'></script>
+<script type="text/javascript" src='../script/aui-popup.js'></script>
+<script type="text/javascript" src='../script/template.js'></script>
+<script type="text/template" id='sosolist'>
+  <div class='results-list'>
+        <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">营业区域:</span>
+          <span class="co-595959">{{OrgName}}</span>
+        </span>
+        <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">供水片区:</span>
+          <span class="co-595959">{{AreasName}}</span>
+        </span>
+        <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">水表铭牌:</span>
+          <span class="co-595959">{{NamePlateName}}</span>
+        </span>
+        <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">用户编号:</span>
+          <span class="co-595959">{{CustomerCode}}</span>
+        </span>
+        <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">水表口径:</span>
+          <span class="co-595959">{{MeterCaliber}}</span>
+        </span>
+        <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">水表表号:</span>
+          <span class="co-595959">{{StampNo}}</span>
+        </span>
+        <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">用户名称:</span>
+          <span class="co-595959">{{CustomerName}}</span>
+        </span>
+        <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">用户地址:</span>
+          <span class="co-595959">{{CustomerAddress}}</span>
+        </span>
+        <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">开始报警时间:</span>
+          <span class="co-595959">{{BeginWarnTime}}</span>
+        </span>
+        <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">状况描述:</span>
+          <span class="co-595959">{{WarnTypeName}}</span>
+        </span>
+  </div>
+  <div class='results-list'>
+    <span class='results-list-left-list'>
+      <span class="co-333333 mr-10">处理原因</span>
+    </span>
+    <span class='results-list-left-list mt-06' >
+      <span style="line-height:1rem;background-color:#f5f5f5;padding:0.5rem;border-radius:5px;fn-065;width:100%">{{DealReason}}</span>
+    </span>
+    <span class='results-list-left-list mt-06'>
+      <span class="co-333333 mr-10">照片</span>
+    </span>
+    <span class='results-list-left-list'>
+        {{each DealImgs value index}}
+        <div class="imgfile mt-06" onclick="openSlide({{index}})">
+          <img src='{{value}}' style="height:100%">
+        </div>
+        {{/each}}
+    </span>
+  </div>
+</script>
+<script type="text/javascript" src="../script/request.js"></script>
+<script type="text/javascript">
+var list;
+var apiready = function() {
+        headerHeight();
+        api.setStatusBarStyle({
+            style:"dark"
+        });
+        MeterDealedWarnDetails.StampNo=api.pageParam.value.StampNo
+        MeterDealedWarnDetails.DealId=api.pageParam.value.DealId
+        MeterDealedWarnDetails.WarnType=api.pageParam.value.WarnType
+        MeterDealedWarnDetails.BeginDealTime=api.pageParam.value.BeginDealTime
+        MeterDealedWarnDetails.EndDealTime=api.pageParam.value.EndDealTime
+        GetMeterDealedWarnListjax()
+}
+    // $api.css($api.dom('.aui-list'),'height:auto');
+    // $('#content').css('background-color','rgba(0,0,0,0.5)');
+
+// 输入框自适应高度
+$.fn.autoHeight = function(){
+   function autoHeight(elem){
+       elem.style.height = 'auto';
+       elem.scrollTop = 0; //防抖动
+       elem.style.height = elem.scrollHeight + 'px';
+   }
+   this.each(function(){
+       autoHeight(this);
+       $(this).on('keyup', function(){
+           autoHeight(this);
+       });
+   });
+}
+$('textarea[autoHeight]').autoHeight();
+// 打开轮播
+function openSlide(index){
+  // console.log(JSON.stringify(list.DealImgs));
+  var pictureListpage=[];
+  for(var i=index;i<list.DealImgs.length;i++){
+    pictureListpage.push(list.DealImgs[i])
+  }
+  for(var i=0;i<index;i++){
+    pictureListpage.push(list.DealImgs[i])
+  }
+  // console.log(JSON.stringify(pictureListpage));
+  api.openFrame({
+      name: 'slide',
+      url: '../view/slide.html',
+      rect: {
+          x: 0,
+          y: 0
+      },
+      pageParam: {
+          pictureList: pictureListpage
+      },
+      bounces: false,
+      bgColor: 'rgba(0,0,0,0)',
+      vScrollBarEnabled: true,
+      hScrollBarEnabled: true
+  });
+}
+//处理记录详情列表
+var MeterDealedWarnDetails={
+    // UserId:$api.getStorage('cqUserId'),//用户ID*
+    StampNo:'',//用户编号或者水表表号*
+    DealId:'',//处理ID*
+    WarnType:'',//报警类型ID*
+    BeginDealTime:'',//开始报警时间
+    EndDealTime:''//结束报警时间
+}
+//获取报警主页信息
+function GetMeterDealedWarnListjax(){
+
+    NewGet('/wapi/WRPData/GetMeterDealedWarnDetails',MeterDealedWarnDetails,
+    $api.getStorage('token'),function(ret,err){
+      if(ret.IsSuccess){
+        list =ret.Data;
+        // console.log(JSON.stringify(ret))
+        list.DealImgs=list.DealImgs.split(',')
+        for (var i = 0; i < list.DealImgs.length; i++) {
+          list.DealImgs[i] = allUrl + list.DealImgs[i]
+        }
+        console.log(JSON.stringify(list));
+        var str = template('sosolist', list)
+        $('.results-box').html(str)
+        // $('textarea').val(list.DealReason)
+      }else {
+        api.toast({
+            msg:ret.Msg,
+            duration: 2000,
+            location: 'top'
+        });
+      }
+      })
+  }
+</script>
+
+</html>

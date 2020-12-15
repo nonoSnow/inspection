@@ -1,0 +1,405 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>定位导航页</title>
+    <link rel="stylesheet" type="text/css" href="../css/auicss/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/auicss/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/public.css" />
+    <style>
+        .aui-bar-nav,.aui-bar-nav.aui-bar-light .aui-iconfont{
+            /* background-color:#4089F3 */
+            color: #333333;
+        }
+        #header-title{
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 999;
+        }
+        .soso-title{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.25rem 0.6rem;
+            background: white;
+        }
+        .aui-searchbar{
+            /*width: 14.8rem;*/
+            width: 79.3%;
+            background-color: white;
+        }
+        .aui-searchbar-input{
+            height: 1.65rem;
+            border-radius: 1.65rem;
+            line-height: 1.65rem;
+            background-color:#efefef;
+            margin: 0;
+        }
+        .aui-searchbar-input input{
+            height: 1.65rem;
+            width: 100%;
+        }
+        .change-box{
+          width: 100%;
+          position: relative;
+        }
+        .change-box .aui-list-item-input{
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+        .change-box .aui-list{
+          font-size: 0.75rem;
+          color: #333333;
+          height: 0;
+          overflow: hidden;
+          position: absolute;
+          top: 0;
+          width: 100%;
+          /*transition: all 10s;*/
+        }
+        .change-box input[type="text"]{
+          font-size: 0.75rem;
+        }
+        .results-box{
+          width: 100%;
+        }
+        .results-box .results-list{
+          padding: 0.4rem 0;
+          display: flex;
+          background-color: #fff;
+          margin-top: 0.6rem;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .results-list-mid{
+          display: flex;
+          flex-direction: column;
+        }
+        .results-list-right{
+          display: flex;
+          height: 100%;
+          align-items: center;
+          justify-content: center;
+        }
+        .results-list-right .round{
+          width: 1.4rem;
+          height: 1.4rem;
+          background: url('../image/rightno.png');
+          background-size: 100% 100%;
+        }
+        .results-list-right .round.active{
+          background: url('../image/rightok.png');
+          background-size: 100% 100%;
+        }
+        .results-list-left-list{
+          display: flex;
+          flex-wrap: wrap;
+          font-size: 0.7rem;
+          align-items: center;
+          margin-bottom: 0.3rem;
+        }
+        .results-list-left-list .winingbtn{
+            font-size: 0.7rem;
+            color: #FFA420;
+            height: 1rem;
+            border-radius: 0.5rem;
+            width: 4.85rem;
+            border: 1px solid #FFA420;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .imgfile{
+          width: 3.65rem;
+          height: 3.65rem;
+          background: #E6E6E6;
+          opacity: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+        }
+        #footer{
+          position: fixed;
+          display: flex;
+          width: 100%;
+          background-color: #ffffff;
+          bottom: 0;
+          flex-direction: column;
+          align-items: center;
+          padding: 0 0.6rem;
+          z-index: 999
+        }
+        .brnList{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 3.5rem;
+            width: 100%;
+        }
+        .loading{
+          position: fixed;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='header-title'>
+        <header class="aui-bar aui-bar-nav aui-bar-light" id="header">
+            <a class="aui-pull-left aui-btn" tapmode onclick="backwin()">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </a>
+            <div class="aui-title">定位导航</div>
+        </header>
+    </div>
+    <div class='loading'>
+      <img src='../image/loading_more.gif' style="width:2rem;height:2rem"/>
+      <span class='mt-06 fn-08'>位置信息获取中</span>
+    </div>
+    <div id='footer'>
+      <div class='results-box'></div>
+      <div class='brnList' id='brnList'>
+        <div class='btnKong isclick' tapmode onclick="openteam()">取消</div>
+        <div class='btnKong on isclick' tapmode onclick="opennavigation()" >开始导航</div>
+      </div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/auijs/api.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src='../script/public.js'></script>
+<script type="text/javascript" src="../script/request.js"></script>
+<script type="text/javascript" src='../script/template.js'></script>
+<!-- <script type="text/javascript" src='../script/gis.js'></script> -->
+<script type="text/template" id='sosolist'>
+
+    <!-- list -->
+    <div class='results-list'>
+          <div class='results-list-mid'>
+            <span class='results-list-left-list'>
+              <span class="co-333333 mlr-10">营业区域:</span>
+              <span class="co-595959">{{OrgName}}</span>
+            </span>
+            <span class='results-list-left-list'>
+              <span class="co-333333 mlr-10">供水片区:</span>
+              <span class="co-595959">{{AreaName}}</span>
+            </span>
+            <span class='results-list-left-list'>
+              <span class="co-333333 mlr-10">用户编号:</span>
+              <span class="co-595959">{{CustomerCode}}</span>
+            </span>
+            <span class='results-list-left-list'>
+              <span class="co-333333 mlr-10">水表表号:</span>
+              <span class="co-595959">{{StampNo}}</span>
+            </span>
+            <span class='results-list-left-list'>
+              <span class="co-333333 mlr-10">用户名称:</span>
+              <span class="co-595959">{{CustomerName}}</span>
+            </span>
+            <span class='results-list-left-list'>
+              <span class="mlr-10">用户地址：{{CustomerAddress}}</span>
+            </span>
+          </div>
+    </div>
+
+</script>
+<script type="text/javascript">
+var indexMap = {};
+var bMap;
+var apiready = function() {
+        headerHeight();
+        api.parseTapmode();
+        api.setStatusBarStyle({
+            style:"dark"
+        });
+        MeterLocationDetails.MeterId=api.pageParam.Id;
+        bMap = api.require('bMap');
+        bMap.getLocationServices(function(ret, err) {
+            if (ret.enable) {
+              GetMeterLocationDetails()
+            } else {
+                alert("未开启定位功能！");
+            }
+        });
+
+}
+var MeterLocationDetails={
+    UserId:$api.getStorage('cqUserId'),//用户ID*
+    MeterId:'',//水表ID*
+}
+var userGPS;//用户
+function GetMeterLocationDetails(){
+    api.showProgress({
+        title: '加载中',
+        text: '',
+        modal: false
+    });
+    NewGet('/wapi/WRPData/GetMeterLocationDetails',MeterLocationDetails,
+    $api.getStorage('token'),function(ret,err){
+      if(ret.IsSuccess){
+            userGPS=ret.Data
+            var str = template('sosolist', ret.Data);
+            $('.results-box').html(str);
+            bMap.open({
+                rect: {
+                    x: 0,
+                    y: headerH,
+                    h:api.winHeight-headerH-$('.brnList').height()
+                },
+                showUserLocation: true,
+                zoomLevel: 18,
+                center: {
+                    lon: ret.Data.Longitude,
+                    lat: ret.Data.Latitude
+                },
+                fixed: true
+            }, function(ret1, err1) {
+                if (ret1.status) {
+                  $('.loading').css('display','none')
+                  bMap.addAnnotations({
+                      annotations: [{
+                          id: 1,
+                          lon: ret.Data.Longitude,
+                          lat: ret.Data.Latitude
+                      }],
+                      icon: 'widget://',
+                      draggable: false
+                    }, function(ret2) {
+                      if (ret2) {
+
+                      }
+                    });
+                  openteam()
+                } else {
+                    alert(JSON.stringify(err1));
+                }
+            });
+      }
+      else {
+        api.toast({
+            msg:ret.Msg,
+            duration: 2000,
+            location: 'top'
+        });
+      }
+    })
+}
+function openteam(){
+    if(userGPS){
+      api.openFrame({
+          name: 'index_navdtail',
+          url: './index_navdtail.html',
+          rect: {
+              x: 0,
+              y: api.winHeight-$api.offset($api.byId('footer')).h,
+          },
+          pageParam: {
+              list:userGPS,
+              footerh:$api.offset($api.byId('footer')).h,
+              brnListh:$('.brnList').height()
+          },
+          bounces: false,
+          bgColor: 'rgba(0,0,0,0)',
+          vScrollBarEnabled: true,
+          hScrollBarEnabled: true
+      });
+    }else {
+      alert('正在获取定位信息，请稍后重试');
+    }
+}
+function openslide(){
+  api.openFrame({
+      name: 'slide',
+      url: '../view/slide.html',
+      rect: {
+          x: 0,
+          y: 0
+      },
+      pageParam: {
+        // 可传图片过去
+          pictureList:userGPS.Imgs.split(',')
+      },
+      bounces: false,
+      bgColor: 'rgba(0,0,0,0)',
+      vScrollBarEnabled: true,
+      hScrollBarEnabled: true
+  });
+}
+//开始导航
+function opennavigation(){
+  if(userGPS){
+    bMap.getLocation({
+        accuracy: '10m',
+        autoStop: true,
+        filter: 1
+      }, function(ret, err) {
+        if (ret.status) {
+          api.actionSheet({
+                title: '导航方式',
+                cancelTitle: '取消',
+                buttons: ['步行导航','骑行导航']
+            }, function(ret1, err1) {
+              if(ret1.buttonIndex==1){
+                  bMap.walkNavi({
+                    currentPosition:{
+                        latitude:ret.lat,    //纬度
+                        longitude:ret.lon    //经度
+                                    },
+                    destination:{
+                        latitude:userGPS.Latitude,    //纬度
+                        longitude:userGPS.Longitude   //经度
+                    }
+                  },function(ret2,err2){
+                    if (ret2.status) {
+                          // alert(JSON.stringify(ret2));
+                    }else {
+                      alert('开启导航失败，请重试');
+                    }
+                  })
+              } else if(ret1.buttonIndex==2) {
+                bMap.cyclingNavi({
+                  currentPosition:{
+                      latitude:ret.lat,    //纬度
+                      longitude:ret.lon    //经度
+                                  },
+                  destination:{
+                      latitude:userGPS.Latitude,    //纬度
+                      longitude:userGPS.Longitude   //经度
+                  }
+                },function(ret2,err2){
+                  if (ret2.status) {
+                        // alert(JSON.stringify(ret2));
+                  }else {
+                        alert('开启导航失败，请重试');
+                  }
+                })
+              }
+            }
+          )
+            // alert(JSON.stringify(ret));
+        } else {
+            alert('获取位置信息失败，请重试');
+        }
+      });
+  }else {
+    alert('正在获取定位信息，请稍后重试');
+  }
+}
+</script>
+
+</html>

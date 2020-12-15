@@ -121,10 +121,10 @@
         <div class="margin-top75">工单内容:</div>
         <div class="width100 height6 bgc-f5f6 border-radius4 margin-top75 padding75 line-height15 snt-overflow">{{content}}</div>
 
-        {{if resourcelist.length>0 }}
+        {{if resourceList.length>0 }}
         <div class="margin-top12">工单附件:</div>
         <div class="file-list">
-          {{each resourcelist value i}}
+          {{each resourceList value i}}
           <div class="file-div">
             <img src="{{url}}{{value.url}}" class="width100 height100" alt="">
           </div>
@@ -154,10 +154,10 @@
         <div class="margin-top75">巡检内容:</div>
         <div class="width100 height6 bgc-f5f6 border-radius4 margin-top75 padding75 line-height15 snt-overflow">{{eventDetails.content}}</div>
 
-        {{if eventDetails.resourcelist.length>0}}
+        {{if eventDetails.resourceList.length>0}}
         <div class="margin-top12">事件附件</div>
         <div class="file-list">
-          {{each eventDetails.resourcelist value i}}
+          {{each eventDetails.resourceList value i}}
           <div class="file-div">
             <img src="{{url}}{{value.url}}" class="width100 height100" alt="">
           </div>

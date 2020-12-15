@@ -10,8 +10,10 @@ apiready = function() {
     //  initTaskListEvent();
     // 初始化地图
     indexMap = new Map({
-        mapid: 'maphome'
+        mapid: 'maphome',
+        zoom: 8
     });
+    console.log(indexMap);
     // getLastTimeLocation();  // 获取人员上一次的位置轨迹 (zxf 20201028)
     indexMap.initArea();
     indexMap.initDeviceLayer(); //初始化管点管线图层
@@ -24,8 +26,8 @@ apiready = function() {
     memberStatus = $api.getStorage('isOnline');
     // console.log(memberStatus);
     // console.log(memberStatus);
-    memberStatus = memberStatus ? memberStatus : 0;
-    $(".member-status").addClass(memberStatus ? '' : 'on');
+    // memberStatus = memberStatus ? 0 : memberStatus;
+    $(".member-status").addClass(memberStatus == 0 ? '' : 'on');
     // memberStatus = memberStatus ? 0 : memberStatus;
     // 获取当前用户的位置 并向地图中添加
     setCurrentMapLocation();

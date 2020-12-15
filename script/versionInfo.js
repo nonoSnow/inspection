@@ -49,8 +49,8 @@ function CheckAppVsersionByTeantId() {
                 var appList = [],
                     resultList = [],
                     sumNumber = 0;
-                    // console.log(JSON.stringify(userLoginInformation));
-                if (userLoginInformation.appList != undefined && userLoginInformation.appList != null) {
+                    console.log(JSON.stringify(userLoginInformation));
+                if (userLoginInformation.appList != undefined && userLoginInformation.appList != null && userLoginInformation.appList.length != 0) {
                     appList = userLoginInformation.appList[0].applications;
                 }
                 if (appList == null) {

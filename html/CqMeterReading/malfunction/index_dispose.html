@@ -1,0 +1,861 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>报警处理页</title>
+    <link rel="stylesheet" type="text/css" href="../css/auicss/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/auicss/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../css/public.css" />
+    <style>
+        .aui-bar-nav,
+        .aui-bar-nav.aui-bar-light .aui-iconfont {
+            /* background-color:#4089F3 */
+            color: #333333;
+        }
+
+        #header-title {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 999
+        }
+
+        .soso-title {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.25rem 0.6rem;
+            background: white;
+        }
+
+        .aui-searchbar {
+            /*width: 14.8rem;*/
+            width: 79.3%;
+            background-color: white;
+        }
+
+        .aui-searchbar-input {
+            height: 1.65rem;
+            border-radius: 1.65rem;
+            line-height: 1.65rem;
+            background-color: #efefef;
+            margin: 0;
+        }
+
+        .aui-searchbar-input input {
+            height: 1.65rem;
+            width: 100%;
+        }
+
+        .change-box {
+            width: 100%;
+            position: relative;
+        }
+
+        .change-box .aui-list-item-input {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .change-box .aui-list {
+            font-size: 0.75rem;
+            color: #333333;
+            height: 0;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            /*transition: all 10s;*/
+        }
+
+        .change-box input[type="text"] {
+            font-size: 0.75rem;
+        }
+
+        .results-box {
+            width: 100%;
+        }
+
+        .results-box .results-list {
+            padding: 0.4rem 0.6rem;
+            display: flex;
+            background-color: #fff;
+            margin: 0 0.6rem;
+            margin-top: 0.6rem;
+            flex-direction: column;
+        }
+
+        .results-list-left-list {
+            display: flex;
+            flex-wrap: wrap;
+            font-size: 0.7rem;
+        }
+
+        .imgfile {
+            width: 3.65rem;
+            height: 3.65rem;
+            opacity: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+            margin: 0.5rem
+        }
+
+        .closeXX {
+            position: absolute;
+            height: 1rem;
+            width: 1rem;
+            right: -0.5rem;
+            top: -0.5rem;
+            font-weight: bold;
+        }
+
+        .imgSrcbox {
+            display: flex;
+            ;
+            align-items: center;
+            background-color: #fff;
+            flex-wrap: wrap;
+            /*justify-content: space-around;*/
+        }
+
+        #footer {
+            position: fixed;
+            display: flex;
+            width: 100%;
+            height: 3.5rem;
+            background-color: #ffffff;
+            bottom: 0;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 0.6rem;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .loading {
+            position: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+        }
+
+        .title-box {
+            font-size: 0.85rem;
+            border-bottom: 1px solid #666666;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='header-title'>
+        <header class="aui-bar aui-bar-nav aui-bar-light" id="header">
+            <a class="aui-pull-left aui-btn" tapmode onclick="backwin()">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </a>
+            <!-- <div class="aui-title">报警处理</div> -->
+            <div class="aui-title">任务处理</div>
+        </header>
+    </div>
+    <div id='content' style="background-color:rgba(245, 245, 245, 1);">
+        <div class='results-box'>
+            <!-- <div class='results-list'>
+            <span class='results-list-left-list'>
+              <span class="co-333333 mr-10">处理原因</span>
+            </span>
+            <span class='results-list-left-list mt-06' >
+              <textarea autoHeight="true"  style="line-height:1rem;background-color:#f5f5f5;padding:0.5rem;border-radius:5px;fn-065;width:100%"/></textarea>
+            </span>
+            <span class='results-list-left-list mt-06'>
+              <span class="co-333333 mr-10">照片</span>
+            </span>
+            <span class='results-list-left-list mt-06 imglistALL'>
+                <div style="height:100%;" class='imgSrcbox'>
+                  <div class="imgfile" style='background: #E6E6E6;' onclick="getphotos()">
+                    <img src='../image/crome.png' style="width:2rem">
+                    <span class='fn-065 co-ffffff mt-06'>照片上传</span>
+                  </div>
+                </div>
+
+            </span>
+          </div> -->
+        </div>
+    </div>
+    <footer id='footer'>
+        <div class='btnKong' tapmode onclick="cancel()">取消</div>
+        <div class='btnKong on' tapmode onclick="upload()">提交</div>
+    </footer>
+    <div class='loading'>
+        <img src='../image/loading_more.gif' style="width:2rem;height:2rem" />
+        <span class='mt-06 fn-08 uploadnum'>正在提交中</span>
+    </div>
+</body>
+<script type="text/javascript" src="../script/auijs/api.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src='../script/public.js'></script>
+<script type="text/javascript" src='../script/aui-popup.js'></script>
+<script type="text/javascript" src="../script/request.js"></script>
+<script type="text/javascript" src='../script/template.js'></script>
+<script type="text/template" id='sosolist'>
+    <div class='results-list'>
+        <div class="title-box">用户信息</div>
+        <div class="mt-06">
+            <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">营业区域:</span>
+            <span class="co-595959">{{OrgName}}</span>
+            </span>
+            <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">供水片区:</span>
+            <span class="co-595959">{{AreasName}}</span>
+            </span>
+            <!-- <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">水表铭牌:</span>
+          <span class="co-595959">{{NamePlateName}}</span>
+        </span> -->
+            <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">用户编号:</span>
+            <span class="co-595959">{{CustomerCode}}</span>
+            </span>
+            <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">用户名称:</span>
+            <span class="co-595959">{{CustomerName}}</span>
+            </span>
+            <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">水表表号:</span>
+            <span class="co-595959">{{StampNo}}</span>
+            </span>
+            <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">水表口径:</span>
+            <span class="co-595959">{{MeterCaliber}}</span>
+            </span>
+            <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">用户地址:</span>
+            <span class="co-595959">{{CustomerAddress}}</span>
+            </span>
+            <!-- <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">开始报警时间:</span>
+          <span class="co-595959">{{BeginWarnTime}}</span>
+        </span>
+        <span class='results-list-left-list'>
+          <span class="co-333333 mr-10">状况描述:</span>
+          <span class="co-595959">{{WarnTypeNames}}</span>
+        </span> -->
+        </div>
+        <div class="title-box mt-06">任务信息</div>
+        <div class="mt-06">
+            <span class='results-list-left-list'>
+            <span class="co-333333 mr-10">任务编号:</span>
+            <span class="co-595959">{{TaskCode}}</span>
+            </span>
+            <span class='results-list-left-list'>
+            <span class="co-333333 mr-10">任务名称:</span>
+            <span class="co-595959">{{TaskName}}</span>
+            </span>
+            <span class='results-list-left-list'>
+            <span class="co-333333 mr-10">派发人:</span>
+            <span class="co-595959">{{Distributor}}</span>
+            </span>
+            <span class='results-list-left-list'>
+            <span class="co-333333 mr-10">派发时间:</span>
+            <span class="co-595959">{{DistributionTime}}</span>
+            </span>
+            <span class='results-list-left-list'>
+            <span class="co-333333 mr-10">任务状态:</span>
+            <span class="co-595959">{{TaskStatusStr}}</span>
+            </span>
+        </div>
+    </div>
+    <div class='results-list'>
+        <span class='results-list-left-list'>
+      <span class="co-333333 mr-10">处理原因</span>
+        </span>
+        <span class='results-list-left-list mt-06'>
+      <textarea autoHeight="true"  style="line-height:1rem;background-color:#f5f5f5;padding:0.5rem;border-radius:5px;fn-065;width:100%"/></textarea>
+    </span>
+        <span class='results-list-left-list mt-06'>
+      <span class="co-333333 mr-10">照片</span>
+        </span>
+        <span class='results-list-left-list mt-06 imglistALL'>
+        <div style="height:100%;" class='imgSrcbox'>
+          <div class="imgfile" style='background: #E6E6E6;' onclick="getphotos()">
+            <img src='../image/crome.png' style="width:2rem">
+            <span class='fn-065 co-ffffff mt-06'>照片上传</span>
+    </div>
+    </div>
+
+    </span>
+    </div>
+</script>
+<script type="text/javascript">
+    // 状态（0：待处理，1：已处理）
+    // var tabType;
+    var taskId;
+    var getDetailParam = {};
+    // 处理报警提交信息
+    var dealInfo = {
+      UserId: $api.getStorage('cqUserId')
+    };
+    var apiready = function() {
+        headerHeight();
+        var footer = $api.byId('footer');
+        footerH = $api.offset(footer).h;
+        // $('.results-list').css('padding-bottom', '' + footerH + 'px');
+        $('.results-box').css('margin-bottom', '' + (footerH + 10) + 'px');
+        var list = arrysplice(api.pageParam.checkedList);
+        MeterWarnDetailsList.StampNo = list[0].StampNo
+        MeterWarnDetailsList.WarnTypes = list[0].WarnType
+        MeterWarnDetailsList.BeginWarnTime = list[0].BeginWarnTime
+        MeterWarnDetailsList.EndWarnTime = list[0].EndWarnTime
+
+        // console.log(JSON.stringify(api.pageParam));
+        taskId = api.pageParam.taskId;
+
+        getDetailParam.StampNo = list[0].StampNo;
+        getDetailParam.TaskId = taskId;
+
+        dealInfo.TaskId = taskId;
+        dealInfo.StampNo = list[0].StampNo;
+        // tabType = api.appParam.tabType;
+        api.setStatusBarStyle({
+            style: "dark"
+        });
+        $('.loading').hide();
+        // GetMeterWarnDetailsList();
+
+        // 获取详情
+        getWarnDetail();
+
+    }
+
+    var MeterWarnDetailsList = {
+        UserId: $api.getStorage('cqUserId'),
+        StampNo: '', //*
+        WarnTypes: '', //报警类型*
+        BeginWarnTime: '', //开始报警时间
+        EndWarnTime: '', //结束报警时间
+        PageIndex: 1, //页码*
+        PageSize: 1 //每页条数*
+    }
+    var timeout; //定义一个定时器
+    // function doSearch() {
+    //     // 搜索的值
+    //     let soso = $api.val($api.byId('search-input'));
+    //     // 监听soso的值  是否 满足用户编号和水表表号规则  如果满足 就发起请求
+    //     clearTimeout(timeout);
+    //     timeout = setTimeout(function() {
+    //         // 长时间没有输入的时候触发搜索
+    //         alert("准备搜索:" + soso)
+    //     }, 2000)
+    // }
+    // 弹出筛选器
+    // function popTop() {
+    //     var soso = $api.dom('.soso-title');
+    //     sosoheight = $api.offset(soso).h;
+    //     api.openFrame({
+    //         name: 'changepopup',
+    //         url: '../view/changepopup.html',
+    //         rect: {
+    //             x: 0,
+    //             y: 0,
+    //             marginTop: headerH + sosoheight
+    //         },
+    //         pageParam: {
+    //             headerH: headerH,
+    //             sosoheight: sosoheight,
+    //             // 谁打开的
+    //             type: api.pageParam.type
+    //         },
+    //         bounces: false,
+    //         // bgColor: '#000',
+    //         vScrollBarEnabled: true,
+    //         hScrollBarEnabled: true
+    //     });
+    //
+    //     // $api.css($api.dom('.aui-list'),'height:auto');
+    //     // $('#content').css('background-color','rgba(0,0,0,0.5)');
+    // }
+    // 输入框自适应高度
+    $.fn.autoHeight = function() {
+        function autoHeight(elem) {
+            elem.style.height = 'auto';
+            elem.scrollTop = 0; //防抖动
+            elem.style.height = elem.scrollHeight + 'px';
+        }
+        this.each(function() {
+            autoHeight(this);
+            $(this).on('keyup', function() {
+                autoHeight(this);
+            });
+        });
+    }
+    $('textarea[autoHeight]').autoHeight();
+    //数组去重
+    function arrysplice(list) {
+        for (var i = 0; i < list.length; i++) {
+            for (var j = i + 1; j < list.length; j++) {
+                if (list[i].StampNo === list[j].StampNo) {
+                    BeginWarnTimei = new Date(list[i].BeginWarnTime)
+                    EndWarnTimei = new Date(list[i].EndWarnTime)
+                    BeginWarnTimej = new Date(list[j].BeginWarnTime)
+                    EndWarnTimej = new Date(list[j].EndWarnTime)
+                    list[i].WarnType = list[i].WarnType + ',' + list[j].WarnType
+                        //开始时间
+                    if (BeginWarnTimei > BeginWarnTimej) {
+                        list[i].BeginWarnTime = list[j].BeginWarnTime
+                    }
+                    //结束时间
+                    if (EndWarnTimei < EndWarnTimej) {
+                        list[i].EndWarnTime = list[j].EndWarnTime
+                    }
+                    list.splice(j, 1);
+                    j--
+                }
+            }
+        }
+        return list
+    }
+
+    function GetMeterWarnDetailsList() {
+        NewGet('/wapi/WRPData/GetMeterWarnDetails', MeterWarnDetailsList, $api.getStorage('token'), function(ret, err) {
+            if (ret.IsSuccess) {
+                let result = ret.Data;
+                result.tabType = tabType;
+                let str = template('sosolist', result);
+                $('.results-box').prepend(str);
+            } else {
+                api.toast({
+                    msg: err.Msg,
+                    duration: 2000,
+                    location: 'top'
+                });
+            }
+        })
+    }
+    //照片
+    function getphotos() {
+        // console.log(JSON.stringify(pictureList));
+        if (pictureList.length < 5) {
+            api.actionSheet({
+                title: '上传照片',
+                cancelTitle: '取消',
+                buttons: ['拍照', '从手机相册选择']
+            }, function(ret, err) {
+                if (ret) {
+                    getPicture(ret.buttonIndex);
+                }
+            })
+        } else {
+            api.toast({
+                msg: '已达到允许上传的最大数量',
+                duration: 2000,
+                location: 'top'
+            });
+        }
+
+    }
+    //获取
+    var pictureList = []
+
+    function getPicture(sourceType) {
+        var fs = api.require("fs");
+        if (sourceType == 1) { // 拍照
+            //获取一张图片
+            api.getPicture({
+                sourceType: 'camera', //拍照
+                encodingType: 'png',
+                mediaValue: 'pic',
+                allowEdit: false,
+                destinationType: 'base64', //返回base64地址
+                quality: 50,
+                saveToPhotoAlbum: true
+            }, function(ret, err) {
+                //var imgSrc = ret.base64Data;  如果是base64，要用这个属性获取地址
+                // 获取拍照数据并处理
+                if (ret) {
+                    var imgSrc = ret.data;
+                    if (imgSrc != "") {
+                        var urlname = ret.data.substring(ret.data.lastIndexOf('/') + 1, ret.data.length)
+                            //移动到固定文件夹
+                        fs.moveTo({
+                            oldPath: imgSrc,
+                            newPath: api.fsDir + '/cqpicture'
+                        }, function(ret, err) {
+                            if (ret.status) {
+                                var fileName = 'cqpicture';
+                                var picUrl = api.fsDir + '/' + fileName + '/' + urlname;
+                                pictureList.push({
+                                    'File': picUrl
+                                })
+                                $('.imgSrcbox').html('')
+                                let str = ''
+                                for (var i = 0; i < pictureList.length; i++) {
+
+                                    str = str +
+                                        `
+                          <div class="imgfile" >
+                            <img src='${pictureList[i].File}' style="height:100%" onclick='slectImg(${i})'>
+                            <img src='../image/closeXX.png' class='closeXX' onclick='dellde(${i})'/>
+                          </div>
+                          `
+                                }
+                                str = str +
+                                    `
+                      <div class="imgfile" style='background: #E6E6E6;' onclick="getphotos()">
+                        <img src='../image/crome.png' style="width:2rem">
+                        <span class='fn-065 co-ffffff mt-06'>照片上传</span>
+                      </div>
+                      `
+                                $('.imgSrcbox').html(str)
+                            }
+                        })
+
+                    }
+                }
+            });
+        } else if (sourceType == 2) { // 从相册中选择
+            api.getPicture({
+                sourceType: 'album', //从相册中选择
+                encodingType: 'jpg',
+                mediaValue: 'pic',
+                allowEdit: false,
+                destinationType: 'base64', //返回base64地址
+                quality: 50,
+                saveToPhotoAlbum: true
+            }, function(ret, err) {
+                // 获取拍照数据并处理
+                //var imgSrc = ret.base64Data;  如果是base64，要用这个属性获取地址
+                if (ret) {
+                    var imgSrc = ret.data;
+                    if (imgSrc != "") {
+                        var urlname = ret.data.substring(ret.data.lastIndexOf('/') + 1, ret.data.length)
+                            //移动到固定文件夹
+                        fs.moveTo({
+                            oldPath: imgSrc,
+                            newPath: api.fsDir + '/cqpicture'
+                        }, function(ret, err) {
+                            if (ret.status) {
+                                var fileName = 'cqpicture';
+                                var picUrl = api.fsDir + '/' + fileName + '/' + urlname;
+                                pictureList.push({
+                                    'File': picUrl
+                                })
+                                $('.imgSrcbox').html('')
+                                let str = ''
+                                for (var i = 0; i < pictureList.length; i++) {
+
+                                    str = str +
+                                        `
+                          <div class="imgfile" >
+                            <img src='${pictureList[i].File}' style="height:100%" onclick='slectImg(${i})'>
+                            <img src='../image/closeXX.png' class='closeXX' onclick='dellde(${i})'/>
+                          </div>
+                          `
+                                }
+                                str = str +
+                                    `
+                      <div class="imgfile" style='background: #E6E6E6;' onclick="getphotos()">
+                        <img src='../image/crome.png' style="width:2rem">
+                        <span class='fn-065 co-ffffff mt-06'>照片上传</span>
+                      </div>
+                      `
+                                $('.imgSrcbox').html(str)
+                            }
+                        })
+                    }
+                }
+            });
+        }
+    }
+    //删除数组图片
+    function dellde(index) {
+        pictureList.splice(index, 1);
+        $('.imgSrcbox').html('')
+        let str = ''
+        for (var i = 0; i < pictureList.length; i++) {
+
+            str = str + `
+      <div class="imgfile">
+        <img src='${pictureList[i].File}' style="height:100%" onclick='slectImg(${i})'>
+        <img src='../image/closeXX.png' class='closeXX' onclick='dellde(${i})'/>
+      </div>
+      `
+        }
+        str = str + `
+  <div class="imgfile" style='background: #E6E6E6;' onclick="getphotos()">
+    <img src='../image/crome.png' style="width:2rem">
+    <span class='fn-065 co-ffffff mt-06'>照片上传</span>
+  </div>
+  `
+        $('.imgSrcbox').html(str)
+    }
+    var DealWarnInfoList = {
+        Userid: $api.getStorage('cqUserId'),
+        StampNo: '', //*
+        WarnTypes: '', //报警类型*
+        BeginWarnTime: '', //开始报警时间
+        EndWarnTime: '', //结束报警时间
+        DealReason: '', //处理原因*
+        DealImgs: '', //图片*
+    }
+    var imgarr = [] //返回图片地址
+    var lodindex = 0 //提交状态
+    var imgupindex = 0 //图片提交第几
+
+
+    function upload() {
+        // DealWarnInfoList.StampNo = MeterWarnDetailsList.StampNo
+        // DealWarnInfoList.BeginWarnTime = MeterWarnDetailsList.BeginWarnTime
+        // DealWarnInfoList.EndWarnTime = MeterWarnDetailsList.EndWarnTime
+        // DealWarnInfoList.WarnTypes = MeterWarnDetailsList.WarnTypes
+            // if(lodindex!=0){
+            //   api.toast({
+            //       msg:'请勿重复提交',
+            //       duration: 2000,
+            //       location: 'top'
+            //   });
+            //   return false
+            // }
+        var DealReason = $('textarea').val();
+        if (DealReason == '') {
+            api.toast({
+                msg: '请填写处理原因',
+                duration: 2000,
+                location: 'top'
+            });
+            return false;
+        } else {
+          dealInfo.DealReason = DealReason;
+        }
+        if (pictureList.length == 0) {
+            api.toast({
+                msg: '拍照之后重试',
+                duration: 2000,
+                location: 'top'
+            });
+            return false;
+        }
+        // DealWarnInfoList.DealImgs=pictureList.join()
+        imgarr = [];
+        lodindex = 1;
+
+        // 处理图片数据
+        // var imgStr = '';
+        // console.log(JSON.stringify(pictureList));
+        // pictureList.forEach(function(item, index) {
+        //   if (index != 0) {
+        //     imgStr += ',' + item.File;
+        //   } else {
+        //     imgStr += item.File;
+        //   }
+        // })
+        // console.log(imgStr);
+        // dealInfo.DealImgs = imgStr;
+        //
+        // uploadReason();
+        imgupload();
+        // for(var i=0;i<pictureList.length;i++){
+        //   console.log(JSON.stringify(pictureList[i]));
+        //   // imgupload(pictureList[i],i)
+        // }
+    }
+
+    //上传数据
+    // function uplodmessgae() {
+    //     $('.loading').show()
+    //     $('.uploadnum').text('正在提交数据信息');
+    //         // console.log(JSON.stringify(DealWarnInfoList));
+    //     NewPostMA('/wapi/WRPData/DealWarnInfo', DealWarnInfoList, $api.getStorage('token'), function(ret, err) {
+    //         if (ret.IsSuccess) {
+    //             api.toast({
+    //                 msg: ret.Msg,
+    //                 duration: 2000,
+    //                 location: 'top'
+    //             });
+    //             api.closeToWin({
+    //                 name: 'malfunction'
+    //             });
+    //             api.sendEvent({
+    //                 name: 'isload'
+    //             });
+    //             $('.loading').hide()
+    //             imgupindex = 0;
+    //         } else if (err) {
+    //             api.toast({
+    //                 msg: err.msg,
+    //                 duration: 2000,
+    //                 location: 'top'
+    //             });
+    //             $('.loading').hide()
+    //             imgupindex = 0;
+    //         } else {
+    //             api.toast({
+    //                 msg: ret.Msg,
+    //                 duration: 2000,
+    //                 location: 'top'
+    //             });
+    //             $('.loading').hide()
+    //             imgupindex = 0;
+    //         }
+    //     })
+    // }
+    //
+    function imgupload() {
+        $('.loading').show()
+        $('.uploadnum').text('正在提交' + (imgupindex + 1));
+            // console.log(imgupindex);
+            // console.log(JSON.stringify(pictureList[imgupindex]));
+        NewPostImg('/wapi/WRPData/AppUploadImg', pictureList[imgupindex], $api.getStorage('token'), function(ret, err) {
+          // console.log(JSON.stringify(ret));
+            if (ret.IsSuccess) {
+                $('.loading').hide()
+                imgarr.push(ret.Data[0].FilePath)
+                // console.log(JSON.stringify(imgarr));
+                if (imgupindex == pictureList.length - 1) {
+                    DealWarnInfoList.DealImgs = imgarr.join();
+                    dealInfo.DealImgs = imgarr.join();
+                    // uplodmessgae()
+                    uploadReason();
+                } else {
+                    imgupindex++;
+                    imgupload()
+                }
+
+            } else if (err) {
+                api.toast({
+                    msg: err.msg,
+                    duration: 2000,
+                    location: 'top'
+                });
+                $('.loading').hide();
+                imgupindex = 0;
+            } else {
+                api.toast({
+                    msg: ret.Msg,
+                    duration: 2000,
+                    location: 'top'
+                });
+                $('.loading').hide()
+                imgupindex = 0;
+            }
+        })
+    }
+
+    function cancel() {
+        api.closeWin();
+    }
+
+    function slectImg(index) {
+        var pictureListpage = [];
+        for (var i = index; i < pictureList.length; i++) {
+            pictureListpage.push(pictureList[i].File)
+        }
+        for (var i = 0; i < index; i++) {
+            pictureListpage.push(pictureList[i].File)
+        }
+        api.openFrame({
+            name: 'slide',
+            url: '../view/slide.html',
+            rect: {
+                x: 0,
+                y: 0
+            },
+            pageParam: {
+                pictureList: pictureListpage
+            },
+            bounces: false,
+            bgColor: 'rgba(0,0,0,0)',
+            vScrollBarEnabled: true,
+            hScrollBarEnabled: true
+        });
+    }
+
+    // 获取报警详情
+    function getWarnDetail() {
+      // console.log(JSON.stringify(getDetailParam));
+      NewGet('/wapi/WRPData/GetAppMeterWarnDetails', getDetailParam, $api.getStorage('token'), function(ret, err) {
+          if (ret.IsSuccess) {
+            // console.log(JSON.stringify(ret));
+              let result = ret.Data;
+              let str = template('sosolist', result);
+              $('.results-box').prepend(str);
+          } else {
+              api.toast({
+                  msg: err.Msg,
+                  duration: 2000,
+                  location: 'top'
+              });
+          }
+      })
+    }
+
+    // 上传数据
+    function uploadReason() {
+      // $('.loading').show()
+      // 图片处理
+      var imgStr = '';
+      // console.log(JSON.stringify(imgarr));
+      imgarr.forEach(function(item, index) {
+        if (index != 0) {
+          imgStr += ',' + item;
+        } else {
+          imgStr += item;
+        }
+      })
+      // console.log(imgStr);
+      dealInfo.DealImgs = imgStr;
+      // $('.uploadnum').text('正在提交数据信息');
+          // console.log(JSON.stringify(dealInfo));
+      NewPost('/wapi/WRPData/AppDealWarnInfo', dealInfo, $api.getStorage('token'), function(ret, err) {
+          if (ret.IsSuccess) {
+              api.toast({
+                  msg: ret.Msg,
+                  duration: 2000,
+                  location: 'top'
+              });
+              api.closeToWin({
+                  name: 'malfunction'
+              });
+              api.sendEvent({
+                  name: 'isload'
+              });
+              // $('.loading').hide()
+              imgupindex = 0;
+          } else if (err) {
+              api.toast({
+                  msg: err.msg,
+                  duration: 2000,
+                  location: 'top'
+              });
+              // $('.loading').hide()
+              imgupindex = 0;
+          } else {
+              api.toast({
+                  msg: ret.Msg,
+                  duration: 2000,
+                  location: 'top'
+              });
+              // $('.loading').hide()
+              imgupindex = 0;
+          }
+      })
+    }
+
+</script>
+
+</html>

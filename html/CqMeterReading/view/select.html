@@ -1,0 +1,510 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>选择页面</title>
+    <link rel="stylesheet" type="text/css" href="../css/auicss/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/auicss/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../css/public.css" />
+    <style>
+        body{
+          background-color: rgba(0,0,0,0) !important;
+        }
+        .sel-boxs {
+            display: none;
+        }
+        .sel-boxs .bg {
+            position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background-color:rgba(0,0,0,0.4);
+            z-index: 998;
+        }
+
+        .sel-box {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+        }
+        .sel-box .btn {
+            background: #ffffff;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+        }
+
+        .sel-box .btn1 {
+            overflow: hidden;
+            /*width: 22px;
+            height: 22px;
+            float: left;
+            padding: 11px 12px;*/
+        }
+
+        .sel-box .btn1 img {
+            float: left;
+            width: 100%;
+            height: 100%;
+        }
+
+        .sel-box .ok {
+            float: right;
+        }
+
+        .sel-box .name {
+            color: #333333;
+            text-align: center;
+            /*line-height: 22px;*/
+            font-size: 0.8rem;
+            padding: 11px 0;
+        }
+
+        .sel-con {
+            background: white;
+        }
+
+        .sel-con .border {
+            height: 34px;
+            border: solid 1px rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.2);
+            border-width: 1px 0;
+            position: fixed;
+            bottom: 72px;
+            left: 0;
+            right: 0;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        .sel-con .table {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        .sel-con .cell {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .sel-con .scroll {
+            -webkit-overflow-scrolling: touch;
+            height: 180px;
+            overflow: auto;
+            box-sizing: border-box;
+            padding: 72px 0;
+            width: 200%;
+            padding-right: 100%;
+        }
+
+        .sel-con .ele {
+            font-size: 16px;
+            height: 36px;
+            line-height: 36px;
+            opacity: 1;
+        }
+
+        @-webkit-keyframes fadeInUp {
+            from {
+                opacity: 0;
+                -webkit-transform: translate3d(0, 100%, 0);
+                transform: translate3d(0, 100%, 0);
+            }
+            to {
+                opacity: 1;
+                -webkit-transform: none;
+                transform: none;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                -webkit-transform: translate3d(0, 100%, 0);
+                transform: translate3d(0, 100%, 0);
+            }
+            to {
+                opacity: 1;
+                -webkit-transform: none;
+                transform: none;
+            }
+        }
+
+        .fadeInUp {
+            -webkit-animation-name: fadeInUp;
+            animation-name: fadeInUp;
+        }
+
+        @-webkit-keyframes fadeInDown {
+            from {
+                opacity: 1;
+                -webkit-transform: none;
+                transform: none;
+            }
+            to {
+                opacity: 0;
+                -webkit-transform: translate3d(0, 100%, 0);
+                transform: translate3d(0, 100%, 0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 1;
+                -webkit-transform: none;
+                transform: none;
+            }
+            to {
+                opacity: 0;
+                -webkit-transform: translate3d(0, 100%, 0);
+                transform: translate3d(0, 100%, 0);
+            }
+        }
+
+        .fadeInDown {
+            -webkit-animation-name: fadeInDown;
+            animation-name: fadeInDown;
+        }
+
+        .animated {
+            -webkit-animation-duration: .4s;
+            animation-duration: .4s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+        }
+    </style>
+</head>
+
+<body style="background-color:transparent">
+    <div class="sel-boxs">
+        <div class="bg"></div>
+        <div class="sel-box animated fadeInUp">
+            <div class="btn">
+                <div class="btn1 cancel fn-07 color-999">取消</div>
+                <div class="name fn-08 co-333333">加载中...</div>
+                <div class="btn1 ok fn-07 co-bule">确认</div>
+            </div>
+            <div class="sel-con">
+                <div class="border"></div>
+                <div class="table"></div>
+            </div>
+        </div>
+    </div>
+    <input type='hidden' id='dateSelectorOneKs' disabled="true">
+    <input type='hidden' id='date-group1-1'>
+</body>
+<script type="text/javascript" src="../script/auijs/api.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src="../script/rolldate.min.js"></script>
+<script type="text/javascript" src="../script/iScroll.js"></script>
+<script type="text/javascript" src="../script/Mdate.js"></script>
+<script type="text/javascript" src='../script/day.js'></script>
+<script type="text/javascript" src='../script/public.js'></script>
+<script type="text/javascript">
+    var apiready = function() {
+          // alert(type)
+          var type=api.pageParam.type;
+          if(type !== 2 && type !== 3){
+            showselect(type)
+          }
+          // 2为开始时间
+          // 3为结束时间
+          if(type === 2  ||  type === 3) {
+            // alert(1111)
+            new Mdate("dateSelectorOneKs",{
+                beginYear: "2010",
+                format: "-",
+                type:type
+            })
+            $('.choiceDateTitleTOday').click(function(){
+              if(type === 2){
+                api.sendEvent({
+                    name: 'selectbegintime',
+                    extra: {
+                        time: dayjs().format('YYYY-MM-DD'),
+                    }
+                });
+                api.closeFrame();
+              }
+              if(type === 3){
+                api.sendEvent({
+                    name: 'selectendtime',
+                    extra: {
+                        time: dayjs().format('YYYY-MM-DD'),
+                    }
+                });
+                api.closeFrame();
+
+              }
+            })
+          }
+        }
+        // 关闭筛选器
+    function popTopClose() {
+        // 把数据广播出去，发起请求
+        api.sendEvent({
+            name: 'closeFrameChangepopup',
+            extra: {
+                key1: 'value1',
+                key2: 'value2'
+            }
+        });
+        // 关闭frome
+        api.closeFrame();
+    }
+    // 取消选择
+    $('.sel-box .cancel,.sel-boxs .bg').click(function(){
+        $('.sel-boxs .bg')[0].removeEventListener('touchmove', preDef, false);
+        $('.sel-boxs .btn')[0].removeEventListener('touchmove', preDef, false);
+        $('.sel-boxs').find('.sel-box').removeClass('fadeInUp').addClass('fadeInDown');
+        setTimeout(function(){
+          $('.sel-boxs').hide();
+        },300);
+        api.closeFrame();
+    });
+    //取消ios在zepto下的穿透事件
+    // $(".sel-con").on("touchend", function (event) {
+    //     event.preventDefault();
+    // });
+    //
+    //取消默认行为   灰层底部不能滑动
+    var preDef = function(e){
+        e.preventDefault();
+        return false;
+    };
+    function dataFrame(ele){
+        // ele数组转换成相应结构
+        var eleText = '';
+        for(var i=0;i<ele.length;i++){
+            eleText += '<div class="ele" ' + 'data-id='+ele[i].value+'  >'+ele[i].name+'</div>';
+        };
+        return '<div class="cell elem"><div class="scroll">'+eleText+'</div></div>';
+    };
+    $('.sel-boxs .bg')[0].addEventListener('touchmove', preDef, false);
+    $('.sel-boxs .btn')[0].addEventListener('touchmove', preDef, false);
+    //这里可以查询  DATAARR
+    function showselect(type) {
+      if(type===1){
+        var dataArr = $api.getStorage('CQOrgOptions')
+        var title = '请选择营业区域';
+        var defValue = dataArr[0].name;
+        var scvalue = dataArr[0].value;
+      }
+      if(type===4){
+        var dataArr = $api.getStorage('SBMP')
+        var title = '请选择铭牌';
+        var defValue = dataArr[0].name;
+        var scvalue = dataArr[0].value;
+      }
+      if(type===5){
+        var dataArr = $api.getStorage('BJJLLX/GZJLLX')
+        var title = '请选择报警类型';
+        var defValue = dataArr[0].name;
+        var scvalue = dataArr[0].value;
+      }
+      if(type===6){
+        var dataArr = $api.getStorage('SBKJ')
+        var title = '请选择水表口径';
+        var defValue = dataArr[0].name;
+        var scvalue = dataArr[0].value;
+      }
+      if(type===7){
+        var dataArr = $api.getStorage('SZZF')
+        console.log(JSON.stringify($api.getStorage('SZZF')));
+        var title = '请选择数值正负';
+        var defValue = dataArr[0].name;
+        var scvalue = dataArr[0].value;
+      }
+      if(type===8){
+        var dataArr = $api.getStorage('TQBZ')
+        // console.log(JSON.stringify($api.getStorage('TQBZ')));
+        var title = '请选择同期比';
+        var defValue = dataArr[0].name;
+        var scvalue = dataArr[0].value;
+      }
+      if(type===9){
+        var dataArr = $api.getStorage('CLRID')
+        // console.log(JSON.stringify($api.getStorage('TQBZ')));
+        var title = '请选择处理人';
+        var defValue = dataArr[0].name;
+        var scvalue = dataArr[0].value;
+      }
+      // 抄表册
+      if (type === 10) {
+        var dataArr = $api.getStorage('CBC')
+        // console.log(JSON.stringify($api.getStorage('TQBZ')));
+        var title = '请选择抄表册';
+        var defValue = dataArr[0].name;
+        var scvalue = dataArr[0].value;
+      }
+      // 用水性质
+      if (type === 11) {
+        var dataArr = $api.getStorage('YSXZ')
+        // console.log(JSON.stringify($api.getStorage('TQBZ')));
+        var title = '请选择用水性质';
+        var defValue = dataArr[0].name;
+        var scvalue = dataArr[0].value;
+      }
+      // 水表类型
+      if (type === 12) {
+        var dataArr = $api.getStorage('SBLX')
+        // console.log(JSON.stringify($api.getStorage('TQBZ')));
+        var title = '请选择水表类型';
+        var defValue = dataArr[0].name;
+        var scvalue = dataArr[0].value;
+      }
+      //由于IOS点击(tap)其他区域 input也不失去焦点的特性
+      $('input, textarea').each(function(){
+          this.blur();
+      });
+      $('.sel-boxs .bg')[0].addEventListener('touchmove', preDef, false);
+      $('.sel-boxs .btn')[0].addEventListener('touchmove', preDef, false);
+      $('.sel-con .table').html(dataFrame(dataArr));
+      $('.sel-box .name').text(title);
+      $('.sel-boxs').show().find('.sel-box').removeClass('fadeInDown').addClass('fadeInUp');
+      // 默认值
+      // $(evEle).val() == "" ? defValue = defValue : defValue = $(evEle).attr('data-sel01');
+
+      $('.sel-con').find('.elem').eq(0).find('.ele').each(function(){
+          if($(this).text() == defValue){
+              $(this).parents('.scroll')[0].scrollTop = $(this).index()*36;
+          }
+      });
+      // 选择器滚动获取值和确认赋值
+      var scText = defValue; // 默认值为默认值
+      var scValue = scvalue;
+      $('.sel-con .scroll').scroll(function(){
+          var that = $(this);
+          // 数值显示
+          var scTop = $(this)[0].scrollTop+18;
+          var scNum = Math.floor(scTop/36);
+          scText = $(this).find('.ele').eq(scNum).text();
+          scValue = $(this).find('.ele').eq(scNum).data('id');
+          // 停止锁定
+          clearTimeout($(this).attr('timer'));
+          $(this).attr('timer',setTimeout(function(){
+              that[0].scrollTop = scNum*36;
+          },100));
+      });
+
+      //移除之前的绑定事件
+      $(".sel-box .ok").off();
+      // 确认选择
+      $('.sel-box .ok').click(function(){
+          // $(evEle).attr('data-sel01', scText);
+          // afterAction(scText);
+          if(type===1){
+            api.sendEvent({
+                name: 'selectcity',
+                extra: {
+                    OrgName: scText,
+                    OrgCode: scValue
+                }
+            });
+          }
+          if(type===4){
+            api.sendEvent({
+                name: 'NamePlateValue',
+                extra: {
+                    NamePlateName: scText,
+                    NamePlateValue: scValue
+                }
+            });
+          }
+          if(type===5){
+            api.sendEvent({
+                name: 'WarnType',
+                extra: {
+                    WarnTypeName: scText,
+                    WarnType: scValue
+                }
+            });
+          }
+          if(type===6){
+            api.sendEvent({
+                name: 'MeterCaliber',
+                extra: {
+                    MeterCaliberName: scText,
+                    MeterCaliber: scValue
+                }
+            });
+          }
+          if(type===7){
+            api.sendEvent({
+                name: 'FloatValue',
+                extra: {
+                    FloatValueName: scText,
+                    FloatValue: scValue
+                }
+            });
+          }
+          if(type===8){
+            api.sendEvent({
+                name: 'SynRatioValue',
+                extra: {
+                    SynRatioValueName: scText,
+                    SynRatioValue: scValue
+                }
+            });
+          }
+          if(type===9){
+            api.sendEvent({
+                name: 'DealerId',
+                extra: {
+                    DealerIdName: scText,
+                    DealerId: scValue
+                }
+            });
+          }
+          if (type === 10) {
+            api.sendEvent({
+                name: 'BookId',
+                extra: {
+                    BookName: scText,
+                    BookId: scValue
+                }
+            });
+          }
+          // 用水性质
+          if (type === 11) {
+            api.sendEvent({
+                name: 'NatureWater',
+                extra: {
+                    NatureWaterName: scText,
+                    NatureWaterValue: scValue
+                }
+            });
+          }
+          //水表类型
+          if (type === 12) {
+            api.sendEvent({
+                name: 'TypeWater',
+                extra: {
+                    TypeWaterName: scText,
+                    TypeWaterValue: scValue
+                }
+            });
+          }
+          $('.sel-boxs').find('.sel-box').removeClass('fadeInUp').addClass('fadeInDown');
+          setTimeout(function(){
+            $('.sel-boxs').hide();
+          },300);
+          $('.sel-boxs .bg')[0].removeEventListener('touchmove', preDef, false);
+          $('.sel-boxs .btn')[0].removeEventListener('touchmove', preDef, false);
+          api.closeFrame();
+      });
+    }
+</script>
+
+</html>

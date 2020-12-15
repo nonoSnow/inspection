@@ -52,6 +52,7 @@ function showDetailsData(id){
   function showRet(ret){
     api.hideProgress();
       if(ret.success){
+        console.log(JSON.stringify(ret));
           deviceInfo = ret.result;
           ret.result.url = baseUrl;
           $('#detailList').html('');
@@ -87,12 +88,15 @@ function onOpenInspectionRecord() {
 
 // 转工单
 function onOpenTransfWorkOrder() {
-  console.log(JSON.stringify(deviceInfo));
+  // console.log(JSON.stringify(deviceInfo));
+  var userLoginInformation = $api.getStorage('userLoginInformation');
+  // console.log(JSON.stringify(userLoginInformation));
+
   var personInfo = {
-    userName: deviceInfo.creationName,
-    userId: deviceInfo.creationId
+    userName: userLoginInformation.currentUserInfo.userInfo.trueName,
+    userId: userLoginInformation.currentUserInfo.userInfo.userId
   }
-  console.log(JSON.stringify(personInfo));
+  // console.log(JSON.stringify(personInfo));
   api.openWin({
       name: 'addJob',
       url: '../Job/addJob.html',

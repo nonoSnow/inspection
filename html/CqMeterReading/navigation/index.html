@@ -1,0 +1,698 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>定位巡航页面</title>
+    <link rel="stylesheet" type="text/css" href="../css/auicss/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/auicss/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/public.css" />
+    <style>
+        .aui-bar-nav,.aui-bar-nav.aui-bar-light .aui-iconfont{
+            /* background-color:#4089F3 */
+            color: #333333;
+        }
+        #header-title{
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 9999
+        }
+        #content{
+            height:100vh;
+            background-color:rgba(245, 245, 245, 1);
+        }
+        .soso-title{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.25rem 0.6rem;
+            background: white;
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+        .aui-searchbar{
+            /*width: 14.8rem;*/
+            width: 79.3%;
+            background-color: white;
+        }
+        .aui-searchbar-input{
+            height: 1.65rem;
+            border-radius: 1.65rem;
+            line-height: 1.65rem;
+            background-color:#efefef;
+            margin: 0;
+        }
+        .aui-searchbar-input input{
+            height: 1.65rem;
+            width: 100%;
+        }
+        .change-box{
+          width: 100%;
+          position:fixed;
+          /*top: 152px;*/
+          /*z-index: 1000;*/
+          top:0;
+          display: none
+        }
+        .change-box .aui-list-item-input{
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+        .change-box .aui-list{
+          font-size: 0.75rem;
+          color: #333333;
+          /*height: 0;*/
+          overflow: hidden;
+          position: absolute;
+          top: 0;
+          width: 100%;
+          /*transition: all 10s;*/
+        }
+        .change-box input[type="text"]{
+          font-size: 0.75rem;
+        }
+        .results-box{
+          width: 100%;
+        }
+        .results-box .results-list{
+          padding: 0.4rem 0.6rem;
+          display: flex;
+          /*justify-content: space-between;*/
+          align-items: center;
+          background-color: #fff;
+          margin-top: 0.25rem;
+        }
+        .results-list-left{
+          display: flex;
+          flex-direction: column;
+          max-width: 100%;
+        }
+        .results-list-right{
+          background-color: #FF6769;
+          width: 4rem;
+          height: 4.8rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          border-radius: 0.2rem;
+        }
+        .results-list-left-list{
+          display: flex;
+          flex-wrap: wrap;
+          font-size: 0.7rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='header-title'>
+        <header class="aui-bar aui-bar-nav aui-bar-light" id="header">
+            <a class="aui-pull-left aui-btn" tapmode onclick="backwin()">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </a>
+            <div class="aui-title">定位巡航</div>
+        </header>
+
+    </div>
+    <div class='soso-title'>
+        <div style="font-size:0.7rem;color: #333333;width:20%;text-align: center;" tapmode onclick="popTop()">
+        <span>筛选</span>
+        <i class="aui-iconfont aui-icon-down" style="margin:0 0.25rem"></i>
+        </div>
+        <div class="aui-searchbar" id="search">
+            <div class="aui-searchbar-input aui-border-radius" tapmode>
+                <i class="aui-iconfont aui-icon-search"></i>
+                <form action="javascript:search();">
+                    <input type="number" placeholder="请输入用户编号和水表表号" id="search-input" onkeyup="doSearch()">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id='content'>
+        <!-- 搜索出来的list -->
+        <div class='results-box'>
+          <!-- list -->
+
+          </div>
+    </div>
+    <!-- 筛选条件 -->
+    <div class='change-box'>
+      <ul class="aui-list aui-form-list">
+        <form id='form'>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    营业区域：
+                </div>
+                <div class="aui-list-item-input" onclick="openselect(1)">
+                    <input type="text" placeholder="请选择" style="text-align: right;" readonly name='OrgName' class='OrgName'>
+                    <input type="hidden" placeholder="请选择" style="text-align: right;" readonly name='OrgCode' class='OrgCode'>
+                    <i class="aui-iconfont aui-icon-right" ></i>
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    水表铭牌：
+                </div>
+                <div class="aui-list-item-input" onclick="openselect(4)">
+                    <input type="text" placeholder="请选择" style="text-align: right;" readonly name='NamePlateName' class='NamePlateName'>
+                    <input type="hidden" placeholder="请选择" style="text-align: right;" readonly name='NamePlateValue' class='NamePlateValue'>
+                    <i class="aui-iconfont aui-icon-right"></i>
+                </div>
+            </div>
+        </li>
+        <!-- <li class="aui-list-item item-zt-ms">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    状态描述：
+                </div>
+                <div class="aui-list-item-input" onclick="openselect(5)">
+                    <input type="hidden" placeholder="请选择" style="text-align: right;" readonly name='WarnType' class='WarnType'>
+                    <input type="text" placeholder="请选择" style="text-align: right;" readonly name='WarnTypeName' class='WarnTypeName'>
+                    <i class="aui-iconfont aui-icon-right"></i>
+                </div>
+            </div>
+        </li> -->
+        <li class="aui-list-item item-yh-mc">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    用户名称：
+                </div>
+                <div class="aui-list-item-input">
+                    <input type="text" placeholder="输入用户名称" style="
+                    text-align: right;
+                    background-color: #efefef;
+                    border-radius: 0.9rem;
+                    padding: 0 10px;
+                    height: 1.8rem;" name = 'CustomerName' class='CustomerName'>
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item item-yh-dz">
+            <div class="aui-list-item-inner">
+                <div class="aui-list-item-label">
+                    用户地址：
+                </div>
+                <div class="aui-list-item-input">
+                    <input type="text" placeholder="请输入用户地址" style="
+                    text-align: right;
+                    background-color: #efefef;
+                    border-radius: 0.9rem;
+                    padding: 0 10px;
+                    height: 1.8rem;" name='CustomerAddress'  class='CustomerAddress'>
+                </div>
+            </div>
+        </li>
+        <li class="aui-list-item">
+          <div style="display: flex;
+    width: 100%;padding: 0.75rem 0;
+    padding-right: 0.75rem;justify-content: space-around;">
+            <div class='btnKong' onclick="emptyChange()">清空</div>
+            <div class='btnKong on' onclick="popTopClose()">确定</div>
+          </div>
+        </li>
+        </form>
+      </ul>
+    </div>
+</body>
+
+<script type="text/javascript" src="../script/auijs/api.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src='../script/public.js'></script>
+<script type="text/javascript" src='../script/aui-popup.js'></script>
+<script type="text/javascript" src='../script/template.js'></script>
+<script type="text/javascript" src="../script/request.js"></script>
+<script type="text/template" id='sosolist'>
+  {{each list value index}}
+  <div class='results-list' tapmode onclick="toDispose({{value.Id}})">
+    <div class='results-list-left'>
+        <span class='results-list-left-list'>
+          <span class="co-333333 mlr-05">用户编号:</span>
+          <span class="co-595959">{{value.CustomerCode}}</span>
+        </span>
+        <span class='results-list-left-list'>
+          <span class="co-333333 mlr-05">用户名称:</span>
+          <span class="co-595959">{{value.CustomerName}}</span>
+        </span>
+        <span class='results-list-left-list'>
+          <span class="co-333333 mlr-05">水表表号:</span>
+          <span class="co-595959">{{value.StampNo}}</span>
+        </span>
+        <span class='results-list-left-list'>
+          <span class="co-333333 mlr-05">口径:</span>
+          <span class="co-595959">{{value.MeterCaliber}}</span>
+        </span>
+        <span class='results-list-left-list'>
+          <span class="co-333333 mlr-05">用户地址:</span>
+          <span class="co-595959">{{value.CustomerAddress}}</span>
+        </span>
+    </div>
+  </div>
+  {{/each}}
+</script>
+<script type="text/javascript">
+var scrolltobottomTimer;
+var apiready = function() {
+        headerHeight();
+        var soso= $api.dom('.soso-title');
+        sosoheight = $api.offset(soso).h;
+        var changeH = headerH+sosoheight +'px'
+        $('.results-box').css('padding-top', '' + sosoheight + 'px')
+        $('.soso-title').css('top',headerH)
+        $('.change-box').css('top',changeH)
+        api.setStatusBarStyle({
+            style:"dark"
+        });
+        GetLocationMeterListajax();
+        //上拉加载
+        api.addEventListener({
+            name:'scrolltobottom',
+            extra:{
+                threshold:0            //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err){
+          clearTimeout(scrolltobottomTimer);
+          scrolltobottomTimer=setTimeout(function(){
+              GetLocationMeterListajax()
+          },1000)
+
+        });
+        // 监听筛选器数字值变化
+        api.addEventListener({
+            name: 'closeFrameChangepopup'
+        }, function(ret, err){
+            if( ret ){
+              // 拿回数据的时候请求   通过回传 的type   知道是哪个页面返回请数据
+              // console.log(JSON.stringify(ret));
+              LocationMeterList.OrgCode=ret.value.list.OrgCode
+              LocationMeterList.NamePlateValue=ret.value.list.NamePlateValue
+              LocationMeterList.CustomerName=ret.value.list.CustomerName
+              LocationMeterList.CustomerAddress=ret.value.list.CustomerAddress
+              LocationMeterList.MeterCaliber=ret.value.list.MeterCaliber
+              LocationMeterList.PageIndex=1;
+              $('.results-box').html('')
+              GetLocationMeterListajax()
+            }else{
+                 alert( JSON.stringify( err ) );
+            }
+        });
+        // 监听营业数值的变化type1
+        api.addEventListener({
+            name: 'selectcity'
+        }, function(ret, err){
+            if( ret ){
+                 $api.val($api.dom('.OrgName'),ret.value.OrgName);
+                 $api.val($api.dom('.OrgCode'),ret.value.OrgCode);
+                 if(ret.value.OrgCode){
+                   GetDealerOptionsajax(ret.value.OrgCode)
+                 }
+            }else{
+                 alert( JSON.stringify( err ) );
+            }
+        });
+        //监听开始时间TYPE2
+        api.addEventListener({
+            name: 'selectbegintime'
+        }, function(ret, err){
+            if( ret ){
+                //  alert( JSON.stringify( ret ) );
+                 $api.val($api.dom('.BeginWarnTime'),ret.value.time);
+            }else{
+                 alert( JSON.stringify( err ) );
+            }
+        });
+        //监听结束时间TYPE3
+        api.addEventListener({
+            name: 'selectendtime'
+        }, function(ret, err){
+            if( ret ){
+                //  alert( JSON.stringify( ret ) );
+                 $api.val($api.dom('.EndWarnTime'),ret.value.time);
+            }else{
+                 alert( JSON.stringify( err ) );
+            }
+        });
+        //监听水表铭牌TYPE4
+        api.addEventListener({
+            name: 'NamePlateValue'
+        }, function(ret, err){
+            if( ret ){
+                //  alert( JSON.stringify( ret ) );
+                 $api.val($api.dom('.NamePlateName'),ret.value.NamePlateName);
+                 $api.val($api.dom('.NamePlateValue'),ret.value.NamePlateValue);
+            }else{
+                 alert( JSON.stringify( err ) );
+            }
+        });
+        //监听报警类型TYPE5
+        api.addEventListener({
+            name: 'WarnType'
+        }, function(ret, err){
+            if( ret ){
+                //  alert( JSON.stringify( ret ) );
+                 $api.val($api.dom('.WarnTypeName'),ret.value.WarnTypeName);
+                 $api.val($api.dom('.WarnType'),ret.value.WarnType);
+            }else{
+                 alert( JSON.stringify( err ) );
+            }
+        });
+        //监听水表口径类型TYPE6
+        api.addEventListener({
+            name: 'MeterCaliber'
+        }, function(ret, err){
+            if( ret ){
+                 $api.val($api.dom('.MeterCaliberName'),ret.value.MeterCaliberName);
+                 $api.val($api.dom('.MeterCaliber'),ret.value.MeterCaliber);
+            }else{
+                 alert( JSON.stringify( err ) );
+            }
+        });
+        //监听数值正负类型TYPE7
+        api.addEventListener({
+            name: 'FloatValue'
+        }, function(ret, err){
+            if( ret ){
+                //  alert( JSON.stringify( ret ) );
+                 $api.val($api.dom('.FloatValueName'),ret.value.FloatValueName);
+                 $api.val($api.dom('.FloatValue'),ret.value.FloatValue);
+            }else{
+                 alert( JSON.stringify( err ) );
+            }
+        });
+        //监听同期比类型TYPE8
+        api.addEventListener({
+            name: 'SynRatioValue'
+        }, function(ret, err){
+            if( ret ){
+                //  alert( JSON.stringify( ret ) );
+                 $api.val($api.dom('.SynRatioValueName'),ret.value.SynRatioValueName);
+                 $api.val($api.dom('.SynRatioValue'),ret.value.SynRatioValue);
+            }else{
+                 alert( JSON.stringify( err ) );
+            }
+        });
+        //监听处理人类型TYPE9
+        api.addEventListener({
+            name: 'DealerId'
+        }, function(ret, err){
+            if( ret ){
+                //  alert( JSON.stringify( ret ) );
+                 $api.val($api.dom('.DealerIdName'),ret.value.DealerIdName);
+                 $api.val($api.dom('.DealerId'),ret.value.DealerId);
+            }else{
+                 alert( JSON.stringify( err ) );
+            }
+        });
+}
+var timeout;//定义一个定时器
+var popupindex=0
+var LocationMeterList={
+    UserId:$api.getStorage('cqUserId'),//用户ID*
+    CusCodeOrStampNo:'',//用户编号或者水表表号
+    OrgCode:'',//营业区域编码
+    MeterCaliber:'',//水表口径
+    NamePlateValue:'',//水表铭牌
+    CustomerName:'',//用户名称
+    CustomerAddress:'',//用户地址
+    PageIndex:1,//页码*
+    PageSize:10//每页条数*
+}
+function doSearch(){
+    // 搜索的值
+    let soso = $api.val($api.byId('search-input'));
+    // 监听soso的值  是否 满足用户编号和水表表号规则  如果满足 就发起请求
+    clearTimeout(timeout);
+    LocationMeterList.CusCodeOrStampNo=soso;
+    LocationMeterList.PageIndex=1;
+    timeout= setTimeout(function(){
+        // 长时间没有输入的时候触发搜索
+        $('.results-box').html('')
+        GetLocationMeterListajax()
+    },2000)
+}
+// 按下确定键 直接搜索
+function search(){
+    clearTimeout(timeout);
+    let soso = $api.val($api.byId('search-input'));
+    LocationMeterList.CusCodeOrStampNo=soso;
+    LocationMeterList.PageIndex=1;
+    $('.results-box').html('')
+    GetLocationMeterListajax()
+}
+// 弹出筛选器
+function popTop() {
+  if(popupindex===0){
+    $('.change-box').css('display','block')
+    popupindex=1;
+  }else {
+    $('.change-box').css('display','none')
+    popupindex=0;
+  }
+
+
+    // $api.css($api.dom('.aui-list'),'height:auto');
+    // $('#content').css('background-color','rgba(0,0,0,0.5)');
+}
+// 去处理地图导航
+function toDispose(Id){
+  api.openWin({
+      name: 'index_navdtaiMap',
+      url: './index_navdtaiMap.html',
+      pageParam: {
+          Id: Id
+      },
+      bounces: false,
+      vScrollBarEnabled: true,
+      hScrollBarEnabled: true
+  });
+
+}
+//获取定位导航主页信息
+function GetLocationMeterListajax(){
+    // console.log(JSON.stringify(GetMeterWarnList));
+    // console.log($api.getStorage('token'));
+    NewGet('/wapi/WRPData/GetLocationMeterList',LocationMeterList,
+    $api.getStorage('token'),function(ret,err){
+      if(ret.IsSuccess){
+          $('.endStr').remove()
+          if(LocationMeterList.PageIndex==1){
+            let startStr=`<div class='startStr' style='color:#fff;
+background: linear-gradient(90deg, #3DB2FF 0%, #328BFD 100%);text-align: center'>共计：${ret.Data.TotalCount}条数据</div>`;
+            $('.results-box').prepend(startStr)
+            setTimeout(function(){
+              $('.startStr').remove()
+            },5000)
+          }
+          if(LocationMeterList.PageIndex<=ret.Data.TotalPages){
+            let str = template('sosolist',{list:ret.Data.PageData});
+            $('.results-box').append(str);
+            LocationMeterList.PageIndex++;
+          }else{
+
+            let endStr=`<div class='endStr' style='color:#fff;
+background: linear-gradient(90deg, #3DB2FF 0%, #328BFD 100%);text-align: center'>没有更多了</div>`
+            $('.results-box').append(endStr)
+          }
+      }else {
+          api.toast({
+              msg:ret.Msg,
+              duration: 2000,
+              location: 'top'
+          });
+      }
+    })
+}
+// 时间范围的tab切换
+ $('.btnKongtime').click(function () {
+   var _index = $(this).index();
+    $(this).addClass("on").siblings().removeClass("on");
+    if(_index === 2){
+      $('.item-ks-sj').show()
+      $('.item-js-sj').show()
+      $api.val($api.dom('.BeginWarnTime'),'')
+      $api.val($api.dom('.EndWarnTime'),'')
+    }else if(_index === 1) {
+      //七天时间
+      $('.item-ks-sj').hide()
+      $('.item-js-sj').hide()
+      $api.val($api.dom('.BeginWarnTime'),getDay(-7))
+      $api.val($api.dom('.EndWarnTime'),getDay(0))
+    }else {
+      //今天时间
+      $('.item-ks-sj').hide()
+      $('.item-js-sj').hide()
+      $api.val($api.dom('.BeginWarnTime'),dayjs().format('YYYY-MM-DD'))
+      $api.val($api.dom('.EndWarnTime'),dayjs().format('YYYY-MM-DD'))
+    }
+
+ })
+ // 关闭筛选器
+ function popTopClose() {
+     // 把数据广播出去，发起请求
+     // alert(JSON.stringify($('#form').parseForm()))
+     // 关闭frome
+     var listloto=$('#form').parseForm();
+     if(listloto.CustomerName && !(/^[\u4E00-\u9FA5]{1,10}$/.test(listloto.CustomerName))){
+       api.toast({
+           msg: '用户名必须由汉字组成',
+           duration: 2000,
+           location: 'top'
+       });
+       return false;
+     }
+     api.sendEvent({
+         name: 'closeFrameChangepopup',
+         extra: {
+             list: listloto,
+             type: api.pageParam.type
+         }
+     });
+     api.closeFrame();
+     $('.change-box').css('display','none')
+     popupindex=0;
+}
+ // 打开选择器
+ function openselect(type){
+     if(type===1 && ($api.getStorage('CQOrgOptions')==null || $api.getStorage('CQOrgOptions') == "") ){
+         api.toast({
+           msg:'无营业区域信息，请重新进入尝试',
+           duration: 2000,
+           location: 'top'
+         });
+         return false;
+     }
+     if(type===4 && ($api.getStorage('SBMP')==null || $api.getStorage('SBMP') == "")){
+         api.toast({
+           msg:'无水表铭牌信息，请重新进入尝试',
+           duration: 2000,
+           location: 'top'
+         });
+         return false;
+     }
+     if(type===5 && ($api.getStorage('BJJLLX/GZJLLX')==null || $api.getStorage('BJJLLX/GZJLLX') == "")){
+         api.toast({
+           msg:'无报警类型信息，请重新进入尝试',
+           duration: 2000,
+           location: 'top'
+         });
+         return false;
+     }
+     if(type===6 && ($api.getStorage('SBKJ')==null || $api.getStorage('SBKJ') == "")){
+         api.toast({
+           msg:'无水表口径信息，请重新进入尝试',
+           duration: 2000,
+           location: 'top'
+         });
+         return false;
+     }
+     if(type===7 && ($api.getStorage('SZZF')==null || $api.getStorage('SZZF') == "")){
+         api.toast({
+           msg:'无数值正负信息，请重新进入尝试',
+           duration: 2000,
+           location: 'top'
+         });
+         return false;
+     }
+     if(type===8 && ($api.getStorage('TQBZ')==null || $api.getStorage('TQBZ') == "")){
+         api.toast({
+           msg:'无同期比值信息，请重新进入尝试',
+           duration: 2000,
+           location: 'top'
+         });
+         return false;
+     }
+     if((type===9 && ($api.getStorage('CLRID')==null || $api.getStorage('CLRID') == "")) || (type===9&&!$('#form').parseForm().OrgCode)){
+         api.toast({
+           msg:'无处理人信息，请先选择营业区域',
+           duration: 2000,
+           location: 'top'
+         });
+         return false;
+     }
+     api.openFrame({
+         name: 'select',
+         url: '../view/select.html',
+         rect: {
+             x: 0,
+             y: 0,
+             marginTop:headerH
+         },
+         pageParam: {
+             type:type
+         },
+         bounces: false,
+         vScrollBarEnabled: true,
+         hScrollBarEnabled: true
+     });
+
+ }
+ function getDay(day){
+        var today = new Date();
+        var targetday_milliseconds=today.getTime() + 1000*60*60*24*day;
+        today.setTime(targetday_milliseconds); //注意，这行是关键代码
+
+        var tYear = today.getFullYear();
+        var tMonth = today.getMonth();
+        var tDate = today.getDate();
+        tMonth = doHandleMonth(tMonth + 1);
+        tDate = doHandleMonth(tDate);
+        return tYear+"-"+tMonth+"-"+tDate;
+ }
+ function doHandleMonth(month){
+        var m = month;
+        if(month.toString().length == 1){
+           m = "0" + month;
+        }
+        return m;
+ }
+ //获取处理人信息
+ function GetDealerOptionsajax(OrgCode){
+     // console.log(JSON.stringify(GetMeterWarnList));
+     // console.log($api.getStorage('token'));
+     NewGet('/wapi/WRPData/GetDealerOptions',{OrgCode:OrgCode},
+     $api.getStorage('token'),function(ret,err){
+       if(ret.IsSuccess){
+         // console.log(JSON.stringify(ret));
+         $api.setStorage('CLRID', ret.Data);
+
+       }else {
+         api.toast({
+             msg:err.Msg,
+             duration: 2000,
+             location: 'top'
+         });
+       }
+     })
+   }
+ function emptyChange(){
+   $api.val($api.dom('.OrgName'),'');
+   $api.val($api.dom('.OrgCode'),'');
+   $api.val($api.dom('.NamePlateName'),'');
+   $api.val($api.dom('.NamePlateValue'),'');
+   $api.val($api.dom('.WarnTypeName'),'');
+   $api.val($api.dom('.WarnType'),'');
+   $api.val($api.dom('.CustomerName'),'');
+   $api.val($api.dom('.CustomerAddress'),'');
+   //是否需要清空之后关闭拾取器  进行搜索
+   var listloto=$('#form').parseForm();
+ }
+ //两个日期相隔天数
+ function  getDaysBetween(dateString1,dateString2){
+    var  startDate = Date.parse(dateString1);
+    var  endDate = Date.parse(dateString2);
+    var days=(endDate - startDate)/(1*24*60*60*1000);
+    return  days;
+ }
+</script>
+
+</html>

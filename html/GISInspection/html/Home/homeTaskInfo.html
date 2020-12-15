@@ -258,8 +258,8 @@
       <div class="display-flex margin-top145">
         <div class='inline-block info-list-title'>任务参与人：</div>
         <div class='inline-block text-right info-list-cont'>
-          {{each participant value i}}
-          {{if participant.length != 0 && i != 0}}
+          {{each participants value i}}
+          {{if participants.length != 0 && i != 0}}
           、
           {{/if}}
           {{value}}
@@ -321,7 +321,7 @@
       <div class="list-item-cont margin-top3">编号：{{value.code}}</div>
       <div class="list-item-cont margin-top3">地址：{{value.address}}</div>
       <div class="list-item-cont margin-top3 inspector">巡检人：{{value.person}}</div>
-      <div class="list-item-cont margin-top3 completion-time">完成时间：{{value.time}}</div>
+      <div class="list-item-cont margin-top3 completion-time">巡检时间：{{value.time}}</div>
     </li>
     {{/each}}
   </script>

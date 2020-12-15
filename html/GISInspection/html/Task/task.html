@@ -25,6 +25,9 @@
                 <span class='aui-iconfont'></span>
             </div>
               <div class="aui-title">任务</div>
+              <a class='aui-pull-right color-333' tapmode onclick="openAddTask()">
+                  <span>新增任务</span>
+              </a>
           </header>
         </div>
 
@@ -67,13 +70,13 @@
           </div>
         </div>
 
-        <footer id="footer" class="aui-bar aui-bar-tab display-flex footer">
+        <!-- <footer id="footer" class="aui-bar aui-bar-tab display-flex footer">
           <div class="flex1">
             <div class='footer-btn bgc-blue color-fff' tapmode onclick="openAddTask()">
               新增任务
             </div>
           </div>
-        </footer>
+        </footer> -->
     </div>
 
 </body>
@@ -151,7 +154,7 @@
               <img src="../../image/task-icon.png" class='task-icon' alt="">
               <span class="margin-left3 font-w4 width80 overflow-hidden">{{value.name}}</span>
           </div>
-          <div class="margin-top10 font-S75 color-666">预计开始：{{value.planTime}}</div>
+          <div class="margin-top10 font-S75 color-666">预计开始：{{value.planStartTime}}</div>
           <div class="margin-top6 font-S75 color-666 relative">
               预计完成：{{value.planEndTime}}
               {{if value.OverdueTime != null && value.OverdueTime != ''}}

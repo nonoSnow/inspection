@@ -369,7 +369,7 @@ function setOnlineStatus(status) {
     userId: userInfo.currentUserInfo.userInfo.userId
   }
 
-  console.log(JSON.stringify(param));
+  // console.log(JSON.stringify(param));
     insertPersonStatus({
         data: {
             IsOnline: status == 1 ? false : true,
@@ -384,10 +384,11 @@ function setOnlineStatus(status) {
             } else {
                 $(".member-status").removeClass('on');
             }
-            console.log(getCurrentUserRoles());
+            // console.log(getCurrentUserRoles());
+            sendInspectionLocation();
             if (getCurrentUserRoles()) {
               // 为领导时
-              console.log('为领导');
+              // console.log('为领导');
               api.sendEvent({
                   name: 'sendLeaderLocation',
               });
@@ -416,4 +417,111 @@ function setOnlineStatus(status) {
             }
         }
     })
+}
+
+// 实时更新当前人员定位
+function InsertPersonLocation() {
+  // console.log('要实时更新当前人员定位了');
+  var nativeTimer = api.require('nativeTimer');
+  // console.log(JSON.stringify(nativeTimer));
+  var params = {
+      interval: 250,
+      cycle: true,
+      delay: 0,
+  }
+  nativeTimer.acquireCpu();
+  // console.log('走到这一步了');
+  // console.log(nativeTimer.start);
+  nativeTimer.start(params, function(ret) {
+    // console.log(111111111111111111111);
+    // console.log(JSON.stringify(ret));
+      var ids = [];
+      ids.push(ret.id);
+      if ($api.getStorage('isOnline') == "1") {
+        // console.log('上传定位');
+          sendInspectionLocation();
+      } else {
+        // console.log('不上传定位');
+          nativeTimer.stop({
+              ids: ids
+          })
+          nativeTimer.releaseCpu();
+      }
+  });
+}
+
+// 实时更新当前人员定位
+function sendInspectionLocation() {
+  var userLoginInformation = $api.getStorage('userLoginInformation');
+  var bMap = api.require('bMap');
+  // console.log(JSON.stringify(aMapLBS));
+  // console.log(aMapLBS.singleLocation);
+  bMap.getLocation({
+    accuracy: '100m',
+    autoStop: true,
+    filter: 1
+  }, function(ret, err) {
+      if (ret.status) {
+          // console.log(JSON.stringify(ret));
+          var location = bd09towgs84(ret.lon, ret.lat);
+          var data = {
+              personId: userLoginInformation.currentUserInfo.userInfo.userId,
+              person: userLoginInformation.currentUserInfo.userInfo.userName,
+              location:location[0]+','+ location[1]
+          };
+          insertLocation({
+            data: data,
+            success: function(ret) {
+              console.log(JSON.stringify(ret));
+            }
+          });
+      } else {
+          console.log(err.code);
+      }
+  });
+}
+
+// 监听应用从后台进入前台，去判断后端是否已经修改了改人员为离线状态，如果修改了，且本身处于在线状态，则将该人员改为在线状态
+function checkOnline() {
+  var userLoginInformation = $api.getStorage('userLoginInformation');
+  var data = {
+    userId: userLoginInformation.currentUserInfo.userInfo.userId,
+  }
+  getUserStatus({
+    data: data,
+    success: function(ret) {
+      console.log(JSON.stringify(ret));
+      // 当前缓存中最后的在线状态
+      var storeageIsOnline = $api.getStorage('isOnline');
+      if (getCurrentUserRoles()) {
+        console.log(storeageIsOnline == ret.result.isOnline);
+        // 为领导，如果返回的和缓存的状态不一致，则执行在线操作
+        if (storeageIsOnline == ret.result.isOnline) {
+          // 状态一致，不执行操作
+        } else {
+          setOnlineStatus(0);
+        }
+      } else {
+        // 为员工，如果缓存在线返回的不在线，则执行在线操作，如果缓存离线返回在线则执行离线操作
+        // console.log(storeageIsOnline == ret.result.isOnline);
+        if (storeageIsOnline) {
+          // 在线
+          if (storeageIsOnline == ret.result.isOnline) {
+            // 状态一致，不执行操作
+          } else {
+            // 状态不一致，执行在线操作
+            setOnlineStatus(0);
+          }
+        } else {
+          // 不在线
+          if (storeageIsOnline == ret.result.isOnline) {
+            // 状态一致，不执行操作
+          } else {
+            // 状态不一致，执行离线操作
+            setOnlineStatus(1);
+          }
+        }
+      }
+    }
+  });
 }

@@ -8,7 +8,7 @@ var taskId = 0;
 var taskDetype;
 
 // 每页数据条数
-var xunPageSize = 5;
+var xunPageSize = 30;
 
 // 任务详情
 var taskDetail;
@@ -44,7 +44,7 @@ apiready = function() {
 
   nowTaskType = api.pageParam.type;
   taskId = api.pageParam.id;
-  console.log(taskId);
+  // console.log(taskId);
 
   // console.log(api.pageParam.id);
   if (nowTaskType == '0') {
@@ -109,6 +109,17 @@ apiready = function() {
       }
     }
   })
+
+  api.addEventListener({
+      name: 'fromNormal'
+  }, function(ret, err){
+      if( ret ){
+        onMenu(taskDetype, '');
+      }else{
+        console.log( JSON.stringify( err ) );
+      }
+  });
+
 }
 
 function onMenu(index, el) {
@@ -196,7 +207,7 @@ function onOpenTaskDetail(that) {
   data.taskId = taskId;
   data.areaId = areaId;
   // console.log(JSON.stringify(mapInfo));
-  console.log(areaId);
+  // console.log(areaId);
   // console.log(JSON.stringify(data));
   api.openWin({
       name: 'taskInfoSubmit',
@@ -294,7 +305,7 @@ function startTask() {
 
 // 关闭
 function closeTask() {
-  console.log(JSON.stringify(taskDetail));
+  // console.log(JSON.stringify(taskDetail));
   var message = '您确定要关闭' + taskDetail.name + '吗？'
   api.confirm({
       msg: message,
@@ -401,7 +412,7 @@ function complete() {
   getInspectDataList({
     data: data,
     success: function(ret) {
-      console.log(JSON.stringify(ret));
+      // console.log(JSON.stringify(ret));
       var daixunTotal = ret.result.totalCount;
       // console.log(daixunTotal);
       var message = '该任务中有' + daixunTotal + '个待巡点未完成！您确定要完成该任务吗？';
@@ -565,6 +576,7 @@ function getTaskDetail(param) {
   getTaskBasicInfo({
     data: param,
     success: function(ret) {
+      console.log(JSON.stringify(ret));
       taskDetail = ret.result;
       $('#taskDetail').html('');
       if (ret.result.planStartTime != null || ret.result.planStartTime != '') {
@@ -582,6 +594,20 @@ function getTaskDetail(param) {
       if (ret.result.endTime != null || ret.result.endTime != '') {
         ret.result.endTime = parseTime(ret.result.endTime, '{y}-{m}-{d} {h}:{i}');
       }
+
+      // if (ret.result.participants != 0) {
+      //   // 有参与人
+      //   var participant = '';
+      //   ret.result.participants.forEach(function(item, index) {
+      //     if (index != 0) {
+      //       participant += ('、' + item);
+      //     } else {
+      //       participant += item;
+      //     }
+      //   })
+      //   ret.result.participant = participant;
+      // }
+      // console.log(JSON.stringify(ret.result));
 
       var data = ret.result;
       var str = template('taskBasicInfo', data);
@@ -605,9 +631,9 @@ function getTaskDetail(param) {
           indexMap.initArea('addArea');
           indexMap.initDeviceLayer('addArea');
           // var areaPoint = ret1.areaPoint;
-          console.log(JSON.stringify(mapInfo));
-          console.log(typeof(mapInfo.areaPoint));
-          console.log(mapInfo.areaPoint);
+          // console.log(JSON.stringify(mapInfo));
+          // console.log(typeof(mapInfo.areaPoint));
+          // console.log(mapInfo.areaPoint);
           indexMap.drawAreaSelect(mapInfo.areaPoint, {
             name: 'addArea',
             areaId: mapInfo.id
@@ -741,7 +767,7 @@ function getInspecteList(param, status) {
   getInspectDataList({
     data: param,
     success: function(ret) {
-      console.log(JSON.stringify(ret));
+      // console.log(JSON.stringify(ret));
       var str;
       if (ret.result.items != 0) {
         $('#haveNothing').addClass('aui-hide');
@@ -750,9 +776,6 @@ function getInspecteList(param, status) {
           case 'toBeInspected':
             // 待巡
             daixunHasNext = ret.result.hasNextPage;
-            ret.result.items.forEach(function (item, i) {
-
-            })
             var data = {
               list: ret.result.items
             }
@@ -760,6 +783,11 @@ function getInspecteList(param, status) {
             break;
           case 'inspected':
             // 已巡
+            ret.result.items.forEach(function (item, i) {
+              if (item.time != '' || item.time != null) {
+                item.time = parseTime(item.time, '{y}-{m}-{d} {h}:{i}');
+              }
+            })
             yixunHasNext = ret.result.hasNextPage;
             var data = {
               list: ret.result.items

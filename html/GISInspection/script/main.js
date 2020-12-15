@@ -1,6 +1,7 @@
 var isOnline;
 apiready = function() {
   console.log('进入页面了');
+
   // api.closeFrameGroup({
   //   name: 'group'
   // });
@@ -8,8 +9,9 @@ apiready = function() {
   console.log(getCurrentUserRoles());
   if (getCurrentUserRoles()) {
     // 当为领导时，进入页面及在线
-    console.log('领导');
+    // console.log('领导');
     setOnlineStatus(0);
+    sendInspectionLocation();
   } else {
     // 为员工时则初始化为离线状态
     setOnlineStatus(1);
@@ -64,51 +66,6 @@ apiready = function() {
     color:'transparent'
   });
 
-  //  巡检实时上传定位消息(员工)  (20201105 10.44 zxf)
-    api.addEventListener({
-        name: 'sendPersonLocation'
-    }, function(ret, err) {
-        if (ret) {
-          console.log(1111111111111111111);
-          console.log(JSON.stringify(ret));
-          // console.log(getCurrentUserRoles1())
-          if (getCurrentUserRoles()) {
-            return false;
-          } else {
-            var timer = setInterval(function() {
-                if ($api.getStorage('isOnline') == "1") {
-                    InsertPersonLocation();
-                } else {
-                    clearInterval(timer);
-                }
-            }, 5000);
-          }
-        }
-    });
-
-
-  // 巡检上传人员定位（领导）
-  // api.addEventListener({
-  //     name: 'sendLeaderLocation'
-  // }, function(ret, err) {
-  //     console.log(22222222222222222);
-  //     console.log(JSON.stringify(ret));
-  //     console.log(JSON.stringify(err));
-  //     if (ret) {
-  //       console.log(getCurrentUserRoles())
-  //       if (getCurrentUserRoles()) {
-  //         var timer1 = setInterval(function() {
-  //             if ($api.getStorage('isOnline') == "1") {
-  //                 InsertPersonLocation();
-  //             } else {
-  //                 clearInterval(timer1);
-  //             }
-  //         }, 300000);
-  //       } else {
-  //         return false;
-  //       }
-  //     }
-  // });
 
 
   // api.addEventListener({
@@ -182,64 +139,66 @@ apiready = function() {
     console.log(getCurrentUserRoles());
     funIniGroup(getCurrentUserRoles());
     WinSize(['footer-gis']);
-}
 
-// 实时更新当前人员定位
-function InsertPersonLocation() {
-  console.log('要实时更新当前人员定位了');
-  var nativeTimer = api.require('nativeTimer');
-  console.log(JSON.stringify(nativeTimer));
-  var params = {
-      interval: 60,
-      cycle: true,
-      delay: 0,
-  }
-  nativeTimer.acquireCpu();
-  console.log('走到这一步了');
-  console.log(nativeTimer.start);
-  nativeTimer.start(params, function(ret) {
-    console.log(111111111111111111111);
-    console.log(JSON.stringify(ret));
-      var ids = [];
-      ids.push(ret.id);
-      if ($api.getStorage('isOnline') == "1") {
-        console.log('上传定位');
-          sendInspectionLocation();
-      } else {
-        console.log('不上传定位');
-          nativeTimer.stop({
-              ids: ids
-          })
-          nativeTimer.releaseCpu();
-      }
-  });
-}
+    //  巡检实时上传定位消息(员工)  (20201105 10.44 zxf)
+      api.addEventListener({
+          name: 'sendPersonLocation'
+      }, function(ret, err) {
+          if (ret) {
+            if (getCurrentUserRoles()) {
+              return false;
+            } else {
+              var timer = setInterval(function() {
+                  if ($api.getStorage('isOnline') == "1") {
+                      InsertPersonLocation();
+                  } else {
+                      clearInterval(timer);
+                  }
+              }, 300000);
+            }
+          }
+      });
 
-// 实时更新当前人员定位
-function sendInspectionLocation() {
-  var userLoginInformation = $api.getStorage('userLoginInformation');
-  aMapLBS.singleLocation({
-      timeout: 10
-  }, function(ret, err) {
-    console.log(JSON.stringify(ret));
-    console.log(JSON.stringify(err));
-     var location = gcj02towgs84(ret.lon, ret.lat);
-    //  console.log(JSON.stringify(location));
-      if (ret.status) {
-        var data = {
-            personId: userLoginInformation.currentUserInfo.userInfo.userId,
-            person:userLoginInformation.currentUserInfo.userInfo.userName,
-            location:location[0]+','+ location[1]
-        };
-        fnPost('services/Inspection/PersonService/InsertLocation', {
-            body: JSON.stringify(data)
-        }, 'application/json', true, false, function(ret, err) {
+      // 巡检上传人员定位（领导）
+      api.addEventListener({
+          name: 'sendLeaderLocation'
+      }, function(ret, err) {
+          // console.log(22222222222222222);
+          // console.log(JSON.stringify(ret));
+          // console.log(JSON.stringify(err));
+          if (ret) {
+            // console.log(getCurrentUserRoles());
+            if (getCurrentUserRoles()) {
+              var timer1 = setInterval(function() {
+                  if ($api.getStorage('isOnline') == "1") {
+                      InsertPersonLocation();
+                  } else {
+                      clearInterval(timer1);
+                  }
+              }, 300000);
+            } else {
+              return false;
+            }
+          }
+      });
 
-        })
-      }
-      // alert(JSON.stringify(ret))
+      // 监听进入后台
+      // api.addEventListener({
+      //     name:'pause'
+      // }, function(ret, err){
+      //   alert('ret >> :' + JSON.stringify(ret));
+      //   alert('err >> :' + JSON.stringify(err));
+      // });
 
-  });
+      // 监听应用回到前台
+      api.addEventListener({
+          name:'resume'
+      }, function(ret, err){
+          // alert('ret >> :' + JSON.stringify(ret));
+          // alert('err >> :' + JSON.stringify(err));
+          // 执行请求接口判断当前人员是否在线问题
+          checkOnline();
+      });
 }
 
 

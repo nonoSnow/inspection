@@ -42,12 +42,12 @@
             <div class="aui-searchbar-input border-radius4 bgc-ff">
                 <i class="aui-iconfont aui-icon-search color-333"></i>
                 <div class="width75 relative">
-                  <input class="width100" type="search" placeholder="请输入设备名称" id="search-input">
+                  <input class="width100" type="search" placeholder="请输入设备编号" id="search-input">
                   <div class="aui-searchbar-clear-btn margin-top3 right75">
                       <i class="aui-iconfont aui-icon-close"></i>
                   </div>
                 </div>
-                <div class="search-btn color-598 text-cent aui-hide">
+                <div class="search-btn color-598 text-cent aui-hide" onclick="clickSearch()">
                   搜索
                 </div>
             </div>
@@ -56,8 +56,12 @@
           提示语：设备和管道只选一项
         </div>
       </div>
-      <div class="flex-con flex-content height100 bgc-f3">
-        <ul id='equipmentList' class="aui-content-padded font-S75 margin-top0">
+      <div id='list-box' class="flex-con flex-content height100 bgc-f3 relative over-hide">
+        <div class="height100 overflowScroll">
+          <ul id='equipmentList' class="aui-content-padded font-S75 margin-top0">
+          </ul>
+        </div>
+        <!-- <ul id='equipmentList' class="aui-content-padded font-S75 margin-top0"> -->
           <!-- <li class="padding75 bgc-ff border-radius4">
             <div class="relative ">
               名称：蝶阀
@@ -69,7 +73,7 @@
               <span class="aui-iconfont aui-icon-location absolute right0"></span>
             </div>
           </li> -->
-        </ul>
+        <!-- </ul> -->
       </div>
     </div>
   </body>

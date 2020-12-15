@@ -1,0 +1,393 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>报警记录页</title>
+    <link rel="stylesheet" type="text/css" href="../css/auicss/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/auicss/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/public.css" />
+    <style>
+        .aui-bar-nav,.aui-bar-nav.aui-bar-light .aui-iconfont{
+            /* background-color:#4089F3 */
+            color: #333333;
+        }
+        #header-title{
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 99;
+        }
+        .soso-title{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.25rem 0.6rem;
+            background: white;
+        }
+        .aui-searchbar{
+            /*width: 14.8rem;*/
+            width: 79.3%;
+            background-color: white;
+        }
+        .aui-searchbar-input{
+            height: 1.65rem;
+            border-radius: 1.65rem;
+            line-height: 1.65rem;
+            background-color:#efefef;
+            margin: 0;
+        }
+        .aui-searchbar-input input{
+            height: 1.65rem;
+            width: 100%;
+        }
+        .change-box{
+          width: 100%;
+          position: relative;
+        }
+        .change-box .aui-list-item-input{
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+        .change-box .aui-list{
+          font-size: 0.75rem;
+          color: #333333;
+          height: 0;
+          overflow: hidden;
+          position: absolute;
+          top: 0;
+          width: 100%;
+          /*transition: all 10s;*/
+        }
+        .change-box input[type="text"]{
+          font-size: 0.75rem;
+        }
+        .results-box{
+          width: 100%;
+        }
+        .results-box .results-list{
+          padding: 0.4rem 0.6rem;
+          display: flex;
+          background-color: #fff;
+          margin-top: 0.6rem;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .results-list-mid{
+          display: flex;
+          flex-direction: column;
+        }
+        .results-list-right{
+          display: flex;
+          height: 100%;
+          align-items: center;
+          justify-content: center;
+        }
+        .results-list-right .round{
+          width: 1.4rem;
+          height: 1.4rem;
+          background: url('../image/rightno.png');
+          background-size: 100% 100%;
+        }
+        .results-list-right .round.active{
+          background: url('../image/rightok.png');
+          background-size: 100% 100%;
+        }
+        .results-list-left-list{
+          display: flex;
+          flex-wrap: wrap;
+          font-size: 0.7rem;
+          align-items: center;
+          margin-bottom: 0.3rem;
+        }
+        .results-list-left-list .winingbtn{
+            font-size: 0.7rem;
+            color: #FFA420;
+            height: 1rem;
+            border-radius: 0.5rem;
+            width: 4.85rem;
+            border: 1px solid #FFA420;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .imgfile{
+          width: 3.65rem;
+          height: 3.65rem;
+          background: #E6E6E6;
+          opacity: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+        }
+        #footer{
+          position: fixed;
+          display: flex;
+          width: 100%;
+          height: 3.5rem;
+          background-color: #ffffff;
+          bottom: 0;
+          justify-content: space-around;
+          align-items: center;
+          padding: 0 0.6rem;
+        }
+        .echarts-box {
+          width: 100%;
+          padding: 0.4rem 0.6rem 0;
+        }
+
+        .echarts {
+          background: #ffffff;
+          padding: 0.4rem 0.6rem;
+          border-radius: 2px;
+          width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='header-title'>
+        <header class="aui-bar aui-bar-nav aui-bar-light" id="header">
+            <a class="aui-pull-left aui-btn" tapmode onclick="backwin()">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </a>
+            <div class="aui-title">查询结果</div>
+        </header>
+    </div>
+    <div id='content' style="background-color:rgba(245, 245, 245, 1);">
+      <div class="echarts-box aui-hide">
+        <div class="echarts">
+          <div id="container" style="height: 250px;width:100%"></div>
+        </div>
+      </div>
+        <!-- 搜索出来的list -->
+        <div class='results-box'>
+          <!-- list -->
+        </div>
+    </div>
+    <!-- <footer id='footer'>
+      <div class='btnKong on' tapmode onclick="checkedAll()">全选</div>
+      <div class='btnKong on' tapmode onclick="toDispose()" style="background-color:#ff6769;border: 1px solid #ff6769;">报警处理</div>
+    </footer> -->
+</body>
+<script
+<script type="text/javascript" src="../script/auijs/api.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src="../script/echarts.min.js"></script>
+<script type="text/javascript" src='../script/public.js'></script>
+<script type="text/javascript" src="../script/request.js"></script>
+<script type="text/javascript" src='../script/template.js'></script>
+<script type="text/template" id='sosolist'>
+  {{each list value index}}
+  <div class='results-list'>
+        <div class='results-list-mid'>
+          <span class='results-list-left-list'>
+            <img src='../image/leftround.png' style="width:0.45rem;height:0.45rem"/>
+            <span class="co-333333 mlr-10" style="margin-left:0.55rem">{{value.CmmpareTime}}</span>
+          </span>
+          <span class='results-list-left-list'>
+            <span class="co-333333 mlr-10">用户编号:</span>
+            <span class="co-595959">{{value.CustomerCode}}</span>
+          </span>
+          <span class='results-list-left-list'>
+            <span class="co-333333 mlr-10">用户名称:</span>
+            <span class="co-595959">{{value.CustomerName}}</span>
+          </span>
+          <span class='results-list-left-list'>
+            <span class="co-333333 mlr-10">水表表号:</span>
+            <span class="co-595959">{{value.StampNo}}</span>
+          </span>
+          <span class='results-list-left-list'>
+            <span class="co-333333 mlr-10">今年日流量:</span>
+            <span class="co-595959">{{value.ThisYearValue}}</span>
+          </span>
+          <span class='results-list-left-list'>
+            <span class="co-333333 mlr-10">去年日流量:</span>
+            <span class="co-595959">{{value.LastYearValue}}</span>
+          </span>
+          <span class='results-list-left-list'>
+            <span class="co-333333 mlr-10">增长率:</span>
+            <span class="co-595959">{{value.Ratio}}</span>
+          </span>
+        </div>
+  </div>
+  {{/each}}
+</script>
+<script type="text/javascript">
+var MeterBigAmountDetailsList={
+    UserId:$api.getStorage('cqUserId'),//*
+    StampNo:'',//水表表号//*
+    FloatValue:'',//数值正负*
+    SynRatioValue:'',//同期比值*
+    BeginTime:'',//开始报警时间*
+    EndTime:'',//结束报警时间*
+    PageIndex:1,//页码*
+    PageSize:40//每页条数*
+}
+var apiready = function() {
+        headerHeight();
+        api.parseTapmode();
+        api.setStatusBarStyle({
+            style:"dark"
+        });
+        MeterBigAmountDetailsList.StampNo=api.pageParam.list.StampNo	,//水表铭牌*
+        MeterBigAmountDetailsList.FloatValue=api.pageParam.list.FloatValue,//数值正负*
+        MeterBigAmountDetailsList.SynRatioValue=api.pageParam.list.SynRatioValue,//同期比值*
+        MeterBigAmountDetailsList.BeginTime=api.pageParam.list.BeginTime,//开始报警时间*
+        MeterBigAmountDetailsList.EndTime=api.pageParam.list.EndTime,//结束报警时间*
+        // 模板引擎
+        GetMeterBigAmountDetailsListajax()
+}
+var checkedList=[];//选中的用户表号集合
+var timeout;//定义一个定时器
+// 全选
+function checkedAll() {
+    checkedList = [];
+    let checkedall = $('.results-list-right .round');
+    checkedall.addClass('active');
+    // 遍历元素
+    checkedall.each(function() {
+        checkedList.push($(this).data('id'))
+    })
+    alert(checkedList)
+}
+//前往处理报警
+function toDispose(){
+    if(checkedList.length <=0 ){
+      api.toast({
+          msg: '请至少选择一项进行处理',
+          duration: 2000,
+          location: 'top'
+      });
+      return false;
+    }
+    api.openWin({
+        name: 'index_dispose',
+        url: './index_dispose.html',
+        pageParam: {
+            checkedList: checkedList
+        }
+    });
+
+}
+
+//获取大量水列表
+function GetMeterBigAmountDetailsListajax(){
+  // console.log(JSON.stringify(MeterBigAmountDetailsList));
+    NewGet('/wapi/WRPData/GetMeterBigAmountDetailsList',MeterBigAmountDetailsList,
+    $api.getStorage('token'),function(ret,err){
+      // console.log(JSON.stringify(ret));
+      if(ret.IsSuccess){
+        if (ret.Data.TotalCount == 0) {
+          $('.echarts-box').addClass('aui-hide');
+        } else {
+          $('.echarts-box').removeClass('aui-hide');
+        }
+          // if(MeterBigAmountDetailsList.PageIndex==1){
+            let startStr=`<div class='startStr' style='color:#fff;
+background: linear-gradient(90deg, #3DB2FF 0%, #328BFD 100%);text-align: center'>共计：${ret.Data.TotalCount}条数据</div>`;
+            $('.results-box').prepend(startStr)
+            setTimeout(function(){
+              $('.startStr').remove()
+            },5000)
+          // }
+          // if(MeterBigAmountDetailsList.PageIndex<=ret.Data.TotalPages){
+            // let str = template('sosolist',{list:ret.Data.PageData});
+            // $('.results-box').append(str);
+            // MeterBigAmountDetailsList.PageIndex++;
+            // 处理图表所需数据
+            var dateData = [],
+             jinData = [],
+             quData = [];
+            if (ret.Data.PageData.length != 0) {
+              ret.Data.PageData.forEach(function(item) {
+                dateData.push(item.CmmpareTime);
+                jinData.push(item.ThisYearValue);
+                quData.push(item.LastYearValue);
+              })
+
+              // console.log(JSON.stringify(dateData));
+              // console.log(JSON.stringify(jinData));
+              // console.log(JSON.stringify(quData));
+              createEchart(dateData, jinData, quData);
+
+              let str = template('sosolist',{list:ret.Data.PageData});
+              $('.results-box').append(str);
+            } else {
+              let endStr=`<div class='endStr' style='color:#fff;
+  background: linear-gradient(90deg, #3DB2FF 0%, #328BFD 100%);text-align: center'>没有更多了</div>`
+              $('.results-box').append(endStr)
+              setTimeout(function(){
+                $('.endStr').remove()
+              },2000)
+            }
+//           }else{
+//             let endStr=`<div class='endStr' style='color:#fff;
+// background: linear-gradient(90deg, #3DB2FF 0%, #328BFD 100%);text-align: center'>没有更多了</div>`
+//             $('.results-box').append(endStr)
+//             setTimeout(function(){
+//               $('.endStr').remove()
+//             },2000)
+//           }
+      }else {
+          api.toast({
+              msg:ret.Msg,
+              duration: 2000,
+              location: 'top'
+          });
+      }
+    })
+}
+
+// 创建图表
+function createEchart(dateData, jinData, quData) {
+  var options = {
+			    color:['#ff2d52', '#d48265'],
+			    tooltip: {
+			        trigger: 'axis'
+			    },
+			    legend: {
+			        data: ['今年日流量', '去年日流量']
+			    },
+			    grid: {
+			        left: '3%',
+			        right: '4%',
+			        bottom: '3%',
+			        containLabel: true
+			    },
+			    xAxis: {
+			        type: 'category',
+			        boundaryGap: false,
+			        data: dateData
+			    },
+			    yAxis: {
+			        type: 'value'
+			    },
+			    series: [
+			        {
+			            name: '今年日流量',
+			            type: 'line',
+			            data: jinData
+			        },
+			        {
+			            name: '去年日流量',
+			            type: 'line',
+			            data: quData,
+                  lineStyle: {
+      							type: 'dashed'
+      						}
+			        }
+			    ]
+			  };
+			 var myChart = echarts.init(document.getElementById('container'));
+			  myChart.setOption(options);
+}
+</script>
+
+</html>

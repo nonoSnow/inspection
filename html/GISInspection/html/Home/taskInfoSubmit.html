@@ -197,9 +197,11 @@
   {{each list value i}}
   <div class="margin-top75 file-div relative margin-right3" onclick="previewImg(this)" parse="{{url}}{{value.url}}">
     <img src="{{url}}{{value.url}}" class="width100 height100" alt="">
+    {{if type == 'handle'}}
     <div class="absolute top0 right0 del-icon" tapmode onclick="deleteImg(this)" parse="{{i}}">
       <img class="width100 height100 borra" src="../../image/del.png" alt="">
     </div>
+    {{/if}}
   </div>
   {{/each}}
   {{if type == 'handle'}}

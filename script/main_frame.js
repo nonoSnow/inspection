@@ -170,9 +170,13 @@ function fnInVue() {
 
             },
             openClaimTask:function() {
+                // api.openWin({
+                //     name: 'ClaimTask',
+                //     url: '../Task/ClaimTask.html',
+                // });
                 api.openWin({
-                    name: 'ClaimTask',
-                    url: '../Task/ClaimTask.html',
+                    name: 'CqMeterReading',
+                    url: '../CqMeterReading/index.html',
                 });
             },
             getAppList:function() { //获取应用列表
@@ -249,7 +253,18 @@ function fnInVue() {
                                             $api.setStorage('bwPassWord', app[j].thirdPartyPassWord);
                                             $api.setStorage('bwHeaders', JSON.stringify(Authorization));
                                             waterCreatTable();
-                                        } else {
+                                        } else if (app[j].coding == 'WaterStarOne-WRP-S8') {
+                                          console.log(JSON.stringify(app[j]));
+                                            _this.showClearDataBtn = true;
+                                            _this.isShowOperationBtnsBox = false;
+                                            $api.setStorage('cqapipath', app[j].appServerApi);
+                                            $api.setStorage('cqappServerApiIntranet', app[j].appServerApiIntranet);
+                                            $api.setStorage('cqUserName', app[j].thirdPartyUserName);
+                                            $api.setStorage('cqUserId', app[j].thirdPartyUserId);
+                                            $api.setStorage('cqPassWord', app[j].thirdPartyPassWord);
+                                            $api.setStorage('cqHeaders', JSON.stringify(Authorization));
+                                            waterCreatTable();
+                                        }  else {
 
                                             _this.showClearDataBtn = false;
                                         }

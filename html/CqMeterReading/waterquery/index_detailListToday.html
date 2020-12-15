@@ -1,0 +1,337 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>用水详情页</title>
+    <link rel="stylesheet" type="text/css" href="../css/auicss/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/auicss/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/public.css" />
+    <style>
+        .aui-bar-nav,.aui-bar-nav.aui-bar-light .aui-iconfont{
+            /* background-color:#4089F3 */
+            color: #333333;
+        }
+        #header-title{
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+        .soso-title{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            margin:0.6rem;
+            padding: 0.6rem;
+            background-color: white;
+            border-radius: 10px;
+            /*width: 100%;*/
+            /*position: relative;*/
+            overflow: scroll;
+        }
+        .soso-title-left{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+            background-color: #fff;
+        }
+        .soso-title-left .soso-round{
+            width: 0.5rem;
+            height: 0.5rem;
+            background: #D8D8D8;
+            border-radius: 50%;
+        }
+        .soso-title-left .input-box{
+            background: rgba(239, 239, 239, 1);
+            height: 1.25rem;
+            width: 70%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            opacity: 0.5;
+            border-radius: 0.625rem;
+        }
+        .soso-title .soso-aling{
+          height: 2.1rem;
+          width: 1px;
+          background: #D8D8D8;
+          position: absolute;
+          left: 5.99%;
+          top: 50%;
+        }
+        .soso-title .wtdetail,.soso-title .wtdetailtime{
+          display: flex;
+          width: 100%;
+          align-items: center;
+        }
+        .change-box{
+          width: 100%;
+          position: relative;
+        }
+        .change-box .aui-list-item-input{
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+        .change-box .aui-list{
+          font-size: 0.75rem;
+          color: #333333;
+          height: 0;
+          overflow: hidden;
+          position: absolute;
+          top: 0;
+          width: 100%;
+          /*transition: all 10s;*/
+        }
+        .change-box input[type="text"]{
+          font-size: 0.75rem;
+        }
+        .form-box{
+          width: 100%;
+        }
+        .results-box{
+          width: 100%;
+          display: flex;
+          justify-content: space-around;
+          flex-wrap: wrap;
+          background-color: #fff;
+          border-top: 1px solid #cccccc;
+          border-bottom: 1px solid #cccccc;
+        }
+        .results-box-left{
+          width: 20%;
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+        }
+        .results-box-mid,.results-box-right{
+          width: 40%;
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+          border-left: 1px solid #cccccc;
+        }
+        .title-box{
+          height: 6.875rem;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          font-size: 0.6rem;
+        }
+        .basis-title{
+          width: 100%;
+          text-align: center;
+        }
+        .basis-title-box{
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          padding: 0 0.4rem;
+          margin-top: 0.4rem;
+        }
+        .detail-box{
+          height: 2rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 0.6rem;
+          border-top: 1px solid #cccccc;
+        }
+        .address-box{
+          height: 4rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 0.6rem;
+          border-top: 1px solid #cccccc;
+        }
+        #footer{
+          position: fixed;
+          display: flex;
+          width: 100%;
+          height: 3.5rem;
+          background-color: #ffffff;
+          bottom: 0;
+          justify-content: space-around;
+          align-items: center;
+          padding: 0 0.6rem;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+        }
+        .soso-title-bottom-list{
+          /*width: 100%;*/
+          display: flex;
+          justify-content: space-around;
+          /*flex-wrap: wrap;*/
+          align-items: center;
+          border-top: 1px solid #cccccc;
+          border-left: 1px solid #cccccc;
+        }
+        .soso-title-bottom-list span{
+          display: flex;
+          justify-content:center;
+          align-items: center;
+          font-size: 0.65rem;
+          border-right: 1px solid #cccccc;
+          border-bottom: 1px solid #cccccc;
+          height: 2rem;
+          width: 7rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='header-title'>
+        <header class="aui-bar aui-bar-nav aui-bar-light" id="header">
+            <a class="aui-pull-left aui-btn" tapmode onclick="backwin()">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </a>
+            <div class="aui-title">用水详情</div>
+        </header>
+    </div>
+    <div id='content' style="background-color:rgba(245, 245, 245, 1);">
+        <!-- 搜索框 -->
+        <div class='soso-title'>
+            <div class='wtdetail co-bule fn-08'>用户名称：张三</div>
+            <div class='wtdetailtime co-bule fn-08'>时间：2020-10-16</div>
+        </div>
+      <div class='soso-title list'>
+        <div class='soso-title-bottom-list'>
+            <span >时间</span>
+            <span>正向流量</span>
+            <span >反向流量</span>
+            <span >止度</span>
+            <span >净流量</span>
+        </div>
+      </div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/auijs/api.js"></script>
+<script type="text/javascript" src="../script/auijs/aui-dialog.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src="../script/rolldate.min.js"></script>
+<script type="text/javascript" src='../script/public.js'></script>
+<script type="text/javascript" src='../script/template.js'></script>
+<script type="text/javascript" src="../script/request.js"></script>
+<script type="text/template" id='sosolist'>
+  {{each list value index}}
+    <div class='soso-title-bottom-list'>
+        <span  class='co-bule'>{{value.LastUpdateTime}}</span>
+        <span >{{value.PositiveCumulativeFlow}}</span>
+        <span >{{value.NegativeCumulativeFlow}}</span>
+        <span >{{value.CumulativeFlow}}</span>
+        <span >{{value.InstantaneousFlow}}</span>
+    </div>
+  {{/each}}
+</script>
+<script type="text/javascript">
+var apiready = function() {
+        headerHeight();
+        api.parseTapmode();
+        api.setStatusBarStyle({
+            style:"dark"
+        });
+        $('.wtdetail').text('用户名称：'+api.pageParam.CustomerName)
+        $('.wtdetailtime').text('时间：'+api.pageParam.LastUpdateTime)
+        MeterHourAmountList.StampNo=api.pageParam.StampNo
+        MeterHourAmountList.TargetDate=api.pageParam.LastUpdateTime
+        dialog = new auiDialog();
+        // list =  [
+        //     {
+        //         "StampNo": 10955,
+        //         "LastUpdateTime": "2020-10-10 10:10:10",
+        //         "PositiveCumulativeFlow": 100.21,
+        //         "NegativeCumulativeFlow": 100.21,
+        //         "InstantaneousFlow": 100.21,
+        //         "CumulativeFlow": 100.21
+        //     },
+        //     {
+        //         "StampNo": 10955,
+        //         "LastUpdateTime": "2020-10-10 11:10:10",
+        //         "PositiveCumulativeFlow": 100.21,
+        //         "NegativeCumulativeFlow": 100.21,
+        //         "InstantaneousFlow": 100.21,
+        //         "CumulativeFlow": 100.21
+        //     }
+        // ]
+        // //遍历List  对时间格式进行处理
+        // for(var i=0;i<list.length;i++){
+        //     list[i].LastUpdateTime = list[i].LastUpdateTime.substring(11)
+        // }
+        // // 模板引擎
+        // var str = template('sosolist',{list:list});
+        // $('.soso-title.list').append(str)
+        GetMeterHourAmountListajax()
+}
+
+var list;//电磁表
+var listvs;//营业系统
+var dialog;//弹框初始化
+var timeout;//定义一个定时器
+var MeterHourAmountList={
+    UserId:$api.getStorage('cqUserId'),//用户ID*
+    StampNo:'',//用户编号或者水表表号*
+    TargetDate:'',//目标日期*
+    PageIndex:1,//页码*
+    PageSize:100//每页条数*
+}
+//获取时水量列表
+function GetMeterHourAmountListajax(){
+  console.log(JSON.stringify(MeterHourAmountList));
+    NewGet('/wapi/WRPData/GetMeterHourAmountList',MeterHourAmountList,
+    $api.getStorage('token'),function(ret,err){
+      if(ret.IsSuccess){
+          console.log(JSON.stringify(ret));
+//           if(MeterHourAmountList.PageIndex==1){
+//             let startStr=`<div class='startStr' style='color:#fff;
+// background: linear-gradient(90deg, #3DB2FF 0%, #328BFD 100%);text-align: center;width:100%'>共计：${ret.Data.TotalCount}条数据</div>`;
+//             $('.soso-title.list').append(startStr)
+//             setTimeout(function(){
+//               $('.startStr').remove()
+//             },5000)
+//           }
+          if(MeterHourAmountList.PageIndex<=ret.Data.TotalPages){
+            var list = ret.Data.PageData;
+            //遍历List  对时间格式进行处理
+            for(var i=0;i<list.length;i++){
+                list[i].LastUpdateTime = list[i].LastUpdateTime.substring(11)
+            }
+            $('.endStr').remove()
+            let str = template('sosolist',{list:list});
+            $('.soso-title.list').append(str)
+            MeterHourAmountList.PageIndex++;
+          }
+//           else{
+//             let endStr=`<div class='endStr' style='color:#fff;
+// background: linear-gradient(90deg, #3DB2FF 0%, #328BFD 100%);text-align: center;width:100%'>没有更多了</div>`
+//             $('.soso-title.list').append(endStr)
+//             setTimeout(function(){
+//               $('.endStr').remove()
+//             },2000)
+//           }
+      }else {
+          api.toast({
+              msg:ret.Msg,
+              duration: 2000,
+              location: 'top'
+          });
+      }
+    })
+}
+// 对比一下
+function vslist(){
+  $('.detail-box.on').css('background-color','#FEFCE5')
+  $('.address-box.on').css('background-color','#FEFCE5')
+}
+</script>
+
+</html>

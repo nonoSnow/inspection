@@ -71,6 +71,12 @@ function initBasic() {
 function getXunData() {
   // console.log(JSON.stringify(devInfo));
   // console.log(JSON.stringify(devInfo.id));
+  api.showProgress({
+      title: '加载中...',
+      text: '',
+      modal: false
+  });
+
   var deviceId = devInfo.id == undefined ? devInfo.deciceId : devInfo.id;
   // console.log(deviceId);
   var param = {
@@ -80,14 +86,16 @@ function getXunData() {
     maxResultCount: 10
   }
 
-  // console.log(JSON.stringify(param));
+  console.log(JSON.stringify(param));
   getXunList('/api/services/Inspection/InspectionTaskService/AppGetInspectionRecordList', param, showRet, showErr);
 
   function showRet(ret) {
-    // console.log(JSON.stringify(ret));
+    console.log(JSON.stringify(ret));
+    api.hideProgress();
+
     hasNextPage = ret.result.hasNextPage;
     if (ret.result.items.length != 0) {
-      $('#haveNothing').addClass('aui-hide');
+      // $('#haveNothing').addClass('aui-hide');
 
       ret.result.items.forEach(function (item, index) {
         if (item.time != null || item.time != '') {
@@ -101,12 +109,20 @@ function getXunData() {
       var str = template('xun-box', data);
       $('#xunjianBox').append(str);
     } else {
-      $('#haveNothing').removeClass('aui-hide');
+      console.log('走到这一步了');
+      api.toast({
+          msg: '暂无巡检记录',
+          duration: 2000,
+          location: 'middle'
+      });
+
+      // $('#haveNothing').removeClass('aui-hide');
     }
   }
 
   function showErr(err) {
     // console.log(JSON.stringify(err));
+    api.hideProgress();
     if (err.body.error != undefined) {
       api.toast({
           msg: err.body.error.message,

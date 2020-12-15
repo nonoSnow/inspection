@@ -62,6 +62,20 @@ function onSave() {
   if ($(".footer-btn").hasClass('btn-disabled')) {
     return false;
   }
+  if (deviceLists.length == 0 && pipeloneLists.length != 0 && lineLength < 1) {
+    api.toast({
+        msg: '管道长度必须大于等于1km，请重置区域',
+        duration: 2000,
+        location: 'middle'
+    });
+
+    setTimeout(function() {
+      winCloseName('addAreaEquipment');
+      api.closeWin();
+    }, 2000);
+
+    return false
+  }
 
   api.showProgress({
       title: '加载中',
@@ -74,7 +88,7 @@ function onSave() {
     pointCount: checkPoint.length,
     areaPoint: areaPoint,
     deviceLists: deviceLists,
-    pipeloneLists: pipeloneLists
+    pipelineLists: pipeloneLists
   };
   var optionsAdd = {
     url: baseUrl + "api/services/Inspection/AreaService/InsertArea",
@@ -92,7 +106,17 @@ function onSave() {
       winCloseName('areaLayer');
       winCloseName('areaDivide');
       winCloseName('addAreaEquipment');
-      api.closeWin({});
+
+      // api.sendEvent({
+      //     name: 'needCloseWin',
+      //     extra: {
+      //         key1: 'value1'
+      //     }
+      // });
+      // setTimeout(function() {
+        api.closeWin({});
+      // }, 500)
+
     },
     error: function(err) {
       api.hideProgress();
@@ -109,13 +133,13 @@ function winCloseName(name){
 		setTimeout(function(){
 			api.execScript(
 			{
-				name: "root",
+				name: "inspectionMain",
 				script: "api.closeWin({name:'"+name+"'});"
 			});
 		},500)
 	}
 	else
 	{
-		api.closeWin({name:name});
+		api.closeWin({name: name});
 	}
 }

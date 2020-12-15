@@ -27,7 +27,7 @@ function getMemberLocation(callback) {
 function getLocationGPS(callback) {
     var gpsmodel = api.require('gpsState');
     gpsmodel.gpsstate(function(ret) {
-        if(ret.gps === 'true' || ret.gps == true) {
+        if(ret.gps === 'true' || ret.gps === true) {
             callback();
         } else {
             if (api.systemType == 'android') {
@@ -177,7 +177,7 @@ function getLocationGPS(callback) {
 // 获取当前用户的角色
 function getCurrentUserRoles(){
   var currentUserRoles = $api.getStorage('currentUserRoles');
-  // alert(JSON.stringify(currentUserRoles));
+  console.log(JSON.stringify(currentUserRoles));
     var Roles = [];
    currentUserRoles.forEach(function(item){
     //  console.log(item);

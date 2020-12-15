@@ -1,0 +1,531 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <!-- <title>报警记录页</title> -->
+    <title>水表明细</title>
+    <link rel="stylesheet" type="text/css" href="../css/auicss/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/auicss/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../css/public.css" />
+    <style>
+        .aui-bar-nav,
+        .aui-bar-nav.aui-bar-light .aui-iconfont {
+            /* background-color:#4089F3 */
+            color: #333333;
+        }
+
+        #header-title {
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+
+        .soso-title {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.25rem 0.6rem;
+            background: white;
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+
+        .aui-searchbar {
+            /*width: 14.8rem;*/
+            width: 79.3%;
+            background-color: white;
+        }
+
+        .aui-searchbar-input {
+            height: 1.65rem;
+            border-radius: 1.65rem;
+            line-height: 1.65rem;
+            background-color: #efefef;
+            margin: 0;
+        }
+
+        .aui-searchbar-input input {
+            height: 1.65rem;
+            width: 100%;
+        }
+
+        .change-box {
+            width: 100%;
+            position: relative;
+        }
+
+        .change-box .aui-list-item-input {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .change-box .aui-list {
+            font-size: 0.75rem;
+            color: #333333;
+            height: 0;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            /*transition: all 10s;*/
+        }
+
+        .change-box input[type="text"] {
+            font-size: 0.75rem;
+        }
+
+        .results-box {
+            width: 100%;
+            padding-bottom: 20px;
+        }
+
+        .results-box .results-list {
+            padding: 0.4rem 0.6rem;
+            /*display: flex;*/
+            background-color: #fff;
+            margin-top: 0.6rem;
+            /*justify-content: space-between;*/
+            align-items: center;
+        }
+
+        .results-list-mid {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .results-list-right {
+            display: flex;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .results-list-right .round {
+            width: 1.4rem;
+            height: 1.4rem;
+            background: url('../image/rightno.png');
+            background-size: 100% 100%;
+        }
+
+        .results-list-right .round.active {
+            background: url('../image/rightok.png');
+            background-size: 100% 100%;
+        }
+
+        .results-list-left-list {
+            display: flex;
+            flex-wrap: wrap;
+            font-size: 0.7rem;
+            align-items: center;
+            margin-bottom: 0.3rem;
+        }
+
+        .results-list-left-list .winingbtn {
+            font-size: 0.7rem;
+            color: #FFA420;
+            height: 1rem;
+            border-radius: 0.5rem;
+            /*width: 4.85rem;*/
+            border: 1px solid #FFA420;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 10px;
+        }
+
+        .imgfile {
+            width: 3.65rem;
+            height: 3.65rem;
+            background: #E6E6E6;
+            opacity: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #footer {
+            position: fixed;
+            display: flex;
+            width: 100%;
+            height: 3.5rem;
+            background-color: #ffffff;
+            bottom: 0;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 0.6rem;
+        }
+
+        .list-bottom {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .list-bottom {
+            color: #ff6769;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='header-title'>
+        <header class="aui-bar aui-bar-nav aui-bar-light" id="header">
+            <a class="aui-pull-left aui-btn" tapmode onclick="backwin()">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </a>
+            <!-- <div class="aui-title">报警记录</div> -->
+            <div class="aui-title">水表明细</div>
+        </header>
+    </div>
+    <!-- <div class='soso-title'>
+      <div class="tab-box">
+        <div class="tab-item" onclick="onMenu(0)">
+          <span>
+            待处理（2）
+            <div class="type-line type-line-0"></div>
+          </span>
+        </div>
+        <div class="tab-item" onclick="onMenu(1)">
+          <span>
+            已处理（1）
+            <div class="type-line type-line-1 aui-hide"></div>
+          </span>
+        </div>
+      </div>
+    </div> -->
+    <div id='content' style="background-color:rgba(245, 245, 245, 1);">
+        <!-- 搜索出来的list -->
+        <div class='results-box'>
+            <!-- list -->
+        </div>
+    </div>
+    <footer id='footer'>
+        <div class='btnKong on' tapmode onclick="returnBack()">返回</div>
+        <div class='btnKong on' tapmode onclick="toDispose()" style="background-color:#ff6769;border: 1px solid #ff6769;">报警处理</div>
+    </footer>
+</body>
+<script <script type="text/javascript" src="../script/auijs/api.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src='../script/public.js'></script>
+<script type="text/javascript" src="../script/request.js"></script>
+<script type="text/javascript" src='../script/template.js'></script>
+<script type="text/template" id='sosolist'>
+    {{each list value index}}
+    {{if tabType == 0}}
+    <div class='results-list'>
+        {{else if tabType == 1}}
+        <div class='results-list' onclick="toDetails(this)" parse="{{value}}">
+            {{/if}}
+            <div class='results-list-mid'>
+                <span class='results-list-left-list'>
+              <img src='../image/leftround.png' style="width:0.45rem;height:0.45rem"/>
+              <span class="co-333333 mlr-10" style="margin-left:0.55rem">水表表号:</span>
+                <span class="co-595959">{{value.StampNo}}</span>
+                </span>
+                <span class='results-list-left-list'>
+              <span class="co-333333 mlr-10">开始报警时间:</span>
+                <span class="co-595959">{{value.BeginWarnTime}}</span>
+                </span>
+                <span class='results-list-left-list'>
+              <span class="co-333333 mlr-10">最后报警时间:</span>
+                <span class="co-595959">{{value.EndWarnTime}}</span>
+                </span>
+                <span class='results-list-left-list'>
+              <span class="co-333333 mlr-10">状况描述:</span>
+                <span class="co-595959">{{value.WarnTypeName}}</span>
+                </span>
+                <span class='results-list-left-list list-bottom'>
+              <span class="mlr-10 winingbtn">报警次数：{{value.WarnCount}}</span>
+                <!-- <span class="status-span">待处理</span> -->
+                </span>
+            </div>
+            <!-- 判断是否为已处理状态，如果为已处理状态，则不显示 -->
+            <!-- <div class='results-list-right'>
+            <div class='round' data-id='{{value}}' tapmode onclick="checkedBox({{value}},this,{{index}})"></div>
+        </div> -->
+        </div>
+        {{/each}}
+</script>
+<script type="text/javascript">
+    var tabType; // 当前状态（0：待处理，1，已处理）
+    var taskId;
+    var MeterWarnDetailsList = {
+        StampNo: '',
+        WarnType: '', //报警类型
+        BeginWarnTime: '', //开始报警时间
+        EndWarnTime: '', //结束报警时间
+        TaskId: 0,  // 任务id
+        Status: 0,  // 水表状态
+        PageIndex: 1, //页码*
+        PageSize: 50 //每页条数*
+    }
+    var apiready = function() {
+        headerHeight();
+        var footer = $api.byId('footer');
+        footerH = $api.offset(footer).h;
+        // var soso = $api.dom('.soso-title');
+        // $('.soso-title').css('top', headerH);
+        // console.log(JSON.stringify($api.offset(soso)));
+        // sosoheight = $api.offset(soso).h;
+        // $('.results-box').css('padding-top', '' + sosoheight + 'px');
+        $('.results-box').css('padding-bottom', '' + headerH + 'px');
+        api.parseTapmode();
+        api.setStatusBarStyle({
+            style: "dark"
+        });
+        MeterWarnDetailsList.StampNo = api.pageParam.StampNo.StampNo;
+        MeterWarnDetailsList.WarnType = api.pageParam.StampNo.WarnType;
+        MeterWarnDetailsList.BeginWarnTime = api.pageParam.StampNo.BeginWarnTime;
+        MeterWarnDetailsList.EndWarnTime = api.pageParam.StampNo.EndWarnTime;
+        MeterWarnDetailsList.TaskId = api.pageParam.StampNo.TaskId;
+        MeterWarnDetailsList.Status = api.pageParam.tabType;
+
+        taskId = api.pageParam.StampNo.TaskId;
+        // console.log(taskId);
+        tabType = api.pageParam.tabType;
+
+        if (tabType == 0) {
+            // 待处理状态，显示按钮
+            $('#footer').removeClass('aui-hide');
+        } else {
+            // 已处理状态，不显示按钮
+            $('#footer').addClass('aui-hide');
+        }
+        //上拉加载
+        api.addEventListener({
+            name: 'scrolltobottom',
+            extra: {
+                threshold: 0 //设置距离底部多少距离时触发，默认值为0，数字类型
+            }
+        }, function(ret, err) {
+            GetMeterWarnDetailsList()
+        });
+        GetMeterWarnDetailsList();
+    }
+    var checkedList = []; //选中的用户表号集合
+    var timeout; //定义一个定时器
+    function doSearch() {
+        // 搜索的值
+        let soso = $api.val($api.byId('search-input'));
+        // 监听soso的值  是否 满足用户编号和水表表号规则  如果满足 就发起请求
+        clearTimeout(timeout);
+        timeout = setTimeout(function() {
+            // 长时间没有输入的时候触发搜索
+            alert("准备搜索:" + soso)
+        }, 2000)
+    }
+    //复选框
+    function checkedBox(StampNo, obj) {
+        if ($(obj).hasClass('active')) {
+            checkedList = removeArrValue(checkedList, StampNo)
+            $(obj).removeClass('active')
+        } else {
+            $(obj).addClass('active');
+            checkedList.push(StampNo)
+        }
+    }
+    // 全选  1表示全选  0  表示全不选
+    var checkedAlltype = 1;
+
+    function checkedAll() {
+        checkedList = [];
+        let checkedall = $('.results-list-right .round');
+        if (checkedAlltype == 1) {
+            checkedall.addClass('active');
+            // 遍历元素
+            checkedall.each(function() {
+                checkedList.push($(this).data('id'))
+            })
+            checkedAlltype = 0
+        } else {
+            checkedall.removeClass('active');
+            checkedAlltype = 1
+        }
+    }
+    //前往处理报警
+    function toDispose() {
+      // console.log('进人报警处理页面');
+        // if (checkedList.length <= 0) {
+        //     api.toast({
+        //         msg: '请至少选择一项进行处理',
+        //         duration: 2000,
+        //         location: 'top'
+        //     });
+        //     return false;
+        // }
+        // console.log(JSON.stringify(checkedList));
+        // console.log(taskId);
+        api.openWin({
+            name: 'index_dispose',
+            url: './index_dispose.html',
+            pageParam: {
+                checkedList: checkedList,
+                taskId: taskId
+            }
+        });
+
+    }
+
+
+
+    function GetMeterWarnDetailsList() {
+        // console.log(JSON.stringify(MeterWarnDetailsList));
+        NewGet('/wapi/WRPData/GetMeterWarnDetailsList', MeterWarnDetailsList, $api.getStorage('token'), function(ret, err) {
+            // console.log(JSON.stringify(ret));
+            // console.log(JSON.stringify(err));
+            if (ret.IsSuccess) {
+                // console.log(JSON.stringify(ret));
+                if (MeterWarnDetailsList.PageIndex == 1) {
+                    let startStr = `<div class='startStr' style='color:#fff;
+  background: linear-gradient(90deg, #3DB2FF 0%, #328BFD 100%);text-align: center'>共计：${ret.Data.TotalCount}条数据</div>`;
+                    $('.results-box').prepend(startStr)
+                    setTimeout(function() {
+                        $('.startStr').remove()
+                    }, 5000)
+                }
+                if (MeterWarnDetailsList.PageIndex <= ret.Data.TotalPages) {
+                    // console.log(JSON.stringify(ret.Data));
+                    let listsplice = arrysplice(ret.Data.PageData);
+                    checkedList = checkedList.concat(listsplice);
+                    let str = template('sosolist', {
+                        list: listsplice,
+                        tabType: tabType
+                    });
+                    $('.results-box').append(str);
+                    MeterWarnDetailsList.PageIndex++;
+                } else {
+                    $('.endStr').remove()
+                    let endStr = `<div class='endStr' style='color:#fff;
+  background: linear-gradient(90deg, #3DB2FF 0%, #328BFD 100%);text-align: center'>没有更多了</div>`
+                    $('.results-box').append(endStr)
+                    setTimeout(function() {
+                        $('.endStr').remove()
+                    }, 2000)
+                }
+            } else {
+                api.toast({
+                    msg: err.Msg,
+                    duration: 2000,
+                    location: 'top'
+                });
+            }
+        })
+  //       NewGet('/wapi/WRPData/GetMeterWarnDetailsList', MeterWarnDetailsList, $api.getStorage('token'), function(ret, err) {
+  //           console.log(JSON.stringify(ret));
+  //           console.log(JSON.stringify(err));
+  //           if (ret.IsSuccess) {
+  //               // console.log(JSON.stringify(ret));
+  //               if (MeterWarnDetailsList.PageIndex == 1) {
+  //                   let startStr = `<div class='startStr' style='color:#fff;
+  // background: linear-gradient(90deg, #3DB2FF 0%, #328BFD 100%);text-align: center'>共计：${ret.Data.TotalCount}条数据</div>`;
+  //                   $('.results-box').prepend(startStr)
+  //                   setTimeout(function() {
+  //                       $('.startStr').remove()
+  //                   }, 5000)
+  //               }
+  //               if (MeterWarnDetailsList.PageIndex <= ret.Data.TotalPages) {
+  //                   // console.log(JSON.stringify(ret.Data));
+  //                   let listsplice = arrysplice(ret.Data.PageData);
+  //                   checkedList = checkedList.concat(listsplice);
+  //                   let str = template('sosolist', {
+  //                       list: listsplice,
+  //                       tabType: tabType
+  //                   });
+  //                   $('.results-box').append(str);
+  //                   MeterWarnDetailsList.PageIndex++;
+  //               } else {
+  //                   $('.endStr').remove()
+  //                   let endStr = `<div class='endStr' style='color:#fff;
+  // background: linear-gradient(90deg, #3DB2FF 0%, #328BFD 100%);text-align: center'>没有更多了</div>`
+  //                   $('.results-box').append(endStr)
+  //                   setTimeout(function() {
+  //                       $('.endStr').remove()
+  //                   }, 2000)
+  //               }
+  //           } else {
+  //               api.toast({
+  //                   msg: err.Msg,
+  //                   duration: 2000,
+  //                   location: 'top'
+  //               });
+  //           }
+  //       })
+    }
+    //数组去重
+    function arrysplice(list) {
+        for (var i = 0; i < list.length; i++) {
+            for (var j = i + 1; j < list.length; j++) {
+                if (list[i].WarnType === list[j].WarnType) {
+                    BeginWarnTimei = new Date(list[i].BeginWarnTime)
+                    EndWarnTimei = new Date(list[i].EndWarnTime)
+                    BeginWarnTimej = new Date(list[j].BeginWarnTime)
+                    EndWarnTimej = new Date(list[j].EndWarnTime)
+                    list[i].WarnCount = list[i].WarnCount + list[j].WarnCount
+                        //开始时间
+                    if (BeginWarnTimei > BeginWarnTimej) {
+                        list[i].BeginWarnTime = list[j].BeginWarnTime
+                    }
+                    //结束时间
+                    if (EndWarnTimei < EndWarnTimej) {
+                        list[i].EndWarnTime = list[j].EndWarnTime
+                    }
+                    list.splice(j, 1);
+                    j--
+                }
+            }
+        }
+        return list
+    }
+
+    // var tabType = 0;  // 当前为哪种状态（0：待处理，1：已处理）
+    // tab切换
+    function onMenu(index) {
+        tabType = index;
+        $('.type-line').addClass('aui-hide');
+
+        var str = '.type-line-' + tabType;
+        $(str).removeClass('aui-hide');
+
+        if (tabType == 0) {
+            // 待处理状态，显示按钮
+            $('#footer').removeClass('aui-hide');
+        } else {
+            // 已处理状态，不显示按钮
+            $('#footer').addClass('aui-hide');
+        }
+    }
+
+    // 进入明细页面
+    function toDetails(that) {
+      console.log('进入明细页面');
+      // console.log(info);
+      var paramInfo = $(that).attr('parse');
+      // console.log(paramInfo);
+      // console.log(typeof(paramInfo));
+      var info = JSON.parse(paramInfo);
+      // console.log(typeof(info));
+      // console.log(JSON.stringify(info));
+      // console.log(taskId);
+      api.openWin({
+          name: 'details',
+          url: './details.html',
+          pageParam: {
+              info: info,
+              taskId: taskId
+          }
+      });
+    }
+
+    function returnBack() {
+        api.closeWin();
+    }
+</script>
+
+</html>

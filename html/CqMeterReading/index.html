@@ -1,0 +1,350 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>电磁水表主页面</title>
+    <link rel="stylesheet" type="text/css" href="./css/auicss/aui.css" />
+    <link rel="stylesheet" type="text/css" href="./css/auicss/api.css" />
+    <link rel="stylesheet" type="text/css" href="./css/common.css"/>
+    <style type="text/css">
+        .aui-bar-nav{
+            background-color:#4089F3
+        }
+        #header-title{
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+        .min-list{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.25rem;
+        }
+        .min-list-box{
+            display: flex;
+            flex-direction: column;
+            font-size: 0.8rem;
+            color: #333333;
+            justify-content: center;
+            align-items: center;
+            /*width: 49.33vw;*/
+            /*width: 9.25rem;*/
+            width: 49.33%;
+            background-color: white;
+            height: 8.5rem;
+        }
+        .min-list-box span{
+            margin-top: 0.45rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='header-title'>
+        <header class="aui-bar aui-bar-nav" id="header">
+            <a class="aui-pull-left aui-btn" tapmode onclick="backwin()">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </a>
+            <div class="aui-title">电磁水表APP</div>
+        </header>
+    </div>
+    <div id="content" style="min-height:100vh;background: #F5F5F5;display:none">
+      <div class='min-list'>
+          <div class='min-list-box ' onclick="linkto(1)" tapmode>
+              <img src="image/task.png" style="height: 4.8rem;">
+              <!-- <span>故障报警</span> -->
+              <span>我的任务</span>
+          </div>
+          <div class='min-list-box ' onclick="linkto(2)" tapmode>
+             <img src="image/dlssc.png" style="height: 4.8rem;">
+             <span>大水量筛查</span>
+          </div>
+      </div>
+      <div class='min-list'>
+        <div class='min-list-box' onclick="linkto(3)" tapmode>
+            <img src="image/dwxh.png" style="height: 4.8rem;">
+            <span>定位巡航</span>
+        </div>
+        <div class='min-list-box' onclick="linkto(4)">
+           <img src="image/sbtb.png" style="height: 4.8rem;">
+           <span>水表同步</span>
+        </div>
+    </div>
+    <div class='min-list'>
+        <div class='min-list-box' tapmode onclick="linkto(5)">
+            <img src="image/slcx.png" style="height: 4.8rem;">
+            <span>水量查询</span>
+        </div>
+        <div class='min-list-box' tapmode onclick="linkto(6)">
+           <img src="image/sbclcx.png" style="height: 4.8rem;">
+           <span>水表处理查询</span>
+        </div>
+    </div>
+    <div class='min-list'>
+        <div class='min-list-box' tapmode onclick="linkto(7)">
+            <img src="image/tjbb.png" style="height: 4.8rem;">
+            <span>统计报表</span>
+        </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript" src="./script/auijs/api.js"></script>
+<script type="text/javascript" src="./script/jquery.min.js"></script>
+<script type="text/javascript" src="../script/rolldate.min.js"></script>
+<script type="text/javascript" src='./script/public.js'></script>
+<script type="text/javascript" src='./script/request.js'></script>
+<script type="text/javascript">
+var userName;
+var password;
+var userId;
+
+// $api.setStorage('cqUserId', 10000);
+var apiready = function() {
+        headerHeight();
+        userName=$api.getStorage('cqUserName'),
+        password=$api.getStorage('cqPassWord'),
+        userId=$api.getStorage('cqUserId')
+
+        // console.log(userName);
+        // console.log(password);
+        // console.log(userId);
+        if(userName == null || userName == "" || password == null || password == "" || userId == null || userId == ""){
+          api.toast({
+              msg:'未获取到用户登录信息',
+              duration: 2000,
+              location: 'top'
+          });
+          setTimeout(function(){
+              api.closeWin()
+          },2000)
+        }else {
+          Login();
+        }
+        // Login();
+        var fs = api.require("fs");
+        fs.createDir({
+            path: 'fs://cqpicture'
+        })
+}
+// 单点登录
+var downlaodTag=0;//下载的标识符
+var data;//登录数据
+var token;
+function Login(){
+    // $api.setStorage('cqUserId', 10000);
+    let data = {
+      userName:userName,
+      password:password
+      //测试账户
+      // userName:'super',
+      // userName: 'super',
+      // password: '219057b506a0136a'
+      // password:'aae73fcdf8258752'
+    }
+    // console.log(JSON.stringify(data));
+    // alert('开始请求')
+    NewPost('/wapi/WRPData/SsoLogin',data,false,function(ret,err){
+      // console.log(JSON.stringify(ret));
+      // console.log(JSON.stringify(err));
+      if(ret.IsSuccess){
+        token = ret.Data.JumpUrl.split('=')[1]
+        //获取重庆自来水用户信息
+        $api.setStorage('token',token);
+        // 下载字典信息
+        downlaodDatas(downlaodTag);
+        // 下载用水性质
+        GetNaturesOptions();
+      }else {
+        api.toast({
+            msg:ret.Msg,
+            duration: 2000,
+            location: 'top'
+        });
+      }
+    })
+}
+// 获取营业区域下拉框数据  字典信息
+function GetOrgOptions(uid,token,title){
+    NewGet('/wapi/WRPData/GetOrgOptions',{UserId:uid},token,function(ret,err){
+      if(ret.IsSuccess){
+        $api.setStorage('CQOrgOptions',ret.Data);
+        downlaodTag++;
+        downlaodDatas(downlaodTag)
+      }else {
+        api.confirm({
+            title: '提示消息',
+            msg: title+'获取失败，是否重新获取',
+            buttons: ['是', '否']
+        }, function(ret, err){
+            if(ret.buttonIndex==1){
+                downlaodDatas(downlaodTag)
+            }else {
+                api.toast({
+                    msg:'跳过了'+title+'信息获取',
+                    duration: 2000,
+                    location: 'top'
+                });
+                downlaodTag++;
+                downlaodDatas(downlaodTag)
+            }
+        })
+      }
+    })
+}
+function downlaodDatas(downlaodTag){
+  // console.log(downlaodTag);
+  // console.log(userId);
+  // userId = 10946;
+  if(downlaodTag===0){
+    //获取营业区域信息
+    GetOrgOptions(userId,token,'营业区域');
+  }else if (downlaodTag===1) {
+    // //水表铭牌
+    GetDicOptions('SBMP',token,'水表铭牌')
+  }else if (downlaodTag===2) {
+    // //水表口径
+    GetDicOptions('SBKJ',token,'水表口径')
+  }else if (downlaodTag===3) {
+    // //数值正负
+    GetDicOptions('SZZF',token,'数值正负')
+    // console.log($api.getStorage('SZZF'));
+  }else if (downlaodTag===4) {
+    // //同期比值
+    GetDicOptions('TQBZ',token,'同期比值')
+  }else if (downlaodTag===5) {
+    // //报警类型
+    GetDicOptions('BJJLLX/GZJLLX',token,'报警类型')
+  }else if (downlaodTag===6) {
+    // 水表类型
+    GetDicOptions('SBLX',token,'水表类型')
+  }
+  else {
+    downlaodTag = 0;
+    api.toast({
+        msg:'所需基本数据下载完成',
+        duration: 2000,
+        location: 'top'
+    });
+    $('#content').css('display','block')
+  }
+}
+//获取字典信息
+function GetDicOptions(data,token,title){
+    NewGet('/wapi/WRPData/GetDicOptions',{DicTypeCode:data},token,function(ret,err){
+      if(ret.IsSuccess){
+        $api.setStorage(data,ret.Data);
+        downlaodTag++;
+        downlaodDatas(downlaodTag)
+      }else {
+          api.confirm({
+              title: '提示消息',
+              msg: title+'获取失败，是否重新获取',
+              buttons: ['是', '否']
+          }, function(ret, err){
+              if(ret.buttonIndex==1){
+                  downlaodDatas(downlaodTag)
+              }else {
+                  api.toast({
+                      msg:'跳过了'+title+'信息获取',
+                      duration: 2000,
+                      location: 'top'
+                  });
+                  downlaodTag++;
+                  downlaodDatas(downlaodTag)
+              }
+          })
+      }
+    })
+}
+// 获取用水性质
+function GetNaturesOptions() {
+  var data = '';
+  NewGet('/wapi/WRPData/GetNaturesOptions', data, token, function(ret,err){
+    // console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(err));
+    if(ret.IsSuccess){
+      $api.setStorage('YSXZ',ret.Data);
+    }else {
+      api.toast({
+          msg:'获取用水性质失败了',
+          duration: 2000,
+          location: 'top'
+      });
+    }
+  })
+}
+//跳转
+function linkto(id){
+  switch (true) {
+      case id === 1:
+          api.openWin({
+              name: 'malfunction',
+              url: './malfunction/main.html',
+              pageParam:{
+                type:id
+              }
+          });
+          break;
+      case id === 2:
+          api.openWin({
+              name: 'lotofwater',
+              url: './lotofwater/index.html',
+              pageParam:{
+                type:id
+              }
+          });
+          break;
+      case id === 3:
+          api.openWin({
+              name: 'lotofwater',
+              url: './navigation/index.html',
+              pageParam:{
+                type:id
+              }
+          });
+          break;
+      case id === 4:
+          api.openWin({
+              name: 'synchronous',
+              url: './synchronous/index.html',
+              pageParam:{
+                type:id
+              }
+          });
+          break;
+      case id === 5:
+          api.openWin({
+              name: 'waterquery',
+              url: './waterquery/index.html',
+              pageParam:{
+                type:id
+              }
+          });
+          break;
+      case id === 6:
+          api.openWin({
+              name: 'waterdispose',
+              url: './waterdispose/index.html',
+              pageParam:{
+                type:id
+              }
+          });
+          break;
+      case id === 7:
+          api.openWin({
+              name: 'waterdispose',
+              url: './statisticalReport/index.html',
+              pageParam:{
+                type:id
+              }
+          });
+          break;
+    }
+  }
+</script>
+
+</html>

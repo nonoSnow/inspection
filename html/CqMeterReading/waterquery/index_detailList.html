@@ -1,0 +1,969 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>用水详情页</title>
+    <link rel="stylesheet" type="text/css" href="../css/auicss/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/auicss/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/public.css" />
+    <style>
+        .aui-bar-nav,.aui-bar-nav.aui-bar-light .aui-iconfont{
+            /* background-color:#4089F3 */
+            color: #333333;
+        }
+        #header-title{
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 99;
+        }
+        .soso-title{
+            /*display: flex;*/
+            flex-wrap: wrap;
+            align-items: center;
+            margin:0.6rem;
+            padding: 0.6rem;
+            background-color: white;
+            border-radius: 10px;
+            /*width: 100%;*/
+            position: relative;
+            overflow: scroll;
+        }
+        .soso-title-left{
+            display: flex;
+            /*justify-content: space-between;*/
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+            background-color: #fff;
+        }
+        .soso-title-left .soso-round{
+            width: 0.5rem;
+            height: 0.5rem;
+            background: #D8D8D8;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+        .soso-title-left .input-box{
+            background: rgba(239, 239, 239, 1);
+            height: 1.25rem;
+            width: 80%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            opacity: 0.5;
+            border-radius: 0.625rem;
+        }
+        .soso-title .soso-aling{
+          height: 2.1rem;
+          width: 1px;
+          background: #D8D8D8;
+          position: absolute;
+          left: 5.99%;
+          top: 50%;
+        }
+        .soso-title .wtdetail{
+          display: flex;
+          width: 100%;
+          justify-content: center;
+          align-items: center;
+        }
+        .change-box{
+          width: 100%;
+          position: relative;
+        }
+        .change-box .aui-list-item-input{
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+        .change-box .aui-list{
+          font-size: 0.75rem;
+          color: #333333;
+          height: 0;
+          overflow: hidden;
+          position: absolute;
+          top: 0;
+          width: 100%;
+          /*transition: all 10s;*/
+        }
+        .change-box input[type="text"]{
+          font-size: 0.75rem;
+        }
+        .form-box{
+          width: 100%;
+        }
+        .results-box{
+          width: 100%;
+          display: flex;
+          justify-content: space-around;
+          flex-wrap: wrap;
+          background-color: #fff;
+          border-top: 1px solid #cccccc;
+          border-bottom: 1px solid #cccccc;
+        }
+        .results-box-left{
+          width: 20%;
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+        }
+        .results-box-mid,.results-box-right{
+          width: 40%;
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+          border-left: 1px solid #cccccc;
+        }
+        .title-box{
+          height: 6.875rem;
+          padding: 0.5rem 0;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          font-size: 0.6rem;
+        }
+        .basis-title{
+          width: 100%;
+          text-align: center;
+        }
+        .basis-title-box{
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          padding: 0 0.4rem;
+          margin-top: 0.4rem;
+        }
+        .detail-box{
+          height: 2rem;
+          padding: 0.5rem 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 0.6rem;
+          border-top: 1px solid #cccccc;
+        }
+        .address-box{
+          height: 4rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 0.6rem;
+          border-top: 1px solid #cccccc;
+        }
+        #footer{
+          position: fixed;
+          display: flex;
+          width: 100%;
+          height: 3.5rem;
+          background-color: #ffffff;
+          bottom: 0;
+          justify-content: space-around;
+          align-items: center;
+          padding: 0 0.6rem;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+        }
+
+        .soso-title-bottom-list{
+          /*width: 100%;*/
+          display: flex;
+          /*justify-content: space-around;*/
+          flex-wrap: nowrap;
+          align-items: center;
+          border-top: 1px solid #cccccc;
+          border-left: 1px solid #cccccc;
+        }
+        .soso-title-bottom-list span,
+        .soso-title-bottom-list>div{
+          /*display: block;*/
+          /*justify-content:center;*/
+          /*float: left;*/
+          align-items: center;
+          text-align: center;
+          font-size: 0.65rem;
+          border-right: 1px solid #cccccc;
+          border-bottom: 1px solid #cccccc;
+          height: 2rem;
+          line-height: 2rem;
+          width: 7rem;
+          overflow: hidden;
+        }
+
+        .list-top {
+          border-top: none;
+        }
+        .search-box {
+          display: flex;
+        }
+
+        .search-box .search-title {
+          width: 80px;
+          text-align: right;
+        }
+
+        .search-box .search-content {
+          flex: 1;
+          margin-left: 20px;
+        }
+
+        .search-box .search-content .button-group {
+          /*display: flex;*/
+        }
+        .search-box .search-content .button-group .button-item {
+          margin-right: 10px;
+          /*line-height: 20px;*/
+          display: flex;
+        }
+
+        /*.search-box .search-content .button-group .button-item span {
+          display: inline-block;
+        }*/
+
+        .search-box .search-content .button-group .button-item .check-box {
+          width: 1rem;
+          height: 1rem;
+          background-image: url('../image/rightno.png');
+          background-size: 100% 100%;
+          margin-top: 1px;
+          margin-right: 5px;
+        }
+
+        .search-box .search-content .button-group .button-item .active {
+          width: 1rem;
+          height: 1rem;
+          background-image: url('../image/rightok.png');
+          background-size: 100% 100%;
+          margin-top: 1px;
+        }
+
+        /*.search-box:last-child {
+          margin-top: 20px;
+        }*/
+
+        .display-none {
+          display: none;
+        }
+
+        .position-relative {
+          position: relative;
+        }
+        .search-type-box .soso-aling{
+          height: 2.1rem;
+          width: 1px;
+          background: #D8D8D8;
+          position: absolute;
+          left: 2.5%;
+          top: 20%;
+        }
+
+        .search-button-div {
+          width: 100%;
+        }
+        .search-button {
+          width: 80%;
+          height: 1.6rem;
+          line-height: 1.6rem;
+          border-radius: 20px;
+          color: #ffffff;
+          background: #1890FF;
+          text-align: center;
+          margin: 20px auto 0;
+        }
+        .showChooseTime {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          margin-top: 10px;
+        }
+
+        .showChoseTime-box {
+          flex: 1;
+          display: flex;
+        }
+
+        .swicth-button-box {
+          width: 80px;
+          margin-left: 20px;
+        }
+
+        .showChosseTime-title,
+        .showChosseTime-content {
+          line-height: 40px;
+        }
+        .showChosseTime-content {
+          margin-left: 10px;
+          overflow: hidden;
+        }
+
+        .swicth-button {
+          color: #ffffff;
+          background: #1890FF;
+          text-align: center;
+          padding: 3px 5px;
+          border-radius: 20px;
+        }
+        .soso-title-box {
+          margin:0.6rem;
+          padding: 0.6rem;
+          background-color: white;
+          border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='header-title'>
+        <header class="aui-bar aui-bar-nav aui-bar-light" id="header">
+            <a class="aui-pull-left aui-btn" tapmode onclick="backwin()">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </a>
+            <div class="aui-title">用水详情</div>
+        </header>
+    </div>
+    <div id='content' style="background-color:rgba(245, 245, 245, 1);">
+        <!-- 搜索框 -->
+        <div class="soso-title-box">
+          <div class="search-box">
+            <div class="search-title fn-075 co-333333">流量查询：</div>
+            <div class="search-content">
+              <div class="button-group fn-075 co-333333">
+                <div class="button-item" tapmode onclick="selectSearchType(0, this)">
+                  <span class="check-box active"></span>
+                  <span>日用水量</span>
+                </div>
+                <div class="button-item margin-top3" tapmode onclick="selectSearchType(1, this)">
+                  <span class="check-box"></span>
+                  <span>月用水量</span>
+                </div>
+                <div class="button-item margin-top3" tapmode onclick="selectSearchType(2, this)">
+                  <span class="check-box"></span>
+                  <span>自定义时间</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="search-box" style="margin-top: 20px;">
+            <div class="search-title fn-075 co-333333">日期：</div>
+            <div class="search-content soso-title-left">
+              <div class="search-type-box search-box-0">
+                <span class='input-box' >
+                  <input type='text' style="text-align:center;width:80%;height:100%"  readonly  name='dayTime' id='date-day'/>
+                  <img src='../image/timeico.png' style="width:0.58rem;height0.62rem" />
+                </span>
+              </div>
+              <div class="search-type-box search-box-1 display-none">
+                <span class='input-box' >
+                  <input type='text' style="text-align:center;width:80%;height:100%"  readonly  name='monthTime' id='date-month'/>
+                  <img src='../image/timeico.png' style="width:0.58rem;height0.62rem" />
+                </span>
+              </div>
+              <div class="search-type-box position-relative search-box-2 display-none">
+                <div class='soso-title-left'>
+                    <span class='soso-round'></span>
+                    <!-- <span class='fn-075 co-333333'>开始时间</span> -->
+                    <span class='input-box' >
+                      <input placeholder="请选择开始时间" type='text' style="text-align:center;width:80%;height:100%"  readonly  name='BeginTime' id='date-group1-1'/>
+                      <img src='../image/timeico.png' style="width:0.58rem;height0.62rem" />
+                    </span>
+                </div>
+                <div class='soso-title-left mt-10'>
+                    <span class='soso-round'></span>
+                    <!-- <span class='fn-075 co-333333'>结束时间</span> -->
+                    <span class='input-box' >
+                      <input placeholder="请选择结束时间"  type='text' style="text-align:center;width:80%;height:100%" readonly   name='EndTime' id='date-group1-3'/>
+                      <img src='../image/timeico.png' style="width:0.58rem;height0.62rem" />
+                    </span>
+                </div>
+                <span class='soso-aling'></span>
+              </div>
+            </div>
+          </div>
+          <div class="search-button-div">
+            <div class="search-button" onclick="searchData()">查询</div>
+          </div>
+        </div>
+        <div class='soso-title-box'>
+            <div class='wtdetail co-bule fn-08'>用户名称：张三</div>
+            <div class="showChooseTime">
+              <div class="showChoseTime-box">
+                <div class="showChosseTime-title fn-075 co-333333">日期范围：</div>
+                <div class="showChosseTime-content fn-075 co-333333">2020-12</div>
+              </div>
+              <div class="swicth-button-box">
+                <div class="swicth-button fn-075" tapmode onclick="swicthShowType()">切换</div>
+              </div>
+            </div>
+            <!-- <div class='soso-title-left mt-10'>
+                <span class='soso-round'></span>
+                <span class='fn-075 co-333333'>开始时间</span>
+                <span class='input-box' >
+                  <input placeholder="请选择时间" type='text' style="text-align:center;width:80%;height:100%"  readonly  name='BeginTime' id='date-group1-1'/>
+                  <img src='../image/timeico.png' style="width:0.58rem;height0.62rem" />
+                </span>
+            </div>
+            <div class='soso-title-left mt-10'>
+                <span class='soso-round'></span>
+                <span class='fn-075 co-333333'>结束时间</span>
+                <span class='input-box' >
+                  <input placeholder="请选择时间"  type='text' style="text-align:center;width:80%;height:100%" readonly   name='EndTime' id='date-group1-3'/>
+                  <img src='../image/timeico.png' style="width:0.58rem;height0.62rem" />
+                </span>
+            </div> -->
+            <!-- <span class='soso-aling'></span> -->
+        </div>
+      <div class='soso-title list data-box data-box-1 aui-hide'>
+        <div style="width: 700px; padding-right: 0.6rem;">
+          <div class='soso-title-bottom-list' style="overflow-x: auto;">
+              <div>日期</div>
+              <div>正向流量</div>
+              <div>反向流量</div>
+              <div>止度</div>
+              <div>净流量</div>
+          </div>
+          <div class="list-box">
+
+          </div>
+        </div>
+      </div>
+      <div class='soso-title list data-box data-box-0'>
+           <div id="container" style="height: 250px;width:100%"></div>
+      </div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/auijs/api.js"></script>
+<script type="text/javascript" src="../script/auijs/aui-dialog.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src="../script/rolldate.min.js"></script>
+<script type="text/javascript" src="../script/day.js"></script>
+<script type="text/javascript" src="../script/echarts.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script> -->
+<script type="text/javascript" src='../script/public.js'></script>
+<script type="text/javascript" src='../script/template.js'></script>
+<script type="text/javascript" src="../script/request.js"></script>
+<script type="text/template" id='sosolist'>
+  {{each list value index}}
+    <div class='soso-title-bottom-list list-top'>
+        <div  class='co-bule'>{{value.LastUpdateTime}}</div>
+        <div >{{value.PositiveCumulativeFlow}}</div>
+        <div >{{value.NegativeCumulativeFlow}}</div>
+        <div >{{value.CumulativeFlow}}</div>
+        <div >{{value.InstantaneousFlow}}</div>
+    </div>
+  {{/each}}
+</script>
+<script type="text/javascript">
+ // <span  class='co-bule' onclick="todetail({{value}})">{{value.LastUpdateTime}}</span>
+ var Stamp;
+ var list;//电磁表
+ var listvs;//营业系统
+ var dialog;//弹框初始化
+ var timeout;//定义一个定时器
+ var MeterDayAmountList={
+     UserId:$api.getStorage('cqUserId'),//用户ID*
+     StampNo:'',//用户编号或者水表表号
+     BeginTime:'',//营业区域编码
+     EndTime:'',//水表铭牌
+     PageIndex:1,//页码*
+     PageSize:100//每页条数*
+ }
+ var selectType = 0;  // 选择当前查询方式（0：日用水量，1：月用水量，2：自定义时间）
+ var showData = 0;   // 展示的内容（0：图表，1：列表）
+
+ var dayTime = dayjs().format('YYYY-MM-DD'),            // 日用水量选择的日期
+     monthTime = dayjs().format('YYYY-MM'),          // 月用水量选择的日期
+     customerBeginTime,  // 自定义时间开始日期
+     customerEndTime;    // 自定义时间结束日期
+var apiready = function() {
+        headerHeight();
+        api.parseTapmode();
+        $('.wtdetail').text('用户名称：'+api.pageParam.CustomerName)
+        api.setStatusBarStyle({
+            style:"dark"
+        });
+        MeterDayAmountList.StampNo=api.pageParam.StampNo
+        dialog = new auiDialog();
+
+        Stamp = api.pageParam.StampNo;
+
+        setTimeout(function() {
+            searchData();
+            // createEchart();
+        }, 500)
+}
+window.onload = function() {
+
+  // var today = new Date();
+  // 选择日
+  var today = dayjs().format('YYYY-MM-DD');
+  new Rolldate({
+    el: '#date-day',
+    format: 'YYYY-MM-DD',
+    beginYear: 2000,
+    endYear: 2100,
+    value: today,
+    confirm: function(date) {
+      dayTime = date;
+    }
+  });
+
+  //选择月
+  var month = dayjs().format('YYYY-MM');
+  new Rolldate({
+    el: '#date-month',
+    format: 'YYYY-MM',
+    beginYear: 2000,
+    endYear: 2100,
+    value: month,
+    confirm: function(date) {
+      monthTime = date;
+    }
+  });
+
+
+    // 自定义时间开始日期
+    new Rolldate({
+      el: '#date-group1-1',
+      format: 'YYYY-MM-DD',
+      beginYear: 2000,
+      endYear: 2100,
+      confirm:function(date){
+        MeterDayAmountList.BeginTime=date;
+        $('input[name="BeginTime"]').val(date);
+        customerBeginTime = date;
+        // let isalltian = MeterDayAmountList.BeginTime!='' && MeterDayAmountList.EndTime!='';
+        // let ismaxten =getDaysBetween(MeterDayAmountList.BeginTime,MeterDayAmountList.EndTime)<=30;
+        // let isdayu = new Date(MeterDayAmountList.BeginTime) <= new Date(MeterDayAmountList.EndTime);
+        // if(isalltian && ismaxten && isdayu){
+        //   // GetAmountMeterListajax();
+        //   customerBeginTime = date;
+        //   console.log(customerBeginTime);
+        // }
+        // else if(isalltian && !ismaxten){
+        //   api.toast({
+        //       msg: '最大间隔为30天',
+        //       duration: 2000,
+        //       location: 'bottom'
+        //   });
+        //   return false;
+        // }
+        // else if (isalltian && !isdayu) {
+        //   api.toast({
+        //       msg: '开始时间不能大于结束时间',
+        //       duration: 2000,
+        //       location: 'bottom'
+        //   });
+        // }
+        // console.log($('input[name="BeginTime"]').val());
+        // console.log(date);
+        // console.log(MeterDayAmountList.EndTime);
+        // console.log(getDaysBetween(date,MeterDayAmountList.EndTime));
+        // if(MeterDayAmountList.EndTime == ''){
+        //   $('input[name="BeginTime"]').val(date)
+        //   MeterDayAmountList.BeginTime=date
+        // }else if((new Date(date) <=new Date(MeterDayAmountList.EndTime) )&& (getDaysBetween(date,MeterDayAmountList.EndTime)<=10)){
+        //   $('input[name="BeginTime"]').val(date)
+        //   MeterDayAmountList.BeginTime=date
+        //   GetAmountMeterListajax();
+        // }else {
+        //   api.toast({
+        //       msg: '开始时间不能大于结束时间,且最大间隔为10天',
+        //       duration: 2000,
+        //       location: 'bottom'
+        //   });
+        // }
+
+      }
+    })
+    // 自定义时间结束日期
+    new Rolldate({
+      el: '#date-group1-3',
+      format: 'YYYY-MM-DD',
+      beginYear: 2000,
+      endYear: 2100,
+      confirm:function(date){
+        $('input[name="EndTime"]').val(date);
+        MeterDayAmountList.EndTime=date;
+        customerEndTime = date;
+        console.log(date);
+        // let isalltian = MeterDayAmountList.BeginTime!='' && MeterDayAmountList.EndTime!='';
+        // let ismaxten =getDaysBetween(MeterDayAmountList.BeginTime,MeterDayAmountList.EndTime)<=30;
+        // let isdayu = new Date(MeterDayAmountList.BeginTime) <= new Date(MeterDayAmountList.EndTime);
+        // if(isalltian && ismaxten && isdayu){
+        //   // GetAmountMeterListajax();
+        //   customerEndTime = date;
+        //   console.log(customerEndTime);
+        // }
+        // else if(isalltian && !ismaxten){
+        //   api.toast({
+        //       msg: '最大间隔为30天',
+        //       duration: 2000,
+        //       location: 'bottom'
+        //   });
+        //   return false;
+        // }
+        // else if (isalltian && !isdayu) {
+        //   api.toast({
+        //       msg: '开始时间不能大于结束时间',
+        //       duration: 2000,
+        //       location: 'bottom'
+        //   });
+        // }
+        // if(MeterDayAmountList.BeginTime == ''){
+        //   $('input[name="EndTime"]').val(date)
+        //   MeterDayAmountList.EndTime=date
+        // }else if((new Date(MeterDayAmountList.BeginTime) <=new Date(date) )&& (getDaysBetween(MeterDayAmountList.BeginTime,date)<=10)){
+        //   $('input[name="EndTime"]').val(date)
+        //   MeterDayAmountList.EndTime=date
+        //   GetAmountMeterListajax();
+        // }else {
+        //   api.toast({
+        //       msg: '结束时间不能小于开始时间,且最大间隔为10天',
+        //       duration: 2000,
+        //       location: 'bottom'
+        //   });
+        // }
+
+      }
+    })
+
+    // createEchart();
+    console.log(document.getElementById('container'));
+
+  }
+
+function doSearch(){
+    // 搜索的值
+    let soso = $api.val($api.byId('search-input'));
+    // 监听soso的值  是否 满足用户编号和水表表号规则  如果满足 就发起请求
+    clearTimeout(timeout);
+    timeout= setTimeout(function(){
+        // 长时间没有输入的时候触发搜索
+        alert("准备搜索:"+soso)
+    },2000)
+}
+// 按下确定键 直接搜索
+function search(){
+    clearTimeout(timeout);
+    let soso = $api.val($api.byId('search-input'));
+}
+// 对比一下
+function vslist(){
+  $('.detail-box.on').css('background-color','#FEFCE5')
+  $('.address-box.on').css('background-color','#FEFCE5')
+}
+//前往时流量查看
+function todetail(list){
+   api.openWin({
+       name: 'index_detailListToday',
+       url: './index_detailListToday.html',
+       pageParam: {
+           LastUpdateTime: list.LastUpdateTime,
+           StampNo:list.StampNo,
+           CustomerName:api.pageParam.CustomerName
+       }
+   });
+}
+//获取日水量列表
+function GetAmountMeterListajax(){
+    NewGet('/wapi/WRPData/GetMeterDayAmountList',MeterDayAmountList,
+    $api.getStorage('token'),function(ret,err){
+      if(ret.IsSuccess){
+          // console.log(JSON.stringify(ret));
+//           if(MeterDayAmountList.PageIndex==1){
+//             let startStr=`<div class='startStr' style='color:#fff;
+// background: linear-gradient(90deg, #3DB2FF 0%, #328BFD 100%);text-align: center;width:100%'>共计：${ret.Data.TotalCount}条数据</div>`;
+//             $('.soso-title.list').append(startStr)
+//             setTimeout(function(){
+//               $('.startStr').remove()
+//             },5000)
+//           }
+          if(MeterDayAmountList.PageIndex<=ret.Data.TotalPages){
+            let str = template('sosolist',{list:ret.Data.PageData});
+            $('.soso-title.list').append(str)
+            MeterDayAmountList.PageIndex++;
+          }
+//           else{
+//             let endStr=`<div class='endStr' style='color:#fff;
+// background: linear-gradient(90deg, #3DB2FF 0%, #328BFD 100%);text-align: center;width:100%'>没有更多了</div>`
+//             $('.soso-title.list').append(endStr)
+//             setTimeout(function(){
+//               $('.endStr').remove()
+//             },2000)
+//           }
+      }else {
+          api.toast({
+              msg:ret.Msg,
+              duration: 2000,
+              location: 'top'
+          });
+      }
+    })
+}
+//两个日期相隔天数
+function  getDaysBetween(dateString1,dateString2){
+   var  startDate = Date.parse(dateString1);
+   var  endDate = Date.parse(dateString2);
+   console.log(startDate);
+   console.log(endDate);
+   var days=(endDate - startDate)/(1*24*60*60*1000);
+   return  days;
+}
+
+// 切换选择查询的方式
+function selectSearchType(val, that) {
+  selectType = val;
+  $('.check-box').removeClass('active');
+  $('.search-type-box').addClass('display-none');
+
+  $(that).children('.check-box').addClass('active');
+  var str = '.search-box-' + val;
+  $(str).removeClass('display-none');
+}
+
+// 点击切换
+function swicthShowType() {
+  console.log('点击了');
+  if (showData == 0) {
+    // 当前展示的是图表，切换为展示列表
+    showData = 1;
+  } else {
+    // 当前展示的是列表，切换为展示图表
+    showData = 0;
+  }
+
+  $('.data-box').addClass('aui-hide');
+  var str = '.data-box-' + showData;
+  $(str).removeClass('aui-hide');
+}
+// 创建图表
+function createEchart(xdata, zxll, fxll, ssll, zd) {
+  // var xdata = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+  // var zxll = [120, 132, 101, 134, 90, 230, 210];
+  // var fxll = [220, 182, 191, 234, 290, 330, 310];
+  // var ssll = [120, 132, 101, 134, 90, 230, 210];
+  // var zd = [220, 182, 191, 234, 290, 330, 310];
+  var options = {
+			    color:['#66ffff', '#66ff00', '#facd91', '#81d3f8'],
+			    tooltip: {
+			        trigger: 'axis'
+			    },
+			    legend: {
+			        data: ['正向流量', '反向流量', '瞬时流量', '止度']
+			    },
+			    grid: {
+			        left: '3%',
+			        right: '4%',
+			        bottom: '3%',
+			        containLabel: true
+			    },
+			    xAxis: {
+			        type: 'category',
+			        boundaryGap: false,
+			        data: xdata
+			    },
+			    yAxis: {
+			        type: 'value'
+			    },
+			    series: [
+			        {
+			            name: '正向流量',
+			            type: 'line',
+			            data: zxll
+			        },
+			        {
+			            name: '反向流量',
+			            type: 'line',
+			            data: fxll
+			        },
+              {
+			            name: '瞬时流量',
+			            type: 'line',
+			            data: ssll
+			        },
+              {
+			            name: '止度',
+			            type: 'line',
+			            data: zd
+			        }
+			    ]
+	};
+  var myChart = echarts.init(document.getElementById('container'));
+  myChart.setOption(options);
+}
+
+// 查询
+function searchData() {
+  // console.log('点击了查询');
+  var showTime = '';    // 展示的日期范围
+  $('.list-box').html('');
+  var param = {
+    UserId: $api.getStorage('cqUserId'),//用户ID*
+    StampNo: Stamp,//水表表号
+    Type: selectType,//查询类型
+    PageIndex: 1,//页码*
+    PageSize: 40//每页条数*
+  }
+  // console.log(selectType);
+  if (selectType == 0) {
+    // 日用水量
+    if (dayTime == '') {
+      api.toast({
+          msg: '请选择日期',
+          duration: 2000,
+          location: 'middle'
+      });
+      return false;
+    } else {
+      showTime = dayTime;
+      param.Time = dayTime;
+      $('.showChosseTime-content').text(showTime);
+      getUseWaterData(param);
+    }
+  } else if (selectType == 1) {
+    // 月用水量
+    if (monthTime == '') {
+      api.toast({
+          msg: '请选择月份',
+          duration: 2000,
+          location: 'middle'
+      });
+      return false;
+    } else {
+      showTime = monthTime;
+      param.Time = monthTime;
+      $('.showChosseTime-content').text(showTime);
+      getUseWaterData(param);
+    }
+  } else if (selectType == 2) {
+    // 自定义时间
+    // console.log('自定义时间');
+    // console.log(customerBeginTime);
+    // console.log(customerEndTime);
+    if (customerBeginTime == '' || customerBeginTime == undefined) {
+      api.toast({
+          msg: '请选择开始时间',
+          duration: 2000,
+          location: 'middle'
+      });
+      return false;
+    } else if (customerEndTime == '' || customerEndTime == undefined) {
+      api.toast({
+          msg: '请选择结束时间',
+          duration: 2000,
+          location: 'middle'
+      });
+      return false;
+    } else {
+      let isdayu = new Date(MeterDayAmountList.BeginTime) <= new Date(MeterDayAmountList.EndTime);
+      if (!isdayu) {
+        api.toast({
+            msg: '开始时间不能大于结束时间',
+            duration: 2000,
+            location: 'bottom'
+        });
+        return false
+      } else {
+        console.log(getDaysBetween(MeterDayAmountList.BeginTime,MeterDayAmountList.EndTime));
+        console.log(getDaysBetween(MeterDayAmountList.BeginTime,MeterDayAmountList.EndTime) <= 30);
+        let ismaxten =getDaysBetween(MeterDayAmountList.BeginTime,MeterDayAmountList.EndTime) <= 30;
+        // console.log(ismaxten);
+        // console.log(!ismaxten);
+        if (ismaxten) {
+          showTime = customerBeginTime + '至' + customerEndTime;
+          param.BeginTime = customerBeginTime;
+          param.EndTime = customerEndTime;
+          // console.log(JSON.stringify(param));
+          $('.showChosseTime-content').text(showTime);
+          getUseWaterData(param);
+        } else {
+          api.toast({
+              msg: '最大间隔为30天',
+              duration: 2000,
+              location: 'bottom'
+          });
+          return false;
+        }
+      }
+    }
+  }
+}
+
+// 获取用水详情
+function getUseWaterData(data) {
+  console.log(JSON.stringify(data));
+  api.showProgress({
+      title: '加载中...',
+      text: '',
+      modal: false
+  });
+  console.log($api.getStorage('token'));
+  NewGet('/wapi/WRPData/GetAppMeterAmountList',data,
+  $api.getStorage('token'),function(ret,err){
+    if(ret.IsSuccess){
+      api.hideProgress();
+        console.log(JSON.stringify(ret));
+
+
+        // if(MeterDayAmountList.PageIndex<=ret.Data.TotalPages){
+
+          // MeterDayAmountList.PageIndex++;
+
+          // 图表数据处理
+          var timeData = [],
+          zxll = [],
+          fsll = [],
+          ssll = [],
+          zd = [];
+          // console.log(ret.Data.PageData.length)
+          if (ret.Data.PageData.length != 0) {
+            ret.Data.PageData.forEach(function(item) {
+              // item.NegativeCumulativeFlow = Math.abs(item.NegativeCumulativeFlow);
+              timeData.push(item.LastUpdateTime);
+              zxll.push(item.PositiveCumulativeFlow)
+              fsll.push(item.NegativeCumulativeFlow)
+              ssll.push(item.InstantaneousFlow)
+              zd.push(item.CumulativeFlow)
+            })
+            // console.log(JSON.stringify(timeData));
+            // console.log(JSON.stringify(zxll));
+            // console.log(JSON.stringify(fsll));
+            // console.log(JSON.stringify(ssll));
+            // console.log(JSON.stringify(zd));
+
+            createEchart(timeData, zxll, fsll, ssll, zd);
+
+            let str = template('sosolist',{list:ret.Data.PageData});
+            $('.list-box').append(str);
+
+          } else {
+            api.toast({
+                msg: '没有数据',
+                duration: 2000,
+                location: 'middle'
+            });
+
+          }
+        // }
+    }else {
+      console.log(JSON.stringify(err));
+      api.hideProgress();
+        api.toast({
+            msg:ret.Msg,
+            duration: 2000,
+            location: 'top'
+        });
+    }
+  })
+}
+</script>
+
+</html>

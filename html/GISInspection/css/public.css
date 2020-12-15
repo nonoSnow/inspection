@@ -521,6 +521,9 @@ body {
   padding-top: 0.5rem
 }
 
+.padding-top75 {
+  padding-top: 0.75rem;
+}
 .heightauto {
   height: auto;
 }

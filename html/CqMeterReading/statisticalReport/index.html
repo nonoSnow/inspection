@@ -1,0 +1,1075 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>水表列表</title>
+    <link rel="stylesheet" type="text/css" href="../css/auicss/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/auicss/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../css/public.css" />
+    <style>
+        .aui-bar-nav,
+        .aui-bar-nav.aui-bar-light .aui-iconfont {
+            /* background-color:#4089F3 */
+            color: #333333;
+        }
+
+        #header-title {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 9999
+        }
+
+        #content {
+            height: 100vh;
+            background-color: rgba(245, 245, 245, 1);
+        }
+
+        .soso-title {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.25rem 0.6rem;
+            background: white;
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+
+        .aui-searchbar {
+            /*width: 14.8rem;*/
+            width: 79.3%;
+            background-color: white;
+        }
+
+        .aui-searchbar-input {
+            height: 1.65rem;
+            border-radius: 1.65rem;
+            line-height: 1.65rem;
+            background-color: #efefef;
+            margin: 0;
+        }
+
+        .aui-searchbar-input input {
+            height: 1.65rem;
+            width: 100%;
+        }
+
+        .change-box {
+            width: 100%;
+            position: fixed;
+            /*top: 152px;*/
+            /*z-index: 1000;*/
+            top: 0;
+            display: none
+        }
+
+        .change-box .aui-list-item-input {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .change-box .aui-list {
+            font-size: 0.75rem;
+            color: #333333;
+            /*height: 0;*/
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            /*transition: all 10s;*/
+        }
+
+        .change-box input[type="text"] {
+            font-size: 0.75rem;
+        }
+
+        .results-box {
+            width: 100%;
+        }
+
+        /*.results-box .results-list {
+            padding: 0.4rem 0.6rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            margin-top: 0.25rem;
+        }*/
+
+        .results-list-left {
+            display: flex;
+            flex-direction: column;
+            max-width: 75%;
+        }
+
+        .results-list-right {
+            background-color: #FF6769;
+            width: 4rem;
+            height: 4.8rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0.2rem;
+        }
+
+        .results-list-left-list {
+            display: flex;
+            /*flex-wrap: wrap;*/
+            font-size: 0.7rem;
+        }
+
+        .timechangebtn {
+            width: 80%;
+            height: 1.4rem;
+            display: flex;
+            /* justify-content: center; */
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e6e6e6;
+            border-radius: 0.7rem;
+        }
+
+        .list-title {
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+
+        .soso-title-bottom-list {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            /*flex-wrap: wrap;*/
+            align-items: center;
+            border-top: 1px solid #cccccc;
+            border-left: 1px solid #cccccc;
+        }
+
+        .soso-title-bottom-list span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.65rem;
+            border-right: 1px solid #cccccc;
+            border-bottom: 1px solid #cccccc;
+            height: 2rem;
+            width: 50%;
+        }
+
+        .soso-bottom-list {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            /*flex-wrap: wrap;*/
+            align-items: center;
+            /*border-top: 1px solid #cccccc;*/
+            border-left: 1px solid #cccccc;
+        }
+        .soso-bottom-list span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.65rem;
+            border-right: 1px solid #cccccc;
+            border-bottom: 1px solid #cccccc;
+            height: 2rem;
+            width: 50%;
+        }
+        .swicth-button-box {
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            text-align: right;
+            padding: 10px 0 0 0.5rem;
+        }
+
+        .swicth-button {
+            width: 80px;
+            color: #ffffff;
+            background: #1890FF;
+            text-align: center;
+            padding: 3px 5px;
+            border-radius: 20px;
+        }
+        .shaixuan-box {
+          font-size:0.7rem;
+          color: #333333;
+          width:100%;
+          text-align: left;
+          height: 1.5rem;
+        }
+
+        .userNumber-box,
+        .flowNumber-box {
+          width: 100%;
+          height: 350px;
+          overflow: auto;
+          background: #ffffff;
+          border-radius: 0.2rem;
+          padding: 0.5rem;
+          position: relative;
+        }
+        .data-box {
+          margin-top: 40px;
+        }
+        .flowNumber-box {
+          margin-top: 20px;
+        }
+
+        .chart-box {
+          width: 100%;
+        }
+        .content-box {
+          height: 100%;
+          margin-top: 50px;
+          display: flex;
+          padding: 0.6rem;
+        }
+        .showData-box {
+          width: 100%;
+        }
+        .display-flex {
+          display: flex;
+        }
+        .margin-left25 {
+          margin-left: 2.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='header-title'>
+        <header class="aui-bar aui-bar-nav aui-bar-light" id="header" style="z-index:1000">
+            <a class="aui-pull-left aui-btn" tapmode onclick="backwin()">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </a>
+            <div class="aui-title">统计报表</div>
+        </header>
+    </div>
+    <div class='soso-title soso-title-box'>
+        <div class="shaixuan-box" tapmode onclick="popTop()">
+            <span>筛选</span>
+            <i class="aui-iconfont aui-icon-down" style="margin:0 0.25rem"></i>
+        </div>
+    </div>
+    <div id='content' class="content-box">
+        <div class="showData-box">
+          <div class="userNumber-box">
+                <div class="width100">
+                  <div class="swicth-button-box margin-bot5 display-flex">
+                      <div class="swicth-button fn-075" tapmode onclick="swicthShowUserType()">切换</div>
+                      <span class="margin-left25">用户数</span>
+                  </div>
+                  <div class="data-box">
+                    <div style="padding-right: 0.6rem;" class="data-user-box data-box-user-1 aui-hide">
+                        <div class='soso-title-bottom-list'>
+                            <span>日期</span>
+                            <span>数量</span>
+                        </div>
+                        <div id="data-user-box"></div>
+                    </div>
+                    <div class="chart-box data-user-box data-box-user-0">
+                        <div id="container1" style="height: 250px;width:100%"></div>
+                    </div>
+                  </div>
+                </div>
+              <!-- </div> -->
+          </div>
+          <div class="flowNumber-box">
+              <div class='width100'>
+                  <div class="swicth-button-box margin-bot5 display-flex">
+                      <div class="swicth-button fn-075" tapmode onclick="swicthShowFlowType()">切换</div>
+                      <span class="margin-left25">流量数</span>
+                  </div>
+                  <div class="data-box">
+                    <div style="padding-right: 0.6rem;" class="data-flow-box data-box-flow-1 aui-hide">
+                        <div class='soso-title-bottom-list'>
+                            <span>日期</span>
+                            <span>数量</span>
+                        </div>
+                        <div id="data-flow-box"></div>
+                    </div>
+                    <div class='chart-box data-flow-box data-box-flow-0'>
+                        <div id="container2" style="height: 250px;width:100%"></div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+    </div>
+    <!-- 筛选条件 -->
+    <div class='change-box'>
+        <ul class="aui-list aui-form-list">
+            <form id='form'>
+                <!-- <li class="aui-list-item">
+                  <div class="aui-list-item-inner">
+                      <div class="aui-list-item-label">
+                          抄表路线：
+                      </div>
+                      <div class="aui-list-item-input" onclick="openselect(11)">
+                          <input type="text" placeholder="请选择" style="text-align: right;" readonly name='OrgName' class='OrgName'>
+                          <input type="hidden" placeholder="请选择" style="text-align: right;" readonly name='OrgCode' class='OrgCode'>
+                          <i class="aui-iconfont aui-icon-right" ></i>
+                      </div>
+                  </div>
+              </li> -->
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-label">
+                            营业区域：
+                        </div>
+                        <div class="aui-list-item-input" onclick="openselect(1)">
+                            <input type="text" placeholder="请选择" style="text-align: right;" readonly name='OrgName' class='OrgName'>
+                            <input type="hidden" placeholder="请选择" style="text-align: right;" readonly name='OrgCode' class='OrgCode'>
+                            <i class="aui-iconfont aui-icon-right"></i>
+                        </div>
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-label">
+                            水表类型：
+                        </div>
+                        <div class="aui-list-item-input" onclick="openselect(12)">
+                            <input type="text" placeholder="请选择" style="text-align: right;" readonly name='TypeWaterMeterName' class='TypeWaterMeterName'>
+                            <input type="hidden" placeholder="请选择" style="text-align: right;" readonly name='TypeWaterMeterValue' class='TypeWaterMeterValue'>
+                            <i class="aui-iconfont aui-icon-right"></i>
+                        </div>
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-label">
+                            用水性质：
+                        </div>
+                        <div class="aui-list-item-input" onclick="openselect(11)">
+                            <input type="text" placeholder="请选择" style="text-align: right;" readonly name='NatureWaterName' class='NatureWaterName'>
+                            <input type="hidden" placeholder="请选择" style="text-align: right;" readonly name='NatureWaterValue' class='NatureWaterValue'>
+                            <i class="aui-iconfont aui-icon-right"></i>
+                        </div>
+                    </div>
+                </li>
+                <li class="aui-list-item item-zt-ms">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-label">
+                            水表口径：
+                        </div>
+                        <div class="aui-list-item-input" onclick="openselect(6)">
+                            <input type="hidden" placeholder="请选择" style="text-align: right;" readonly name='MeterCaliberName' class='MeterCaliberName'>
+                            <input type="text" placeholder="请选择" style="text-align: right;" readonly name='MeterCaliber' class='MeterCaliber'>
+                            <i class="aui-iconfont aui-icon-right"></i>
+                        </div>
+                    </div>
+                </li>
+                <li class="aui-list-item item-ks-sj">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-label">
+                            开始时间：
+                        </div>
+                        <div class="aui-list-item-input">
+                            <input type="text" placeholder="请选择" style="text-align: right;" id='date-group1-1' class='BeginWarnTime' readonly name='BeginWarnTime'>
+                            <i class="aui-iconfont aui-icon-right"></i>
+                        </div>
+                    </div>
+                </li>
+                <li class="aui-list-item item-js-sj">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-label">
+                            结束时间：
+                        </div>
+                        <div class="aui-list-item-input">
+                            <input type="text" placeholder="请选择" style="text-align: right;" id='date-group1-2' class='EndWarnTime' readonly name='EndWarnTime'>
+                            <i class="aui-iconfont aui-icon-right"></i>
+                        </div>
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div style="display: flex;
+        width: 100%;padding: 0.75rem 0;
+        padding-right: 0.75rem;justify-content: space-around;">
+                        <div class='btnKong' onclick="emptyChange()">清空</div>
+                        <div class='btnKong on' onclick="popTopClose()">确定</div>
+                    </div>
+                </li>
+            </form>
+        </ul>
+    </div>
+</body>
+<script type="text/javascript" src="../script/auijs/api.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src="../script/rolldate.min.js"></script>
+<script type="text/javascript" src="../script/echarts.min.js"></script>
+<script type="text/javascript" src='../script/public.js'></script>
+<script type="text/javascript" src='../script/aui-popup.js'></script>
+<script type="text/javascript" src="../script/request.js"></script>
+<script type="text/javascript" src='../script/template.js'></script>
+<script type="text/template" id='userlist'>
+    {{each list value index}}
+    <div class='soso-bottom-list'>
+        <span class='co-bule'>{{value.Time}}</span>
+        <span>{{value.Count}}</span>
+    </div>
+    {{/each}}
+</script>
+<script type="text/template" id='flowlist'>
+    {{each list value index}}
+    <div class='soso-bottom-list'>
+        <span class='co-bule'>{{value.Time}}</span>
+        <span>{{value.flow}}</span>
+    </div>
+    {{/each}}
+</script>
+<script type="text/javascript">
+    var scrolltobottomTimer;
+    var taskInfo;
+    var isMore = false;
+    var showUserData = showFlowData = 0;
+    var isShowBox = false;//初始化是否显示用户和流量的框
+    var getDataParam = {
+      UserId: $api.getStorage('cqUserId'), //用户ID*
+    }; // 请求的数据
+    var apiready = function() {
+        headerHeight();
+        var soso = $api.dom('.soso-title-box');
+        sosoheight = $api.offset(soso).h;
+        console.log(sosoheight);
+        var changeH = headerH + sosoheight + 'px';
+        // $('.content-box').css('margin-top', '' + (sosoheight) + 'px');
+        console.log(JSON.stringify($api.offset($api.dom('.results-box'))));
+        $('.soso-title').css('top', headerH)
+        $('.change-box').css('top', changeH)
+        api.setStatusBarStyle({
+            style: "dark"
+        });
+        checkShow();
+
+        // 监听页面刷新
+        api.addEventListener({
+            name: 'isload'
+        }, function(ret, err) {
+            window.location.reload();
+        });
+
+        // 监听筛选器数字值变化
+        api.addEventListener({
+            name: 'closeFrameChangepopup'
+        }, function(ret, err) {
+            console.log(JSON.stringify(ret));
+            if (ret) {
+                // 拿回数据的时候请求   通过回传 的type   知道是哪个页面返回请数据
+                //  console.log(JSON.stringify(ret));
+                // Type_Id: 0,//水表类型
+                // Waterattr: 0,//用水性质
+                // OrgCode: '', //营业区域编码
+                // Caliber: '', // 水表口径
+                // BeginTime: '', //开始时间
+                // EndTime: '' //结束时间
+                GetMeterWarnList.OrgCode = ret.value.list.OrgCode;
+                GetMeterWarnList.Type_Id = ret.value.list.TypeWaterMeterValue;
+                GetMeterWarnList.Waterattr = ret.value.list.NatureWaterValue;
+                GetMeterWarnList.Caliber = ret.value.list.MeterCaliber;
+                GetMeterWarnList.BeginTime = ret.value.list.BeginWarnTime;
+                GetMeterWarnList.EndTime = ret.value.list.EndWarnTime;
+
+                if (ret.value.list.OrgCode != ''){
+                  getDataParam.OrgCode = ret.value.list.OrgCode;
+                }
+                if (ret.value.list.TypeWaterMeterValue != '') {
+                  getDataParam.Type_Id = ret.value.list.TypeWaterMeterValue
+                }
+                if (ret.value.list.NatureWaterValue != '') {
+                  getDataParam.Waterattr = ret.value.list.NatureWaterValue
+                }
+                if (ret.value.list.MeterCaliber != '') {
+                  getDataParam.Caliber = ret.value.list.MeterCaliber
+                }
+
+                getDataParam.BeginTime = ret.value.list.BeginWarnTime;
+                getDataParam.EndTime = ret.value.list.EndWarnTime;
+                $('.results-box').html('');
+                //请求数据
+                GetAppUsercountAndFlowData()
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+
+        // 获取默认数据
+        // 监听营业数值的变化type1
+        api.addEventListener({
+            name: 'selectcity'
+        }, function(ret, err) {
+            if (ret) {
+                $api.val($api.dom('.OrgName'), ret.value.OrgName);
+                $api.val($api.dom('.OrgCode'), ret.value.OrgCode);
+                //  if(ret.value.OrgCode){
+                //    GetDealerOptionsajax(ret.value.OrgCode)
+                //  }
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+        //监听开始时间TYPE2
+        api.addEventListener({
+            name: 'selectbegintime'
+        }, function(ret, err) {
+            if (ret) {
+                //  alert( JSON.stringify( ret ) );
+                $api.val($api.dom('.BeginWarnTime'), ret.value.time);
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+        //监听结束时间TYPE3
+        api.addEventListener({
+            name: 'selectendtime'
+        }, function(ret, err) {
+            if (ret) {
+                //  alert( JSON.stringify( ret ) );
+                $api.val($api.dom('.EndWarnTime'), ret.value.time);
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+        //监听水表铭牌TYPE4
+        // api.addEventListener({
+        //     name: 'NamePlateValue'
+        // }, function(ret, err){
+        //     if( ret ){
+        //         //  alert( JSON.stringify( ret ) );
+        //          $api.val($api.dom('.NamePlateName'),ret.value.NamePlateName);
+        //          $api.val($api.dom('.NamePlateValue'),ret.value.NamePlateValue);
+        //     }else{
+        //          alert( JSON.stringify( err ) );
+        //     }
+        // });
+        //监听报警类型TYPE5
+        // api.addEventListener({
+        //     name: 'WarnType'
+        // }, function(ret, err){
+        //     if( ret ){
+        //         //  alert( JSON.stringify( ret ) );
+        //          $api.val($api.dom('.WarnTypeName'),ret.value.WarnTypeName);
+        //          $api.val($api.dom('.WarnType'),ret.value.WarnType);
+        //     }else{
+        //          alert( JSON.stringify( err ) );
+        //     }
+        // });
+        //监听水表口径类型TYPE6
+        api.addEventListener({
+            name: 'MeterCaliber'
+        }, function(ret, err) {
+            if (ret) {
+                $api.val($api.dom('.MeterCaliberName'), ret.value.MeterCaliberName);
+                $api.val($api.dom('.MeterCaliber'), ret.value.MeterCaliber);
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+        //监听数值正负类型TYPE7
+        // api.addEventListener({
+        //     name: 'FloatValue'
+        // }, function(ret, err){
+        //     if( ret ){
+        //         //  alert( JSON.stringify( ret ) );
+        //          $api.val($api.dom('.FloatValueName'),ret.value.FloatValueName);
+        //          $api.val($api.dom('.FloatValue'),ret.value.FloatValue);
+        //     }else{
+        //          alert( JSON.stringify( err ) );
+        //     }
+        // });
+        //监听同期比类型TYPE8
+        // api.addEventListener({
+        //     name: 'SynRatioValue'
+        // }, function(ret, err){
+        //     if( ret ){
+        //         //  alert( JSON.stringify( ret ) );
+        //          $api.val($api.dom('.SynRatioValueName'),ret.value.SynRatioValueName);
+        //          $api.val($api.dom('.SynRatioValue'),ret.value.SynRatioValue);
+        //     }else{
+        //          alert( JSON.stringify( err ) );
+        //     }
+        // });
+        //监听处理人类型TYPE9
+        // api.addEventListener({
+        //     name: 'DealerId'
+        // }, function(ret, err){
+        //     if( ret ){
+        //         //  alert( JSON.stringify( ret ) );
+        //          $api.val($api.dom('.DealerIdName'),ret.value.DealerIdName);
+        //          $api.val($api.dom('.DealerId'),ret.value.DealerId);
+        //     }else{
+        //          alert( JSON.stringify( err ) );
+        //     }
+        // });
+        // 监听用水性质
+        api.addEventListener({
+            name: 'NatureWater'
+        }, function(ret, err) {
+            if (ret) {
+                $api.val($api.dom('.NatureWaterName'), ret.value.NatureWaterName);
+                $api.val($api.dom('.NatureWaterValue'), ret.value.NatureWaterValue);
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+        //监听水表类型
+        api.addEventListener({
+            name: 'TypeWater'
+        }, function(ret, err) {
+            if (ret) {
+                $api.val($api.dom('.TypeWaterMeterName'), ret.value.TypeWaterName);
+                $api.val($api.dom('.TypeWaterMeterValue'), ret.value.TypeWaterValue);
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+    }
+    window.onload = function() {
+        new Rolldate({
+            el: '#date-group1-1',
+            format: 'YYYY-MM-DD',
+            beginYear: 2000,
+            endYear: 2100,
+            confirm: function(date) {}
+        })
+        new Rolldate({
+            el: '#date-group1-2',
+            format: 'YYYY-MM-DD',
+            beginYear: 2000,
+            endYear: 2100,
+            confirm: function(date) {}
+        })
+    }
+    var timeout; //定义一个定时器
+    var popupindex = 0; //弹出还是关闭
+    var GetMeterWarnList = {
+            UserId: $api.getStorage('cqUserId'), //用户ID*
+            Type_Id: 0, //水表类型
+            Waterattr: 0, //用水性质
+            OrgCode: '', //营业区域编码
+            Caliber: '', // 水表口径
+            BeginTime: '', //开始时间
+            EndTime: '' //结束时间
+        }
+        // 弹出筛选器
+    function popTop() {
+        if (popupindex === 0) {
+            $('.change-box').css('display', 'block')
+            popupindex = 1;
+        } else {
+            $('.change-box').css('display', 'none')
+            popupindex = 0;
+        }
+    }
+    // 获取数据
+    function GetAppUsercountAndFlowData() {
+      console.log(JSON.stringify(getDataParam));
+      $('#data-user-box').html('');
+      $('#data-flow-box').html('');
+        NewPost('/wapi/WRPData/GetAppUsercountAndFlowData', getDataParam,
+            $api.getStorage('token'),
+            function(ret, err) {
+                if (ret.IsSuccess) {
+                    console.log(JSON.stringify(ret));
+                    isShowBox = true;
+                    checkShow();
+                    //处理数据
+                    // 用户数据(图表)
+                    var userBoxId1 = 1;
+                    var title1 = ['用户数'];
+                    var xData1 = [];
+                    var yData1 = [];
+                    var color1 = ['#ff2d52'];
+                    if (ret.Data.DataOne.length != 0) {
+                        ret.Data.DataOne.forEach(function(item) {
+                            xData1.push(item.Time);
+                            yData1.push(item.Count);
+                        })
+                        createEchart(userBoxId1, title1, xData1, yData1, color1);
+                    } else {
+                      // 提示暂无数据
+                      api.toast({
+                          msg: '暂无用户数据',
+                          duration: 2000,
+                          location: 'middle'
+                      });
+
+                    }
+
+                    // 用户数据（表格）
+                    var data1 = {
+                        list: ret.Data.DataOne
+                    }
+                    var str1 = template('userlist', data1);
+                    $('#data-user-box').append(str1);
+
+
+                    // 流量数据（图表）
+                    var userBoxId2 = 2;
+                    var title2 = ['流量数'];
+                    var xData2 = [];
+                    var yData2 = [];
+                    var color2 = ['#d48265'];
+                    if (ret.Data.DataTwo.length != 0) {
+                        ret.Data.DataTwo.forEach(function(item) {
+                            xData2.push(item.Time);
+                            yData2.push(item.flow);
+                        })
+                        createEchart(userBoxId2, title2, xData2, yData2, color2);
+                    } else {
+                      // 提示暂无数据
+                      api.toast({
+                          msg: '暂无流量数据',
+                          duration: 2000,
+                          location: 'middle'
+                      });
+                    }
+
+
+                    // 流量数据（表格）
+                    var data2 = {
+                        list: ret.Data.DataTwo
+                    }
+                    var str2 = template('flowlist', data2);
+                    $('#data-flow-box').append(str2);
+                } else {
+                    api.toast({
+                        msg: ret.Msg,
+                        duration: 2000,
+                        location: 'top'
+                    });
+                }
+            })
+    }
+
+
+    // 点击用户切换
+    function swicthShowUserType() {
+        console.log(showUserData);
+        if (showUserData == 0) {
+            // 当前展示的是图表，切换为展示列表
+            showUserData = 1;
+        } else {
+            // 当前展示的是列表，切换为展示图表
+            showUserData = 0;
+        }
+
+        $('.data-user-box').addClass('aui-hide');
+        var str = '.data-box-user-' + showUserData;
+        console.log(str);
+        $(str).removeClass('aui-hide');
+    }
+    // 点击流量切换
+    function swicthShowFlowType() {
+        if (showFlowData == 0) {
+            // 当前展示的是图表，切换为展示列表
+            showFlowData = 1;
+        } else {
+            // 当前展示的是列表，切换为展示图表
+            showFlowData = 0;
+        }
+
+        $('.data-flow-box').addClass('aui-hide');
+        var str = '.data-box-flow-' + showFlowData;
+        $(str).removeClass('aui-hide');
+    }
+    // 创建图表
+    function createEchart(id, titledata, xdata, ydata, color) {
+        // var id = 1;
+        // var title = ['用户数'];
+        // var ydata = [120, 132, 101, 134, 90, 230, 210];
+        // var xdata = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+        // var color = ['#ff2d52'];
+        // '#d48265'
+        var options = {
+            color: color,
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: titledata
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: xdata
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                name: '今年日流量',
+                type: 'line',
+                data: ydata
+            }]
+        };
+        var myChart = 'myChart' + id;
+        var myChart = echarts.init(document.getElementById('container' + id));
+        myChart.setOption(options);
+    }
+
+    // 时间范围的tab切换
+    // $('.btnKongtime').click(function() {
+    //         var _index = $(this).index();
+    //         $(this).addClass("on").siblings().removeClass("on");
+    //         if (_index === 2) {
+    //             $('.item-ks-sj').show()
+    //             $('.item-js-sj').show()
+    //             $api.val($api.dom('.BeginWarnTime'), '')
+    //             $api.val($api.dom('.EndWarnTime'), '')
+    //         } else if (_index === 1) {
+    //             //七天时间
+    //             $('.item-ks-sj').hide()
+    //             $('.item-js-sj').hide()
+    //             $api.val($api.dom('.BeginWarnTime'), getDay(-7))
+    //             $api.val($api.dom('.EndWarnTime'), getDay(0))
+    //         } else {
+    //             //今天时间
+    //             $('.item-ks-sj').hide()
+    //             $('.item-js-sj').hide()
+    //             $api.val($api.dom('.BeginWarnTime'), dayjs().format('YYYY-MM-DD'))
+    //             $api.val($api.dom('.EndWarnTime'), dayjs().format('YYYY-MM-DD'))
+    //         }
+    //
+    //     })
+    // 关闭筛选器
+    function popTopClose() {
+        // 把数据广播出去，发起请求
+        // alert(JSON.stringify($('#form').parseForm()))
+        // 关闭frome
+        var listloto = $('#form').parseForm();
+        var dacha = getDaysBetween(listloto.BeginWarnTime, listloto.EndWarnTime);
+        if (listloto.BeginWarnTime == '') {
+            api.toast({
+                msg: '请选择开始时间',
+                duration: 2000,
+                location: 'bottom'
+            });
+            return false;
+        }
+        if (listloto.EndWarnTime == '') {
+            api.toast({
+                msg: '请选择结束时间',
+                duration: 2000,
+                location: 'bottom'
+            });
+            return false;
+        }
+        if (new Date(listloto.BeginWarnTime) > new Date(listloto.EndWarnTime)) {
+            api.toast({
+                msg: '开始时间不能大于结束时间',
+                duration: 2000,
+                location: 'bottom'
+            });
+            return false;
+        }
+        if (dacha > 30) {
+            api.toast({
+                msg: '相差不能超过30天',
+                duration: 2000,
+                location: 'bottom'
+            });
+            return false;
+        }
+        api.sendEvent({
+            name: 'closeFrameChangepopup',
+            extra: {
+                list: listloto,
+                type: api.pageParam.type
+            }
+        });
+        $('.change-box').css('display', 'none')
+        popupindex = 0;
+    }
+    // 打开选择器
+    function openselect(type) {
+        if (type === 1 && ($api.getStorage('CQOrgOptions') == null || $api.getStorage('CQOrgOptions') == "")) {
+            api.toast({
+                msg: '无营业区域信息，请重新进入尝试',
+                duration: 2000,
+                location: 'top'
+            });
+            return false;
+        }
+        if (type === 6 && ($api.getStorage('SBKJ') == null || $api.getStorage('SBKJ') == "")) {
+            api.toast({
+                msg: '无水表口径信息，请重新进入尝试',
+                duration: 2000,
+                location: 'top'
+            });
+            return false;
+        }
+        if (type === 11 && ($api.getStorage('YSXZ') == null || $api.getStorage('YSXZ') == "")) {
+            api.toast({
+                msg: '无用水性质信息，请重新进入尝试',
+                duration: 2000,
+                location: 'top'
+            });
+            return false;
+        }
+        if (type === 12 && ($api.getStorage('SBLX') == null || $api.getStorage('SBLX') == "")) {
+            api.toast({
+                msg: '无水表类型信息，请重新进入尝试',
+                duration: 2000,
+                location: 'top'
+            });
+            return false;
+        }
+        //  if(type===4 && ($api.getStorage('SBMP')==null || $api.getStorage('SBMP') == "")){
+        //      api.toast({
+        //        msg:'无水表铭牌信息，请重新进入尝试',
+        //        duration: 2000,
+        //        location: 'top'
+        //      });
+        //      return false;
+        //  }
+        //  if(type===5 && ($api.getStorage('BJJLLX/GZJLLX')==null || $api.getStorage('BJJLLX/GZJLLX') == "")){
+        //      api.toast({
+        //        msg:'无报警类型信息，请重新进入尝试',
+        //        duration: 2000,
+        //        location: 'top'
+        //      });
+        //      return false;
+        //  }
+        //  if(type===6 && ($api.getStorage('SBKJ')==null || $api.getStorage('SBKJ') == "")){
+        //      api.toast({
+        //        msg:'无水表口径信息，请重新进入尝试',
+        //        duration: 2000,
+        //        location: 'top'
+        //      });
+        //      return false;
+        //  }
+        //  if(type===7 && ($api.getStorage('SZZF')==null || $api.getStorage('SZZF') == "")){
+        //      api.toast({
+        //        msg:'无数值正负信息，请重新进入尝试',
+        //        duration: 2000,
+        //        location: 'top'
+        //      });
+        //      return false;
+        //  }
+        //  if(type===8 && ($api.getStorage('TQBZ')==null || $api.getStorage('TQBZ') == "")){
+        //      api.toast({
+        //        msg:'无同期比值信息，请重新进入尝试',
+        //        duration: 2000,
+        //        location: 'top'
+        //      });
+        //      return false;
+        //  }
+        //  if((type===9 && ($api.getStorage('CLRID')==null || $api.getStorage('CLRID') == "")) || (type===9&&!$('#form').parseForm().OrgCode)){
+        //      api.toast({
+        //        msg:'无处理人信息，请先选择营业区域',
+        //        duration: 2000,
+        //        location: 'top'
+        //      });
+        //      return false;
+        //  }
+        api.openFrame({
+            name: 'select',
+            url: '../view/select.html',
+            rect: {
+                x: 0,
+                y: 0,
+                marginTop: headerH
+            },
+            pageParam: {
+                type: type
+            },
+            bounces: false,
+            vScrollBarEnabled: true,
+            hScrollBarEnabled: true
+        });
+
+    }
+
+    function getDay(day) {
+        var today = new Date();
+        var targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
+        today.setTime(targetday_milliseconds); //注意，这行是关键代码
+
+        var tYear = today.getFullYear();
+        var tMonth = today.getMonth();
+        var tDate = today.getDate();
+        tMonth = doHandleMonth(tMonth + 1);
+        tDate = doHandleMonth(tDate);
+        return tYear + "-" + tMonth + "-" + tDate;
+    }
+
+    function doHandleMonth(month) {
+        var m = month;
+        if (month.toString().length == 1) {
+            m = "0" + month;
+        }
+        return m;
+    }
+    //获取处理人信息
+    function GetDealerOptionsajax(OrgCode) {
+        // console.log(JSON.stringify(GetMeterWarnList));
+        // console.log($api.getStorage('token'));
+        NewGet('/wapi/WRPData/GetDealerOptions', {
+                OrgCode: OrgCode
+            },
+            $api.getStorage('token'),
+            function(ret, err) {
+                if (ret.IsSuccess) {
+                    // console.log(JSON.stringify(ret));
+                    $api.setStorage('CLRID', ret.Data);
+
+                } else {
+                    api.toast({
+                        msg: err.Msg,
+                        duration: 2000,
+                        location: 'top'
+                    });
+                }
+            })
+    }
+
+    function emptyChange() {
+        $api.val($api.dom('.OrgName'), '');
+        $api.val($api.dom('.OrgCode'), '');
+        $api.val($api.dom('.BeginWarnTime'), '');
+        $api.val($api.dom('.EndWarnTime'), '');
+
+        $api.val($api.dom('.TypeWaterMeterName'), '');
+        $api.val($api.dom('.TypeWaterMeterValue'), '');
+        $api.val($api.dom('.NatureWaterName'), '');
+        $api.val($api.dom('.NatureWaterValue'), '');
+        $api.val($api.dom('.MeterCaliberName'), '');
+        $api.val($api.dom('.MeterCaliberValue'), '');
+        //是否需要清空之后关闭拾取器  进行搜索
+        var listloto = $('#form').parseForm();
+    }
+    //两个日期相隔天数
+    function getDaysBetween(dateString1, dateString2) {
+        var startDate = Date.parse(dateString1);
+        var endDate = Date.parse(dateString2);
+        var days = (endDate - startDate) / (1 * 24 * 60 * 60 * 1000);
+        return days;
+    }
+
+    // 是否显示用户和流量的两个数据框
+    function checkShow() {
+      if (isShowBox) {
+        $('.showData-box').removeClass('aui-hide');
+      } else {
+        $('.showData-box').addClass('aui-hide');
+      }
+    }
+</script>
+
+</html>

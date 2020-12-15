@@ -11,6 +11,19 @@ apiready = function() {
   $api.fixStatusBar(header);
 
   onGetData();
+
+  // api.addEventListener({
+  //     name: 'needCloseWin'
+  // }, function(ret, err){
+  //     if( ret ){
+  //          setTimeout(function() {
+  //            api.closeWin();
+  //          }, 500);
+  //     }else{
+  //          console.log( JSON.stringify( err ) );
+  //     }
+  // });
+
 }
 
 function onMenu(index, el) {
@@ -54,7 +67,7 @@ function onGetData() {
           console.log(JSON.stringify(err));
       },
       success: function(ret) {
-        console.log(JSON.stringify(ret));
+        // console.log(JSON.stringify(ret));
           api.hideProgress();
           pointsArr = ret.result.points;
           lines = ret.result.lines;
@@ -91,7 +104,7 @@ function onShowHtml(showArr, showType) {
     datas: showArr,
     iconUrl: iconUrl
   };
-  console.log(JSON.stringify(datas));
+  // console.log(JSON.stringify(datas));
   if (showType == '0') {
     var str = template('pointAndLine', datas);
     $('#layerList').empty();

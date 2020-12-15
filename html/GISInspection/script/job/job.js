@@ -15,7 +15,7 @@ var onCompletedPageNum=1;
 // 身份角色 0是员工 1是领导
 var role=0
 // 设置页数
-var pageCount=5
+var pageCount=20
 
 apiready = function() {
   var header = $api.byId('header');
@@ -252,9 +252,12 @@ function onCloseJob(el){
 // 接口时间返回来的T 转换为空格 并把负责人加进去
 function transT(data){
   for (var i = 0; i < data.length; i++) {
-    data[i].planCompleteTime=data[i].planCompleteTime.replace("T"," ");
-    data[i].creationTime=data[i].creationTime.replace("T"," ");
-    data[i].completeTime=data[i].completeTime==""||data[i].completeTime==null?data[i].completeTime:data[i].completeTime.replace("T"," ");
+    // data[i].planCompleteTime=data[i].planCompleteTime.replace("T"," ");
+    // data[i].creationTime=data[i].creationTime.replace("T"," ");
+    data[i].planCompleteTime=data[i].planCompleteTime == "" || data[i].planCompleteTime == null ? data[i].planCompleteTime : parseTime(data[i].planCompleteTime, '{y}-{m}-{d} {h}:{i}');
+    data[i].creationTime=data[i].creationTime == "" || data[i].creationTime == null ? data[i].creationTime : parseTime(data[i].creationTime, '{y}-{m}-{d} {h}:{i}');
+    data[i].completeTime=data[i].completeTime==""||data[i].completeTime==null?data[i].completeTime: parseTime(data[i].completeTime, '{y}-{m}-{d} {h}:{i}');
+    // data[i].completeTime).replace("T"," ")
     // console.log(data[i].completeTime);
     // console.log(data[i].person);
     data[i].person = data[i].person?data[i].person:headName;

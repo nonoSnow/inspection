@@ -83,7 +83,7 @@ function search(){
 }
 // 请求接口获取人员列表
 function onGetData() {
-  console.log('请求了人员列表接口');
+  // console.log('请求了人员列表接口');
     // alert("1")
     api.showProgress({
         style: 'default',
@@ -161,7 +161,7 @@ function pySegSort(arr) {
 // 选中负责人
 function checkHead(el){
   checkHeadObj = $(el).attr('param');
-  console.log(JSON.stringify(checkHeadObj));
+  // console.log(JSON.stringify(checkHeadObj));
   $("#sure").removeClass('aui-hide')
 }
 // 确定请求接口 传递数据
@@ -173,10 +173,10 @@ function onCheck(){
   // console.log(typeof(checkHeadObj));
   var checkPerson = JSON.parse(checkHeadObj);
   if (transOrder) {
-    console.log(checkPerson.userId == personInfo.userId);
+    // console.log(checkPerson.userId == personInfo.userId);
     if (checkPerson.userId == personInfo.userId) {
       api.toast({
-          msg: '请转给其他人！',
+          msg: '无法给自己转派工单！',
           duration: 2000,
           location: 'middle'
       });

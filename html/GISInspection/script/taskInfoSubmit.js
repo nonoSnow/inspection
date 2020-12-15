@@ -15,14 +15,14 @@ apiready = function() {
   // 实现沉浸式状态栏效果
   $api.fixStatusBar(header);
 
-  console.log(JSON.stringify(api.pageParam.data));
+  // console.log(JSON.stringify(api.pageParam.data));
   details = api.pageParam.data;
   details.type = api.pageParam.type;
-  console.log(JSON.stringify(details));
+  // console.log(JSON.stringify(details));
   // alert(typeof(details));
   // alert(details);
   // alert(details.status);
-  console.log(details.status);
+  // console.log(details.status);
   if (details.status == 2) {
     isAbnormal = false;
   } else if (details.status == 3) {
@@ -43,7 +43,7 @@ apiready = function() {
 
 // 初始化页面
 function onPageInit() {
-  console.log(api.pageParam.type);
+  // console.log(api.pageParam.type);
   if (api.pageParam.type == 'handle') {
     $('.detail').addClass("aui-hide");
     $('.abnormal').addClass("aui-hide");
@@ -51,7 +51,7 @@ function onPageInit() {
     $("#fotDetail").addClass("aui-hide");
     $("#fotLeader").addClass("aui-hide");
   } else {
-    console.log(isAbnormal);
+    // console.log(isAbnormal);
     if (isAbnormal) {
       $('.abnormal').removeClass("aui-hide");
     } else {
@@ -81,7 +81,7 @@ function showImg(data) {
   }
   $('#imgBox').html('');
   var str = template('imgData', param);
-  console.log(str);
+  // console.log(str);
   $('#imgBox').append(str);
 }
 
@@ -96,12 +96,12 @@ function initDevInfo() {
     inspectionStatus: details.inspectionStatus
   }
 
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
 
   GetPointDetails('api/services/Inspection/InspectionTaskService/GetPointDetails', data, showRet, showErr);;
 
   function showRet(ret) {
-    console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(ret));
 
     if (ret.result != null) {
       hasRet = true;
@@ -124,7 +124,7 @@ function initDevInfo() {
       var str1 = template('devceInfo', ret.result);
       $('#devInfoBox').append(str1);
 
-      showImg(imgList)
+      showImg(ret.result.resourceList);
     } else {
       $('#devInfo').addClass('aui-hide');
       $('#devInfoBox').addClass('aui-hide');
@@ -215,21 +215,22 @@ function action() {
   api.actionSheet({
       buttons: ['拍照', '相册选择']
   }, function(ret, err) {
-    console.log(JSON.stringify(ret));
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(err));
     if (ret.buttonIndex == 1) {
       // 选择了拍照
       var type = 'camera';
       getPicture(type, showRet, showErr);
 
       function showRet(ret) {
-        console.log(JSON.stringify(ret));
-        imgList.push(ret);
+        // console.log(JSON.stringify(ret));
+        imgList.push(ret[0]);
+        // console.log(JSON.stringify(imgList));
         showImg(imgList);
       }
 
       function showErr(err) {
-        console.log(JSON.stringify(err));
+        // console.log(JSON.stringify(err));
         // showImg(imgList);
         if(err.body.error != undefined){
           // alert(err.body.error.message);
@@ -256,9 +257,9 @@ function action() {
       getPicture(type, showRet, showErr);
 
       function showRet(ret) {
-        console.log(JSON.stringify(ret));
+        // console.log(JSON.stringify(ret));
         imgList.push(ret[0]);
-        console.log(JSON.stringify(imgList));
+        // console.log(JSON.stringify(imgList));
         showImg(imgList);
       }
 
@@ -292,9 +293,9 @@ function deleteImg(that) {
   e.stopPropagation();
   if (that != null) {
     var imgIndex = $(that).attr('parse');
-    console.log(imgIndex);
+    // console.log(imgIndex);
     imgList = deleteArray(imgList, imgIndex);
-    console.log(JSON.stringify(imgList));
+    // console.log(JSON.stringify(imgList));
     showImg(imgList);
   }
 }
@@ -323,7 +324,7 @@ function submit() {
   }
 
   var userInfo = $api.getStorage('userLoginInformation');
-  console.log(JSON.stringify(userInfo.currentUserInfo.userInfo));
+  // console.log(JSON.stringify(userInfo.currentUserInfo.userInfo));
 
   var data = {
     deviceId: details.id,
@@ -334,13 +335,19 @@ function submit() {
     resourceInfoList: imgList
   }
 
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
 
   AppInsertDeviceInspection('api/services/Inspection/DeviceService/AppInsertDeviceInspection' , data, showRet, showErr);
 
   function showRet(ret) {
+    api.sendEvent({
+        name: 'fromNormal'
+    });
+
     // 提交成功，返回任务详情列表
-    api.closeWin({});
+    api.closeToWin({
+      name: 'homeTaskInfo'
+    });
   }
 
   function showErr(err) {

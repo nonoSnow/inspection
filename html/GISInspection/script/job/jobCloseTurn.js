@@ -23,9 +23,18 @@ apiready = function() {
 
 // 选择负责人
 function onOpenHead() {
+  var userLoginInformation = $api.getStorage('userLoginInformation');
+  var personInfo = {
+    userName: userLoginInformation.currentUserInfo.userInfo.trueName,
+    userId: userLoginInformation.currentUserInfo.userInfo.userId
+  }
   api.openWin({
       name: 'headList',
-      url: './headList.html'
+      url: './headList.html',
+      pageParam: {
+        type: 'transOrder',
+        personInfo: personInfo
+      }
   });
 }
 

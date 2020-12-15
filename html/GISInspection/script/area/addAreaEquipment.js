@@ -70,7 +70,8 @@ function onSave() {
     });
     return;
   }
-
+  // console.log(JSON.stringify(checkPoint));
+  // console.log(JSON.stringify(checkLine));
   api.openWin({
       name: 'addArea',
       url: './addArea.html',

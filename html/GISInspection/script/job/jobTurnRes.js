@@ -36,7 +36,7 @@ function showData() {
     $(".reson").removeClass("aui-hide")
     // console.log(JSON.stringify(ret));
     $("#transferReason").val(ret.result.transferReason);
-    imgList=ret.result.resourcelist;
+    imgList=ret.result.resourceList;
     showImg(imgList);
   }
 

@@ -1,0 +1,449 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+    <meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+    <title>水表同步对比页</title>
+    <link rel="stylesheet" type="text/css" href="../css/auicss/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/auicss/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/public.css" />
+    <style>
+        .aui-bar-nav,.aui-bar-nav.aui-bar-light .aui-iconfont{
+            /* background-color:#4089F3 */
+            color: #333333;
+        }
+        #header-title{
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+        .soso-title{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            padding: 0.25rem 0.6rem;
+            background-color: white;
+        }
+        .aui-searchbar{
+            /*width: 14.8rem;*/
+            width: 79.3%;
+            background-color: white;
+        }
+        .aui-searchbar-input{
+            height: 1.65rem;
+            border-radius: 1.65rem;
+            line-height: 1.65rem;
+            background-color:#efefef;
+            margin: 0;
+        }
+        .aui-searchbar-input input{
+            height: 1.65rem;
+            width: 100%;
+        }
+        .change-box{
+          width: 100%;
+          position: relative;
+        }
+        .change-box .aui-list-item-input{
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+        .change-box .aui-list{
+          font-size: 0.75rem;
+          color: #333333;
+          height: 0;
+          overflow: hidden;
+          position: absolute;
+          top: 0;
+          width: 100%;
+          /*transition: all 10s;*/
+        }
+        .change-box input[type="text"]{
+          font-size: 0.75rem;
+        }
+        .form-box{
+          width: 100%;
+        }
+        .results-box{
+          width: 100%;
+          display: flex;
+          justify-content: space-around;
+          flex-wrap: wrap;
+          background-color: #fff;
+          border-top: 1px solid #cccccc;
+          border-bottom: 1px solid #cccccc;
+        }
+        .results-box-left{
+          width: 20%;
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+        }
+        .results-box-mid,.results-box-right{
+          width: 40%;
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+          border-left: 1px solid #cccccc;
+        }
+        .title-box{
+          height: 6.875rem;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          font-size: 0.6rem;
+        }
+        .basis-title{
+          width: 100%;
+          text-align: center;
+        }
+        .basis-title-box{
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          padding: 0 0.4rem;
+          margin-top: 0.4rem;
+        }
+        .detail-box{
+          height: 2rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 0.6rem;
+          border-top: 1px solid #cccccc;
+        }
+        .detail-box.on,.address-box.on{
+          background-color: #FEFCE5;
+        }
+        .address-box{
+          height: 4rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 0.6rem;
+          border-top: 1px solid #cccccc;
+        }
+        #footer{
+          position: fixed;
+          display: flex;
+          width: 100%;
+          height: 3.5rem;
+          background-color: #ffffff;
+          bottom: 0;
+          justify-content: space-around;
+          align-items: center;
+          padding: 0 0.6rem;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='header-title'>
+        <header class="aui-bar aui-bar-nav aui-bar-light" id="header">
+            <a class="aui-pull-left aui-btn" tapmode onclick="backwin()">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </a>
+            <div class="aui-title">水表同步</div>
+        </header>
+        <div class='soso-title'>
+            <div class="aui-searchbar" id="search">
+                <div class="aui-searchbar-input aui-border-radius" tapmode>
+                    <i class="aui-iconfont aui-icon-search"></i>
+                    <form action="javascript:search();">
+                        <input type="number" placeholder="请输入用户编号" id="search-input" onkeyup="doSearch()">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id='content' style="background-color:rgba(245, 245, 245, 1);">
+        <!-- 搜索出来的list -->
+        <div class='form-box'>
+          <div class='results-box'>
+            <!-- 左边菜单 -->
+            <div class='results-box-left'>
+              <div class='title-box bkco-efefef'>基础信息</div>
+              <div class='detail-box bkco-efefef'>营业区域</div>
+              <div class='detail-box bkco-efefef'>供水片区</div>
+              <div class='detail-box bkco-efefef'>用户编号</div>
+              <div class='detail-box bkco-efefef'>用户名称</div>
+              <div class='detail-box bkco-efefef'>水表铭牌</div>
+              <div class='detail-box bkco-efefef'>水表表号</div>
+              <div class='detail-box bkco-efefef'>水表类型</div>
+              <div class='detail-box bkco-efefef'>水表口径</div>
+              <div class='address-box bkco-efefef'>用户地址</div>
+            </div>
+            <div class='results-box-mid'></div>
+            <div class='results-box-right'></div>
+            <!-- list -->
+          </div>
+        </div>
+    </div>
+    <footer id='footer'>
+      <div class='btnKong on' tapmode onclick="vslist()" style="background-color:#FEE101;border: 1px solid #FEE101;">对比</div>
+      <div class='btnKong on' tapmode onclick="startSynchronous()">同步</div>
+    </footer>
+</body>
+<script type="text/javascript" src="../script/auijs/api.js"></script>
+<script type="text/javascript" src="../script/auijs/aui-dialog.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src='../script/public.js'></script>
+<script type="text/javascript" src='../script/template.js'></script>
+<script type="text/javascript" src="../script/request.js"></script>
+<script type="text/template" id='sosolist'>
+  <div class='title-box '>
+      <div class='basis-title'>营业系统</div>
+        <div class='basis-title-box'>
+          <div>用户编号：{{CustomerCode}}</div>
+          <div>水表表号：{{StampNo}}</div>
+          <div>用户名称：{{CustomerName}}</div>
+          <div>用户地址：{{CustomerAddress}}</div>
+        </div>
+  </div>
+  <div class='detail-box '>{{OrgName}}</div>
+  <div class='detail-box '>{{AreaName}}</div>
+  <div class='detail-box '>{{CustomerCode}}</div>
+  <div class='detail-box '>{{CustomerName}}</div>
+  <div class='detail-box '>{{NamePlateName}}</div>
+  <div class='detail-box '>{{StampNo}}</div>
+  <div class='detail-box '>{{MeterTypeName}}</div>
+  <div class='detail-box '>{{MeterCaliber}}</div>
+  <div class='address-box '>{{CustomerAddress}}</div>
+
+</script>
+<script type="text/template" id='sosolistvs'>
+  <div class='title-box '>
+      <div class='basis-title'>电磁水表</div>
+        <div class='basis-title-box'>
+          <div>用户编号：{{CustomerCode}}</div>
+          <div>水表表号：{{StampNo}}</div>
+          <div>用户名称：{{CustomerName}}</div>
+          <div>用户地址：{{CustomerAddress}}</div>
+        </div>
+  </div>
+  <div class='detail-box '>{{OrgName}}</div>
+  <div class='detail-box '>{{AreaName}}</div>
+  <div class='detail-box '>{{CustomerCode}}</div>
+  <div class='detail-box '>{{CustomerName}}</div>
+  <div class='detail-box '>{{NamePlateName}}</div>
+  <div class='detail-box '>{{StampNo}}</div>
+  <div class='detail-box '>{{MeterTypeName}}</div>
+  <div class='detail-box '>{{MeterCaliber}}</div>
+  <div class='address-box '>{{CustomerAddress}}</div>
+</script>
+<script type="text/javascript">
+var apiready = function() {
+        headerHeight();
+        api.parseTapmode();
+        api.setStatusBarStyle({
+            style:"dark"
+        });
+        MeterBaseInfoDetails.MeterId = api.pageParam.MeterId
+        var soso= $api.dom('.soso-title');
+        sosoheight = $api.offset(soso).h;
+        $('.form-box').css('padding-top', '' + sosoheight + 'px');
+        dialog = new auiDialog();
+        GetMeterBaseInfoDetailsajax()
+}
+var list;//电磁表
+var listvs;//营业系统
+var dialog;//弹框初始化
+var timeout;//定义一个定时器
+function doSearch(){
+    // 搜索的值
+    let soso = $api.val($api.byId('search-input'));
+    // 监听soso的值  是否 满足用户编号和水表表号规则  如果满足 就发起请求
+    clearTimeout(timeout);
+    OsmMeterBaseInfoDetails.CustomerCode=soso;
+    timeout= setTimeout(function(){
+        // 长时间没有输入的时候触发搜索
+        GetOsmMeterBaseInfoDetailsajax()
+    },2000)
+}
+// 按下确定键 直接搜索
+function search(){
+    clearTimeout(timeout);
+    let soso = $api.val($api.byId('search-input'));
+    OsmMeterBaseInfoDetails.CustomerCode=soso;
+    GetOsmMeterBaseInfoDetailsajax()
+}
+// 对比一下
+function vslist(){
+  if(!list || !listvs){
+    api.toast({
+        msg: '信息不足，无法进行对比',
+        duration: 2000,
+        location: 'bottom'
+    });
+    return false;
+  }
+  // 营业系统
+  str = `<div class='title-box '>
+      <div class='basis-title'>营业系统</div>
+        <div class='basis-title-box'>
+          <div>用户编号：${list.CustomerCode}</div>
+          <div>水表表号：${list.StampNo}</div>
+          <div>用户名称：${list.CustomerName}</div>
+          <div>用户地址：${list.CustomerAddress}</div>
+        </div>
+  </div>
+  <div ${listvs.OrgName === list.OrgName ? "class='detail-box'" : "class='detail-box on'"}>${list.OrgName}</div>
+  <div ${listvs.AreaName === list.AreaName ? "class='detail-box'" : "class='detail-box on'"}>${list.AreaName}</div>
+  <div ${listvs.CustomerCode === list.CustomerCode ? "class='detail-box'" : "class='detail-box on'"}>${list.CustomerCode}</div>
+  <div ${listvs.CustomerName === list.CustomerName ? "class='detail-box'" : "class='detail-box on'"}>${list.CustomerName}</div>
+  <div ${listvs.NamePlateName === list.NamePlateName ? "class='detail-box'" : "class='detail-box on'"}>${list.NamePlateName}</div>
+  <div ${listvs.StampNo === list.StampNo ? "class='detail-box'" : "class='detail-box on'"}>${list.StampNo}</div>
+  <div ${listvs.MeterTypeName === list.MeterTypeName ? "class='detail-box'" : "class='detail-box on'"}>${list.MeterTypeName}</div>
+  <div ${listvs.MeterCaliber === list.MeterCaliber ? "class='detail-box'" : "class='detail-box on'"}>${list.MeterCaliber}</div>
+  <div ${listvs.CustomerAddress === list.CustomerAddress ? "class='address-box'" : "class='address-box on'"}>${list.CustomerAddress}</div>`
+  //电磁水表
+  strvs = `<div class='title-box '>
+      <div class='basis-title'>电磁水表</div>
+        <div class='basis-title-box'>
+          <div>用户编号：${listvs.CustomerCode}</div>
+          <div>水表表号：${listvs.StampNo}</div>
+          <div>用户名称：${listvs.CustomerName}</div>
+          <div>用户地址：${listvs.CustomerAddress}</div>
+        </div>
+  </div>
+  <div ${listvs.OrgName === list.OrgName ? "class='detail-box'" : "class='detail-box on'"}>${listvs.OrgName}</div>
+  <div ${listvs.AreaName === list.AreaName ? "class='detail-box'" : "class='detail-box on'"}>${listvs.AreaName}</div>
+  <div ${listvs.CustomerCode === list.CustomerCode ? "class='detail-box'" : "class='detail-box on'"}>${listvs.CustomerCode}</div>
+  <div ${listvs.CustomerName === list.CustomerName ? "class='detail-box'" : "class='detail-box on'"}>${listvs.CustomerName}</div>
+  <div ${listvs.NamePlateName === list.NamePlateName ? "class='detail-box'" : "class='detail-box on'"}>${listvs.NamePlateName}</div>
+  <div ${listvs.StampNo === list.StampNo ? "class='detail-box'" : "class='detail-box on'"}>${listvs.StampNo}</div>
+  <div ${listvs.MeterTypeName === list.MeterTypeName ? "class='detail-box'" : "class='detail-box on'"}>${listvs.MeterTypeName}</div>
+  <div ${listvs.MeterCaliber === list.MeterCaliber ? "class='detail-box'" : "class='detail-box on'"}>${listvs.MeterCaliber}</div>
+  <div ${listvs.CustomerAddress === list.CustomerAddress ? "class='address-box'" : "class='address-box on'"}>${listvs.CustomerAddress}</div>`
+  $('.results-box-mid').html(strvs)
+  $('.results-box-right').html(str)
+}
+// 同步
+//是否允许同步
+var SynOsmMeterBaseInfoindex=0//0允许同步 1不允许同步
+function startSynchronous(){
+    if(SynOsmMeterBaseInfoindex!=0){
+      api.toast({
+          msg:'已经同步过或者无数据，无法继续同步',
+          duration: 2000,
+          location: 'top'
+      });
+      return false;
+    }
+    if(list==null || list=='' || listvs==null || listvs==''){
+      api.toast({
+          msg:'无电磁表或者营销系统数据，无法进行同步',
+          duration: 2000,
+          location: 'top'
+      });
+      return false;
+    }
+  // 判断水表号是否一致
+   if(list.StampNo === listvs.StampNo){
+     dialog.alert({
+         title:"确定是否同步",
+        //  msg:'确定是否同步',
+         buttons:['取消','确定']
+     },function(ret){
+       if(ret.buttonIndex==2){
+            // 点击同步确认之后  先请求  再渲染   请求成功之后 再进行一次渲染
+            list.WrpMeterId = listvs.MeterId;
+            list.WrpStampNo = listvs.StampNo;
+            console.log(list);
+            NewPost('/wapi/WRPData/SynOsmMeterBaseInfo',list,$api.getStorage('token'),function(ret,err){
+              if(ret.IsSuccess){
+                api.toast({
+                    msg:ret.Msg,
+                    duration: 2000,
+                    location: 'top'
+                });
+                list = list;
+                listvs = list;
+                let str = template('sosolistvs',listvs);
+                let str2 = template('sosolist',list);
+                $('.results-box-right').html(str2)
+                $('.results-box-mid').html(str)
+                SynOsmMeterBaseInfoindex = 1
+              }
+              else {
+                  api.toast({
+                      msg:ret.Msg,
+                      duration: 2000,
+                      location: 'top'
+                  });
+              }
+            })
+       }
+     })
+   }else {
+     api.toast({
+         msg: '水表表号不一致，无法同步',
+         duration: 2000,
+         location: 'bottom'
+     });
+   }
+}
+var MeterBaseInfoDetails={
+    UserId:$api.getStorage('cqUserId'),//用户ID*
+    MeterId:''
+}
+//获取基础信息
+function GetMeterBaseInfoDetailsajax(){
+    NewGet('/wapi/WRPData/GetMeterBaseInfoDetails',MeterBaseInfoDetails,
+    $api.getStorage('token'),function(ret,err){
+      if(ret.IsSuccess){
+        // console.log(JSON.stringify(ret.Data));
+            listvs = ret.Data
+            // 电磁水表
+            let str = template('sosolistvs',listvs);
+            $('.results-box-mid').html(str)
+      }else {
+          api.toast({
+              msg:err.Msg,
+              duration: 2000,
+              location: 'top'
+          });
+      }
+    })
+}
+var OsmMeterBaseInfoDetails={
+    UserId:$api.getStorage('cqUserId'),//用户ID*
+    CustomerCode:'',//用户编号
+}
+function GetOsmMeterBaseInfoDetailsajax(){
+    NewGet('/wapi/WRPData/GetOsmMeterBaseInfoDetails',OsmMeterBaseInfoDetails,
+    $api.getStorage('token'),function(ret,err){
+
+      if(ret.IsSuccess && ret.Data){
+        // console.log(JSON.stringify(ret.Data));
+            list = ret.Data
+            let str = template('sosolist',list);
+            $('.results-box-right').html(str)
+            SynOsmMeterBaseInfoindex=0
+      }else if(ret.Data==null || ret.Data=='') {
+          api.toast({
+              msg:'营销系统暂无数据,无法进行同步操作',
+              duration: 2000,
+              location: 'top'
+          });
+      }else {
+          api.toast({
+              msg:ret.Msg,
+              duration: 2000,
+              location: 'top'
+          });
+      }
+    })
+}
+</script>
+
+</html>

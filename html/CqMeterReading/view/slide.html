@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html>
+<meta charset="utf-8">
+<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width" />
+<meta name="format-detection" content="telephone=no, email=no, date=no, address=no">
+<title>轮播页</title>
+<link rel="stylesheet" type="text/css" href="../css/auicss/aui.css" />
+<link rel="stylesheet" type="text/css" href="../css/auicss/api.css" />
+<link rel="stylesheet" type="text/css" href="../css/common.css"/>
+<link rel="stylesheet" type="text/css" href="../css/public.css" />
+<style>
+/* 三列标题居中可覆盖样式 */
+body{
+  background-color:rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.swipe {
+    overflow: hidden;
+    visibility: hidden;
+    position: relative;
+    width: 15rem;
+    height: 20rem;
+}
+
+.swipe-wrap {
+    overflow: hidden;
+    position: relative;
+}
+
+.swipe-wrap .swipe-box {
+    float: left;
+    width: 100%;
+    position: relative;
+}
+.bottom-round{
+  position: absolute;
+  bottom:12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  left: 50%;
+  transform: translate(-50%,0);
+}
+.bottom-round .round{
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.4);
+  margin: 0 5px;
+}
+.bottom-round .round.on{
+  background-color: #fff;
+}
+</style>
+<body>
+</body>
+<script type="text/javascript" src="../script/auijs/api.js"></script>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src='../script/public.js'></script>
+<script type="text/javascript" src='../script/template.js'></script>
+<script type="text/javascript" src='../script/swipe.js'></script>
+<script type="text/template" id='sosolist'>
+<div id='slider' class='swipe'>
+    <div class='swipe-wrap'>
+      {{each list value index}}
+      <div class="swipe-box">
+          <img src='{{value}}'/>
+      </div>
+      {{/each}}
+    </div>
+    <div class='bottom-round'>
+      {{each list value index}}
+        <div class="round {{index==0? 'on' : ''}}" data-index={{index}}></div>
+      {{/each}}
+    </div>
+</div>
+<div class='closeWin' onclick="closewin()">
+  <img src='../image/close.png' style="width:2.5rem;height:2.5rem"/>
+</div>
+</script>
+<script type="text/javascript">
+var apiready=function(){
+      var imageList;
+      var index;
+      imageList = api.pageParam.pictureList;
+      index = api.pageParam.index;
+      var str = template('sosolist',{list:imageList});
+      $('body').html(str);
+      var listround = $('.bottom-round .round')
+      var slider = Swipe(document.getElementById('slider'), {
+          // auto: 3000,
+          continuous: true,
+          callback: function(pos){
+            listround.each(function(index) {
+                if(index === pos){
+                  $(this).addClass('on')
+                }else {
+                  $(this).removeClass('on')
+                }
+            })
+          }
+      });
+
+}
+function closewin() {
+    api.closeFrame();
+}
+</script>
+</html>
