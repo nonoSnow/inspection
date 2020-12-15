@@ -56,7 +56,7 @@
             var zoomMap = this.zoomMap;
             this.map = new SNTGIS.Map({
               layers: [tdMap, dmLayer, pointLayer, lineLayer],
-              center: [106.548293, 29.565552],
+              center: [119.014598, 31.595281],
               zoom: zoomMap,
               maxZoom: 18,
               minZoom: 5,
@@ -80,8 +80,14 @@
             }, layObj)
             var locationList = layObj.position
             var dom = layObj.dom;
+<<<<<<< HEAD:html/CqMeterReading/script/gis.js
             for(var i = 0; i< locationList.length; i++) {
                 layObj.position = locationList[i];
+=======
+            for(var i = 0; i< location.length; i++) {
+                layObj.position = location[i];
+
+>>>>>>> bae795be2635924cad1c4e6bc237e0702802a0d7:html/IntelligentSecurity/script/common/gis.js
                 layObj.dom = dom + '-' + i
                 layObj.index = i
                 this.addOverLayerEvent(layObj)
@@ -420,6 +426,7 @@
             // 获取选中的图层边界点
             var areaExtent = deviceInfo.areaPoint.split(';').join(' ');
             areaExtent = areaExtent.substring(0, areaExtent.length - 1);
+<<<<<<< HEAD:html/CqMeterReading/script/gis.js
             console.log(areaExtent)
             this.getDeviceList({
                 data: {
@@ -445,10 +452,80 @@
                 }
             })
             ajaxMethod(reqOptions);
+=======
+            // console.log(workSpace)
+            window.SNTGIS.workSpace = workSpace;
+            // console.log(_this)
+            // console.log(areaExtent)
+            // this.getFeaturesByCoords(_this.lineLayer, areaExtent, function() {
+            //     console.log(11)
+            // })
+            // 获取区域与管线图层相交的所有元素
+            if(deviceInfo.lineList.length > 0) {
+                window.SNTGIS.NetWork.getFeaturesByCoords(_this.lineLayer, areaExtent, function (data) {
+                    _this.getLineListInArea(data, deviceInfo.lineList, name)
+                    // _this.lineInArea = data;
+                    // if (type) {
+                    //     // console.log(deviceInfo.selectLine)
+                    //     // _this.drawLineSelect(deviceInfo.selectLine)
+                    //     _this.getLineListInArea(data, deviceInfo.selectLine, type);
+                    // }
+                })
+            }
+            if(deviceInfo.pointList.length > 0) {
+                // 获取区域与管点图层相交的所有元素
+                window.SNTGIS.NetWork.getFeaturesByCoords(_this.pointLayer, areaExtent, function (data) {
+                    _this.pointInArea = data;
+                    _this.getPointListInArea(data, deviceInfo.pointList, name);
+                    // if (type) {
+                    //     // _this.drawPointSelect(deviceInfo.selectPoint)
+                    //     _this.getPointListInArea(data, deviceInfo.selectPoint, type);
+                    // }
+                })
+            }
+
+        },
+
+        getFeaturesByCoords(layer, coords, callback) { //IsSelect 为false时为搜索页面查询信息，不可点击， 为ture是，为首页查询信息，可以select查询信息
+        //    DataObj = data;
+        //    DataObj.IsSelect = IsSelect;
+           // point
+        //    var url = `http://119.3.192.111:5431/geoserver/OpenGIS/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=OpenGIS%3AGetPointByName&outputFormat=application%2Fjson&viewparams=number:${data.number}`;
+        //    var url=getAppMapSetConfig.collectPoint+`:${data.number}`;
+        // http://118.122.84.146:8595/geoserver/wms
+           var source = layer.getSource();
+           var layerName = source.params_.LAYERS;
+           var layerNameArray = layerName.split(":");
+           if (layerNameArray.length == 2) {
+               var ajax = new XMLHttpRequest();
+               var url = source.urls[0];
+            //    var url = source.urls[0].replace('/wms','/wfs');
+            // console.log(layerNameArray[0])
+            //    url = url.replace('/'+layerNameArray[0],'');
+               ajax.open('get', url);
+               ajax.withCredentials = true;
+               ajax.setRequestHeader("Authorization", authenticateUser('admin', "Sntsoft123"));
+               ajax.send();
+               ajax.onreadystatechange = function() {
+                   if (ajax.readyState == 4 && ajax.status == 200) {
+                       feature = queryPointInfoclayersource.getFormat().readFeatures(ajax.responseText);
+                       queryPointInfoclayersource.addFeatures(feature);
+                   }
+               };
+               ajax.ontimeout = function(e) {
+
+               };
+               ajax.onerror = function(e) {
+
+               };
+            }
+        //    map.getView().setZoom(18);
+>>>>>>> bae795be2635924cad1c4e6bc237e0702802a0d7:html/IntelligentSecurity/script/common/gis.js
         },
         // 根据数据返回的管线 判断是否在传入的区域内 并绘制在区域内的管线
         getLineListInArea: function(allLineList, checkedLine, name) {
             var lineList = [];
+<<<<<<< HEAD:html/CqMeterReading/script/gis.js
             for(var i = 0; i < checkedLine.length; i++) {
                 for(var j = 0; j < allLineList.length; j++) {
                     if(checkedLine[i].deviceCode ==allLineList[j].lineNumber) {
@@ -459,6 +536,13 @@
                         }
                         let x = (Number(coordinates[0][0]) + Number(coordinates[1][0])) / 2;
                         let y = (Number(coordinates[0][1]) + Number(coordinates[1][1])) / 2;
+=======
+            for(let i = 0; i < checkedLine.length; i++) {
+                for(let j = 0; j < allLineList.length; j++) {
+                    if(checkedLine[i].deviceCode ==allLineList[j].properties.LineNumber) {
+                        let x = (allLineList[j].geometry.coordinates[0][0] + allLineList[j].geometry.coordinates[1][0]) / 2;
+                        let y = (allLineList[j].geometry.coordinates[0][1] + allLineList[j].geometry.coordinates[1][1]) / 2;
+>>>>>>> bae795be2635924cad1c4e6bc237e0702802a0d7:html/IntelligentSecurity/script/common/gis.js
                         lineList.push({
                             deviceCode: allLineList[j].lineNumber,
                             deviceName: allLineList[j].material,
@@ -470,7 +554,13 @@
                     }
                 }
             }
+<<<<<<< HEAD:html/CqMeterReading/script/gis.js
             console.log(JSON.stringify(lineList))
+=======
+            // if(type == 1) {
+            //     this.areaObj.lineLength = lineLength;
+            //     this.areaObj.lineList = lineList;
+>>>>>>> bae795be2635924cad1c4e6bc237e0702802a0d7:html/IntelligentSecurity/script/common/gis.js
             this.drawLineSelect(lineList, name);
         },
 
@@ -479,8 +569,12 @@
             var pointList = [];
             for(let i = 0; i < checkedPoint.length; i++) {
                 for(let j = 0; j < allPointList.length; j++) {
+<<<<<<< HEAD:html/CqMeterReading/script/gis.js
                     if(checkedPoint[i].deviceCode ==allPointList[j].pointNumbe) {
                         var coordinates = allPointList[j].geom.match(/POINT\((.*)\)/)[1];
+=======
+                    if(checkedPoint[i].deviceCode ==allPointList[j].properties.PointNumbe) {
+>>>>>>> bae795be2635924cad1c4e6bc237e0702802a0d7:html/IntelligentSecurity/script/common/gis.js
                         pointList.push({
                             deviceCode: allPointList[j].pointNumbe,
                             deviceName: allPointList[j].pointName,
@@ -552,6 +646,289 @@
             zoom = zoom >= 5 ? zoom : 5;
             this.zoomMap = zoom;
             this.map.getView().setZoom(zoom);
+<<<<<<< HEAD:html/CqMeterReading/script/gis.js
+=======
+        },
+
+        // 初始化轨迹图层
+        initLineOrbit: function(name) {
+            var _this = this;
+            var layername = name ? name + 'OrbitLayer' : 'lineOrbitLayer'
+            var sourcename = name ? name + 'OrbitSource' : 'lineOrbitSource'
+
+            let orbitSource = new window.ol.source.Vector({});
+            this[sourcename] = orbitSource;
+            var orbitLayer = new window.ol.layer.Vector({
+                source: orbitSource,
+                updateWhileInteracting: true,
+                style: _this.orbitStyle,
+                zoom: _this.zo
+            });
+            this[layername] = orbitLayer;
+            this.map.addLayer(orbitLayer);
+        },
+        /*
+            样式方法回调  返回路径样式及 路径上箭头 及 箭头样式和旋转角度
+            feature: 地图上的要素对象，既有属性，也有坐标图形。
+            res：当前地图分辨率参数。
+        */
+        orbitStyle: function(feature, res) {
+            let _this = this;
+            var geometry = feature.getGeometry();
+            var length = geometry.getLength();
+            var stpes = 40;
+            var geo_steps = stpes * res;
+            var arrowsNum = parseInt(length / geo_steps);
+            var styles = [
+                // linestring
+                new ol.style.Style({
+                    stroke: new window.ol.style.Stroke({
+                        color: 'rgba(29, 191, 124, 1)',
+                        width: 6
+                    }),
+                })
+            ];
+            var tree = new RBush();
+            geometry.forEachSegment(function(start, end) {
+                var dx = end[0] - start[0];
+                var dy = end[1] - start[1];
+
+                //计算每个segment的方向，即箭头旋转方向
+                var rotation = Math.atan2(dy, dx);
+                var geom = new ol.geom.LineString([start, end]);
+                var extent = geom.getExtent();
+                var item = {
+                    minX: extent[0],
+                    minY: extent[1],
+                    maxX: extent[2],
+                    maxY: extent[3],
+                    geom: geom,
+                    rotation: rotation
+                };
+                tree.insert(item);
+            });
+            for (var i = 1; i < arrowsNum; i++) {
+                var arraw_coor = geometry.getCoordinateAt(i * 1.0 / arrowsNum);
+                var tol = 0.0001; //查询设置的点的容差，测试地图单位是米。如果是4326坐标系单位为度的话，改成0.0001.
+                var arraw_coor_buffer = [arraw_coor[0] - tol, arraw_coor[1] - tol, arraw_coor[0] + tol, arraw_coor[1] + tol];
+                //进行btree查询
+                var treeSearch = tree.search({
+                    minX: arraw_coor_buffer[0],
+                    minY: arraw_coor_buffer[1],
+                    maxX: arraw_coor_buffer[2],
+                    maxY: arraw_coor_buffer[3]
+                });
+                var arrow_rotation;
+                //只查询一个，那么肯定是它了，直接返回
+                if (treeSearch.length == 1)
+                    arrow_rotation = treeSearch[0].rotation;
+                else if (treeSearch.length > 1) {
+                    var results = treeSearch.filter(function(item) {
+                        //箭头点与segment相交，返回结果。该方法实测不是很准，可能是计算中间结果
+                        //保存到小数精度导致查询有点问题
+                        // if(item.geom.intersectsCoordinate(arraw_coor))
+                        //   return true;
+
+                        //换一种方案，设置一个稍小的容差，消除精度问题
+                        var _tol = 0.00001; //消除精度误差的容差
+                        if (item.geom.intersectsExtent([arraw_coor[0] - _tol, arraw_coor[1] - _tol, arraw_coor[0] + _tol, arraw_coor[1] + _tol]))
+                            return true;
+                    })
+                    if (results.length > 0)
+                        arrow_rotation = results[0].rotation;
+                }
+                styles.push(new ol.style.Style({
+                    geometry: new ol.geom.Point(arraw_coor),
+                    image: new ol.style.Icon({
+                        src: '../../image/icon-arrow.png',
+                        anchor: [0.75, 0.5],
+                        rotateWithView: true,
+                        rotation: -arrow_rotation
+                    })
+                }));
+            }
+            return styles;
+        },
+
+        // 根据多点绘制轨迹路径
+        drawOribitRoute: function(pointList, name) {
+            var sourcename = name ? name + 'OrbitSource' : 'lineOrbitSource'
+            var feature = new ol.Feature({
+                geometry: new ol.geom.LineString(pointList)
+            })
+            this[sourcename].addFeature(feature);
+        },
+
+        // 车辆轨迹绘制
+        drawCarTrajectory: function(options) {
+            let _this = this;
+            var sourcename = options.name ? options.name + 'OrbitSource' : 'lineOrbitSource';
+            // var layername = name ? name + 'OrbitLayer' : 'lineOrbitLayer';
+            var feature = this[sourcename].getFeatures()[0];
+            var geometry = feature.getGeometry();
+            var length = geometry.getLength();
+            var curCount = this.curCount || 0;
+            var meterLength = Math.round(length * 100 * 1000)
+            speed = (options.speed || 1) * 1;
+
+            var carAniCount = parseInt(meterLength / speed);
+
+            var treeRoute = new RBush();
+
+            geometry.forEachSegment(function(start, end) {
+                var dx = end[0] - start[0];
+                var dy = end[1] - start[1];
+
+                //计算每个segment的方向，即箭头旋转方向
+                var rotation = Math.atan2(dy, dx);
+                var geom = new ol.geom.LineString([start, end]);
+                var extent = geom.getExtent();
+                var item = {
+                    minX: extent[0],
+                    minY: extent[1],
+                    maxX: extent[2],
+                    maxY: extent[3],
+                    geom: geom,
+                    rotation: rotation
+                };
+                treeRoute.insert(item);
+            });
+
+            this.animate = setInterval(function() {
+                curCount++
+                var arraw_coor = geometry.getCoordinateAt(curCount * 1.0 / carAniCount);
+                var tol = 0.0001;
+                var arraw_coor_buffer = [arraw_coor[0] - tol, arraw_coor[1] - tol, arraw_coor[0] + tol, arraw_coor[1] + tol];
+                var treeSearch = treeRoute.search({
+                    minX: arraw_coor_buffer[0],
+                    minY: arraw_coor_buffer[1],
+                    maxX: arraw_coor_buffer[2],
+                    maxY: arraw_coor_buffer[3]
+                });
+                var arrow_rotation;
+                if(treeSearch.length == 1) {
+                    arrow_rotation = treeSearch[0].rotation;
+                } else if (treeSearch.length > 1) {
+                    var results = treeSearch.filter(function(item) {
+
+                        //换一种方案，设置一个稍小的容差，消除精度问题
+                        var _tol = 0.00001; //消除精度误差的容差
+                        if (item.geom.intersectsExtent([arraw_coor[0] - _tol, arraw_coor[1] - _tol, arraw_coor[0] + _tol, arraw_coor[1] + _tol]))
+                            return true;
+                    })
+                    if (results.length > 0)
+                        arrow_rotation = results[0].rotation;
+                }
+                //计算车辆的位置和角度后  改变车辆的位置和角度
+                if(options.callback) options.callback(arraw_coor, -arrow_rotation)
+                if(curCount + 1 >= carAniCount) {
+                    clearInterval(_this.animate);
+                }
+                _this.curCount = curCount;
+            }, 10)
+
+
+        },
+
+        // 车辆轨迹
+        initMapTrajectory: function() {
+            //中间站
+            var stops=[
+                [12909554.6597,4933234.84552],   //14
+                [12909824.6852,4931594.7854],    //43
+                [12910026.8837,4930523.89946],   //63
+                [12910870.563,4929357.26511]     //85
+            ];
+
+            var stopMakers = new Array();
+
+            for(var i=0;i<4;i++){
+                var s = new ol.Feature({
+                    type: 'stop',
+                    geometry: new ol.geom.Point(stops[i])
+                });
+                stopMakers.push(s);
+            }
+            //将离散点构建成一条折线
+            var route = new ol.geom.LineString(stopMakers);
+            //获取直线的坐标
+            var routeCoords = route.getCoordinates();
+            var routeLength = routeCoords.length;
+
+            var routeFeature = new ol.Feature({
+                type: 'route',
+                geometry: route
+            });
+            var geoMarker = new ol.Feature({
+                type: 'geoMarker',
+                geometry: new ol.geom.Point(routeCoords[0])
+            });
+            var startMarker = new ol.Feature({
+                type: 'icon',
+                geometry: new ol.geom.Point(routeCoords[0])
+            });
+            var endMarker = new ol.Feature({
+                type: 'icon',
+                geometry: new ol.geom.Point(routeCoords[routeLength - 1])
+            });
+
+            var style = {
+                'route': new ol.style.Style({
+                      stroke: new ol.style.Stroke({
+                          width: 6,
+                          color: '#F2C841'
+                      }),
+                      fill:new ol.style.Fill({
+                          color:"#F6E3A3"
+                      })
+                  }),
+                  'geoMarker': new ol.style.Style({
+                      /*image: new ol.style.Circle({
+                          radius: 7,
+                          snapToPixel: false,
+                          fill: new ol.style.Fill({ color: 'black' }),
+                          stroke: new ol.style.Stroke({
+                              color: 'white',
+                              width: 2
+                          })
+                      })*/
+                      image: new ol.style.Icon({
+                          src: '../../image/ordinary_car.png',
+                          rotateWithView: false,
+                          // rotation: -Math.atan2(routeCoords[0][1]-routeCoords[1][1], routeCoords[0][0]-routeCoords[1][0]),
+                          scale:0.3,
+                      })
+                  }),
+                  'stop':new ol.style.Style({
+                      image:new ol.style.Circle({
+                          radius:10,
+                          snapToPixel:false,
+                          fill:new ol.style.Fill({ color:'red'}),
+                          stroke:new ol.style.Stroke({
+                              color:'white',
+                              width:2
+                          })
+                      })
+                  })
+            };
+            console.log(1123);
+            var animating = false;
+            var vectorLayer = new ol.layer.Vector({
+                id:'carLayer',
+                source: new ol.source.Vector({
+                    features: [routeFeature, geoMarker, startMarker, endMarker,stopMakers[0],stopMakers[1],stopMakers[2],stopMakers[3]]
+                }),
+                style: function (feature) {
+                    //如果动画是激活的就隐藏geoMarker
+                    if (animating && feature.get('type') === 'geoMarker') {
+                        return null;
+                    }
+                    return styles[feature.get('type')];
+                }
+            });
+
+            this.map.addLayer(vectorLayer);
+>>>>>>> bae795be2635924cad1c4e6bc237e0702802a0d7:html/IntelligentSecurity/script/common/gis.js
         }
     }
     window.Map = Map;
