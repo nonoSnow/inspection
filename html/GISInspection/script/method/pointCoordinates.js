@@ -16,7 +16,7 @@ function getAreaList(data,status){
   getAreaListData("api/services/Inspection/AreaService/AppGetAreaDetailsByName",data,showRet,showErr);
   function showRet(ret){
     api.hideProgress();
-    console.log("--------------------------"+status);
+    // console.log("--------------------------"+status);
     $('#areaList').html('');
     var data = {
         list: [
@@ -114,7 +114,7 @@ function onCheck() {
 // 选择片区
 function checkArea(that) {
   $('#sure').removeClass('aui-hide');
-  console.log(typeof($(that).attr('parse')))
+  // console.log(typeof($(that).attr('parse')))
   checkedArea = JSON.parse($(that).attr('parse'));
-  console.log(JSON.stringify(checkedArea));
+  // console.log(JSON.stringify(checkedArea));
 }

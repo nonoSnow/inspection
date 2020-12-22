@@ -44,9 +44,9 @@ function setDetails(data) {
 
 // 提交原因(暂停)
 function submitReson() {
-  console.log(submitFlag);
+  // console.log(submitFlag);
   if (submitFlag) {
-    console.log('有原因，可以提交');
+    // console.log('有原因，可以提交');
 
     suspendedTask();
   }
@@ -57,21 +57,21 @@ function action() {
   api.actionSheet({
       buttons: ['拍照', '相册选择']
   }, function(ret, err) {
-    console.log(JSON.stringify(ret));
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(err));
     if (ret.buttonIndex == 1) {
       // 选择了拍照
       var type = 'camera';
       getPicture(type, showRet, showErr);
 
       function showRet(ret) {
-        console.log(JSON.stringify(ret));
+        // console.log(JSON.stringify(ret));
         imgList.push(ret[0]);
         showImg(imgList);
       }
 
       function showErr(err) {
-        console.log(JSON.stringify(err));
+        // console.log(JSON.stringify(err));
         // showImg(imgList);
         if(err.body.error != undefined){
           // alert(err.body.error.message);
@@ -98,9 +98,9 @@ function action() {
       getPicture(type, showRet, showErr);
 
       function showRet(ret) {
-        console.log(JSON.stringify(ret));
+        // console.log(JSON.stringify(ret));
         imgList.push(ret[0]);
-        console.log(JSON.stringify(imgList));
+        // console.log(JSON.stringify(imgList));
         showImg(imgList);
       }
 
@@ -140,14 +140,14 @@ function showImg(data) {
   //     '上传照片' +
   //   '</div>' +
   // '</div>');
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   var param = {
     list: data,
     url: baseUrl
   }
   $('#imgBox').html('');
   var str = template('imgData', param);
-  console.log(str);
+  // console.log(str);
   $('#imgBox').append(str);
   // $('#imgBox').prepend(str);
 }
@@ -161,7 +161,7 @@ function suspendedTask() {
     resourceInfoList: imgList
   }
 
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
 
   changeTaskStatus({
     data: data,
@@ -178,6 +178,47 @@ function suspendedTask() {
 
       api.closeWin({});
 
+    },
+    fail: function (err) {
+      // if(err.body.error != undefined){
+      //   api.toast({
+      //       msg: err.body.error.message,
+      //       duration: 2000,
+      //       location: 'middle'
+      //   });
+      //
+      // }else{
+      //   api.toast({
+      //       msg: err.msg,
+      //       duration: 2000,
+      //       location: 'middle'
+      //   });
+      // }
+      if (err == undefined) {
+        api.toast({
+            msg: '数据加载失败',
+            duration: 2000,
+            location: 'middle'
+        });
+      } else if (err.body == undefined) {
+        api.toast({
+            msg: err.msg,
+            duration: 2000,
+            location: 'middle'
+        });
+      } else if (err.body.error != undefined) {
+        api.toast({
+            msg: err.body.error.message,
+            duration: 2000,
+            location: 'middle'
+        });
+      } else {
+        api.toast({
+            msg: err.msg,
+            duration: 2000,
+            location: 'middle'
+        });
+      }
     }
   })
 
@@ -215,25 +256,25 @@ function suspendedTask() {
 
 // 删除图片
 function deleteImg(that) {
-  if (that != null) {
+  // if (that != null) {
     var e = e || window.event;
     e.stopPropagation();
 
     var imgIndex = $(that).attr('parse');
     imgList = deleteArray(imgList, imgIndex);
     showImg(imgList);
-  }
+  // }
 }
 
 // 预览
 function previewImg(that) {
-  if (that != null) {
+  // if (that != null) {
     var imgSrc = $(that).attr('parse');
-    console.log(imgSrc);
+    // console.log(imgSrc);
     var data = [];
     data.push(imgSrc);
     previewImage(data);
-  }
+  // }
 }
 
 function openTask() {

@@ -85,13 +85,14 @@
 <script type="text/javascript" src="../../../public/script/remote.js"></script>
 <script type="text/javascript" src="../../../public/script/zepto.js"></script>
 <script type="text/javascript" src="../../../public/script/template.js"></script>
+<script type="text/javascript" src="../../../public/script/moment.js"></script>
 
 <script type="text/javascript" src="../../script/common/common.js"></script>
 <script type="text/javascript" src="../../script/public.js"></script>
 <script type="text/javascript" src="../../ajax/ajaxApi.js"></script>
 <script type="text/javascript" src="../../ajax/ajaxMethod.js"></script>
 <script type="text/javascript" src="../../ajax/taskAjax.js"></script>
-<!-- <script type="text/javascript" src="../../script/task.js"></script> -->
+</script>
 
 <script type="text/javascript" src="../../script/task/task.js"></script>
 <script type="text/template" id='onGoing'>
@@ -202,7 +203,7 @@
           </div>
           <div class="margin-top10 font-S75 color-666">暂停时间：{{value.stopTime}}</div>
           <div class="margin-top6 font-S75 color-666 relative">
-              暂停时长：{{value.SuspendTime}}
+              暂停时长：{{value.suspendTimeStr}}
               <!-- {{if value.OverdueTime != null || value.OverdueTime != ''}}
               <div class="absolute bottom0 right0 task-item-overdue handle-overdue">
                   超期 {{value.OverdueTime}}

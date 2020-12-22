@@ -6,18 +6,26 @@ var taskOrderList = [],
 var indexMap = {},
     memberStatus = 0;
 apiready = function() {
+  // isOpenGPS();
     api.parseTapmode();
     //  initTaskListEvent();
     // 初始化地图
-    indexMap = new Map({
-        mapid: 'maphome',
-        zoom: 8
-    });
-    console.log(indexMap);
+    console.log($.isEmptyObject(indexMap))
+    if ($.isEmptyObject(indexMap)) {
+      indexMap = new Map({
+          mapid: 'maphome',
+          zoom: 8
+      });
+    }
+
+    // console.log(indexMap);
     // getLastTimeLocation();  // 获取人员上一次的位置轨迹 (zxf 20201028)
-    indexMap.initArea();
-    indexMap.initDeviceLayer(); //初始化管点管线图层
-    indexMap.initLineOrbit(); //初始化人员轨迹图层
+    // setTimeout(function() {
+      indexMap.initArea();
+      indexMap.initDeviceLayer(); //初始化管点管线图层
+      indexMap.initLineOrbit(); //初始化人员轨迹图层
+    // }, 500);
+
     // 实现沉浸式状态栏效果
     var header = $api.byId('header');
     $api.fixStatusBar(header);
@@ -43,13 +51,14 @@ apiready = function() {
     // 改变员工在线、离线状态
     $(".member-status").on('click', function() {
         var status = $api.getStorage('isOnline');
-        console.log(status);
+        // console.log(status);
         setOnlineStatus(status);
     });
 
     // 点击定位图标将员工的位置定位到屏幕中间
     $(".map-location-div").on('click', function() {
         getMemberLocation(function(location) {
+          console.log(JSON.stringify(location));
             indexMap.map.getView().setCenter(location);
             indexMap['memberlay']['0'].setPosition(location);
         });
@@ -79,7 +88,8 @@ function setCurrentMapLocation() {
         indexMap.addOverLayer({
             dom: '#map-member-img',
             position: position,
-            offset: [38.5, -43.5],
+            // offset: [38.5, -43.5],
+            offset: [11, -20],
             // isCenter: true,
             name: 'memberlay',
             // centerPosition: location

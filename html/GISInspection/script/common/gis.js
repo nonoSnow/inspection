@@ -56,26 +56,26 @@
                 layerName: '天地图电子底图'
             });
             var zoomMap = this.zoomMap;
-            // console.log(zoomMap);
             var view = new ol.View({
                 projection: 'EPSG:4326',
                 center: [119.0319, 31.6655],
-                zoom: 18,
+                zoom: zoomMap,
                 maxZoom: 18,
                 minZoom: 5,
             });
             this.map = new SNTGIS.Map({
                 layers: [tdMap, dmLayer, pointLayer, lineLayer],
+                // layers: [tdMap, dmLayer],
                 // center: [106.548293, 29.565552],
-                  // center: [119.0319, 31.6655],
-                view:view,
                 // center: [119.0319, 31.6655],
-                // zoom: 5,
-                // maxZoom: 18,
-                // minZoom: 5,
+                // view:view,
+                center: [119.0319, 31.6655],
+                zoom: zoomMap,
+                maxZoom: 18,
+                minZoom: 5,
                 target: mapid
             });
-            // console.log('view'+this.map.getView());
+            // console.log('view'+this.map.getView().getProjection().getCode());
 
         },
 
@@ -135,8 +135,8 @@
                 stroke: new window.ol.style.Stroke({
                     lineDash: [2, 4],
                     lineCap: 'round',
-                    // color: 'rgba(153, 153, 153, 1)',
-                    color: 'rgba(0, 0, 0, 1)',
+                    color: 'rgba(153, 153, 153, 1)',
+                    // color: 'rgba(0, 0, 0, 1)',
                     width: 2
                 })
             });
@@ -359,8 +359,8 @@
                             stroke: new window.ol.style.Stroke({
                                 lineDash: [2, 4],
                                 lineCap: 'square',
-                                // color: 'rgba(153, 153, 153, 1)',
-                                color: 'rgba(0, 0, 0, 1)',
+                                color: 'rgba(153, 153, 153, 1)',
+                                // color: 'rgba(0, 0, 0, 1)',
                                 width: 2
                             })
                         });
@@ -389,8 +389,8 @@
                             stroke: new window.ol.style.Stroke({
                                 lineDash: [2, 4],
                                 lineCap: 'square',
-                                // color: 'rgba(153, 153, 153, 1)',
-                                color: 'rgba(0, 0, 0, 1)',
+                                color: 'rgba(153, 153, 153, 1)',
+                                // color: 'rgba(0, 0, 0, 1)',
                                 width: 2
                             })
                         });
@@ -427,6 +427,7 @@
             let xArray = new Array();
             let yArray = new Array();
             for (let i = 0; i < areaPointsArr.length - 1; i++) {
+              // console.log(areaPointsArr[i]);
                 var element = areaPointsArr[i];
                 var routeAreaPointArr = element.split(',');
                 pointsArray.push(routeAreaPointArr);
@@ -769,6 +770,7 @@
                 element: document.getElementById('personDetail_popup'),
                 position: location,
                 offset: [-83, -72],
+                // offset: [-90, -70],
                 positioning: 'bottom-center',
             });
             this.map.addOverlay(popup);
@@ -960,7 +962,7 @@
                     }),
                     minPoints: 3,
                     finishCondition: function() {
-                        console.log(isSave);
+                        // console.log(isSave);
                     }
                 });
             }
@@ -1046,8 +1048,7 @@
                 });
             }
             this.drawLineSelect(lineArr, name);
-        },
-
+        }
     }
     window.Map = Map;
 })(window);

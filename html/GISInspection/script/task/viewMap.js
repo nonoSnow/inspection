@@ -12,9 +12,9 @@ apiready = function() {
   var header = $api.byId('header');
   $api.fixStatusBar(header);
 
-  console.log('进入地图页面了！！！！！！！！！');
+  // console.log('进入地图页面了！！！！！！！！！');
   mapInfo = api.pageParam.mapInfo;
-  console.log(JSON.stringify(mapInfo));
+  // console.log(JSON.stringify(mapInfo));
   if (mapInfo.deviceLists == undefined) {
     pointList = [];
     devFlag = true;
@@ -31,6 +31,7 @@ apiready = function() {
     lineFlag = true;
   }
 
+  console.log(lineFlag && devFlag);
   if (lineFlag && devFlag) {
     initMap();
   }
@@ -38,11 +39,16 @@ apiready = function() {
 }
 
 function initMap() {
-  indexMap = new Map({
-      mapid: 'mapBox'
-  });
-  indexMap.initArea('addArea');
-  indexMap.initDeviceLayer('addArea');
+  if ($.isEmptyObject(indexMap)) {
+    indexMap = new Map({
+        mapid: 'mapBox'
+    });
+    indexMap.initArea('addArea');
+    indexMap.initDeviceLayer('addArea');
+  }
+  // indexMap = new Map({
+  //     mapid: 'mapBox'
+  // });
   indexMap.drawAreaSelect(mapInfo.areaPoint, {name: 'addArea'});
   indexMap.mapConduitEquipment({
       areaPoint: mapInfo.areaPoint,

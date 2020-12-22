@@ -52,7 +52,7 @@ function showDetailsData(id){
   function showRet(ret){
     api.hideProgress();
       if(ret.success){
-        console.log(JSON.stringify(ret));
+        // console.log(JSON.stringify(ret));
           deviceInfo = ret.result;
           ret.result.url = baseUrl;
           $('#detailList').html('');
@@ -163,7 +163,7 @@ function closeEvent() {
 
 // 查看地图
 function checkMap() {
-  console.log(JSON.stringify(deviceInfo));
+  // console.log(JSON.stringify(deviceInfo));
     api.openWin({
         name: 'devicemap',
         url: '../common/device.html',
@@ -175,10 +175,10 @@ function checkMap() {
 
 // 预览图片
 function previewImg(that) {
-  if (that != null) {
+  // if (that != null) {
     var imgSrc = $(that).attr('parse');
     var data = [];
     data.push(imgSrc);
     previewImage(data);
-  }
+  // }
 }

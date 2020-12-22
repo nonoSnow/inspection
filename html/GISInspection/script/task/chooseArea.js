@@ -18,7 +18,7 @@ apiready = function() {
     var sh = $(this)[0].scrollHeight;   //滚动的高度，$(this)指代jQuery对象，而$(this)[0]指代的是dom节点 (839)
     var st = $(this)[0].scrollTop;  //滚动条的高度，即滚动条的当前位置到div顶部的距离
 
-    console.log(h);
+    // console.log(h);
 
     if (h + Math.ceil(st) >= sh) {
       // 滚动到底部了
@@ -44,7 +44,7 @@ function getAreaList() {
     pageIndex: areaPage,
     maxResultCount: areaPageSize
   }
-  console.log(JSON.stringify(param));
+  // console.log(JSON.stringify(param));
   api.showProgress({
     title: '加载中...',
     text: '请稍后'

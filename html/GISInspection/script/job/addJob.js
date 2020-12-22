@@ -10,7 +10,16 @@ var imgList = []; //图片列表
 
 // 是否从事件转工单
 var transOrder = false;
+var eventDeviceId; // 事件转工单传入的设备id
+
 var personInfo = {};
+
+// 是否从任务的详情的已巡检中转过来
+var taskTransOrder = false;
+// 设备信息
+var deviceInfo = {};
+
+var areaId = 0;
 
 apiready = function() {
     var header = $api.byId('header');
@@ -27,8 +36,23 @@ apiready = function() {
     if (api.pageParam.type == 'transOrder') {
       transOrder = true;
       personInfo = api.pageParam.personInfo;
+      eventDeviceId = api.pageParam.deviceId;
+
     } else {
       transOrder = false;
+    }
+
+    if (api.pageParam.type == 'taskTransOrder') {
+      taskTransOrder = true;
+      personInfo = api.pageParam.personInfo;
+      areaId = api.pageParam.areaId;
+      deviceInfo = api.pageParam.deviceInfo;
+
+      areaInfo.id = areaId;
+      console.log(areaId);
+      getAreaDetails(areaId);
+    } else {
+      taskTransOrder = false;
     }
 
     // 工单类型
@@ -206,18 +230,25 @@ function subJob(){
     }
   }
   // console.log(JSON.stringify(imgList));
+  var deviceId;
+  if (taskTransOrder) {
+    deviceId = deviceInfo.id;
+  } else {
+    deviceId = equipment[0]?equipment[0].id:"";
+  }
+
   var data = {
-    content:$("#content").val(),  //工单内容
-    type:jobType,     //工单类型（1：查漏；2：查漏延伸；3：维修管道；4：维修管道延伸；5：违章罚款；6：贫水区改造）
-    personId:headList.userId,            //负责人ID
-    person:$("#person").val(),    //负责人名称
-    status:1,                     //工单状态（1：待接收；2：进行中；3：关闭；4：已完成）
-    eventId:api.pageParam.eventId,            //事件Id
-    deviceId:equipment[0]?equipment[0].id:"",                    //设备ID
-    planCompleteTime:$("#planCompleteTime").val()+":00:00",   //预计完成时间
-    areaId:areaInfo.id,                      //区域（路线）ID
-    source:source,                //来源：1：PC端；2：APP；3：第三方（管网）
-    resourceInfoList:imgList
+    content: $("#content").val(),  //工单内容
+    type: jobType,     //工单类型（1：查漏；2：查漏延伸；3：维修管道；4：维修管道延伸；5：违章罚款；6：贫水区改造）
+    personId: headList.userId,            //负责人ID
+    person: $("#person").val(),    //负责人名称
+    status: 1,                     //工单状态（1：待接收；2：进行中；3：关闭；4：已完成）
+    eventId: api.pageParam.eventId,            //事件Id
+    deviceId: deviceId,                    //设备ID
+    planCompleteTime: $("#planCompleteTime").val()+":00:00",   //预计完成时间
+    areaId: areaInfo.id,                      //区域（路线）ID
+    source: source,                //来源：1：PC端；2：APP；3：第三方（管网）
+    resourceInfoList: imgList
     // resourceInfoList:{
     //   resourceId:,    //附件Id
     //   url:,           //附件地址
@@ -226,6 +257,7 @@ function subJob(){
     //   type:,          //附件类型
     // }
   }
+  // console.log(JSON.stringify(data));
   uploadData(data);
 }
 
@@ -261,10 +293,10 @@ function uploadData(data){
     }
     // alert(JSON.stringify(options.data));
 
-    console.log("事件转工单");
+    // console.log("事件转工单");
     postAjaxMethodToAddJob(options)
   }else{
-    console.log("新增工单");
+    // console.log("新增工单");
     postAjaxAddJob(options)
   }
   // jobPostMethod("api/services/Inspection/WorkOrderService/InsertWorkOrder",data,showRet,showErr);
@@ -429,25 +461,90 @@ function showImg(data) {
 }
 // 删除图片
 function deleteImg(that) {
-  if (that != null) {
+  // if (that != null) {
     var e = e || window.event;
     e.stopPropagation();
 
     var imgIndex = $(that).attr('parse');
     imgList = deleteArray(imgList, imgIndex);
     showImg(imgList);
-  }
+  // }
 }
 // 添加巡检片区
 function onOpenArea() {
-  api.openWin({
-      name: 'area',
-      url: '../area/area.html',
-      pageParam: {
-          type: 1,
-          areaInfo: areaInfo,
-          equipment: equipment
-      }
-  });
+  if (taskTransOrder) {
+    // 从任务转过来，有区域，不允许选择区域
+  } else {
+    api.openWin({
+        name: 'area',
+        url: '../area/area.html',
+        pageParam: {
+            type: 1,
+            areaInfo: areaInfo,
+            equipment: equipment
+        }
+    });
+  }
+}
 
+// 获取区域详情
+function getAreaDetails(id) {
+  if (id != 0) {
+    api.showProgress({
+        title: '正在加载区域信息...',
+        text: '',
+        modal: false
+    });
+
+    var data = {
+      id: id
+    }
+    postAjaxAreaDetails({
+      data: data,
+      success: function (ret) {
+        // console.log(JSON.stringify(ret));
+        api.hideProgress();
+
+        $("#areaMapDiv").removeClass("padding75");
+        $("#areaDefault").addClass("aui-hide");
+        $("#areaMap").removeClass("aui-hide");
+        //绘制地图
+        if ($.isEmptyObject(indexMap)) {
+          // 初始化地图
+          indexMap = new Map({
+              mapid: 'areaMap'
+          });
+          indexMap.initArea('addArea');
+          indexMap.initDeviceLayer('addArea');
+        }
+        indexMap.mapClearSource({name: 'addArea'});
+        // console.log(JSON.stringify(ret));
+        areaPoint = ret.result.areaPoint;
+        // console.log(JSON.stringify(areaInfo));
+        indexMap.drawAreaSelect(areaPoint, {name: 'addArea'});
+
+        // equipment = ret.value.equipment;
+        // var lineList = [],
+        //     pointList = [];
+        // pointList = ret.result.deviceLists;
+        // lineList = ret.result.pipelineLists;
+        // console.log(JSON.stringify(pointList));
+        // console.log(JSON.stringify(lineList));
+        // indexMap.mapConduitEquipment({
+        //     areaPoint: areaInfo.areaPoint,
+        //     lineList: lineList,
+        //     pointList: pointList
+        // }, {name: 'addArea'});
+      },
+      fail: function (err) {
+        api.hideProgress();
+        api.toast({
+            msg: '地图加载失败',
+            duration: 2000,
+            location: 'middle'
+        });
+
+      }
+    })
+  }
 }

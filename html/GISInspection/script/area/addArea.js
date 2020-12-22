@@ -96,7 +96,7 @@ function onSave() {
     timeout: 300,
     success: function(ret) {
       api.hideProgress();
-      console.log(JSON.stringify(ret));
+      // console.log(JSON.stringify(ret));
 
       api.sendEvent({
           name: 'addAreaOk',

@@ -56,7 +56,7 @@ apiready = function() {
     api.addEventListener({
         name: 'addMethodEquipment'
     }, function(ret, err){
-        console.log(JSON.stringify(ret))
+        // console.log(JSON.stringify(ret))
         areaInfo = ret.value.areaInfo;
         equipment = ret.value.equipment;
         deviceId = equipment.id;
@@ -79,7 +79,7 @@ function saveCheck (){
       var res = $(this).val();
       chk_value.push(res)
   });
-  console.log(chk_value.length==0 ?'你还没有选择任何内容！':chk_value);
+  // console.log(chk_value.length==0 ?'你还没有选择任何内容！':chk_value);
   $("#abnormalType").val(chk_value.join(','));
   onHideAbnormalTypPopup();
 
@@ -101,7 +101,7 @@ function getEventType() {
             $('.custom-popup-list').append(str);
         },
         error: function(ret) {
-            console.log(JSON.stringify(ret))
+            // console.log(JSON.stringify(ret))
         }
     })
 }
@@ -303,23 +303,23 @@ function showImg(data) {
 }
 // 删除图片
 function deleteImg(that) {
-  if (that != null) {
+  // if (that != null) {
     var e = e || window.event;
     e.stopPropagation();
 
     var imgIndex = $(that).attr('parse');
     imgList = deleteArray(imgList, imgIndex);
     showImg(imgList);
-  }
+  // }
 }
 
 // 预览
 function previewImg(that) {
-  if (that != null) {
+  // if (that != null) {
     var imgSrc = $(that).attr('parse');
     console.log(imgSrc);
     var data = [];
     data.push(imgSrc);
     previewImage(data);
-  }
+  // }
 }

@@ -7,7 +7,7 @@ apiready = function() {
 
 function onMenu(index, el) {
   onCheckMenu(el, function(){
-    console.log('method');
+    // console.log('method');
   });
 }
 

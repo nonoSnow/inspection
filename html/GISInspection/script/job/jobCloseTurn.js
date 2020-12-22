@@ -207,12 +207,12 @@ function showImg(data) {
 }
 // 删除图片
 function deleteImg(that) {
-  if (that != null) {
+  // if (that != null) {
     var e = e || window.event;
     e.stopPropagation();
 
     var imgIndex = $(that).attr('parse');
     imgList = deleteArray(imgList, imgIndex);
     showImg(imgList);
-  }
+  // }
 }

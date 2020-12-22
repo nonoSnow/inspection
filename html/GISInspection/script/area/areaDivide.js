@@ -29,7 +29,8 @@ apiready = function() {
 
   // 初始化地图
   indexMap = new Map({
-      mapid: 'mapAddArea'
+      mapid: 'mapAddArea',
+      zoom: 15
   });
   indexMap.initDeviceLayer('areaDivide');
   indexMap.initDivide();
@@ -89,6 +90,7 @@ function onShowBtn() {
 }
 
 function onResetArea() {
+  // console.log(isSave);
     indexMap.mapRemoveInteraction(drw, addareaPoint, function(ret) {
       drw = ret.measureDraw;
       isSave = ret.isSave;
@@ -132,7 +134,20 @@ function onGetAreaPorintLine(areaExtent) {
       },
       error: function(err) {
           api.hideProgress();
-          console.log(JSON.stringify(err));
+          // console.log(JSON.stringify(err));
+          if (err.body.error != undefined) {
+            api.toast({
+                msg: err.body.error.message,
+                duration: 2000,
+                location: 'middle'
+            });
+          } else {
+            api.toast({
+                msg: err.msg,
+                duration: 2000,
+                location: 'middle'
+            });
+          }
       },
       success: function(ret) {
         // console.log(JSON.stringify(ret));

@@ -261,6 +261,10 @@ body {
 	margin-bottom: 0.75rem;
 }
 
+.margin-bot100 {
+  margin-bottom: 1rem;
+}
+
 .margin-bot250 {
   margin-bottom: 2.5rem;
 }

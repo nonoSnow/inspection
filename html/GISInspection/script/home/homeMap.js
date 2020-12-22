@@ -105,7 +105,7 @@ function initTaskListAndOrderList() {
 
             },
             function() {
-              console.log('error');
+              // console.log('error');
                 //  alert("error");
             }
         );
@@ -122,7 +122,7 @@ function getHomeTaskList() {
         type: "post",
         data: data,
         success: function(ret) {
-          console.log(JSON.stringify(ret));
+          // console.log(JSON.stringify(ret));
             if (ret.success) {}
         },
         complete: function(ret) {
@@ -137,7 +137,7 @@ function getHomeTaskList() {
 //getHomeTaskList 查询用户负责和参与的任务信息实体方法 (zxf 20201028)
 function getHomeOrderList() {
     var def = $.Deferred();
-    console.log(userLoginInformation.currentUserInfo.userInfo.userId);
+    // console.log(userLoginInformation.currentUserInfo.userInfo.userId);
     var data = {
         userId: userLoginInformation.currentUserInfo.userInfo.userId,
     }
@@ -146,7 +146,7 @@ function getHomeOrderList() {
         type: "post",
         data: data,
         success: function(ret) {
-          console.log(JSON.stringify(ret));
+          // console.log(JSON.stringify(ret));
             if (ret.success) {
 
             }

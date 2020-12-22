@@ -25,20 +25,40 @@ function getMemberLocation(callback) {
 * @method getLocationGPS 获取是否打开了GPS
 */
 function getLocationGPS(callback) {
-    var gpsmodel = api.require('gpsState');
-    gpsmodel.gpsstate(function(ret) {
-        if(ret.gps === 'true' || ret.gps === true) {
-            callback();
-        } else {
-            if (api.systemType == 'android') {
-                gpsmodel.opengps();
-            }
-            if (api.systemType == 'ios') {
-                var setJumpNew = api.require('setJumpNew');
-                setJumpNew.open();
-            }
-        }
-    })
+  var mobilePhoneapi = api.require('mobilePhone');
+  mobilePhoneapi.gpsstate({},function(ret, err){
+    // console.log('ret:' + JSON.stringify(ret));
+    // console.log('err:' + JSON.stringify(err));
+    if (ret.gpsstate == 1 || ret.gpsstate == true) {
+      // gps为开启状态
+      callback();
+    } else {
+      // gps未开启
+      if (api.systemType == 'android') {
+        var gpsmodel = api.require('gpsState');
+          gpsmodel.opengps();
+      }
+      if (api.systemType == 'ios') {
+          var setJumpNew = api.require('setJumpNew');
+          setJumpNew.open();
+      }
+    }
+  });
+    // var gpsmodel = api.require('gpsState');
+    // gpsmodel.gpsstate(function(ret) {
+    //   console.log(JSON.stringify(ret));
+    //     if(ret.gps === 'true' || ret.gps === true) {
+    //         callback();
+    //     } else {
+    //         if (api.systemType == 'android') {
+    //             gpsmodel.opengps();
+    //         }
+    //         if (api.systemType == 'ios') {
+    //             var setJumpNew = api.require('setJumpNew');
+    //             setJumpNew.open();
+    //         }
+    //     }
+    // })
 }
 
 /**
@@ -177,7 +197,7 @@ function getLocationGPS(callback) {
 // 获取当前用户的角色
 function getCurrentUserRoles(){
   var currentUserRoles = $api.getStorage('currentUserRoles');
-  console.log(JSON.stringify(currentUserRoles));
+  // console.log(JSON.stringify(currentUserRoles));
     var Roles = [];
    currentUserRoles.forEach(function(item){
     //  console.log(item);

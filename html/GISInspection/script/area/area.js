@@ -75,7 +75,7 @@ function onShowItem() {
 }
 
 function onTransitionStatus(mapListStatus) {
-  console.log(mapListStatus);
+  // console.log(mapListStatus);
   if (mapListStatus == 0) {
     $(".list-xl").css("transform", "rotate(180deg)");
     $(".list-xl").removeClass("aui-hide");
@@ -93,7 +93,7 @@ function onTransitionStatus(mapListStatus) {
   }
 
   if (mapListStatus == 2 && isSearch) {
-    console.log('是搜索');
+    // console.log('是搜索');
     $('#areaList').addClass("aui-hide");
     $('#areaSearcgList').removeClass("aui-hide");
     $(".area-search-text").text("搜索");
@@ -107,6 +107,7 @@ function onTransitionStatus(mapListStatus) {
 
 function onGetSearchVal() {
   var searchVal = $("#search-input").val();
+  // console.log(searchVal);
   if (searchVal != '' && searchVal != ' ') {
     $('.search-btn').removeClass('aui-hide');
     $('.aui-searchbar-clear-btn').css('display', 'inline-block');
@@ -204,6 +205,9 @@ function onSearchVal(data) {
 function searchArea(that) {
   // console.log(data);
   var searchWords = $(that).attr('parse');
+  // $('#search-input').html(searchWords);
+  onCheckHistory(searchWords);
+  onGetSearchVal();
   var data = {
     name: searchWords,
     pageIndex: 1,

@@ -7,7 +7,8 @@ var pageIndex = 1;
 // 是否从事件详情页面来
 var type;
 
-var date = parseTime(new Date(), '{y}-{m}');
+// var date = parseTime(new Date(), '{y}-{m}');
+var date = moment(new Date()).format('YYYY-MM');
 var initDate = date;
 apiready = function() {
     var header = $api.byId('header');
@@ -15,7 +16,7 @@ apiready = function() {
     $api.fixStatusBar(header);
 
     devInfo = api.pageParam.devInfo;
-    console.log(JSON.stringify(devInfo))
+    // console.log(JSON.stringify(devInfo))
 
     if (api.pageParam.type == 'methodDetail') {
       type = true;
@@ -31,7 +32,7 @@ apiready = function() {
     // console.log($api.offset(header).h);
     // console.log($('#basicInfo').height());
     $('#xunjianBox').css('height', api.winHeight - $api.offset(header).h - $('#basicInfo').height() - 150);
-    console.log($('#xunjianBox').height());
+    // console.log($('#xunjianBox').height());
     $('#xunjianBox').scroll(function() {
       var h = $(this).height(); // 可视化高度(681)
       var sh = $(this)[0].scrollHeight;   //滚动的高度，$(this)指代jQuery对象，而$(this)[0]指代的是dom节点 (839)
@@ -39,7 +40,7 @@ apiready = function() {
 
       if (h + Math.ceil(st) >= sh) {
         // 滚动到底部了
-        console.log('滚动到底部了');
+        // console.log('滚动到底部了');
         if (hasNextPage) {
           // 如果有下一页，则页码++
           pageIndex++;
@@ -86,11 +87,11 @@ function getXunData() {
     maxResultCount: 10
   }
 
-  console.log(JSON.stringify(param));
+  // console.log(JSON.stringify(param));
   getXunList('/api/services/Inspection/InspectionTaskService/AppGetInspectionRecordList', param, showRet, showErr);
 
   function showRet(ret) {
-    console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(ret));
     api.hideProgress();
 
     hasNextPage = ret.result.hasNextPage;
@@ -99,7 +100,8 @@ function getXunData() {
 
       ret.result.items.forEach(function (item, index) {
         if (item.time != null || item.time != '') {
-          item.time = parseTime(item.time, '{y}-{m}-{d} {h}:{i}');
+          // item.time = parseTime(item.time, '{y}-{m}-{d} {h}:{i}');
+          item.time = moment(item.time).format('YYYY-MM-DD HH:mm');
         }
       })
 
@@ -109,7 +111,7 @@ function getXunData() {
       var str = template('xun-box', data);
       $('#xunjianBox').append(str);
     } else {
-      console.log('走到这一步了');
+      // console.log('走到这一步了');
       api.toast({
           msg: '暂无巡检记录',
           duration: 2000,

@@ -1,5 +1,6 @@
 // 获取当前登录人员的信息
 var userLoginInformation = $api.getStorage('userLoginInformation');
+var indexMap = {};
 
 apiready = function() {
     var header = $api.byId('header');
@@ -7,9 +8,10 @@ apiready = function() {
     $api.fixStatusBar(header);
     // 绘制地图
     indexMap = new Map({
-        mapid: 'leaderMap'
+        mapid: 'leaderMap',
+        zoom: 12
     });
-    initPageEvents();
+    initPageEvents(indexMap);
 }
 
 
@@ -45,7 +47,8 @@ function initPageEvents() {
             indexMap.addOverLayer({
                 dom: '#map-member-img',
                 position: position,
-                offset: [38.5, -43.5],
+                // offset: [38.5, -43.5],
+                offset: [11, -20],
                 // isCenter: true,
                 name: 'memberlay',
                 // centerPosition: location
@@ -112,7 +115,7 @@ function getPersonsLoction() {
         type: "post",
         data: data,
         success: function(ret) {
-          // console.log(JSON.stringify(ret));
+          console.log(JSON.stringify(ret));
           // var retResult = {
           //    totalCount:10,
           //    result:{
@@ -122,9 +125,9 @@ function getPersonsLoction() {
           // };
             if (ret.success) {
                 var result = ret.result.items;
-                console.log('result'+JSON.stringify(result));
+                // console.log('result'+JSON.stringify(result));
                 indexMap.renderAllPersionToMap(result, function(ret) {
-                  console.log(ret);
+                  // console.log(ret);
                   if(ret==null){
                     $('body .personDetail_popup').remove();
                     $('body .homePage_order_list_box').remove();
@@ -147,16 +150,16 @@ function getPersonsLoction() {
                         duration: ret.duration,
                         location: ret.location
                     };
-                    if (templateData.onlineTime != null && templateData.onlineTime != "") {
+                    if (templateData.onlineTime != null || templateData.onlineTime != "") {
                         templateData.onlineTime = moment(templateData.onlineTime).format('YYYY-MM-DD HH:mm');
                     }
-                    if (templateData.offlineTime != null && templateData.offlineTime != "") {
+                    if (templateData.offlineTime != null || templateData.offlineTime != "") {
                         templateData.offlineTime = moment(templateData.offlineTime).format('YYYY-MM-DD HH:mm');
                     }
 
                     $('body .personDetail_popup').remove();
                     var str = template('personDetailPopupTemplate', templateData);
-                    console.log(str);
+                    // console.log(str);
                     $('body').append(str);
                     if ($('body .personDetail_popup').length != 0) {
                         indexMap.addOverlayToMap(templateData.location);

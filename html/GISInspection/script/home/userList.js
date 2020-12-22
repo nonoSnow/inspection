@@ -66,7 +66,7 @@ function getAppGetAllPerson(isScroll) {
         type: "post",
         data: data,
         success: function(ret) {
-          console.log(JSON.stringify(ret));
+          // console.log(JSON.stringify(ret));
             if (ret.success) {
                 ret.result.items.forEach(function(item) {
                   if (item.onlineTime != null) {

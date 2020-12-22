@@ -61,6 +61,8 @@ apiready = function() {
     $('.flex-con').removeClass('margin-bot250');
   }
 
+  // 初始化信息
+  initTaskDetail();
   onMenu(0, '');
 
   // 监听上拉
@@ -133,18 +135,38 @@ function onMenu(index, el) {
   }
   taskDetype = index;
   if (index == 0) {
+    // 显示详情
+    $('#daixunBox').addClass('aui-hide');
+    $('#yixunBox').addClass('aui-hide');
+    $('#taskDetail').removeClass('aui-hide');
+
+
+  } else if (index == 1) {
+    // 显示待巡
+    $('#taskDetail').addClass('aui-hide');
+    $('#yixunBox').addClass('aui-hide');
+    $('#daixunBox').removeClass('aui-hide');
+  } else if (index == 2) {
+    // 显示已巡
+    $('#taskDetail').addClass('aui-hide');
+    $('#daixunBox').addClass('aui-hide');
+    $('#yixunBox').removeClass('aui-hide');
+  }
+  if (index == 0) {
     // $(".task-info").removeClass('aui-hide');
     if (nowTaskType != 3) {
       $(".footer").removeClass('aui-hide');
     }
 
+    // console.log('点击了基础信息');
+    // $('#taskDetail').addClass('margin-bot100');
     // $(".task-list").addClass('aui-hide');
-    // $(".flex-con").addClass('margin-bot250');
-    initTaskDetail();
+    $(".flex-con").addClass('margin-bot250');
+    // initTaskDetail();
   } else if(index == 1 || index == 2) {
     // $(".task-info").addClass('aui-hide');
     $(".footer").addClass('aui-hide');
-
+    // $('#taskDetail').removeClass('margin-bot100');
     // $(".task-list").removeClass('aui-hide');
     $(".flex-con").removeClass('margin-bot250');
 
@@ -154,7 +176,7 @@ function onMenu(index, el) {
       // $('.completion-time').addClass('aui-hide');
       daixunPageIndex = 1;
       // daixunData = [];
-      $('#taskDetail').html('');
+      $('#daixunBox').html('');
       initToBeInspected();
     } else {
       // $('.item-btn').removeClass('aui-hide');
@@ -162,7 +184,7 @@ function onMenu(index, el) {
       // $('.completion-time').removeClass('aui-hide');
       yixunPageIndex = 1;
       // yixunData = [];
-      $('#taskDetail').html('');
+      $('#yixunBox').html('');
       initInspected();
     }
   }
@@ -176,7 +198,7 @@ function onMenu(index, el) {
 
 // 点击待巡检
 function onOpenEquipment(that) {
-  if (that != null) {
+  // if (that != null) {
     var data = JSON.parse($(that).attr("parse"));
     // console.log(JSON.stringify(data));
     // var param = {
@@ -197,7 +219,7 @@ function onOpenEquipment(that) {
             taskType: nowTaskType
         }
     });
-  }
+  // }
 }
 
 
@@ -576,23 +598,27 @@ function getTaskDetail(param) {
   getTaskBasicInfo({
     data: param,
     success: function(ret) {
-      console.log(JSON.stringify(ret));
+      // console.log(JSON.stringify(ret));
       taskDetail = ret.result;
       $('#taskDetail').html('');
       if (ret.result.planStartTime != null || ret.result.planStartTime != '') {
-        ret.result.planStartTime = parseTime(ret.result.planStartTime, '{y}-{m}-{d} {h}:{i}');
+        // ret.result.planStartTime = parseTime(ret.result.planStartTime, '{y}-{m}-{d} {h}:{i}');
+        ret.result.planStartTime = moment(ret.result.planStartTime).format('YYYY-MM-DD HH:mm');
       }
 
       if (ret.result.planEndTime != null || ret.result.planEndTime != '') {
-        ret.result.planEndTime = parseTime(ret.result.planEndTime, '{y}-{m}-{d} {h}:{i}');
+        // ret.result.planEndTime = parseTime(ret.result.planEndTime, '{y}-{m}-{d} {h}:{i}');
+        ret.result.planEndTime = moment(ret.result.planEndTime).format('YYYY-MM-DD HH:mm');
       }
 
       if (ret.result.startTime != null || ret.result.startTime != '') {
-        ret.result.startTime = parseTime(ret.result.startTime, '{y}-{m}-{d} {h}:{i}');
+        // ret.result.startTime = parseTime(ret.result.startTime, '{y}-{m}-{d} {h}:{i}');
+        ret.result.startTime = moment(ret.result.startTime).format('YYYY-MM-DD HH:mm');
       }
 
       if (ret.result.endTime != null || ret.result.endTime != '') {
-        ret.result.endTime = parseTime(ret.result.endTime, '{y}-{m}-{d} {h}:{i}');
+        // ret.result.endTime = parseTime(ret.result.endTime, '{y}-{m}-{d} {h}:{i}');
+        ret.result.endTime = moment(ret.result.endTime).format('YYYY-MM-DD HH:mm');
       }
 
       // if (ret.result.participants != 0) {
@@ -619,15 +645,29 @@ function getTaskDetail(param) {
       var data = {
         id: ret.result.areaId
       }
+      api.showProgress({
+          title: '正在加载区域信息...',
+          text: '',
+          modal: false
+      });
+
       getAreaDetails({
         data: data,
         success: function(ret1) {
           // console.log(JSON.stringify(ret1));
+          api.hideProgress();
+
           mapInfo = ret1.result;
           // console.log(JSON.stringify(mapInfo));
-          indexMap = new Map({
-              mapid: 'mapBox'
-          });
+          // console.log(indexMap);
+          // console.log($('#mapBox'));
+          console.log($.isEmptyObject(indexMap));
+          if ($.isEmptyObject(indexMap)) {
+            indexMap = new Map({
+                mapid: 'mapBox'
+            });
+          }
+
           indexMap.initArea('addArea');
           indexMap.initDeviceLayer('addArea');
           // var areaPoint = ret1.areaPoint;
@@ -646,6 +686,9 @@ function getTaskDetail(param) {
           //   name: 'addArea',
           //   areaId: mapInfo.id
           // });
+        },
+        fail: function(err) {
+          api.hideProgress();
         }
       })
     }
@@ -771,7 +814,6 @@ function getInspecteList(param, status) {
       var str;
       if (ret.result.items != 0) {
         $('#haveNothing').addClass('aui-hide');
-
         switch (status) {
           case 'toBeInspected':
             // 待巡
@@ -780,6 +822,7 @@ function getInspecteList(param, status) {
               list: ret.result.items
             }
             str = template(status, data);
+            $('#daixunBox').append(str);
             break;
           case 'inspected':
             // 已巡
@@ -793,6 +836,7 @@ function getInspecteList(param, status) {
               list: ret.result.items
             }
             str = template(status, data);
+            $('#yixunBox').append(str);
             break;
         }
       } else {
@@ -800,11 +844,35 @@ function getInspecteList(param, status) {
       }
 
       api.hideProgress();
-      $('#taskDetail').append(str);
+      // $('#taskDetail').append(str);
     },
     fail: function(err) {
       api.hideProgress();
-
+      if (err == undefined) {
+        api.toast({
+            msg: '数据加载失败',
+            duration: 2000,
+            location: 'middle'
+        });
+      } else if (err.body == undefined) {
+        api.toast({
+            msg: err.msg,
+            duration: 2000,
+            location: 'middle'
+        });
+      } else if (err.body.error != undefined) {
+        api.toast({
+            msg: err.body.error.message,
+            duration: 2000,
+            location: 'middle'
+        });
+      } else {
+        api.toast({
+            msg: err.msg,
+            duration: 2000,
+            location: 'middle'
+        });
+      }
     }
   })
   // getInspectDataList("api/services/Inspection/InspectionTaskService/AppGetInspectionPointList",param,showRet,showErr);
@@ -907,9 +975,10 @@ function getInspecteList(param, status) {
 
 // 打开地图页面
 function openViewMap() {
+  // console.log(JSON.stringify(mapInfo));
   api.openWin({
       name: 'viewMap',
-      url: '../task/viewMap.html',
+      url: '../Task/viewMap.html',
       pageParam: {
         mapInfo: mapInfo
       }

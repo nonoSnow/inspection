@@ -6,6 +6,8 @@ var mapInfo={
   deviceLists:[],    // 设备点集合（有则传，没有不传）
   pipelineLists:[] // 管道集合（有则传，没有不传）
 };
+var deviceInfo = {};
+// var hasArea = false;
 apiready = function() {
   var header = $api.byId('header');
   $api.fixStatusBar(header);
@@ -59,6 +61,7 @@ function showData(id){
   var data = {
     Id:id
   }
+  console.log(JSON.stringify(data));
   api.showProgress({
       style: 'default',
       animationType: 'fade',
@@ -74,24 +77,49 @@ function showData(id){
   postAjaxJobDetail(options);
   // jobPostMethod("api/services/Inspection/WorkOrderService/GetWorkOrderDetails",data,showRet,showErr);
   function showRet(ret){
-    api.hideProgress();
-
-    console.log("****************************"+id);
     console.log(JSON.stringify(ret));
-    var options1={
-      data:{id:ret.result.areaId},
-      success:function(ret1){
-        // console.log(JSON.stringify(ret1))
-        mapInfo.areaPoint=ret1.result.areaPoint;
-        mapInfo.deviceLists=ret1.result.deviceLists;
-        mapInfo.pipelineLists=ret1.result.pipelineLists;
-      },
-      error:function(err1){
-        // console.log(JSON.stringify(err1))
-      },
-    }
-    //通过区域id去获取区域坐标点
-    postAjaxAreaDetails(options1)
+    api.hideProgress();
+    deviceInfo = ret.result.deviceDetails;
+
+    // console.log("****************************"+id);
+    // console.log(JSON.stringify(ret));
+    // var options1={
+    //   data:{id:ret.result.areaId},
+    //   success: function(ret1){
+    //     console.log(JSON.stringify(ret1))
+    //     mapInfo.areaPoint=ret1.result.areaPoint;
+    //     mapInfo.deviceLists=ret1.result.deviceLists;
+    //     mapInfo.pipelineLists=ret1.result.pipelineLists;
+    //
+    //     console.log(JSON.stringify(mapInfo));
+    //   },
+    //   error: function(err1){
+    //     // console.log(JSON.stringify(err1))
+    //   },
+    // }
+
+    //如果当前工单有区域，通过区域id去获取区域坐标点
+    // postAjaxAreaDetails(options1);
+    // if (ret.result.areaId != null) {
+    //   postAjaxAreaDetails({
+    //     data: {
+    //       id: ret.result.areaId
+    //     },
+    //     success: function(ret1) {
+    //       hasArea = true;
+    //       mapInfo.areaPoint=ret1.result.areaPoint;
+    //       mapInfo.deviceLists=ret1.result.deviceLists;
+    //       mapInfo.pipelineLists=ret1.result.pipelineLists;
+    //     },
+    //     fail: function(err) {
+    //       hasArea = false;
+    //     }
+    //   })
+    // } else {
+    //   hasArea = false;
+    // }
+
+
     if(ret.success){
       $('#detailList').html('');
       var data = ret.result;
@@ -111,7 +139,7 @@ function showData(id){
   function showErr(err){
     api.hideProgress();
 
-    // console.log(JSON.stringify(err));
+    console.log(JSON.stringify(err));
     if(err.body.error != undefined){
       alert(err.body.error.message)
     }else {
@@ -199,11 +227,17 @@ function dataProcess(obj){
 
   }
   // 时间处理
-  obj.planCompleteTime=obj.planCompleteTime?obj.planCompleteTime.replace("T"," "):obj.planCompleteTime;
-  obj.creationTime=obj.creationTime?obj.creationTime.replace("T"," "):obj.creationTime;
-  obj.completeTime=obj.completeTime?obj.completeTime.replace("T"," "):obj.completeTime;
+  // obj.planCompleteTime=obj.planCompleteTime?obj.planCompleteTime.replace("T"," "):obj.planCompleteTime;
+  // obj.creationTime=obj.creationTime?obj.creationTime.replace("T"," "):obj.creationTime;
+  // obj.completeTime=obj.completeTime?obj.completeTime.replace("T"," "):obj.completeTime;
+  // if(obj.eventDetails){
+  //   obj.eventDetails.creationTime=obj.eventDetails.creationTime?obj.eventDetails.creationTime.replace("T"," "):obj.eventDetails.creationTime;
+  // }
+  obj.planCompleteTime=obj.planCompleteTime?moment(obj.planCompleteTime).format('YYYY-MM-DD HH:mm'):obj.planCompleteTime;
+  obj.creationTime=obj.creationTime?moment(obj.creationTime).format('YYYY-MM-DD HH:mm'):obj.creationTime;
+  obj.completeTime=obj.completeTime?moment(obj.completeTime).format('YYYY-MM-DD HH:mm'):obj.completeTime;
   if(obj.eventDetails){
-    obj.eventDetails.creationTime=obj.eventDetails.creationTime?obj.eventDetails.creationTime.replace("T"," "):obj.eventDetails.creationTime;
+    obj.eventDetails.creationTime=obj.eventDetails.creationTime?moment(obj.eventDetails.creationTime).format('YYYY-MM-DD HH:mm'):obj.eventDetails.creationTime;
   }
   // 为图片添加url 前缀
   obj.url = baseUrl;
@@ -337,12 +371,21 @@ function onReceived(){
 // 打开查看地图页面
 function openViewMap() {
   // console.log(JSON.stringify(mapInfo));
+  // if (hasArea) {
+  //   // 有区域则显示区域信息及设备信息
+  // }
+  // api.openWin({
+  //     name: 'viewMap',
+  //     url: '../Task/viewMap.html',
+  //     pageParam: {
+  //       mapInfo: mapInfo
+  //     }
+  // });
   api.openWin({
       name: 'viewMap',
-      url: '../task/viewMap.html',
+      url: '../common/device.html',
       pageParam: {
-        mapInfo: mapInfo
+        deviceInfo: deviceInfo
       }
   });
-
 }

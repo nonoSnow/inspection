@@ -175,7 +175,7 @@ function onMenu(index, el) {
 // 工单详情
 function onOpenJobDetail(el) {
   var param = JSON.parse($(el).attr('param'));
-  // console.log(JSON.stringify(param));
+  console.log(JSON.stringify(param));
   api.openWin({
       name: 'jobDetail',
       url: './jobDetail.html',
@@ -251,18 +251,23 @@ function onCloseJob(el){
 
 // 接口时间返回来的T 转换为空格 并把负责人加进去
 function transT(data){
+  console.log(JSON.stringify(data));
   for (var i = 0; i < data.length; i++) {
     // data[i].planCompleteTime=data[i].planCompleteTime.replace("T"," ");
     // data[i].creationTime=data[i].creationTime.replace("T"," ");
-    data[i].planCompleteTime=data[i].planCompleteTime == "" || data[i].planCompleteTime == null ? data[i].planCompleteTime : parseTime(data[i].planCompleteTime, '{y}-{m}-{d} {h}:{i}');
-    data[i].creationTime=data[i].creationTime == "" || data[i].creationTime == null ? data[i].creationTime : parseTime(data[i].creationTime, '{y}-{m}-{d} {h}:{i}');
-    data[i].completeTime=data[i].completeTime==""||data[i].completeTime==null?data[i].completeTime: parseTime(data[i].completeTime, '{y}-{m}-{d} {h}:{i}');
+    // data[i].planCompleteTime = data[i].planCompleteTime == "" || data[i].planCompleteTime == null ? data[i].planCompleteTime : parseTime(data[i].planCompleteTime, '{y}-{m}-{d} {h}:{i}');
+    // data[i].creationTime = data[i].creationTime == "" || data[i].creationTime == null ? data[i].creationTime : parseTime(data[i].creationTime, '{y}-{m}-{d} {h}:{i}');
+    // data[i].completeTime = data[i].completeTime==""||data[i].completeTime==null?data[i].completeTime: parseTime(data[i].completeTime, '{y}-{m}-{d} {h}:{i}');
     // data[i].completeTime).replace("T"," ")
     // console.log(data[i].completeTime);
     // console.log(data[i].person);
-    data[i].person = data[i].person?data[i].person:headName;
+    data[i].planCompleteTime = data[i].planCompleteTime == "" || data[i].planCompleteTime == null ? data[i].planCompleteTime : moment(data[i].planCompleteTime).format('YYYY-MM-DD HH:mm');
+    data[i].creationTime = data[i].creationTime == "" || data[i].creationTime == null ? data[i].creationTime : moment(data[i].creationTime).format('YYYY-MM-DD HH:mm');
+    data[i].completeTime = data[i].completeTime == "" || data[i].completeTime == null ? data[i].completeTime : moment(data[i].completeTime).format('YYYY-MM-DD HH:mm');
+    data[i].person = data[i].person ? data[i].person:headName;
     // console.log(data[i].person);
   }
+  console.log(JSON.stringify(data));
   return data
 }
 

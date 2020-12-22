@@ -39,7 +39,7 @@ apiready = function() {
 }
 
 function onOpenCloseTurn(type) {
-  console.log(type);
+  // console.log(type);
   api.openWin({
       name: 'jobCloseTurn',
       url: './jobCloseTurn.html',

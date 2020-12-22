@@ -10,7 +10,8 @@ apiready = function() {
     $(".pop-container .location").html(pageParam.devicePoint);
     $(".pop-container .address").html(pageParam.address);
     indexMap = new Map({
-        mapid: 'device'
+        mapid: 'device',
+        zoom: 16
     });
     indexMap.initDeviceLayer('device');
     // pageParam = api.pageParam.deviceInfo;

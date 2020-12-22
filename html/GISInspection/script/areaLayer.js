@@ -26,10 +26,10 @@ function onGetData() {
       },
       success: function(ret) {
           api.hideProgress();
-          console.log(JSON.stringify(ret));
+          // console.log(JSON.stringify(ret));
           var points = ret.result.points;
           var lines = ret.result.lines;
-          console.log(points[1].children.length%4);
+          // console.log(points[1].children.length%4);
           // if (points.length%4 == 0) {
           //
           // }

@@ -77,6 +77,13 @@ apiready = function() {
             // 如果有下一页，则页码++
             goingPageIndex++;
             initOngoing();
+          } else {
+            // 提示没有更多数据了
+            api.toast({
+                msg: '没有更多数据了~',
+                duration: 2000,
+                location: 'middle'
+            });
           }
           break;
         case 1:
@@ -203,33 +210,45 @@ function showData(data, status) {
   getTaskDataSingle({
     data: data,
     success: function (ret) {
-      console.log(JSON.stringify(ret));
       var data;
-      var str;
+      var str = '';
+
+      // console.log(JSON.stringify(ret.result.items));
+      // console.log(dayjs(1608080763000).format('YYYY-MM-DD HH:mm'));
+      // console.log(parseTime(1608080763000, '{y}-{m}-{d} {h}:{i}'));
 
       if (ret.result.items.length != 0) {
         $('#haveNothing').addClass('aui-hide');
         $('#list-box').removeClass('bgc-ff');
-
+        // console.log(dayjs(new Date()).format('YYYY-MM-DD HH:mm'));
         ret.result.items.forEach(function (item, i) {
           if (item.planStartTime != null || item.planStartTime != '') {
-            item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+            // item.planStartTime = parseTime(item.planStartTime, '{y}-{m}-{d} {h}:{i}');
+            // let newTime = item.planStartTime
+            // console.log(item.planStartTime +"111");
+            // console.log(dayjs(item.planStartTime).format('YYYY-MM-DD HH:mm')  +"111");
+            // console.log("moment"+ moment(item.planStartTime).format('YYYY-MM-DD HH:mm'));
+            item.planStartTime = moment(new Date(item.planStartTime)).format('YYYY-MM-DD HH:mm');
           }
 
           if (item.startTime != null || item.startTime != '') {
-            item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+            // item.startTime = parseTime(item.startTime, '{y}-{m}-{d} {h}:{i}');
+            item.startTime = moment(item.startTime).format('YYYY-MM-DD HH:mm');
           }
 
           if (item.endTime != null || item.endTime != '') {
-            item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+            // item.endTime = parseTime(item.endTime, '{y}-{m}-{d} {h}:{i}');
+            item.endTime = moment(item.endTime).format('YYYY-MM-DD HH:mm');
           }
 
           if (item.planEndTime != null || item.planEndTime != '') {
-            item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+            // item.planEndTime = parseTime(item.planEndTime, '{y}-{m}-{d} {h}:{i}');
+            item.planEndTime = moment(item.planEndTime).format('YYYY-MM-DD HH:mm');
           }
 
           if (item.stopTime != null || item.stopTime != '') {
-            item.stopTime = parseTime(item.stopTime, '{y}-{m}-{d} {h}:{i}');
+            // item.stopTime = parseTime(item.stopTime, '{y}-{m}-{d} {h}:{i}');
+            item.stopTime = moment(item.stopTime).format('YYYY-MM-DD HH:mm');
           }
         })
         // console.log(JSON.stringify(ret.result.items))
@@ -303,14 +322,25 @@ function showData(data, status) {
     },
     fail: function(err) {
       api.hideProgress();
-      console.log(JSON.stringify(err));
-      if (err.body.error != undefined) {
+      // console.log('请求数据：' + JSON.stringify(err));
+      if (err == undefined) {
+        api.toast({
+            msg: '数据加载失败',
+            duration: 2000,
+            location: 'middle'
+        });
+      } else if (err.body == undefined) {
+        api.toast({
+            msg: err.msg,
+            duration: 2000,
+            location: 'middle'
+        });
+      } else if (err.body.error != undefined) {
         api.toast({
             msg: err.body.error.message,
             duration: 2000,
             location: 'middle'
         });
-
       } else {
         api.toast({
             msg: err.msg,
@@ -502,7 +532,9 @@ function onMenu(index, el) {
 }
 
 function onOpenTaskDetail(that) {
-  if (that != null) {
+  // console.log('点击了');
+  // console.log(that != null);
+  // if (that != null) {
     // console.log(JSON.stringify($(that)));
     // console.log(id);
     var id = JSON.parse($(that).attr("parse"));
@@ -516,7 +548,7 @@ function onOpenTaskDetail(that) {
             id: id
         }
     });
-  }
+  // }
 }
 
 // 点击暂停
@@ -639,7 +671,7 @@ function closeTask(that) {
   e.stopPropagation();
 
   var taskId = Number($(that).attr('parse'));
-  console.log(taskId);
+  // console.log(taskId);
   var taskName = $(that).attr('taskName');
   var type = $(that).attr('parseType');
   var message = '您确定要关闭' + taskName + '吗？'
@@ -650,7 +682,7 @@ function closeTask(that) {
   }, function(ret, err) {
       if (ret.buttonIndex == 1) {
         //点击确定，关闭任务
-        console.log(taskId);
+        // console.log(taskId);
         var param = {
           id: taskId,
           operate: 4
@@ -717,13 +749,13 @@ function startUpTask(that) {
   e.stopPropagation();
 
   var taskId = parseInt($(that).attr('parse'));
-  console.log(typeof(Number($(that).attr('parse'))));
-  console.log(typeof(taskId));
+  // console.log(typeof(Number($(that).attr('parse'))));
+  // console.log(typeof(taskId));
   var data = {
     id: taskId,
     operate: 3
   }
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
 
   changeTaskStatus({
     data: data,
@@ -940,11 +972,11 @@ function openAddTask() {
 function onItemLeft() {
   var e = e || window.event;
   e.stopPropagation();
-  console.log('click left');
+  // console.log('click left');
 }
 
 function onItemRight() {
   var e = e || window.event;
   e.stopPropagation();
-  console.log('click right');
+  // console.log('click right');
 }

@@ -101,7 +101,7 @@ function initDevInfo() {
   GetPointDetails('api/services/Inspection/InspectionTaskService/GetPointDetails', data, showRet, showErr);;
 
   function showRet(ret) {
-    // console.log(JSON.stringify(ret));
+    console.log(JSON.stringify(ret));
 
     if (ret.result != null) {
       hasRet = true;
@@ -110,7 +110,8 @@ function initDevInfo() {
       $('#haveNothing').addClass('aui-hide');
 
       if (ret.result.time != null || ret.result.time != '') {
-        ret.result.time = parseTime(ret.result.time, '{y}-{m}-{d} {h}:{i}');
+        // ret.result.time = parseTime(ret.result.time, '{y}-{m}-{d} {h}:{i}');
+        ret.result.time = moment(ret.result.time).format('YYYY-MM-DD HH:mm');
       }
 
       deviceInfo = ret.result;
@@ -184,13 +185,24 @@ function onOpenInspectionRecord() {
 
 // 转工单
 function onTransferJob() {
+  console.log(JSON.stringify(deviceInfo));
+  var userLoginInformation = $api.getStorage('userLoginInformation');
+  var personInfo = {
+    userName: userLoginInformation.currentUserInfo.userInfo.trueName,
+    userId: userLoginInformation.currentUserInfo.userInfo.userId
+  }
   api.openWin({
       name: 'addJob',
       url: '../Job/addJob.html',
       pageParam: {
-          name: 'test'
+          name: 'test',
+          deviceInfo: deviceInfo,
+          areaId: details.areaId,
+          type: 'taskTransOrder',
+          personInfo: personInfo
       }
   });
+
   // var dialog = new auiDialog({});
   // dialog.alert({
   //     title:"弹出提示",
@@ -291,23 +303,23 @@ function action() {
 function deleteImg(that) {
   var e = e || window.event;
   e.stopPropagation();
-  if (that != null) {
+  // if (that != null) {
     var imgIndex = $(that).attr('parse');
     // console.log(imgIndex);
     imgList = deleteArray(imgList, imgIndex);
     // console.log(JSON.stringify(imgList));
     showImg(imgList);
-  }
+  // }
 }
 
 // 预览
 function previewImg(that) {
-  if (that != null) {
+  // if (that != null) {
     var imgSrc = $(that).attr('parse');
     var data = [];
     data.push(imgSrc);
     previewImage(data);
-  }
+  // }
 }
 
 // 点击提交,新增设备巡检情况

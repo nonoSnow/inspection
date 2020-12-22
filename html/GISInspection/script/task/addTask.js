@@ -27,7 +27,7 @@ apiready = function() {
       name: 'checkedAreaData'
   }, function(ret, err){
       if( ret ){
-           console.log( JSON.stringify( ret ) );
+          //  console.log( JSON.stringify( ret ) );
           areaData = ret.value.checkedArea;
           if (areaData.name != '') {
             $('#tishiBox').addClass('aui-hide');
@@ -45,7 +45,7 @@ apiready = function() {
             // indexMap.initArea('addArea');
             // indexMap.initDeviceLayer('addArea');
             var areaPoint = ret.value.checkedArea.areaPoint;
-            console.log(JSON.stringify(areaPoint));
+            // console.log(JSON.stringify(areaPoint));
             indexMap.drawAreaSelect(areaPoint, {name: 'addArea'});
           } else {
             $('#tishiBox').removeClass('aui-hide');
@@ -101,7 +101,7 @@ function subTask() {
   // console.log('点击了提交');
 
   var taskName = $('#task-name').val();
-  console.log(taskName);
+  // console.log(taskName);
   if (taskName == '') {
     // 提示没有输入任务名称
     api.toast({
@@ -198,7 +198,7 @@ function subTask() {
     type: 1
   }
 
-  console.log(JSON.stringify(param));
+  // console.log(JSON.stringify(param));
   addTask({
     data: param,
     success: function(ret) {
@@ -213,14 +213,39 @@ function subTask() {
       });
     },
     fail: function(err) {
-      console.log(JSON.stringify(err));
-      if (err.body.error != undefined) {
+      // console.log(JSON.stringify(err));
+      // if (err.body.error != undefined) {
+      //   api.toast({
+      //       msg: err.body.error.message,
+      //       duration: 2000,
+      //       location: 'middle'
+      //   });
+      //
+      // } else {
+      //   api.toast({
+      //       msg: err.msg,
+      //       duration: 2000,
+      //       location: 'middle'
+      //   });
+      // }
+      if (err == undefined) {
+        api.toast({
+            msg: '数据加载失败',
+            duration: 2000,
+            location: 'middle'
+        });
+      } else if (err.body == undefined) {
+        api.toast({
+            msg: err.msg,
+            duration: 2000,
+            location: 'middle'
+        });
+      } else if (err.body.error != undefined) {
         api.toast({
             msg: err.body.error.message,
             duration: 2000,
             location: 'middle'
         });
-
       } else {
         api.toast({
             msg: err.msg,

@@ -1,12 +1,13 @@
 var isOnline;
 apiready = function() {
-  console.log('进入页面了');
+  // console.log('进入页面了');
+  // isOpenGPS();
 
   // api.closeFrameGroup({
   //   name: 'group'
   // });
   // 初始化为离线状态
-  console.log(getCurrentUserRoles());
+  // console.log(getCurrentUserRoles());
   if (getCurrentUserRoles()) {
     // 当为领导时，进入页面及在线
     // console.log('领导');
@@ -136,7 +137,7 @@ apiready = function() {
   //          console.log( JSON.stringify( err ) );
   //     }
   // });
-    console.log(getCurrentUserRoles());
+    // console.log(getCurrentUserRoles());
     funIniGroup(getCurrentUserRoles());
     WinSize(['footer-gis']);
 
@@ -244,17 +245,17 @@ function funIniGroup(roles) {
             url: '../html/Area/area.html',
         }]
     }, function(ret, err) {
-      console.log(JSON.stringify(ret));
-      if (ret) {
+      // console.log(JSON.stringify(ret));
+      // if (ret) {
         if (ret.index == 0) {
-          console.log('触发了');
+          // console.log('触发了');
           api.setFrameGroupIndex({
               name: 'group1',
               index: 0,
               reload: true
           });
         }
-      }
+      // }
     });
 }
 

@@ -366,10 +366,10 @@ function getCaliberList(){
 }
 // 图片预览
 function previewImg(that) {
-  if (that != null) {
+  // if (that != null) {
     var imgSrc = $(that).attr('parse');
     var data = [];
     data.push(imgSrc);
     previewImage(data);
-  }
+  // }
 }

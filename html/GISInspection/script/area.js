@@ -105,7 +105,7 @@ function onGetSearchVal() {
 
 function onOpenAreaDetail(item) {
   onCheckedArea(item);
-  console.log(JSON.stringify(checkEquipment));
+  // console.log(JSON.stringify(checkEquipment));
   if (pageType == 1) {
     api.openWin({
         name: 'areaDetail',

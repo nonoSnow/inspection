@@ -1,19 +1,19 @@
 function renderOrderOrworkTemplate(ret) {
-  console.log(ret);
+  // console.log(ret);
     var taskLists = ret.result.taskLists.map(function(item) {
         item.beginTime = item.beginTime != undefined ? item.beginTime : item.planStartTime != undefined ? item.planStartTime : null;
         item.planComplateTime = item.planComplateTime != undefined ? item.planComplateTime : item.planEndTime != undefined ? item.planEndTime : null;
-        if (item.beginTime != '' && item.beginTime != null && item.beginTime != undefined) {
+        if (item.beginTime != '' || item.beginTime != null || item.beginTime != undefined) {
             item.beginTime = moment(item.beginTime).format('YYYY-MM-DD HH:mm');
         }
-        if (item.planComplateTime != '' && item.planComplateTime != null && item.planComplateTime != undefined) {
+        if (item.planComplateTime != '' || item.planComplateTime != null || item.planComplateTime != undefined) {
             item.planComplateTime = moment(item.planComplateTime).format('YYYY-MM-DD HH:mm');
         }
         return item;
     });
     var workOrderLists = ret.result.workOrderLists.map(function(item) {
         item.planComplateTime = item.planComplateTime != undefined ? item.planComplateTime : item.planEndTime != undefined ? item.planEndTime : null;
-        if (item.planComplateTime != '' && item.planComplateTime != null && item.planComplateTime != undefined) {
+        if (item.planComplateTime != '' || item.planComplateTime != null || item.planComplateTime != undefined) {
             item.planComplateTime = moment(item.planComplateTime).format('YYYY-MM-DD HH:mm');
         }
         return item;
@@ -50,11 +50,11 @@ function initTaskListEvent() {
         }
     });
     $('.homePage_order_body_content').on('click', function() {
-      console.log('11111111111111111');
+      // console.log('11111111111111111');
         var type = $(this).attr('type');
         var paramers = $(this).attr('parse');
         paramers = JSON.parse(paramers);
-        console.log(JSON.stringify(paramers));
+        // console.log(JSON.stringify(paramers));
         if (type == 'task') {
             api.openWin({
                 name: 'homeTaskInfo',

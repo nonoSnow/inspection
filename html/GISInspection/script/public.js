@@ -66,8 +66,8 @@ function onShowList(element, minH, maxH, mapListStatus, bodyHeight,callback) {
     } else if (mapListStatus == 2) {
         $('.' + element).css('height', minH + 'px');
     }
-    console.log(bodyHeight);
-    console.log(maxH);
+    // console.log(bodyHeight);
+    // console.log(maxH);
     mapListStatus++;
     if (mapListStatus > 2) {
         mapListStatus = 0;
@@ -108,7 +108,7 @@ function onShowList(element, minH, maxH, mapListStatus, bodyHeight,callback) {
              $('.' + element).css('height', minH + maxH + 'px');
              mapListStatus = 1;
          }
-        console.log(maxH);
+        // console.log(maxH);
          callback(mapListStatus);
        }
    },false);
@@ -120,7 +120,7 @@ function onShowList(element, minH, maxH, mapListStatus, bodyHeight,callback) {
 * @param {type} 类型（相册或者拍照）
 **/
 function getPicture(type, showRet, showErr) {
-  console.log(type);
+  // console.log(type);
   api.getPicture({
     sourceType: type,
     encodingType: 'jpg',
@@ -132,8 +132,8 @@ function getPicture(type, showRet, showErr) {
     targetHeight: 750,
     saveToPhotoAlbum: false
   }, function(ret, err) {
-    console.log(JSON.stringify(ret));
-    console.log(JSON.stringify(err));
+    // console.log(JSON.stringify(ret));
+    // console.log(JSON.stringify(err));
       if (ret) {
           if (ret.data != '') {
             uploadPic(ret.data, success, error);
@@ -145,7 +145,7 @@ function getPicture(type, showRet, showErr) {
               showErr(err)
             }
           } else {
-            console.log('没有选择图片');
+            // console.log('没有选择图片');
             // showErr({
             //   code: 0,
             //   statusCode: 0,
@@ -260,6 +260,7 @@ function parseTime(time, cFormat) {
     if (typeof time === 'number' && time.toString().length === 10) {
       time = time * 1000;
     }
+    // console.log(time);
     date = new Date(time);
   }
   const formatObj = {
@@ -345,13 +346,13 @@ function previewImage(data) {
       bgColor: '#000'
   }, function(ret, err) {
       if (ret) {
-          console.log(JSON.stringify(ret));
+          // console.log(JSON.stringify(ret));
           if (ret.eventType == 'click') {
             // 点击，关闭预览
             photoBrowser.close();
           }
       } else {
-          console.log(JSON.stringify(err));
+          // console.log(JSON.stringify(err));
       }
   });
 }
@@ -401,13 +402,38 @@ function setOnlineStatus(status) {
         },
         fail: function(err) {
             // console.log(JSON.stringify(err));
-            if (err.body.error != undefined) {
+            // if (err.body.error != undefined) {
+            //   api.toast({
+            //       msg: err.body.error.message,
+            //       duration: 2000,
+            //       location: 'middle'
+            //   });
+            //
+            // } else {
+            //   api.toast({
+            //       msg: err.msg,
+            //       duration: 2000,
+            //       location: 'middle'
+            //   });
+            // }
+            if (err == undefined) {
+              api.toast({
+                  msg: '数据加载失败',
+                  duration: 2000,
+                  location: 'middle'
+              });
+            } else if (err.body == undefined) {
+              api.toast({
+                  msg: err.msg,
+                  duration: 2000,
+                  location: 'middle'
+              });
+            } else if (err.body.error != undefined) {
               api.toast({
                   msg: err.body.error.message,
                   duration: 2000,
                   location: 'middle'
               });
-
             } else {
               api.toast({
                   msg: err.msg,
@@ -472,11 +498,11 @@ function sendInspectionLocation() {
           insertLocation({
             data: data,
             success: function(ret) {
-              console.log(JSON.stringify(ret));
+              // console.log(JSON.stringify(ret));
             }
           });
       } else {
-          console.log(err.code);
+          // console.log(err.code);
       }
   });
 }
@@ -490,11 +516,11 @@ function checkOnline() {
   getUserStatus({
     data: data,
     success: function(ret) {
-      console.log(JSON.stringify(ret));
+      // console.log(JSON.stringify(ret));
       // 当前缓存中最后的在线状态
       var storeageIsOnline = $api.getStorage('isOnline');
       if (getCurrentUserRoles()) {
-        console.log(storeageIsOnline == ret.result.isOnline);
+        // console.log(storeageIsOnline == ret.result.isOnline);
         // 为领导，如果返回的和缓存的状态不一致，则执行在线操作
         if (storeageIsOnline == ret.result.isOnline) {
           // 状态一致，不执行操作

@@ -11,9 +11,9 @@ apiready = function() {
       name: 'addAreaPoint'
   }, function(ret, err){
       addAreaPoint = ret.value.areaPoint;
-      console.log(JSON.stringify(addAreaPoint));
+      // console.log(JSON.stringify(addAreaPoint));
       for (var i = 0; i < addAreaPoint.length; i++) {
-        console.log(typeof addAreaPoint[i]);
+        // console.log(typeof addAreaPoint[i]);
       }
   });
 

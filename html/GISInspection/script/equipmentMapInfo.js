@@ -28,12 +28,12 @@ apiready = function() {
   taskId = api.pageParam.taskId;
   type = api.pageParam.taskType;
 
-  console.log(JSON.stringify(inspectParam));
-  console.log(type);
+  // console.log(JSON.stringify(inspectParam));
+  // console.log(type);
 
 
-  console.log(JSON.stringify(inspectParam));
-  console.log(taskId);
+  // console.log(JSON.stringify(inspectParam));
+  // console.log(taskId);
   getInspectDetail();
   initBtn();
 
@@ -60,7 +60,7 @@ function onOpenReport() {
     if (hasOperate) {
       var data = inspectParam;
       data.taskId = taskId;
-      console.log(JSON.stringify(data));
+      // console.log(JSON.stringify(data));
       api.openWin({
           name: 'addMethodReport',
           url: '../Method/addMethodReport.html',
@@ -149,7 +149,7 @@ function getInspectDetail() {
     inspectionStatus: inspectParam.inspectionStatus
   }
 
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(data));
   getInspectDetails('api/services/Inspection/InspectionTaskService/GetPointDetails', data, showRet, showRet);
 
   function showRet(ret) {
@@ -251,13 +251,38 @@ function initMap() {
           }, {name: 'addArea'});
         },
         fail: function(err) {
-          if (err.body.error != undefined) {
+          // if (err.body.error != undefined) {
+          //   api.toast({
+          //       msg: err.body.error.message,
+          //       duration: 2000,
+          //       location: 'middle'
+          //   });
+          //
+          // } else {
+          //   api.toast({
+          //       msg: err.msg,
+          //       duration: 2000,
+          //       location: 'middle'
+          //   });
+          // }
+          if (err == undefined) {
+            api.toast({
+                msg: '数据加载失败',
+                duration: 2000,
+                location: 'middle'
+            });
+          } else if (err.body == undefined) {
+            api.toast({
+                msg: err.msg,
+                duration: 2000,
+                location: 'middle'
+            });
+          } else if (err.body.error != undefined) {
             api.toast({
                 msg: err.body.error.message,
                 duration: 2000,
                 location: 'middle'
             });
-
           } else {
             api.toast({
                 msg: err.msg,
@@ -269,13 +294,38 @@ function initMap() {
       })
     },
     fail: function(err) {
-      if (err.body.error != undefined) {
+      // if (err.body.error != undefined) {
+      //   api.toast({
+      //       msg: err.body.error.message,
+      //       duration: 2000,
+      //       location: 'middle'
+      //   });
+      //
+      // } else {
+      //   api.toast({
+      //       msg: err.msg,
+      //       duration: 2000,
+      //       location: 'middle'
+      //   });
+      // }
+      if (err == undefined) {
+        api.toast({
+            msg: '数据加载失败',
+            duration: 2000,
+            location: 'middle'
+        });
+      } else if (err.body == undefined) {
+        api.toast({
+            msg: err.msg,
+            duration: 2000,
+            location: 'middle'
+        });
+      } else if (err.body.error != undefined) {
         api.toast({
             msg: err.body.error.message,
             duration: 2000,
             location: 'middle'
         });
-
       } else {
         api.toast({
             msg: err.msg,
